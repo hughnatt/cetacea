@@ -1,6 +1,15 @@
 # projet-pla
 Projet Logiciel Niveau Application
 
+## Groupe 4 : 
+- DUMAX-VORZET Mathieu
+- JALMIN Hoël
+- LANDI Estelle
+- REYMOND Estelle
+- SAUTON Tanguy
+- VINCENT Mathieu
+- WYKLAND Damien
+
 <img src="http://cairnsdiveadventures.com.au/wp-content/uploads/2011/04/Humpback.jpg">
 
 
