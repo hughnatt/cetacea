@@ -28,3 +28,27 @@
   - Animation de transition pour le changement de cases
   
 ##
+
+## Jeudi 31 mai
+###### Tâches effectuées :
+  - Création d'une version "clean" du frame work, avec que les éléments initaux
+  - Prise en main du framework, tests avec de nouvelles images (bateaux, cailloux...)
+  - Affichage du feu à l'appui d'une touche
+  - Mouvement d'icônes sur la map, déplacement de personnage
+  
+###### Travail pour la prochaine séance :
+ - Animation pour l'apparition de la baleine
+ - Choix des prototypes à travailler
+ - Mise en place des différentes parties du projet
+ - Création des sprite-sheets des autres entités
+ - Gestion de la caméra
+ 
+###### Idées émises :
+  - Hiérarchie des îles et des bonus
+  - Pétrole en dépense continue et pas case par case
+  - Jauge par tassement (ou par icône?)
+  - Map scénarisé pour la démonstration
+  - Nom au bateau
+
+  
+##
