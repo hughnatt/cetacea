@@ -50,5 +50,20 @@
   - Map scénarisé pour la démonstration
   - Nom au bateau
 
+##
+
+## Vendredi 1 juin
+
+###### Tâches effectuées :
+  - Ecriture du contrat final
+  - Création des classes nécessaire pour le jeu
+  - Gestion de projectile
+  - Gestion de surperposition des plus entités sur une même case
+  - Ebauche du menu du jeu
+  
+###### Travail pour la prochaine séance :
+  - Travail sur les automates
+  - Préparation de  la présentation
+  
   
 ##
