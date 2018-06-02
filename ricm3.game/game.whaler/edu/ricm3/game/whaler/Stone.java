@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 public final class Stone extends Static_entity {
 
-	public Stone(Location position, BufferedImage sprite) {
-		super(position, true, true, null, sprite);
+	public Stone(Model model, Location position, BufferedImage sprite) {
+		super(model, position, true, true, null, sprite);
 	}
 
 	@Override

@@ -13,9 +13,9 @@ public abstract class Static_entity extends Entity {
 	int width_sprite; // size
 	int height_sprite;
 
-	protected Static_entity(Location position, boolean collision_up, boolean collision_down, Object action,
-			BufferedImage sprite) {
-		super(position, collision_up, collision_down);
+	protected Static_entity(Model model, Location position, boolean collision_up, boolean collision_down,
+			Object action, BufferedImage sprite) {
+		super(model, position, collision_up, collision_down);
 		this.action = action;
 		this.sprite = sprite;
 	}

@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 public class Projectile extends Mobile_entity {
 
-	protected Projectile(Location position, BufferedImage im_sprites, int nrows, int ncols) {
-		super(position, false, false, im_sprites, nrows, ncols);
+	protected Projectile(Model model, Location position, BufferedImage im_sprites, int nrows, int ncols) {
+		super(model, position, false, false, im_sprites, nrows, ncols);
 	}
 
 	@Override

@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 public final class Oil extends Mobile_entity {
 
-	protected Oil(Location position, BufferedImage im_sprites, int nrows, int ncols) {
-		super(position, false, false, im_sprites, nrows, ncols);
+	protected Oil(Model model, Location position, BufferedImage im_sprites, int nrows, int ncols) {
+		super(model, position, false, false, im_sprites, nrows, ncols);
 	}
 
 	@Override

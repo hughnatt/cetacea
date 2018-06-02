@@ -5,14 +5,14 @@ import java.awt.image.BufferedImage;
 public abstract class Mobile_entity extends Entity {
 
 	BufferedImage[] sprites; // tab containing the sprites
-	int width_sprite; // size
+	int width_sprite; // size of 1 sprite
 	int height_sprite;
 	int num_sprite; // current sprite
 	int max_sprite; // 0<=num_sprite<max_sprite
 
-	protected Mobile_entity(Location position, boolean collision_up, boolean collision_down, BufferedImage im_sprites,
-			int nrows, int ncols) {
-		super(position, collision_up, collision_down);
+	protected Mobile_entity(Model model, Location position, boolean collision_up, boolean collision_down,
+			BufferedImage im_sprites, int nrows, int ncols) {
+		super(model, position, collision_up, collision_down);
 		Split_sprite(im_sprites, nrows, ncols);
 	}
 

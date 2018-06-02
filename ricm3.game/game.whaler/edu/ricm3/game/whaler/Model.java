@@ -17,55 +17,46 @@
  */
 package edu.ricm3.game.whaler;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Random;
-
-import javax.imageio.ImageIO;
-
 import edu.ricm3.game.GameModel;
 
 public class Model extends GameModel {
-  //Sprite-sheets (BufferedImage) and instances of elements
+	// Sprite-sheets (BufferedImage) and instances of elements
 
-  public Model() {
-    loadSprites();
-  }
-  
-  @Override
-  public void shutdown() {
-    
-  }
-  
-  /**
-   * Simulation step.
-   * 
-   * @param now
-   *          is the current time in milliseconds.
-   */
-  @Override
-  public void step(long now) {
-    
-    //call the method step of each instances
-  }
+	public Model() {
+		loadSprites();
+	}
 
-  private void loadSprites() {
-	//example of a load  
-	  
-    /*
-     * Description; extention; size (64x64for example) px sprite size
-     * Author (source site)
-     */
-    //File imageFile = new File("game.sample/sprites/random_sprite.png");
-    //try {
-      //BufferedImage_instance = ImageIO.read(imageFile);
-    //} catch (IOException ex) {
-      //ex.printStackTrace();
-      //System.exit(-1);
-    //}
-  }
+	@Override
+	public void shutdown() {
+
+	}
+
+	/**
+	 * Simulation step.
+	 * 
+	 * @param now
+	 *            is the current time in milliseconds.
+	 */
+	@Override
+	public void step(long now) {
+
+		// call the method step of each instances
+	}
+
+	private void loadSprites() {
+		// example of a load
+
+		/*
+		 * Description; extention; size (64x64for example) px sprite size Author (source
+		 * site)
+		 */
+		// File imageFile = new File("game.sample/sprites/random_sprite.png");
+		// try {
+		// BufferedImage_instance = ImageIO.read(imageFile);
+		// } catch (IOException ex) {
+		// ex.printStackTrace();
+		// System.exit(-1);
+		// }
+	}
 
 }
