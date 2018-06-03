@@ -18,7 +18,9 @@
 package edu.ricm3.game.whaler;
 
 public class Options {
-	
-	//some public static variables, final or not, initialized or not
 
+	// some public static variables, final or not, initialized or not
+
+	public static final int DIMX_MAP = 1000;
+	public static final int DIMY_MAP = 1000;
 }
