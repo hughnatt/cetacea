@@ -1,8 +1,7 @@
 package edu.ricm3.game.whaler;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 public abstract class Background {
 
@@ -52,6 +51,6 @@ public abstract class Background {
 
 	public abstract void step(long now);
 	
-	public abstract void paint(Graph g,Location p_ref_map);
+	public abstract void paint(Graphics g,Location p_ref_map);
 
 }
