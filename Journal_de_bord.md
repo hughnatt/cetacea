@@ -67,3 +67,23 @@
   
   
 ##
+
+## Lundi 4 juin
+
+###### Tâches effectuées :
+  - Préparation de la présentation et création du diaporama
+  - Création graphiques de certaines entitées (iceberg, îles, joueur)
+  - Gestion de la destruction si tire sur l'entité
+  - Améliration du prototype
+  - Positionnement aléatoire des entités
+  - Changement du readme
+  - Elaboration du diagramme de Gantt
+  - Correction et mise en place d'exception (création d'une classe)
+  - Travail sur tile.java pour rajouter des éléments sur la carte
+  
+###### Travail pour la prochaine séance :
+  - Fin de la préparation pour la présentation de mercredi
+  - Entraînement pour la présentation
+  - Fin du travail sur le prototype
+  
+##
