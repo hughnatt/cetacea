@@ -8,17 +8,27 @@ public class Location {
 		this.y = y;
 	}
 
-	// TODO down et right selon la taille de la map
-
 	public void up() {
 		if (this.y > 0) {
 			this.y--;
 		}
 	}
 
+	public void down() {
+		if (this.y < Options.DIMY_MAP) {
+			y++;
+		}
+	}
+
 	public void left() {
 		if (this.x > 0) {
 			this.x--;
+		}
+	}
+
+	public void right() {
+		if (this.x < Options.DIMX_MAP) {
+			x++;
 		}
 	}
 }

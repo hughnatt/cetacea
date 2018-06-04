@@ -1,7 +1,8 @@
 package edu.ricm3.game.whaler;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 public final class Player extends Mobile_entity {
 
@@ -10,7 +11,7 @@ public final class Player extends Mobile_entity {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graph g, Location p_ref_map) {
 
 	}
 

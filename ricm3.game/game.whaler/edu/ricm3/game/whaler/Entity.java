@@ -1,6 +1,6 @@
 package edu.ricm3.game.whaler;
 
-import java.awt.Graphics;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 public abstract class Entity {
 
@@ -18,6 +18,6 @@ public abstract class Entity {
 		this.collision_down = collision_down;
 	}
 
-	public abstract void paint(Graphics g);
+	public abstract void paint(Graph g, Location p_ref_map);
 
 }

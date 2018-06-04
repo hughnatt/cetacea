@@ -2,6 +2,8 @@ package edu.ricm3.game.whaler;
 
 import java.awt.image.BufferedImage;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 public final class Water extends Background {
 
 	/**
@@ -17,7 +19,13 @@ public final class Water extends Background {
 		super(sprites, width_sprite, height_sprite, num_sprite, max_sprite, model);
 	}
 
+	@Override
 	public void step(long now) {
+
+	}
+
+	@Override
+	public void paint(Graph g, Location p_ref_map) {
 
 	}
 }
