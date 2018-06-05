@@ -87,3 +87,18 @@
   - Fin du travail sur le prototype
   
 ##
+
+## Mardi 5 juin
+
+###### Tâches effectuées :
+  - Fin préparation présentation + entraînement
+  - Modification du powerpoint
+  - Travail sur les automates
+  - Rajout barre de vie sur les destroyers
+  
+  
+###### Travail pour la prochaine séance :
+  - Brain storming après la présentation
+  - Travail sur ce qui aura été "brain stormer"
+  
+##
