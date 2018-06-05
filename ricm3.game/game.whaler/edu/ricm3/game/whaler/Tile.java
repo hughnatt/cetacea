@@ -1,43 +1,69 @@
 package edu.ricm3.game.whaler;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Tile {
-	List<Entity> level;
+	LinkedList<Entity> level;
 
 	protected Tile() {
 		level = new LinkedList<Entity>();
 	}
 
 	protected void add(Entity e) throws Map_exception {
-		Class<Entity> e_class = e.getClass();
 
-		Iterator<Entity> iter = level.iterator();
-
-		if (!iter.hasNext()) {
+		if (level.size() == 0) {
 			level.add(e);
+			return;
 		}
 
-		Entity tmp = iter.next();
-		if (tmp instanceof Island) {
-			throw new Map_exception("Island presented, impossible to add a new entity");
-		} else if (tmp instanceof Stone) {
-			throw new Map_exception("Stone presented, impossible to add a new entity");
-		} else if ((tmp instanceof Iceberg) && ((!(e instanceof Player)) || (!Player.UNDER_WATER))) {
-			throw new Map_exception("Iceberg presented, impossible to add a new entity,excepted a player under water");
+		if (e instanceof Static_entity) {
+			throw new Map_exception("Impossible to add a static_entity on a no-empty bloc");
 		}
 
-		if (!iter.hasNext()) {
+		Entity tmp1 = level.get(1);
 
-			switch (e.getClass()) {
-			default:
+		if ((e.getClass() == tmp1.getClass()) && (!(e instanceof Projectile))) {
+			throw new Map_exception("Entity already presented");
+		}
+
+		if (level.size() == 1) {
+			if (tmp1 instanceof Island) {
+				throw new Map_exception("Island presented, impossible to add the new entity");
+			} else if (tmp1 instanceof Stone) {
+				throw new Map_exception("Stone presented, impossible to add the new entity");
+			} else if ((tmp1 instanceof Iceberg) && ((!(e instanceof Player)) || (!Player.UNDER_WATER))) {
+				throw new Map_exception(
+						"Iceberg presented, impossible to add the new entity,excepted a player under water");
+			}
+
+			if ((tmp1 instanceof Oil) || (tmp1 instanceof Iceberg)) {
+				level.addLast(e);
+				return;
+			} else if ((tmp1 instanceof Player) || (tmp1 instanceof Ennemi) || (tmp1 instanceof Whale)) {
+				if (e instanceof Projectile) {
+					level.addLast(e);
+				} else if (e instanceof Oil) {
+					level.addFirst(e);
+				} else {
+					throw new Map_exception("Mobile entity opresented, impossible to add the new entity");
+				}
+				return;
+			} else if (tmp1 instanceof Projectile) {
+				if (e instanceof Projectile) {
+					level.addLast(e);
+				} else {
+					level.addFirst(e);
+				}
+				return;
+			} else {
 				throw new Map_exception("Unfitted entity");
 			}
+
 		}
+
+		Entity tmp2 = level.get(2);
 
 	}
 }

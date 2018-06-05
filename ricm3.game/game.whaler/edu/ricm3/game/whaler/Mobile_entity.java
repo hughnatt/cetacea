@@ -4,6 +4,10 @@ import java.awt.image.BufferedImage;
 
 public abstract class Mobile_entity extends Entity {
 
+	protected enum Direction {
+		NORTH, SOUTH, WEST, EAST
+	}
+
 	BufferedImage[] sprites; // tab containing the sprites
 	int width_sprite; // size of 1 sprite
 	int height_sprite;
