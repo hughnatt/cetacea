@@ -51,6 +51,6 @@ public abstract class Background {
 
 	public abstract void step(long now);
 	
-	public abstract void paint(Graphics g,Location p_ref_map);
+	public abstract void paint(Graphics g);
 
 }

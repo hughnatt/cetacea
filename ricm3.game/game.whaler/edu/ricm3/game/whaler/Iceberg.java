@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 public final class Iceberg extends Static_entity {
 
 	protected Iceberg(Model model, Location position, BufferedImage sprite) {
-		super(model, position, true, false, null, sprite);
+		super(model, position, true, false, sprite);
 	}
 
 	@Override

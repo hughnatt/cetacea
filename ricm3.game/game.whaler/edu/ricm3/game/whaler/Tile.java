@@ -61,9 +61,35 @@ public class Tile {
 				throw new Map_exception("Unfitted entity");
 			}
 
+		} else if (level.size() == 2) {
+			Entity tmp2 = level.get(2);
+
+			if ((e.getClass() == tmp2.getClass()) && (!(e instanceof Projectile))) {
+				throw new Map_exception("Entity already presented");
+			}
+			if (((tmp1 instanceof Iceberg) && (tmp2 instanceof Player) && (Player.UNDER_WATER))
+					|| (((tmp1 instanceof Player) || (tmp1 instanceof Ennemi) || (tmp1 instanceof Whale))
+							&& (tmp2 instanceof Oil))) {
+				if (e instanceof Projectile) {
+					level.addLast(e);
+					return;
+				}
+				throw new Map_exception("Block available only for a new projectile");
+			} else if ((tmp1 instanceof Oil) && (tmp2 instanceof Projectile)) {
+				level.add(2, e);
+				return;
+			} else if ((tmp1 instanceof Projectile) && (tmp2 instanceof Projectile)) {
+				level.addFirst(e);
+				return;
+			} else {
+				throw new Map_exception("Unfitted entity");
+			}
+		} else {
+			if (e instanceof Projectile) {
+				level.addLast(e);
+				return;
+			}
+			throw new Map_exception("Too many entities for this new entity");
 		}
-
-		Entity tmp2 = level.get(2);
-
 	}
 }

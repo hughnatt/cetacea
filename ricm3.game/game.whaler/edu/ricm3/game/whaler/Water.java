@@ -24,7 +24,7 @@ public final class Water extends Background {
 	}
 
 	@Override
-	public void paint(Graphics g, Location p_ref_map) {
+	public void paint(Graphics g) {
 
 	}
 }
