@@ -26,7 +26,7 @@ public class Options {
 	public static final int DIMX_MAP = 1000; // dim de la map
 	public static final int DIMY_MAP = 1000;
 
-	public static final int DIMX_WINDOW = 1000; // dim de la view en pixel
+	public static final int DIMX_WINDOW = 1000; // dim de la fenêtre en pixel
 	public static final int DIMY_WINDOW = 720;
 
 	public static final int DIMX_VIEW = 31; // dim de la view en pixel

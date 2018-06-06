@@ -1,6 +1,7 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 
@@ -37,20 +38,30 @@ public abstract class Entity {
 		}
 	}
 
-	Location position;
-	boolean collision_up;
-	boolean collision_down;
-	Model model;
+	Location m_pos;
+	boolean m_solid;
 
-	// TODO ajouter commentaires eclipses paramètres et return
+	BufferedImage m_sprite;
 
-	protected Entity(Model model, Location position, boolean collision_up, boolean collision_down) {
-		this.model = model;
-		this.position = position;
-		this.collision_up = collision_up;
-		this.collision_down = collision_down;
+	Model m_model;
+
+	/**
+	 * @param m_pos
+	 * @param m_solid
+	 * @param m_sprite
+	 * @param m_model
+	 */
+	protected Entity(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model) {
+		this.m_pos = m_pos;
+		this.m_solid = m_solid;
+		this.m_sprite = m_sprite;
+		this.m_model = m_model;
 	}
 
+	/**
+	 * @param g
+	 * @param p_ref_map
+	 */
 	public abstract void paint(Graphics g, Location p_ref_map);
 
 }

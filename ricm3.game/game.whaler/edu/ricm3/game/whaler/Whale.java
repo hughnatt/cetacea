@@ -3,10 +3,17 @@ package edu.ricm3.game.whaler;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public final class Whale extends Mobile_entity {
+public final class Whale extends Mobile_Entity {
 
-	protected Whale(Model model, Location position, BufferedImage im_sprites, int nrows, int ncols) {
-		super(model, position, true, false, im_sprites, nrows, ncols);
+	/**
+	 * @param m_pos
+	 * @param m_solid
+	 * @param m_sprite
+	 * @param m_model
+	 * @param last_move
+	 */
+	protected Whale(Location m_pos, BufferedImage m_sprite, Model m_model, long last_move) {
+		super(m_pos, true, m_sprite, m_model, last_move);
 	}
 
 	@Override

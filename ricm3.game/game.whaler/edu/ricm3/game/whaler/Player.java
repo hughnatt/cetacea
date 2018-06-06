@@ -3,12 +3,19 @@ package edu.ricm3.game.whaler;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public final class Player extends Mobile_entity {
+public final class Player extends Mobile_Entity {
 
 	public static boolean UNDER_WATER = false;
 
-	protected Player(Model model, Location position, BufferedImage im_sprites, int nrows, int ncols) {
-		super(model, position, true, true, im_sprites, nrows, ncols);
+	/**
+	 * @param m_pos
+	 * @param m_solid
+	 * @param m_sprite
+	 * @param m_model
+	 * @param last_move
+	 */
+	protected Player(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model, long last_move) {
+		super(m_pos, m_solid, m_sprite, m_model, last_move);
 	}
 
 	@Override

@@ -3,10 +3,16 @@ package edu.ricm3.game.whaler;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public final class Iceberg extends Static_entity {
+public final class Iceberg extends Static_Entity {
 
-	protected Iceberg(Model model, Location position, BufferedImage sprite) {
-		super(model, position, true, false, sprite);
+	/**
+	 * @param m_pos
+	 * @param m_solid
+	 * @param m_sprite
+	 * @param m_model
+	 */
+	protected Iceberg(Location m_pos, BufferedImage m_sprite, Model m_model) {
+		super(m_pos, true, m_sprite, m_model);
 	}
 
 	@Override
