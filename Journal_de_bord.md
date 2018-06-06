@@ -102,3 +102,22 @@
   - Travail sur ce qui aura été "brain stormer"
   
 ##
+
+
+## Mercredi 6 juin
+
+###### Compte-rendu de la présentation
+  - Contrat présenté ok
+  - Rajout dans le contrat de base : interface pour le choix des automates
+  - Changer le pop du baleinier
+  - Comportement du pétrole (gestion de la vie)
+  - Extension : perception en mode sous-marin, îles (à la place dans le contrat de base)
+  - Affichage vie des baleines ?
+
+###### Tâches effectuées :
+ 
+  
+###### Travail pour la prochaine séance :
+
+  
+##
