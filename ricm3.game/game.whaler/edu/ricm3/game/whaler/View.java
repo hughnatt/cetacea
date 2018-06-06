@@ -18,6 +18,7 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Iterator;
 
@@ -33,6 +34,7 @@ public class View extends GameView {
   int m_fps;
   Model m_model;
   Controller m_ctr;
+  Boolean afficherOptions = true;
   
   public View(Model m, Controller c) {
     m_model = m;
@@ -52,13 +54,31 @@ public class View extends GameView {
 
   @Override
   protected void _paint(Graphics g) {
-    computeFPS();
+	  g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
 
-    // erase background
-    g.setColor(m_background);
-    g.fillRect(0, 0, getWidth(), getHeight());
-
-    //call the method paint on all the instances you want to print
+		if (Options.VERBOSE) {
+			Font f = new Font("Verdana", Font.BOLD, 48);
+			g.setFont(f);
+			g.setColor(Color.BLUE);
+			g.drawString("Option verbose", 100, 100);
+		}
+		if (!m_ctr.op) {
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			m_model.m_menu.paint(g, getWidth());
+		}
+		if (m_ctr.GameOn) {
+			// Paint the Water
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			Font f = new Font("Verdana", Font.BOLD, 48);
+			g.setFont(f);
+			g.setColor(Color.BLUE);
+			g.drawString("Jeu lancé", 200, 200);
+			
+			// LE JEU ICI
+		}
   }
 
 }
