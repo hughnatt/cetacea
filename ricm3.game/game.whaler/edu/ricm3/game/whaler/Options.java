@@ -21,4 +21,17 @@ public class Options {
 	
 	//some public static variables, final or not, initialized or not
 	public static boolean VERBOSE = false;
+
+	// some public static variables, final or not, initialized or not
+
+	public static final int DIM_BLOC = 32; // coté d'un bloc en pixel
+
+	public static final int DIMX_MAP = 1000; // dim de la map
+	public static final int DIMY_MAP = 1000;
+
+	public static final int DIMX_WINDOW = 1000; // dim de la fenêtre en pixel
+	public static final int DIMY_WINDOW = 720;
+
+	public static final int DIMX_VIEW = 31; // dim de la view en pixel
+	public static final int DIMY_VIEW = 21;
 }

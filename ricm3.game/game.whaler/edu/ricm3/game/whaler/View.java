@@ -20,7 +20,6 @@ package edu.ricm3.game.whaler;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.Iterator;
 
 import edu.ricm3.game.GameView;
 
@@ -40,7 +39,7 @@ public class View extends GameView {
     m_model = m;
     m_ctr = c;
   }
-  
+
   private void computeFPS() {
     long now = System.currentTimeMillis();
     if (now - m_last > 1000L) {

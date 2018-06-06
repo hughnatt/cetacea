@@ -21,14 +21,12 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -179,6 +177,7 @@ public class Controller extends GameController implements ActionListener {
 		
 		if(s == OptionVerbose)
 			Options.VERBOSE=true;
+
 	}
 
 }
