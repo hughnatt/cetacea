@@ -50,39 +50,39 @@ import javax.media.Time;
 */
 
 public class Music {
-  Player m_player;
-  File m_file;
+	Player m_player;
+	File m_file;
 
-  public Music(File file) throws IOException, NoPlayerException, CannotRealizeException {
-    m_file = file;
-    load();
-  }
+	public Music(File file) throws IOException, NoPlayerException, CannotRealizeException {
+		m_file = file;
+		load();
+	}
 
-  private void load() throws IOException, NoPlayerException, CannotRealizeException {
-    URL url;
-    url = m_file.toURL();
+	private void load() throws IOException, NoPlayerException, CannotRealizeException {
+		URL url;
+		url = m_file.toURL();
 
-    m_player = Manager.createRealizedPlayer(url);
-    m_player.addControllerListener(new ControllerListener() {
+		m_player = Manager.createRealizedPlayer(url);
+		m_player.addControllerListener(new ControllerListener() {
 
-      @Override
-      public void controllerUpdate(ControllerEvent arg0) {
-        Controller ctr = arg0.getSourceController();
-        if (arg0 instanceof EndOfMediaEvent) {
-          m_player.setMediaTime(new Time(0));
-          m_player.start();
-        }
-      }
-    });
-  }
+			@Override
+			public void controllerUpdate(ControllerEvent arg0) {
+				Controller ctr = arg0.getSourceController();
+				if (arg0 instanceof EndOfMediaEvent) {
+					m_player.setMediaTime(new Time(0));
+					m_player.start();
+				}
+			}
+		});
+	}
 
-  public Component getControls() {
-    Component c; 
-    c = m_player.getControlPanelComponent();
-    Dimension d = c.getPreferredSize();
-    d.setSize(d.getWidth() + 100, d.getHeight());
-    c.setPreferredSize(d);
-    return c;
-  }
+	public Component getControls() {
+		Component c;
+		c = m_player.getControlPanelComponent();
+		Dimension d = c.getPreferredSize();
+		d.setSize(d.getWidth() + 100, d.getHeight());
+		c.setPreferredSize(d);
+		return c;
+	}
 
 }
