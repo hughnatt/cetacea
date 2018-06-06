@@ -17,10 +17,24 @@
  */
 package edu.ricm3.game.whaler;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import edu.ricm3.game.GameModel;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
+
+	private BufferedImage m_whaleSprite;
+	private BufferedImage m_playerSprite;
+	private BufferedImage m_stoneSprite;
+	private BufferedImage m_projectileSprite;
+	private BufferedImage m_whalerSprite;
+	private BufferedImage m_boomSprite;
+	private BufferedImage m_waterSprite;
 
 	public Model() {
 		loadSprites();
@@ -44,19 +58,86 @@ public class Model extends GameModel {
 	}
 
 	private void loadSprites() {
-		// example of a load
+
+		File imageFile;
+		/*
+		 * Texture from Minecraft Faithful 32 RessourcePack
+		 * https://www.curseforge.com/minecraft/texture-packs/faithful-32x
+		 */
+		imageFile = new File("game.sample/sprites/water_still.png");
+		try {
+			m_waterSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
 
 		/*
-		 * Description; extention; size (64x64for example) px sprite size Author (source
-		 * site)
+		 * Custom Texture
 		 */
-		// File imageFile = new File("game.sample/sprites/random_sprite.png");
-		// try {
-		// BufferedImage_instance = ImageIO.read(imageFile);
-		// } catch (IOException ex) {
-		// ex.printStackTrace();
-		// System.exit(-1);
-		// }
+		imageFile = new File("game.sample/sprites/baleine.png");
+		try {
+			m_whaleSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.sample/sprites/Destroyer_sprite_sheet.png");
+		try {
+			m_playerSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.sample/sprites/rocher.png");
+		try {
+			m_stoneSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.sample/sprites/projectile.png");
+		try {
+			m_projectileSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.sample/sprites/Baleinier_sprite_sheet.png");
+		try {
+			m_whalerSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * 
+		 */
+		imageFile = new File("game.sample/sprites/boom.png");
+		try {
+			m_boomSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
 	}
 
 }
