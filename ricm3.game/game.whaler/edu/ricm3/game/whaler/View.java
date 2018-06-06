@@ -56,7 +56,7 @@ public class View extends GameView {
 		// erase background
 		g.setColor(m_background);
 		g.fillRect(0, 0, getWidth(), getHeight());
-
+		m_model.m_score.paint(g);
 		// call the method paint on all the instances you want to print
 	}
 

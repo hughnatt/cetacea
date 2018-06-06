@@ -17,13 +17,15 @@
  */
 package edu.ricm3.game.whaler;
 
+
 import edu.ricm3.game.GameModel;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
-
+	Score m_score;
 	public Model() {
 		loadSprites();
+		m_score = new Score(this, 20, 50, 1);
 	}
 
 	@Override
