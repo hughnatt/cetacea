@@ -35,9 +35,31 @@ public class Model extends GameModel {
 	private BufferedImage m_whalerSprite;
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_waterSprite;
+	
+	//Background
+	Background m_ocean;
 
+	//Map
+	Map m_map;
+	
+	//Entity List
+	Player m_player;
+	
+	
 	public Model() {
+		//Loading Sprites Model
 		loadSprites();
+		
+		//Animated Ocean Background
+		m_ocean = new Water(m_waterSprite,this);
+		
+		//Creating the map
+		m_map = new Map(this);
+		
+		//Entities
+		m_player = new Player(new Location(3,3), true, m_playerSprite,this);
+		
+		
 	}
 
 	@Override
@@ -54,7 +76,8 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
-		// call the method step of each instances
+		m_ocean.step(now);
+		//m_map.step(); Is this a good idea ?
 	}
 
 	private void loadSprites() {
@@ -64,7 +87,7 @@ public class Model extends GameModel {
 		 * Texture from Minecraft Faithful 32 RessourcePack
 		 * https://www.curseforge.com/minecraft/texture-packs/faithful-32x
 		 */
-		imageFile = new File("game.sample/sprites/water_still.png");
+		imageFile = new File("game.whaler/sprites/water.png");
 		try {
 			m_waterSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -75,7 +98,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.sample/sprites/baleine.png");
+		imageFile = new File("game.whaler/sprites/whale.png");
 		try {
 			m_whaleSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -86,7 +109,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.sample/sprites/Destroyer_sprite_sheet.png");
+		imageFile = new File("game.whaler/sprites/destroyer.png");
 		try {
 			m_playerSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -97,7 +120,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.sample/sprites/rocher.png");
+		imageFile = new File("game.whaler/sprites/stone.png");
 		try {
 			m_stoneSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -108,7 +131,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.sample/sprites/projectile.png");
+		imageFile = new File("game.whaler/sprites/projectile.png");
 		try {
 			m_projectileSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -119,7 +142,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.sample/sprites/Baleinier_sprite_sheet.png");
+		imageFile = new File("game.whaler/sprites/whaler.png");
 		try {
 			m_whalerSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -130,7 +153,7 @@ public class Model extends GameModel {
 		/*
 		 * 
 		 */
-		imageFile = new File("game.sample/sprites/boom.png");
+		imageFile = new File("game.whaler/sprites/boom.png");
 		try {
 			m_boomSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {

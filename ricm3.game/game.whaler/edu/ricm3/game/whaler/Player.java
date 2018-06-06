@@ -8,23 +8,28 @@ public final class Player extends Mobile_Entity {
 	public static boolean UNDER_WATER = false;
 
 	/**
-	 * @param m_pos
-	 * @param m_solid
-	 * @param m_sprite
-	 * @param m_model
-	 * @param last_move
+	 * Entité Joueur (1 par map)
+	 * @param m_pos Position initiale du joueur
+	 * @param m_solid Vrai si l'entité est solide
+	 * @param m_sprite Sprite du Joueur (4 images, h:32, w:128)
+	 * @param m_model Modèle interne
 	 */
-	protected Player(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model, long last_move) {
-		super(m_pos, m_solid, m_sprite, m_model, last_move);
+	protected Player(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model) {
+		super(m_pos, m_solid, m_sprite, m_model);
 	}
-
-	@Override
-	public void paint(Graphics g, Location p_ref_map) {
-
-	}
-
+	
+	
 	@Override
 	public void step(long now) {
 
 	}
+
+	
+	
+	@Override
+	public void paint(Graphics g, Location map_ref) {
+		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+	}
+
+
 }

@@ -8,7 +8,7 @@ public abstract class Mobile_Entity extends Entity {
 		NORTH, SOUTH, WEST, EAST
 	}
 
-	long m_last_step;
+	long m_lastStep;
 
 	/**
 	 * @param m_pos
@@ -17,9 +17,8 @@ public abstract class Mobile_Entity extends Entity {
 	 * @param m_model
 	 * @param last_move
 	 */
-	protected Mobile_Entity(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model, long last_move) {
+	protected Mobile_Entity(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model) {
 		super(m_pos, m_solid, m_sprite, m_model);
-		this.m_last_step = last_move;
 	}
 
 	/**

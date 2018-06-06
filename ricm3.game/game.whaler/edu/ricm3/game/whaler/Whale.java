@@ -13,7 +13,7 @@ public final class Whale extends Mobile_Entity {
 	 * @param last_move
 	 */
 	protected Whale(Location m_pos, BufferedImage m_sprite, Model m_model, long last_move) {
-		super(m_pos, true, m_sprite, m_model, last_move);
+		super(m_pos, true, m_sprite, m_model);
 	}
 
 	@Override

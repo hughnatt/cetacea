@@ -1,7 +1,9 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Graphics;
+import java.util.Iterator;
 import java.util.LinkedList;
+
 
 public class Tile {
 	LinkedList<Entity> m_level;
@@ -13,7 +15,22 @@ public class Tile {
 	/**
 	 * @param e
 	 */
-	protected void add(Entity e) {
+	protected void addBackground(Entity e) {
+		m_level.addFirst(e);
+	}
+	
+	/**
+	 * @param e
+	 */
+	protected void addForeground(Entity e) {
+		m_level.addLast(e);
+	}
+	
+	/**
+	 * @param e
+	 */
+	protected void remove(Entity e) {
+		m_level.remove(e);
 	}
 
 	/**
@@ -26,7 +43,12 @@ public class Tile {
 	/**
 	 * @param g
 	 */
-	public void paint(Graphics g) {
-
+	public void paint(Graphics g, Location map_ref) {
+		Iterator<Entity> iter = m_level.iterator();
+		Entity t;
+		while (iter.hasNext()) {
+			t = iter.next();
+			t.paint(g, map_ref);
+		}
 	}
 }

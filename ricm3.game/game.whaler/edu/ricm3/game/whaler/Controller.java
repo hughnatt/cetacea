@@ -106,8 +106,8 @@ public class Controller extends GameController implements ActionListener {
 	}
 
 	public void notifyVisible() {
-		Container cont = new Container();
-		cont.setLayout(new FlowLayout());
+		//Container cont = new Container();
+		//cont.setLayout(new FlowLayout());
 
 		// example of initialisation of a button
 
@@ -124,7 +124,7 @@ public class Controller extends GameController implements ActionListener {
 		 * { }
 		 */
 
-		m_game.addSouth(cont);
+		//m_game.addSouth(cont);
 	}
 
 	@Override

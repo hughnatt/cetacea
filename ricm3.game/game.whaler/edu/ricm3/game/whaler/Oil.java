@@ -17,7 +17,7 @@ public final class Oil extends Mobile_Entity {
 	 */
 	protected Oil(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model, long last_move,
 			boolean is_burning) {
-		super(m_pos, m_solid, m_sprite, m_model, last_move);
+		super(m_pos, m_solid, m_sprite, m_model);
 		this.is_burning = is_burning;
 	}
 

@@ -12,7 +12,7 @@ public abstract class Ennemi extends Mobile_Entity {
 	 * @param last_move
 	 */
 	protected Ennemi(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model, long last_move) {
-		super(m_pos, m_solid, m_sprite, m_model, last_move);
+		super(m_pos, m_solid, m_sprite, m_model);
 	}
 
 }
