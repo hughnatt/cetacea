@@ -17,19 +17,25 @@
  */
 package edu.ricm3.game.whaler;
 
-import java.awt.Button;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
 
 import edu.ricm3.game.GameController;
 
@@ -46,14 +52,16 @@ import edu.ricm3.game.GameController;
 
 public class Controller extends GameController implements ActionListener {
 	Panel cont;
+	Panel p;
+	Panel main;
 	Model m_model;
 	JButton play;
 	Music m_player;
 	JButton option;
-	JButton OptionVerbose;
 	JButton retour;
 	Boolean GameOn = false;
 	Boolean op = false;
+	JComboBox<?> b[];
 
 	public Controller(Model m) {
 		m_model = m;
@@ -120,6 +128,12 @@ public class Controller extends GameController implements ActionListener {
 
 	public void notifyVisible() {
 		cont = new Panel();
+		p = new Panel();
+		main = new Panel();
+		main.setLayout(new GridLayout(9, 1, 0, 15));
+		main.setBackground(Color.WHITE);
+
+		main.setVisible(false);
 		cont.setBackground(Color.WHITE);
 
 		ImageIcon image = new ImageIcon("game.whaler/sprites/play_unclicked.png");
@@ -139,17 +153,29 @@ public class Controller extends GameController implements ActionListener {
 		option.setFocusPainted(false);
 		cont.add(option);
 
-		OptionVerbose = new JButton("Verbose");
-		OptionVerbose.addActionListener(this);
-		OptionVerbose.setVisible(false);
-		cont.add(OptionVerbose);
-
 		retour = new JButton("Retour");
 		retour.addActionListener(this);
 		retour.setVisible(false);
 		cont.add(retour);
 
+		// ici on récupère les noms des automates
+		String[] items = { "Baleine", "Pétrole", "Baleinier", "Destroyer", "Joueur", "Projectile" };
+		b = new JComboBox[6];
+		for (int i = 0; i < 6; i++) {
+			b[i] = new JComboBox<Object>(items);
+			main.add(b[i]);
+		}
+		JLabel infoLabel = new JLabel("Sélectionnez un item");
+		b[0].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object o = ((JComboBox<?>) e.getSource()).getSelectedItem();
+				infoLabel.setText("bleh");
+			}
+		});
+		cont.add(infoLabel);
 		m_game.addSouth(cont);
+		m_game.addEast(main);
+	
 	}
 
 	@Override
@@ -164,19 +190,16 @@ public class Controller extends GameController implements ActionListener {
 			op = true;
 			option.setVisible(false);
 			play.setVisible(false);
-			OptionVerbose.setVisible(true);
 			retour.setVisible(true);
+			main.setVisible(true);
 		}
-		if(s == retour) {
-			op=false;
+		if (s == retour) {
+			op = false;
 			option.setVisible(true);
 			play.setVisible(true);
-			OptionVerbose.setVisible(false);
 			retour.setVisible(false);
+			main.setVisible(false);
 		}
-		
-		if(s == OptionVerbose)
-			Options.VERBOSE=true;
 
 	}
 

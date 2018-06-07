@@ -25,59 +25,63 @@ import edu.ricm3.game.GameView;
 
 public class View extends GameView {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  Color m_background = Color.gray;
-  long m_last;
-  int m_npaints;
-  int m_fps;
-  Model m_model;
-  Controller m_ctr;
-  Boolean afficherOptions = true;
-  
-  public View(Model m, Controller c) {
-    m_model = m;
-    m_ctr = c;
-  }
+	Color m_background = Color.gray;
+	long m_last;
+	int m_npaints;
+	int m_fps;
+	Model m_model;
+	Controller m_ctr;
+	Boolean afficherOptions = true;
 
-  private void computeFPS() {
-    long now = System.currentTimeMillis();
-    if (now - m_last > 1000L) {
-      m_fps = m_npaints;
-      m_last = now;
-      m_npaints = 0;
-    }
-    m_game.setFPS(m_fps, "npaints=" + m_npaints);
-    m_npaints++;
-  }
+	public View(Model m, Controller c) {
+		m_model = m;
+		m_ctr = c;
+	}
 
-  @Override
-  protected void _paint(Graphics g) {
-	  g.setColor(Color.WHITE);
+	private void computeFPS() {
+		long now = System.currentTimeMillis();
+		if (now - m_last > 1000L) {
+			m_fps = m_npaints;
+			m_last = now;
+			m_npaints = 0;
+		}
+		m_game.setFPS(m_fps, "npaints=" + m_npaints);
+		m_npaints++;
+	}
+
+	@Override
+	protected void _paint(Graphics g) {
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		if (Options.VERBOSE) {
-			Font f = new Font("Verdana", Font.BOLD, 48);
-			g.setFont(f);
-			g.setColor(Color.BLUE);
-			g.drawString("Option verbose", 100, 100);
-		}
-		if (!m_ctr.op) {
+		if (!(m_ctr.op)) {
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			m_model.m_menu.paint(g, getWidth());
+		} else {
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			Font f = new Font("Verdana", Font.BOLD, 35);
+			g.setFont(f);
+			g.setColor(Color.BLACK);
+			g.drawString("Baleine", 200, 40);
+			g.drawString("Baleinier", 200, 120);
+			g.drawString("Destroyer", 200, 200);
+			g.drawString("Joueur", 200, 270);
+			g.drawString("Pétrole", 200, 340);
+			g.drawString("Projectile", 200, 420);
 		}
 		if (m_ctr.GameOn) {
-			// Paint the Water
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			Font f = new Font("Verdana", Font.BOLD, 48);
 			g.setFont(f);
 			g.setColor(Color.BLUE);
 			g.drawString("Jeu lancé", 200, 200);
-			
+
 			// LE JEU ICI
 		}
-  }
-
+	}
 }

@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 public class Menu{
 	int m_idx;
 	BufferedImage m_sprite_baleine;
-	BufferedImage m_sprite_button;
 	BufferedImage m_sprite_gouvernail;
 	BufferedImage m_sprite_destroyer;
 	BufferedImage m_sprite_projectile;
@@ -21,7 +20,6 @@ public class Menu{
 		m_model = model;
 		m_x = x;
 		m_y = y;
-		m_sprite_button = m_model.m_buttonSprite;
 		m_sprite_baleine = m_model.m_baleinemenuSprite;
 		m_sprite_destroyer = m_model.m_destroyer_menuSprite;
 		m_sprite_projectile = m_model.m_projectile_menuSprite;
@@ -46,18 +44,17 @@ public class Menu{
 		Image img1 = m_sprite_baleine;
 		int w1 = (int) (m_scale * 129);
 		int h1 = (int) (m_scale * 100);
-		g.drawImage(img1, (width/2)-w1, 130, w1, h1, null);
+		g.drawImage(img1, (width/3), 130, w1, h1, null);
 
 		Image img3 = m_sprite_destroyer;
 		int w3 = (int) (m_scale * 64);
 		int h3 = (int) (m_scale * 64);
-		g.drawImage(img3, 80, 430, w3, h3, null);
+		g.drawImage(img3, width/6, 440, w3, h3, null);
 
 		Image img4 = m_sprite_projectile;
 		int w4 = (int) (m_scale * 64);
 		int h4 = (int) (m_scale * 64);
-		g.drawImage(img4, 230, 330, w4, h4, null);
+		g.drawImage(img4, width/3, 320, w4, h4, null);
 
 	}
-
 }

@@ -26,8 +26,6 @@ import javax.imageio.ImageIO;
 import edu.ricm3.game.GameModel;
 
 public class Model extends GameModel {
-  //Sprite-sheets (BufferedImage) and instances of elements
-	BufferedImage m_buttonSprite;
 	BufferedImage m_scoreSprite;
 	BufferedImage m_baleinemenuSprite;
 	BufferedImage m_destroyer_menuSprite;
@@ -58,14 +56,6 @@ public class Model extends GameModel {
 
   private void loadSprites() {
 	  File imageFile;
-		
-		imageFile = new File("game.whaler/sprites/play.png");
-		try {
-			m_buttonSprite = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
 
 		imageFile = new File("game.whaler/sprites/baleine_menu.png");
 		try {
