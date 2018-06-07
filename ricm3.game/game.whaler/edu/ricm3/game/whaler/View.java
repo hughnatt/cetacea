@@ -26,7 +26,7 @@ public class View extends GameView {
 
 	private static final long serialVersionUID = 1L;
 
-	Color m_background = Color.gray;
+	Color m_background = Color.blue;
 	long m_last;
 	int m_npaints;
 	int m_fps;
@@ -58,6 +58,10 @@ public class View extends GameView {
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		// call the method paint on all the instances you want to print
+		m_model.m_ocean.paint(g);
+		
+		// Viewport paint of the map
+		m_model.m_map.paint(g);
 	}
 
 }
