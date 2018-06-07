@@ -18,20 +18,12 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -175,11 +167,11 @@ public class Controller extends GameController implements ActionListener {
 		cont.add(infoLabel);
 		m_game.addSouth(cont);
 		m_game.addEast(main);
-	
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		Object s = e.getSource();
 		if (s == play) {
 			GameOn = true;
