@@ -3,10 +3,7 @@ package edu.ricm3.game.whaler;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-/**
- * @author sautont
- *
- */
+
 public final class Water extends Background {
 
 	/* BufferedImage Array to store the sprite */

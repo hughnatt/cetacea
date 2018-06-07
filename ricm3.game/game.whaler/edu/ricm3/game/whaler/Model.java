@@ -24,6 +24,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameModel;
+import edu.ricm3.game.whaler.Entities.Destroyer;
+import edu.ricm3.game.whaler.Entities.Iceberg;
+import edu.ricm3.game.whaler.Entities.Island;
+import edu.ricm3.game.whaler.Entities.Oil;
+import edu.ricm3.game.whaler.Entities.Player;
+import edu.ricm3.game.whaler.Entities.Projectile;
+import edu.ricm3.game.whaler.Entities.Stone;
+import edu.ricm3.game.whaler.Entities.Whale;
+import edu.ricm3.game.whaler.Entities.Whaler;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
@@ -35,6 +44,9 @@ public class Model extends GameModel {
 	private BufferedImage m_whalerSprite;
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_waterSprite;
+	private BufferedImage m_destroyerSprite;
+	private BufferedImage m_islandSprite;
+	private BufferedImage m_icebergSprite;
 
 	// Background
 	Background m_ocean;
@@ -44,6 +56,14 @@ public class Model extends GameModel {
 
 	// Entity List
 	Player m_player;
+	Destroyer[] m_destroyers;
+	Whaler[] m_whalers;
+	Projectile[] m_projectiles;
+	Whale[] m_whales;
+	Oil[] m_oil;
+	
+	
+
 
 	public Model() {
 		// Loading Sprites Model
@@ -56,7 +76,7 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-		//
+		//Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			new Stone(new Location(i, 0), m_stoneSprite, this);
 			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, this);
@@ -66,9 +86,28 @@ public class Model extends GameModel {
 			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, this);
 		}
 
+		// Islands
+		new Island(new Location(3,6), m_islandSprite, this);
+		//Icebergs
+		new Iceberg(new Location(3,7), m_icebergSprite, this);
+		
+		
 		// Entities
-		m_player = new Player(new Location(3, 3), m_playerSprite, this);
-
+		m_player = new Player(new Location(3, 3), m_playerSprite, this, Direction.WEST);
+		
+		// Destroyers
+ 		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
+		m_destroyers[0] = new Destroyer(new Location(3,4), m_destroyerSprite, this, Direction.WEST);
+		
+		//Whalers
+		m_whalers = new Whaler[Options.MAX_WHALERS];
+		m_whalers[0] = new Whaler(new Location(3,5), m_whalerSprite, this, Direction.WEST);
+		
+		//Whales
+	}
+	
+	public Map map() {
+		return m_map;
 	}
 
 	@Override
@@ -118,7 +157,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.whaler/sprites/destroyer.png");
+		imageFile = new File("game.whaler/sprites/player.png");
 		try {
 			m_playerSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
@@ -170,6 +209,38 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/destroyer.png");
+		try {
+			m_destroyerSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/island.png");
+		try {
+			m_islandSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/iceberg.png");
+		try {
+			m_icebergSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
 	}
 
 }

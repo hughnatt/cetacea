@@ -32,6 +32,9 @@ public class Options {
 	public static final int DIMX_VIEW = 31; // dim de la view en pixel
 	public static final int DIMY_VIEW = 21;
 	
-	public static final int MAX_WHALER = 10; //nb max d'ennemis
+	public static final int MAX_WHALERS = 10; //nb max d'ennemis
 	public static final int MAX_DESTROYERS = 10;
+	public static final int MAX_PROJECTILES = 10;
+	public static final int MAX_OIL = 10;
+	public static final int MAX_WHALES = 10;
 }

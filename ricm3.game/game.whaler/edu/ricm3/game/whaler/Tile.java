@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import edu.ricm3.game.whaler.Entities.Entity;
+
 
 public class Tile {
 	LinkedList<Entity> m_level;
@@ -15,14 +17,14 @@ public class Tile {
 	/**
 	 * @param e
 	 */
-	protected void addBackground(Entity e) {
+	public void addBackground(Entity e) {
 		m_level.addFirst(e);
 	}
 	
 	/**
 	 * @param e
 	 */
-	protected void addForeground(Entity e) {
+	public void addForeground(Entity e) {
 		m_level.addLast(e);
 	}
 	

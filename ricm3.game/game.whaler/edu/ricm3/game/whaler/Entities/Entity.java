@@ -1,7 +1,10 @@
-package edu.ricm3.game.whaler;
+package edu.ricm3.game.whaler.Entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import edu.ricm3.game.whaler.Location;
+import edu.ricm3.game.whaler.Model;
 
 public abstract class Entity {
 
@@ -24,7 +27,7 @@ public abstract class Entity {
 		this.m_model = model;
 		
 		//Adding the Entity to the Map (for rendering and fast access to locations)
-		m_model.m_map.m_tiles[m_pos.x][m_pos.y].addForeground(this);
+		m_model.map().tile(m_pos.x,m_pos.y).addForeground(this);
 	}
 	
 	public int getx() {
@@ -36,8 +39,13 @@ public abstract class Entity {
 	}
 
 	/**
+	 * @param now
+	 */
+	public abstract void step(long now);
+	
+	/**
 	 * @param g
-	 * @param p_ref_map
+	 * @param map_ref
 	 */
 	public abstract void paint(Graphics g, Location map_ref);
 

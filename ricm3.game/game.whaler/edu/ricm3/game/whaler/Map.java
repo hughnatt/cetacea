@@ -12,7 +12,7 @@ public class Map {
 	/**
 	 * Game Map for instantly accessing entities' location
 	 */
-	protected Map(Model model) {
+	public Map(Model model) {
 		
 		//Initializing the Tiles
 		m_tiles = new Tile[Options.DIMX_MAP][Options.DIMY_MAP];
@@ -25,6 +25,10 @@ public class Map {
 		m_model = model;
 	}
 
+	public Tile tile(int x, int y) {
+		return m_tiles[x][y];
+	}
+	
 	/**
 	 * 'Viewport' rendering of the map
 	 * @param g
