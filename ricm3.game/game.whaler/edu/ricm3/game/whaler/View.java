@@ -58,10 +58,15 @@ public class View extends GameView {
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		// call the method paint on all the instances you want to print
-		m_model.m_ocean.paint(g);
+		m_model.m_current_background.paint(g);
 		
 		// Viewport paint of the map
-		m_model.m_map.paint(g);
+		if(m_model.UNDER_WATER) {
+			m_model.m_map.paint_under(g);
+		}else {
+			m_model.m_map.paint(g);
+		}
+		
 	}
 
 }

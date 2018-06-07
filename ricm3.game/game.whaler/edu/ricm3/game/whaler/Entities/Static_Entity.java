@@ -1,5 +1,6 @@
 package edu.ricm3.game.whaler.Entities;
 
+
 import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;

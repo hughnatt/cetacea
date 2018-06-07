@@ -16,7 +16,6 @@ public final class Stone extends Static_Entity {
 	 */
 	public Stone(Location pos, BufferedImage sprite, Model model) {
 		super(pos, true, sprite, model);
-		m_model.map().tile(pos.x,pos.y).addBackground(this);
 	}
 	
 	@Override
@@ -26,6 +25,11 @@ public final class Stone extends Static_Entity {
 	@Override
 	public void paint(Graphics g, Location ref_map) {
 		g.drawImage(m_sprite, (this.getx() - ref_map.x) * 32, (this.gety() - ref_map.y) * 32, 32, 32, null);
+	}
+	
+	@Override
+	public void paint_under(Graphics g, Location map_ref) {
+		
 	}
 
 
