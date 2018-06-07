@@ -47,6 +47,17 @@ public class Tile {
 		}
 	}
 
+	public Entity contain(Class<? extends Entity> c) {
+		Iterator<Entity> iter = m_level.iterator();
+		while (iter.hasNext()) {
+			Entity E = iter.next();
+			if (E.getClass() == c) {
+				return E;
+			}
+		}
+		return null;
+	}
+
 	/*
 	 * Return whether the Tile is solid or not A Tile is solid if it has a solid
 	 * entity
@@ -80,7 +91,7 @@ public class Tile {
 			t.paint(g, map_ref);
 		}
 	}
-	
+
 	/**
 	 * @param g
 	 */

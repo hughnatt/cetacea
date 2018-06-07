@@ -25,24 +25,41 @@ public abstract class Mobile_Entity extends Entity {
 		m_direction = dir;
 	}
 
+	/**
+	 * @throws Map_exception
+	 * @throws Tile_exception
+	 */
 	public void up() throws Map_exception, Tile_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this);
-		this.m_pos.up();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map
+		this.m_pos.up(); // We update its location
+		m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for its
+																			// new location
 	}
 
+	/**
+	 * @throws Map_exception
+	 * @throws Tile_exception
+	 */
 	public void down() throws Map_exception, Tile_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this);
 		this.m_pos.down();
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
+	/**
+	 * @throws Map_exception
+	 * @throws Tile_exception
+	 */
 	public void right() throws Map_exception, Tile_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this);
 		this.m_pos.right();
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
+	/**
+	 * @throws Map_exception
+	 * @throws Tile_exception
+	 */
 	public void left() throws Map_exception, Tile_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this);
 		this.m_pos.left();

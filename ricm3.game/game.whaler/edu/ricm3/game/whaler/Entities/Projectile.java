@@ -6,7 +6,10 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Projectile extends Mobile_Entity {
 
@@ -25,19 +28,69 @@ public class Projectile extends Mobile_Entity {
 	 * @param damage
 	 *            Damage power
 	 */
-	public Projectile(Location m_pos, BufferedImage m_sprite, Model m_model, Direction dir, int range, int damage)
+	public Projectile(Location m_pos, BufferedImage m_sprite, Model m_model, Direction dir, int range)
 			throws Map_exception {
 		super(m_pos, false, m_sprite, m_model, dir);
 		m_remaining = range;
-		m_damage = damage;
+		m_damage = Options.PROJECTILE_DPS;
 	}
 
 	@Override
-	public void step(long now) {
+	public void step(long now) throws Map_exception, Tile_exception {
 		long elapsed = this.m_lastStep - now;
 		if (elapsed > 500L) {
 			if (m_remaining == 0) {
+				m_model.map().tile(this.getx(), this.gety()).remove(this);
+			} else {
+				Location new_pos = new Location(this.m_pos); // Calculation of the new location
+				switch (m_direction) {
+				case NORTH:
+					new_pos.up();
+					break;
+				case EAST:
+					new_pos.right();
+					break;
+				case SOUTH:
+					new_pos.down();
+					break;
+				case WEST:
+					new_pos.left();
+					break;
+				}
 
+				Tile tile = m_model.map().tile(new_pos); // Tile for the new location
+
+				boolean hit = false;
+
+				Entity result = tile.contain(Whale.class); // Is there a whale ?
+				if (result != null) {
+					Whale result_whale = (Whale) result;
+					result_whale.m_capture += m_damage; // if yes, it takes damages
+					hit = true;
+				}
+
+				result = tile.contain(Player.class); // Is there a player ?
+				if (result != null) {
+					Player result_player = (Player) result;
+					result_player.m_life -= m_damage; // if yes, it takes damages
+					hit = true;
+				}
+
+				result = tile.contain(Destroyer.class); // Is there a destroyer ?
+				if (result != null) {
+					Destroyer result_destroyer = (Destroyer) result;
+					result_destroyer.m_life -= m_damage; // if yes, it takes damages
+					hit = true;
+				}
+
+				result = tile.contain(Whaler.class); // Is there a whaler ?
+				if (result != null) {
+					Whaler result_whaler = (Whaler) result;
+					result_whaler.m_life -= m_damage; // if yes, it takes damages
+					hit = true;
+				}
+
+				// TODO arret du travail ici
 			}
 		}
 	}

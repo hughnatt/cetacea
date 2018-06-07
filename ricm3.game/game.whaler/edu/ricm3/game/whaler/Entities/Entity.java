@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public abstract class Entity {
 
@@ -49,14 +50,14 @@ public abstract class Entity {
 	/**
 	 * @param now
 	 */
-	public abstract void step(long now);
+	public abstract void step(long now) throws Map_exception, Tile_exception;
 
 	/**
 	 * @param g
 	 * @param map_ref
 	 */
 	public abstract void paint(Graphics g, Location map_ref);
-	
+
 	/**
 	 * @param g
 	 * @param map_ref

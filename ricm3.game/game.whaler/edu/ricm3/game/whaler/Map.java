@@ -38,6 +38,10 @@ public class Map {
 		return m_tiles[x][y];
 	}
 
+	public Tile tile(Location l) throws Map_exception {
+		return tile(l.x, l.y);
+	}
+
 	/**
 	 * 'Viewport' rendering of the map
 	 * 
@@ -75,15 +79,16 @@ public class Map {
 			}
 		}
 	}
-	
+
 	/**
 	 * 'Viewport' rendering of the map
+	 * 
 	 * @param g
 	 */
 	public void paint_under(Graphics g) {
 		// We'll render only the part of the map which is visible
 
-		//Getting player location
+		// Getting player location
 		int px = m_model.m_player.getx();
 		int py = m_model.m_player.gety();
 
@@ -104,12 +109,11 @@ public class Map {
 		if (map_y > Options.DIMY_MAP - Options.DIMY_VIEW) {
 			map_y = Options.DIMY_MAP - Options.DIMY_VIEW;
 		}
-		
 
 		// Render the map with X*Y Tiles
 		for (int i = map_x; i < map_x + Options.DIMX_VIEW; i++) {
 			for (int j = map_y; j < map_y + Options.DIMY_VIEW; j++) {
-				m_tiles[i][j].paint_under(g, new Location(map_x,map_y));
+				m_tiles[i][j].paint_under(g, new Location(map_x, map_y));
 			}
 		}
 	}

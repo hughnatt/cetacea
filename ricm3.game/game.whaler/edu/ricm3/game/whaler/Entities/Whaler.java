@@ -6,14 +6,17 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Whaler extends Mobile_Entity {
-
 
 	private BufferedImage m_whalerSouth;
 	private BufferedImage m_whalerWest;
 	private BufferedImage m_whalerEast;
 	private BufferedImage m_whalerNorth;
+
+	int m_life;
 
 	/**
 	 * @param pos
@@ -21,10 +24,11 @@ public class Whaler extends Mobile_Entity {
 	 * @param model
 	 * @param dir
 	 */
-	public Whaler(Location pos, BufferedImage sprite, Model model, Direction dir) {
+	public Whaler(Location pos, BufferedImage sprite, Model model, Direction dir) throws Map_exception {
 		super(pos, true, sprite, model, dir);
+		m_life = Options.WHALER_LIFE;
 		loadSprites();
-		switch(dir) {
+		switch (dir) {
 		case EAST:
 			m_sprite = m_whalerEast;
 			break;
@@ -39,7 +43,7 @@ public class Whaler extends Mobile_Entity {
 			break;
 		}
 	}
-	
+
 	/*
 	 * 
 	 */
@@ -52,17 +56,17 @@ public class Whaler extends Mobile_Entity {
 
 	@Override
 	public void step(long now) {
-		
+
 	}
 
 	@Override
 	public void paint(Graphics g, Location map_ref) {
 		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 	}
-	
+
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-		
+
 	}
 
 }
