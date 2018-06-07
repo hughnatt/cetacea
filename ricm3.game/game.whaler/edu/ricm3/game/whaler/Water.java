@@ -41,6 +41,9 @@ public final class Water extends Background {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ricm3.game.whaler.Background#step(long)
+	 */
 	@Override
 	public void step(long now) {
 		long elapsed = now - m_lastStep;
@@ -51,6 +54,9 @@ public final class Water extends Background {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ricm3.game.whaler.Background#paint(java.awt.Graphics)
+	 */
 	@Override
 	public void paint(Graphics g) {
 		BufferedImage img = m_sprites[m_sprite_idx];

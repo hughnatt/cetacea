@@ -60,6 +60,7 @@ public class View extends GameView {
 		// call the method paint on all the instances you want to print
 		m_model.m_ocean.paint(g);
 		
+		// Viewport paint of the map
 		m_model.m_map.paint(g);
 	}
 

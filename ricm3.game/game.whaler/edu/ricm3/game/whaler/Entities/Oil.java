@@ -16,7 +16,7 @@ public final class Oil extends Mobile_Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	protected Oil(Location pos, BufferedImage sprite, Model model, Direction dir) {
+	public Oil(Location pos, BufferedImage sprite, Model model, Direction dir) {
 		super(pos, false , sprite, model, dir);
 		this.is_burning = false;
 	}

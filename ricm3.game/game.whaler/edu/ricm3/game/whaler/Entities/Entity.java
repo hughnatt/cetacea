@@ -37,6 +37,14 @@ public abstract class Entity {
 	public int gety() {
 		return m_pos.y;
 	}
+	
+	
+	/*
+	 * Indicate whether the Entity is solid (Boats, Stone, ...) or not (Oil, Projectile, ...)
+	 */
+	public boolean isSolid() {
+		return m_solid;
+	}
 
 	/**
 	 * @param now

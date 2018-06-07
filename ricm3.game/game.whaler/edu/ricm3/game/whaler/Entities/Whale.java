@@ -15,7 +15,7 @@ public final class Whale extends Mobile_Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	protected Whale(Location pos, BufferedImage sprite, Model model, Direction dir) {
+	public Whale(Location pos, BufferedImage sprite, Model model, Direction dir) {
 		super(pos, true, sprite, model, dir);
 	}
 

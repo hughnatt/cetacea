@@ -14,16 +14,14 @@ public class Projectile extends Mobile_Entity {
 	
 	/**
 	 * @param pos Initial position of the Projectile
-	 * @param solid
 	 * @param sprite
 	 * @param model 
-	 * @param range Indicate the range of the projectile
 	 * @param direction Indicate the direction of the projectile
+	 * @param range Indicate the range of the projectile
 	 * @param damage Damage power
 	 */
-	protected Projectile(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model, long last_move,
-			int range, Direction dir, int damage) {
-		super(m_pos, m_solid, m_sprite, m_model, dir);
+	public Projectile(Location m_pos, BufferedImage m_sprite, Model m_model, Direction dir, int range, int damage) {
+		super(m_pos, false, m_sprite, m_model, dir);
 		m_remaining = range;
 		m_damage = damage;
 	}

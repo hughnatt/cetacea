@@ -6,11 +6,11 @@ import java.awt.Graphics;
 public class Map {
 
 	Tile m_tiles[][];
-
 	Model m_model;
 	
 	/**
 	 * Game Map for instantly accessing entities' location
+	 * @param model Internal Model
 	 */
 	public Map(Model model) {
 		

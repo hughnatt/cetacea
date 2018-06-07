@@ -42,12 +42,13 @@ public class Model extends GameModel {
 	private BufferedImage m_stoneSprite;
 	private BufferedImage m_projectileSprite;
 	private BufferedImage m_whalerSprite;
-	private BufferedImage m_boomSprite;
 	private BufferedImage m_waterSprite;
 	private BufferedImage m_destroyerSprite;
 	private BufferedImage m_islandSprite;
 	private BufferedImage m_icebergSprite;
-
+	private BufferedImage m_oilSprite;
+	private BufferedImage m_boomSprite;
+	
 	// Background
 	Background m_ocean;
 
@@ -61,6 +62,7 @@ public class Model extends GameModel {
 	Projectile[] m_projectiles;
 	Whale[] m_whales;
 	Oil[] m_oil;
+	
 	
 	
 
@@ -93,7 +95,11 @@ public class Model extends GameModel {
 		
 		
 		// Entities
-		m_player = new Player(new Location(3, 3), m_playerSprite, this, Direction.WEST);
+		
+		//Oil
+		m_oil = new Oil[Options.MAX_OIL];
+		m_oil[0] = new Oil(new Location(3,2), m_oilSprite, this, Direction.WEST);
+		
 		
 		// Destroyers
  		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
@@ -104,6 +110,15 @@ public class Model extends GameModel {
 		m_whalers[0] = new Whaler(new Location(3,5), m_whalerSprite, this, Direction.WEST);
 		
 		//Whales
+		m_whales  = new Whale[Options.MAX_WHALES];
+		m_whales[0] = new Whale(new Location(3,8), m_whaleSprite, this, Direction.WEST);
+		
+		//Projectiles
+		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
+		m_projectiles[0] = new Projectile(new Location(3,9), m_projectileSprite, this, Direction.WEST, 0, 0);
+		
+		//Player
+		m_player = new Player(new Location(3, 3), m_playerSprite, this, Direction.WEST);
 	}
 	
 	public Map map() {
@@ -237,6 +252,17 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/iceberg.png");
 		try {
 			m_icebergSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/oil.png");
+		try {
+			m_oilSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

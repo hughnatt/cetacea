@@ -17,8 +17,7 @@
  */
 package edu.ricm3.game.whaler;
 
-import java.awt.Container;
-import java.awt.FlowLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -129,7 +128,7 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object s = e.getSource();
+		//Object s = e.getSource();
 		/*
 		 * if (s == some_button_or_other_stuff){ actions; }
 		 */
