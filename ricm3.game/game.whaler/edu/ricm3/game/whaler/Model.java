@@ -35,31 +35,40 @@ public class Model extends GameModel {
 	private BufferedImage m_whalerSprite;
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_waterSprite;
-	
-	//Background
+
+	// Background
 	Background m_ocean;
 
-	//Map
+	// Map
 	Map m_map;
-	
-	//Entity List
+
+	// Entity List
 	Player m_player;
-	
-	
+
 	public Model() {
-		//Loading Sprites Model
+		// Loading Sprites Model
 		loadSprites();
-		
-		//Animated Ocean Background
-		m_ocean = new Water(m_waterSprite,this);
-		
-		//Creating the map
+
+		// Animated Ocean Background
+		m_ocean = new Water(m_waterSprite, this);
+
+		/*** Creating the map ***/
+
 		m_map = new Map(this);
-		
-		//Entities
-		m_player = new Player(new Location(3,3), true, m_playerSprite,this);
-		
-		
+
+		//
+		for (int i = 0; i < Options.DIMX_MAP; i++) {
+			new Stone(new Location(i, 0), m_stoneSprite, this);
+			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, this);
+		}
+		for (int i = 0; i < Options.DIMY_MAP; i++) {
+			new Stone(new Location(0, i), m_stoneSprite, this);
+			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, this);
+		}
+
+		// Entities
+		m_player = new Player(new Location(3, 3), m_playerSprite, this);
+
 	}
 
 	@Override
@@ -77,7 +86,7 @@ public class Model extends GameModel {
 	public void step(long now) {
 
 		m_ocean.step(now);
-		//m_map.step(); Is this a good idea ?
+		// m_map.step(); Is this a good idea ?
 	}
 
 	private void loadSprites() {

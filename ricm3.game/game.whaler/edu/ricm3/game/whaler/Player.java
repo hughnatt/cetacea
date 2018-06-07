@@ -10,12 +10,11 @@ public final class Player extends Mobile_Entity {
 	/**
 	 * Entité Joueur (1 par map)
 	 * @param m_pos Position initiale du joueur
-	 * @param m_solid Vrai si l'entité est solide
 	 * @param m_sprite Sprite du Joueur (4 images, h:32, w:128)
 	 * @param m_model Modèle interne
 	 */
-	protected Player(Location m_pos, boolean m_solid, BufferedImage m_sprite, Model m_model) {
-		super(m_pos, m_solid, m_sprite, m_model);
+	protected Player(Location m_pos, BufferedImage m_sprite, Model m_model) {
+		super(m_pos, true, m_sprite, m_model);
 	}
 	
 	

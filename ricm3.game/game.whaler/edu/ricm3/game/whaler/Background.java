@@ -25,7 +25,7 @@ public abstract class Background {
 	public abstract void step(long now);
 
 	/**
-	 * Called at each GameUI View Paint
+	 * Paint the Background
 	 * @param g
 	 */
 	public abstract void paint(Graphics g);

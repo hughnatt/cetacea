@@ -56,8 +56,8 @@ public class Map {
 		
 
 		// Render the map with X*Y Tiles
-		for (int i = map_x; i < map_x + Options.DIMX_MAP; i++) {
-			for (int j = map_y; j < map_y + Options.DIMY_MAP; j++) {
+		for (int i = map_x; i < map_x + Options.DIMX_VIEW; i++) {
+			for (int j = map_y; j < map_y + Options.DIMY_VIEW; j++) {
 				m_tiles[i][j].paint(g, new Location(map_x,map_y));
 			}
 		}
