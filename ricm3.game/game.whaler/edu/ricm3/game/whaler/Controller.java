@@ -50,9 +50,11 @@ public class Controller extends GameController implements ActionListener {
 	JButton play;
 	Music m_player;
 	JButton option;
+	JButton annuler;
 	JButton retour;
 	Boolean GameOn = false;
 	Boolean op = false;
+	JLabel infoLabel;
 	JComboBox<?> b[];
 
 	public Controller(Model m) {
@@ -149,21 +151,31 @@ public class Controller extends GameController implements ActionListener {
 		retour.addActionListener(this);
 		retour.setVisible(false);
 		cont.add(retour);
+		
+		annuler = new JButton("Annuler");
+		annuler.addActionListener(this);
+		annuler.setVisible(false);
+		cont.add(annuler);
+		
+		infoLabel = new JLabel("Sélectionnez un item");
+		infoLabel.setVisible(false);
 
-		// ici on récupère les noms des automates
+		// ici on récupère les automates et on en fait une liste
 		String[] items = { "Baleine", "Pétrole", "Baleinier", "Destroyer", "Joueur", "Projectile" };
 		b = new JComboBox[6];
 		for (int i = 0; i < 6; i++) {
 			b[i] = new JComboBox<Object>(items);
 			main.add(b[i]);
+			b[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Object o = ((JComboBox<?>) e.getSource()).getSelectedItem();
+					String s = (String) o;
+					infoLabel.setText(s);
+					//ici on affecte à l'entité correspondante l'automate sélectionné
+				}
+			});
 		}
-		JLabel infoLabel = new JLabel("Sélectionnez un item");
-		b[0].addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Object o = ((JComboBox<?>) e.getSource()).getSelectedItem();
-				infoLabel.setText("bleh");
-			}
-		});
+		
 		cont.add(infoLabel);
 		m_game.addSouth(cont);
 		m_game.addEast(main);
@@ -184,6 +196,8 @@ public class Controller extends GameController implements ActionListener {
 			play.setVisible(false);
 			retour.setVisible(true);
 			main.setVisible(true);
+			annuler.setVisible(true);
+			infoLabel.setVisible(true);
 		}
 		if (s == retour) {
 			op = false;
@@ -191,6 +205,15 @@ public class Controller extends GameController implements ActionListener {
 			play.setVisible(true);
 			retour.setVisible(false);
 			main.setVisible(false);
+			annuler.setVisible(false);
+			infoLabel.setVisible(false);
+		}
+		
+		if (s==annuler) {
+			infoLabel.setText("Sélectionnez un item");
+			/* Ici on met le champ m_automate de toutes les entités à NULL ou on introduit un last automate
+			 * On garde en mémoire l'ancien automate assigné quand on en assigne un nouveau
+			 * Et en cliquant sur annuler, on remet l'ancien automate  */
 		}
 
 	}

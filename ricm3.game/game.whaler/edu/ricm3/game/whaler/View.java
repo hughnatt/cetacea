@@ -74,12 +74,8 @@ public class View extends GameView {
 			g.drawString("Projectile", 200, 420);
 		}
 		if (m_ctr.GameOn) {
-			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, getWidth(), getHeight());
-			Font f = new Font("Verdana", Font.BOLD, 48);
-			g.setFont(f);
 			g.setColor(Color.BLUE);
-			g.drawString("Jeu lancé", 200, 200);
+			g.fillRect(0, 0, getWidth(), getHeight());
 
 			// call the method paint on all the instances you want to print
 			m_model.m_ocean.paint(g);
