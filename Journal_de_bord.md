@@ -134,3 +134,20 @@
   - Travail dans chacune des branches
   
 ##
+
+## Jeudi 7 juin
+
+###### Tâches effectuées :
+  - Fin des différents merges
+  - Mode sous-marin étudié et intégré au master
+  - Design et dessin des différents sprites du mode sous marin
+  - Ecriture d'automates (celui du joueur notamment)
+  - Travaux sur la génération de la map
+  - Avancées sur la partie graphique
+  - Travail réparti entre les joueurs
+  - Travaux sur les entités
+ 
+###### Travail à faire lors de la prochaine séance :
+  - Voir comment fonctionne le parseur
+  - Continuer interface graphique
+  - Voir comment choisir les automates au début du jeu
