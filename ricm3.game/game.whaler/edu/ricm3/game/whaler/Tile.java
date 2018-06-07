@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import edu.ricm3.game.whaler.Entities.Entity;
-
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Tile {
 	LinkedList<Entity> m_level;
@@ -19,31 +19,37 @@ public class Tile {
 
 	/**
 	 * Add an entity at the bottom (The entity will be rendered in background)
+	 * 
 	 * @param e
 	 */
 	public void addBackground(Entity e) {
 		m_level.addFirst(e);
 	}
-	
+
 	/**
 	 * Add an entity at the top (The entity will be rendered in foreground
+	 * 
 	 * @param e
 	 */
 	public void addForeground(Entity e) {
 		m_level.addLast(e);
 	}
-	
+
 	/**
 	 * Remove the specified entity from the Tile
+	 * 
 	 * @param e
 	 */
-	protected void remove(Entity e) {
-		m_level.remove(e);
+	public void remove(Entity e) throws Tile_exception {
+		boolean result = m_level.remove(e);
+		if (!result) {
+			throw new Tile_exception("Entity to remove not found");
+		}
 	}
-	
+
 	/*
-	 * Return whether the Tile is solid or not
-	 * A Tile is solid if it has a solid entity
+	 * Return whether the Tile is solid or not A Tile is solid if it has a solid
+	 * entity
 	 */
 	public boolean isSolid() {
 		Iterator<Entity> iter = m_level.iterator();
