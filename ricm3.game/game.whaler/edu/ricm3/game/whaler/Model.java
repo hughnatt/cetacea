@@ -24,6 +24,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameModel;
+import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Destroyer;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
@@ -33,6 +34,7 @@ import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
@@ -49,8 +51,16 @@ public class Model extends GameModel {
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
 
+	private BufferedImage m_underSprite;
+	private BufferedImage m_bulleSprite;
+
+	// Boolean indiquant si le joueur est underwater
+	public static boolean UNDER_WATER = false;
+
 	// Background
+	Background m_current_background;
 	Background m_ocean;
+	Background m_underwater;
 
 	// Map
 	private Map m_map;
@@ -63,16 +73,21 @@ public class Model extends GameModel {
 	Whale[] m_whales;
 	Oil[] m_oil;
 
-	public Model() {
+	public Model() throws Map_exception {
 		// Loading Sprites Model
 		loadSprites();
 
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
+		m_underwater = new Underwater(m_underSprite, this);
+		m_current_background = m_ocean;
 
 		/*** Creating the map ***/
 
 		m_map = new Map(this);
+
+		// Bulles
+		new Bulle(new Location(2, 2), m_bulleSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -133,8 +148,18 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
-		m_ocean.step(now);
+		m_current_background.step(now);
 		// m_map.step(); Is this a good idea ?
+	}
+
+	public void swap() {
+		if (UNDER_WATER) {
+			m_current_background = m_ocean;
+			UNDER_WATER = false;
+		} else {
+			m_current_background = m_underwater;
+			UNDER_WATER = true;
+		}
 	}
 
 	private void loadSprites() {
@@ -257,6 +282,27 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/oil.png");
 		try {
 			m_oilSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/underwater.png");
+		try {
+			m_underSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/bulles.png");
+		try {
+			m_bulleSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

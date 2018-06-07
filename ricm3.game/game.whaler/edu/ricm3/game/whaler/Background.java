@@ -29,5 +29,6 @@ public abstract class Background {
 	 * @param g
 	 */
 	public abstract void paint(Graphics g);
+	
 
 }

@@ -20,9 +20,13 @@ package edu.ricm3.game;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
@@ -110,9 +114,22 @@ public class GameUI {
 
   private void createWindow(Dimension d) {
     m_frame = new JFrame();
-    m_frame.setTitle("Sample Game");
+    m_frame.setTitle("Cetacea");
     m_frame.setLayout(new BorderLayout());
-
+    m_frame.setResizable(false);
+    
+    
+    File f = new File("game.whaler/sprites/whale.png");
+    Image icone;
+	try {
+		icone = ImageIO.read(f);
+		m_frame.setIconImage(icone);
+	} catch (IOException ex) {
+		ex.printStackTrace();
+		System.exit(-1);
+	}
+    
+    
     m_frame.add(m_view, BorderLayout.CENTER);
 
     m_text = new JLabel();
