@@ -74,4 +74,16 @@ public class Tile {
 			t.paint(g, map_ref);
 		}
 	}
+	
+	/**
+	 * @param g
+	 */
+	public void paint_under(Graphics g, Location map_ref) {
+		Iterator<Entity> iter = m_level.iterator();
+		Entity t;
+		while (iter.hasNext()) {
+			t = iter.next();
+			t.paint_under(g, map_ref);
+		}
+	}
 }

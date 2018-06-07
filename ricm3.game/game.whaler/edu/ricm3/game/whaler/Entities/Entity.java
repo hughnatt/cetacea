@@ -56,6 +56,12 @@ public abstract class Entity {
 	 * @param map_ref
 	 */
 	public abstract void paint(Graphics g, Location map_ref);
+	
+	/**
+	 * @param g
+	 * @param map_ref
+	 */
+	public abstract void paint_under(Graphics g, Location map_ref);
 
 
 }
