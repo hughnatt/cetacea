@@ -42,4 +42,19 @@ public final class Whale extends Mobile_Entity {
 
 	}
 
+	@Override
+	public void pop() {
+		// TODO
+	}
+
+	@Override
+	public void wizz() {
+		// TODO
+	}
+
+	@Override
+	public void hit() {
+		// TODO
+	}
+
 }

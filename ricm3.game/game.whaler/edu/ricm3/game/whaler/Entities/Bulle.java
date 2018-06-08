@@ -4,10 +4,12 @@ import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
+
 import java.awt.Graphics;
 
 public class Bulle extends Static_Entity {
-	
+
 	/* BufferedImage Array to store the sprite */
 	int m_sprite_idx;
 	BufferedImage[] m_sprites;
@@ -15,10 +17,10 @@ public class Bulle extends Static_Entity {
 	/* Controlling Step Speed */
 	long m_lastStep;
 	long m_stepSpeed = 100L; // Medium Animation Speed
-	
-	public Bulle(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) {
+
+	public Bulle(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Map_exception {
 		super(pos, false, sprite, underSprite, model);
-		
+
 		// Default sprite index is 0 (first image)
 		m_sprite_idx = 0;
 
@@ -27,13 +29,13 @@ public class Bulle extends Static_Entity {
 		assert (m_underSprite.getWidth() == 32);
 
 		m_sprites = new BufferedImage[4];
-		
+
 		for (int i = 0; i < 4; i++) {
 			m_sprites[i] = m_underSprite.getSubimage(0, 32 * i, 32, 32);
 		}
-		
+
 	}
-	
+
 	public void step(long now) {
 		long elapsed = now - m_lastStep;
 
@@ -41,12 +43,12 @@ public class Bulle extends Static_Entity {
 			m_lastStep = now;
 			m_sprite_idx = (m_sprite_idx + 1) % m_sprites.length;
 		}
-		
+
 	}
 
 	@Override
 	public void paint(Graphics g, Location map_ref) {
-		
+
 	}
 
 	@Override

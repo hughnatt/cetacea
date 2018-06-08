@@ -66,9 +66,9 @@ public abstract class Mobile_Entity extends Entity {
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
-	public abstract void wizz();
-
 	public abstract void pop();
+
+	public abstract void wizz();
 
 	public abstract void hit();
 

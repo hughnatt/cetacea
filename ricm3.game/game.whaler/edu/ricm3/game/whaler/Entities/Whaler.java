@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Whaler extends Mobile_Entity {
@@ -70,6 +69,21 @@ public class Whaler extends Mobile_Entity {
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
 
+	}
+
+	@Override
+	public void pop() {
+		// TODO
+	}
+
+	@Override
+	public void wizz() {
+		// TODO
+	}
+
+	@Override
+	public void hit() {
+		// TODO
 	}
 
 }

@@ -106,12 +106,12 @@ public class Projectile extends Mobile_Entity {
 		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 	}
 
-	public void wizz() {
-		m_direction = m_model.rand_direction();
-	}
-
 	public void pop() {
 		m_speed = Options.PROJECTILE_SPD_IMPROVED;
+	}
+
+	public void wizz() {
+		m_direction = m_model.rand_direction();
 	}
 
 	public void hit() {
