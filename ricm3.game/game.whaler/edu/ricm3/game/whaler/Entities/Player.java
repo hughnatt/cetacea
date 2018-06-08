@@ -15,6 +15,13 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerEast;
 	BufferedImage m_playerWest;
 	
+	BufferedImage m_playerNorthUnder;
+	BufferedImage m_playerSouthUnder;
+	BufferedImage m_playerEastUnder;
+	BufferedImage m_playerWestUnder;
+	
+	
+	
 	/**
 	 * Entité Joueur (1 par map)
 	 * @param pos Position initiale du joueur
@@ -26,16 +33,32 @@ public final class Player extends Mobile_Entity {
 		loadSprites();
 		switch(dir) {
 		case EAST:
-			m_sprite = m_playerEast;
+			if(m_model.UNDER_WATER) {
+				m_sprite = m_playerEastUnder;
+			}else {
+				m_sprite = m_playerEast;
+			}
 			break;
 		case WEST:
-			m_sprite = m_playerWest;
+			if(m_model.UNDER_WATER) {
+				m_sprite = m_playerWestUnder;
+			}else {
+				m_sprite = m_playerWest;
+			}
 			break;
 		case NORTH:
-			m_sprite = m_playerNorth;
+			if(m_model.UNDER_WATER) {
+				m_sprite = m_playerNorthUnder;
+			}else {
+				m_sprite = m_playerNorth;
+			}
 			break;
 		case SOUTH:
-			m_sprite = m_playerSouth;
+			if(m_model.UNDER_WATER) {
+				m_sprite = m_playerSouthUnder;
+			}else {
+				m_sprite = m_playerSouth;
+			}
 			break;
 		}
 	}
@@ -49,6 +72,11 @@ public final class Player extends Mobile_Entity {
 		m_playerWest = m_sprite.getSubimage(0, 32, 32, 32);
 		m_playerEast = m_sprite.getSubimage(0, 64, 32, 32);
 		m_playerNorth = m_sprite.getSubimage(0, 96, 32, 32);
+		
+		m_playerNorthUnder = m_underSprite.getSubimage(0, 0, 32, 32);
+		m_playerSouthUnder = m_underSprite.getSubimage(0, 32, 32, 32);
+		m_playerEastUnder = m_underSprite.getSubimage(0, 64, 32, 32);
+		m_playerWestUnder = m_underSprite.getSubimage(0, 96, 32, 32);
 	}
 	
 	@Override

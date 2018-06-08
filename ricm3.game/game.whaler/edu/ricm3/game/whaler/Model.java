@@ -35,6 +35,7 @@ import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.whaler.Entities.Coral;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
@@ -51,9 +52,10 @@ public class Model extends GameModel {
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_underSprite;
-	private BufferedImage m_bulleSprite;
+	private BufferedImage m_bulleUnderSprite;
 	private BufferedImage m_stoneUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
+	private BufferedImage m_coralUnderSprite;
 	
 	// Boolean indiquant si le joueur est underwater
 	public static boolean UNDER_WATER = false;
@@ -89,14 +91,19 @@ public class Model extends GameModel {
 		m_map = new Map(this);
 		
 		// Bulles
-		new Bulle(new Location(2,2),null, m_bulleSprite, this);
-		new Bulle(new Location(8,16),null, m_bulleSprite, this);
-		new Bulle(new Location(23,6),null, m_bulleSprite, this);
+		new Bulle(new Location(2,2),null, m_bulleUnderSprite, this);
+		new Bulle(new Location(8,16),null, m_bulleUnderSprite, this);
+		new Bulle(new Location(23,6),null, m_bulleUnderSprite, this);
 		
 		// Algues
 		new YellowAlgae(new Location(6,10), null, m_yellowAlgaeUnderSprite, this);
-		new YellowAlgae(new Location(18,18), null, m_yellowAlgaeUnderSprite, this);
+		new YellowAlgae(new Location(22,18), null, m_yellowAlgaeUnderSprite, this);
 		new YellowAlgae(new Location(4,17), null, m_yellowAlgaeUnderSprite, this);
+		
+		// Corail
+		new Coral(new Location(10,6), null, m_coralUnderSprite, this);
+		new Coral(new Location(20,18), null, m_coralUnderSprite, this);
+		new Coral(new Location(20,2), null, m_coralUnderSprite, this);
 
 		//Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -313,7 +320,7 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/bulles.png");
 		try {
-			m_bulleSprite = ImageIO.read(imageFile);
+			m_bulleUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -336,6 +343,17 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/yellow_algae.png");
 		try {
 			m_yellowAlgaeUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/coral.png");
+		try {
+			m_coralUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
