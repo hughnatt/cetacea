@@ -21,8 +21,8 @@ public final class Player extends Mobile_Entity {
 	 * @param sprite Sprite du Joueur (4 images, h:32, w:128)
 	 * @param model Modèle interne
 	 */
-	public Player(Location pos, BufferedImage sprite, Model model, Direction dir) {
-		super(pos, true, sprite, model, dir);
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) {
+		super(pos, true, sprite, underSprite, model, dir);
 		loadSprites();
 		switch(dir) {
 		case EAST:

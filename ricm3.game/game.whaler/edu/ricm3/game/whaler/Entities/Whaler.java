@@ -21,8 +21,8 @@ public class Whaler extends Mobile_Entity {
 	 * @param model
 	 * @param dir
 	 */
-	public Whaler(Location pos, BufferedImage sprite, Model model, Direction dir) {
-		super(pos, true, sprite, model, dir);
+	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) {
+		super(pos, true, sprite, underSprite, model, dir);
 		loadSprites();
 		switch(dir) {
 		case EAST:

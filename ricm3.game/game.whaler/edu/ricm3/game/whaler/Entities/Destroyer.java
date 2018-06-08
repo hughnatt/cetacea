@@ -21,8 +21,9 @@ public class Destroyer extends Mobile_Entity {
 	 * @param model Internal Model
 	 * @param dir Initial Direction of the Destroyer
 	 */
-	public Destroyer(Location pos, BufferedImage sprite, Model model, Direction dir) {
-		super(pos, true, sprite, model, dir);
+	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) {
+		super(pos, true, sprite, underSprite, model, dir);
+		
 		loadSprites();
 		
 		switch(dir) {

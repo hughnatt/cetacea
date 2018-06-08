@@ -16,20 +16,20 @@ public class Bulle extends Static_Entity {
 	long m_lastStep;
 	long m_stepSpeed = 100L; // Medium Animation Speed
 	
-	public Bulle(Location pos, BufferedImage sprite, Model model) {
-		super(pos, false, sprite, model);
+	public Bulle(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) {
+		super(pos, false, sprite, underSprite, model);
 		
 		// Default sprite index is 0 (first image)
 		m_sprite_idx = 0;
 
 		// Loading the different part of the sprite
-		assert (m_sprite.getHeight() == 32 * 4);
-		assert (m_sprite.getWidth() == 32);
+		assert (m_underSprite.getHeight() == 32 * 4);
+		assert (m_underSprite.getWidth() == 32);
 
 		m_sprites = new BufferedImage[4];
 		
 		for (int i = 0; i < 4; i++) {
-			m_sprites[i] = m_sprite.getSubimage(0, 32 * i, 32, 32);
+			m_sprites[i] = m_underSprite.getSubimage(0, 32 * i, 32, 32);
 		}
 		
 	}
