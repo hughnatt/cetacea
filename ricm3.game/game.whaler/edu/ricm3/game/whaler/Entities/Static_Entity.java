@@ -14,8 +14,8 @@ public abstract class Static_Entity extends Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	protected Static_Entity(Location pos, boolean solid, BufferedImage sprite, Model model) {
-		super(pos, solid, sprite, model);
+	protected Static_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model) {
+		super(pos, solid, sprite, underSprite, model);
 	}
 
 }

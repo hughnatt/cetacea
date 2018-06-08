@@ -14,8 +14,8 @@ public final class Iceberg extends Static_Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	public Iceberg(Location pos, BufferedImage sprite, Model model) {
-		super(pos, true, sprite, model);
+	public Iceberg(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) {
+		super(pos, true, sprite, underSprite, model);
 	}
 
 	

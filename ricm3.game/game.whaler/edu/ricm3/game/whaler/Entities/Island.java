@@ -18,8 +18,8 @@ public final class Island extends Static_Entity {
 	 * @param m_sprite
 	 * @param m_model
 	 */
-	public Island(Location m_pos, BufferedImage m_sprite, Model m_model) {
-		super(m_pos, true, m_sprite, m_model);
+	public Island(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) {
+		super(pos, true, sprite, underSprite, model);
 	}
 
 	@Override

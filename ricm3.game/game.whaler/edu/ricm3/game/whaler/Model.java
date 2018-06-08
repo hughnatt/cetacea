@@ -94,47 +94,48 @@ public class Model extends GameModel {
 		m_map = new Map(this);
 
 		// Bulles
-		new Bulle(new Location(2, 2), m_bulleSprite, this);
+		new Bulle(new Location(2,2),null, m_bulleSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			new Stone(new Location(i, 0), m_stoneSprite, this);
-			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, this);
+			new Stone(new Location(i, 0), m_stoneSprite,null, this);
+			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite,null, this);
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			new Stone(new Location(0, i), m_stoneSprite, this);
-			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, this);
+			new Stone(new Location(0, i), m_stoneSprite,null, this);
+			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite,null, this);
 		}
 
 		// Islands
-		new Island(new Location(3, 6), m_islandSprite, this);
-		// Icebergs
-		new Iceberg(new Location(3, 7), m_icebergSprite, this);
-
+		new Island(new Location(3,6), m_islandSprite,null, this);
+		//Icebergs
+		new Iceberg(new Location(3,7), m_icebergSprite,null, this);
+		
 		// Entities
 
 		// Oil
 		m_oil = new Oil[Options.MAX_OIL];
-		m_oil[0] = new Oil(new Location(3, 2), m_oilSprite, this, Direction.WEST);
-
+		m_oil[0] = new Oil(new Location(3,2), m_oilSprite,null, this, Direction.WEST);
+		
+		
 		// Destroyers
-		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
-		m_destroyers[0] = new Destroyer(new Location(3, 4), m_destroyerSprite, this, Direction.WEST);
-
-		// Whalers
+ 		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
+		m_destroyers[0] = new Destroyer(new Location(3,4), m_destroyerSprite,null, this, Direction.WEST);
+		
+		//Whalers
 		m_whalers = new Whaler[Options.MAX_WHALERS];
-		m_whalers[0] = new Whaler(new Location(3, 5), m_whalerSprite, this, Direction.WEST);
-
-		// Whales
-		m_whales = new Whale[Options.MAX_WHALES];
-		m_whales[0] = new Whale(new Location(3, 8), m_whaleSprite, this, Direction.WEST);
-
-		// Projectiles
+		m_whalers[0] = new Whaler(new Location(3,5), m_whalerSprite,null, this, Direction.WEST);
+		
+		//Whales
+		m_whales  = new Whale[Options.MAX_WHALES];
+		m_whales[0] = new Whale(new Location(3,8), m_whaleSprite,null, this, Direction.WEST);
+		
+		//Projectiles
 		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
-		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, this, Direction.WEST, 0, 0);
-
-		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, this, Direction.WEST);
+		m_projectiles[0] = new Projectile(new Location(3,9), m_projectileSprite,null, this, Direction.WEST, 0, 0);
+		
+		//Player
+		m_player = new Player(new Location(3, 3), m_playerSprite,null, this, Direction.WEST);
 	}
 
 	public Map map() {
