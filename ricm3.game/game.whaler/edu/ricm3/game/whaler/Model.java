@@ -47,11 +47,11 @@ public class Model extends GameModel {
 	private BufferedImage m_icebergSprite;
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
-	BufferedImage m_scoreSprite;
-	BufferedImage m_baleinemenuSprite;
-	BufferedImage m_destroyer_menuSprite;
-	BufferedImage m_projectile_menuSprite;
-	BufferedImage m_fondmenu;
+	private BufferedImage m_scoreSprite;
+	private BufferedImage m_baleinemenuSprite;
+	private BufferedImage m_destroyer_menuSprite;
+	private BufferedImage m_projectile_menuSprite;
+	private BufferedImage m_fondmenu;
 	Menu m_menu;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleSprite;
@@ -78,7 +78,12 @@ public class Model extends GameModel {
 	public Model() {
 		// Loading Sprites Model
 		loadSprites();
-		m_menu = new Menu(this, 350, 150, 2);
+		BufferedImage[] im = new BufferedImage[4];
+		im[0]=m_baleinemenuSprite;
+		im[1]=m_destroyer_menuSprite;
+		im[2]=m_projectile_menuSprite;
+		im[3]=m_fondmenu;
+		m_menu = new Menu(im,this, 350, 150, 2);
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);

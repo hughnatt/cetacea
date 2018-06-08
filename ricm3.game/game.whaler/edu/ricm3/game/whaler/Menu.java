@@ -12,23 +12,22 @@ import javax.imageio.ImageIO;
 
 public class Menu{
 	int m_idx;
-	BufferedImage m_sprite_baleine;
-	BufferedImage m_sprite_gouvernail;
-	BufferedImage m_sprite_destroyer;
-	BufferedImage m_sprite_projectile;
-	BufferedImage m_fond_menu;
+	private BufferedImage m_sprite_baleine;
+	private BufferedImage m_sprite_destroyer;
+	private BufferedImage m_sprite_projectile;
+	private BufferedImage m_fond_menu;
 	int m_x, m_y;
 	float m_scale;
 	Model m_model;
 
-	Menu(Model model, int x, int y, float scale) {
+	Menu(BufferedImage[] img, Model model, int x, int y, float scale) {
 		m_model = model;
 		m_x = x;
 		m_y = y;
-		m_sprite_baleine = m_model.m_baleinemenuSprite;
-		m_sprite_destroyer = m_model.m_destroyer_menuSprite;
-		m_sprite_projectile = m_model.m_projectile_menuSprite;
-		m_fond_menu=m_model.m_fondmenu;
+		m_sprite_baleine = img[0];
+		m_sprite_destroyer = img[1];
+		m_sprite_projectile = img[2];
+		m_fond_menu=img[3];
 		m_scale = scale;
 		m_idx = 0;
 	}
