@@ -16,6 +16,8 @@ public class Projectile extends Mobile_Entity {
 	int m_remaining; // before destruction, 0 = destruction at the next move
 	int m_damage; // The damage that will be done by the projectile
 
+	private long m_speed;
+
 	/**
 	 * @param pos
 	 *            Initial position of the Projectile
@@ -33,15 +35,16 @@ public class Projectile extends Mobile_Entity {
 		super(m_pos, false, m_sprite, m_model, dir);
 		m_remaining = range;
 		m_damage = Options.PROJECTILE_DPS;
+		m_speed = Options.PROJECTILE_SPD_STANDARD;
 	}
 
 	@Override
 	public void step(long now) throws Map_exception, Tile_exception {
 		long elapsed = this.m_lastStep - now;
-		if (elapsed > 500L) {
-			if (m_remaining == 0) {
-				m_model.map().tile(this.getx(), this.gety()).remove(this);
-			} else {
+		if (elapsed > m_speed) {
+
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			if (m_remaining != 0) {
 				Location new_pos = new Location(this.m_pos); // Calculation of the new location
 				switch (m_direction) {
 				case NORTH:
@@ -90,7 +93,9 @@ public class Projectile extends Mobile_Entity {
 					hit = true;
 				}
 
-				// TODO arret du travail ici
+				if (!hit) { // if the projectile hasn't hit nothing
+					m_model.map().tile(new_pos.x, new_pos.y).addForeground(this); // it goes to the new lcoation
+				}
 			}
 		}
 	}
@@ -101,15 +106,15 @@ public class Projectile extends Mobile_Entity {
 	}
 
 	public void wizz() {
-		// TODO
+		m_direction = m_model.rand_direction();
 	}
 
 	public void pop() {
-		// TODO
+		m_speed = Options.PROJECTILE_SPD_IMPROVED;
 	}
 
 	public void hit() {
-		// TODO
+		// TODO qqch à faire ?
 	}
 
 	@Override

@@ -20,6 +20,7 @@ package edu.ricm3.game.whaler;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -54,8 +55,8 @@ public class Model extends GameModel {
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleSprite;
 
-	// Boolean indiquant si le joueur est underwater
-	public static boolean UNDER_WATER = false;
+	// Boolean for the underwater player mode
+	public boolean UNDER_WATER;
 
 	// Background
 	Background m_current_background;
@@ -72,6 +73,9 @@ public class Model extends GameModel {
 	Projectile[] m_projectiles;
 	Whale[] m_whales;
 	Oil[] m_oil;
+
+	// Random generation
+	public Random rand = new Random();
 
 	public Model() throws Map_exception {
 		// Loading Sprites Model
@@ -124,10 +128,11 @@ public class Model extends GameModel {
 
 		// Projectiles
 		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
-		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, this, Direction.WEST, 0, 0);
+		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, this, Direction.WEST, 0);
 
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, this, Direction.WEST);
+		UNDER_WATER = false; // by default, the player is at the surface
 	}
 
 	public Map map() {
@@ -159,6 +164,21 @@ public class Model extends GameModel {
 		} else {
 			m_current_background = m_underwater;
 			UNDER_WATER = true;
+		}
+	}
+
+	public Direction rand_direction() {
+		switch (rand.nextInt(4)) {
+		case 0:
+			return Direction.NORTH;
+
+		case 1:
+			return Direction.EAST;
+
+		case 2:
+			return Direction.SOUTH;
+		default:
+			return Direction.WEST;
 		}
 	}
 
