@@ -5,7 +5,7 @@ public class Tile_exception extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4514584531155096533L;
 
 	public Tile_exception() {
 

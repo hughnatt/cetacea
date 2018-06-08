@@ -95,6 +95,13 @@ public class Controller extends GameController implements ActionListener {
 			m_model.swap();
 		}
 
+		if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
+			m_model.m_whales[0].pop();
+		}
+
+		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
+			m_model.m_whales[0].m_capture = 20;
+		}
 	}
 
 	@Override
@@ -261,7 +268,6 @@ public class Controller extends GameController implements ActionListener {
 		valider.addMouseListener(this);
 		valider.setVisible(false);
 		cont.add(valider);
-
 		infoLabel = new JLabel("Sélectionnez un item");
 		infoLabel.setVisible(false);
 
@@ -291,7 +297,6 @@ public class Controller extends GameController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		Object s = e.getSource();
-
 		if (s == retour) {
 			m_model.setScreen(Screen.HOME);
 			automata.setVisible(true);
@@ -303,13 +308,13 @@ public class Controller extends GameController implements ActionListener {
 			infoLabel.setVisible(false);
 			valider.setVisible(false);
 		}
-		
+
 		if (s == annuler) {
 			infoLabel.setText("Sélectionnez un item");
 			for (int i = 0; i < 6; i++)
 				b[i].setSelectedIndex(0);
 		}
-		
+
 		if (s == play) {
 			m_model.setScreen(Screen.GAME);
 			cont.setVisible(false);
@@ -352,8 +357,16 @@ public class Controller extends GameController implements ActionListener {
 			preference.setVisible(false);
 			retour.setVisible(true);
 			annuler.setVisible(true);
+
+			if (s == annuler) {
+				infoLabel.setText("Sélectionnez un item");
+				/*
+				 * Ici on met le champ m_automate de toutes les entités à NULL ou on introduit
+				 * un last automate On garde en mémoire l'ancien automate assigné quand on en
+				 * assigne un nouveau Et en cliquant sur annuler, on remet l'ancien automate
+				 */
+			}
+
 		}
-
 	}
-
 }

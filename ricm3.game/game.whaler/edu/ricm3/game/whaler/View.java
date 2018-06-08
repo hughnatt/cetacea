@@ -20,13 +20,9 @@ package edu.ricm3.game.whaler;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameView;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 
 public class View extends GameView {
 
@@ -72,15 +68,22 @@ public class View extends GameView {
 			break;
 		case GAME:
 			g.setColor(Color.BLUE);
+
 			g.fillRect(0, 0, getWidth(), getHeight());
 			// call the method paint on all the instances you want to print
 			m_model.m_current_background.paint(g);
 
 			// Viewport paint of the map
-			if (m_model.UNDER_WATER) {
-				m_model.map().paint_under(g);
-			} else {
-				m_model.map().paint(g);
+			// Viewport paint of the map
+			try {
+
+				if (m_model.UNDER_WATER) {
+					m_model.map().paint_under(g);
+				} else {
+					m_model.map().paint(g);
+				}
+			} catch (Location_exception l) {
+				System.exit(-1);
 			}
 			break;
 		case AUTOMATA:
@@ -97,5 +100,6 @@ public class View extends GameView {
 		default:
 			break;
 		}
+
 	}
 }

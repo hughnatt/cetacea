@@ -5,13 +5,14 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public abstract class Mobile_Entity extends Entity {
 
 	long m_lastStep;
-	Direction m_direction;
+	public Direction m_direction;
 
 	/**
 	 * @param pos
@@ -22,7 +23,27 @@ public abstract class Mobile_Entity extends Entity {
 	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
 			Direction dir) throws Map_exception {
 		super(pos, solid, sprite, underSprite, model);
+		m_lastStep = 0;
 		m_direction = dir;
+	}
+
+	protected Location pos_front() {
+		Location front = new Location(this.m_pos); // Calculation of the front location
+		switch (m_direction) {
+		case NORTH:
+			front.up();
+			break;
+		case EAST:
+			front.right();
+			break;
+		case SOUTH:
+			front.down();
+			break;
+		case WEST:
+			front.left();
+			break;
+		}
+		return front;
 	}
 
 	/**
@@ -68,8 +89,8 @@ public abstract class Mobile_Entity extends Entity {
 
 	public abstract void pop();
 
-	public abstract void wizz();
+	public abstract void wizz() throws Map_exception, Tile_exception, Location_exception;
 
-	public abstract void hit();
+	public abstract void hit() throws Map_exception;
 
 }
