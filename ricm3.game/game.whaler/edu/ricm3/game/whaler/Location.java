@@ -9,6 +9,11 @@ public class Location {
 		this.y = y;
 	}
 
+	public Location(Location l) {
+		this.x = l.x;
+		this.y = l.y;
+	}
+
 	public void up() {
 		if (this.y > 0) {
 			this.y--;

@@ -5,9 +5,10 @@ import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public abstract class Entity {
-
 
 	Location m_pos;
 	boolean m_solid;
@@ -21,28 +22,33 @@ public abstract class Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	protected Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model) {
+
+	protected Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model)
+			throws Map_exception {
+
 		this.m_pos = pos;
 		this.m_solid = solid;
 		this.m_sprite = sprite;
 		this.m_model = model;
+
 		this.m_underSprite = underSprite;
-		
-		//Adding the Entity to the Map (for rendering and fast access to locations)
-		m_model.map().tile(m_pos.x,m_pos.y).addForeground(this);
+
+		// Adding the Entity to the Map (for rendering and fast access to locations)
+		m_model.map().tile(m_pos.x, m_pos.y).addForeground(this);
+
 	}
-	
+
 	public int getx() {
 		return m_pos.x;
 	}
-	
+
 	public int gety() {
 		return m_pos.y;
 	}
-	
-	
+
 	/*
-	 * Indicate whether the Entity is solid (Boats, Stone, ...) or not (Oil, Projectile, ...)
+	 * Indicate whether the Entity is solid (Boats, Stone, ...) or not (Oil,
+	 * Projectile, ...)
 	 */
 	public boolean isSolid() {
 		return m_solid;
@@ -51,19 +57,18 @@ public abstract class Entity {
 	/**
 	 * @param now
 	 */
-	public abstract void step(long now);
-	
+	public abstract void step(long now) throws Map_exception, Tile_exception;
+
 	/**
 	 * @param g
 	 * @param map_ref
 	 */
 	public abstract void paint(Graphics g, Location map_ref);
-	
+
 	/**
 	 * @param g
 	 * @param map_ref
 	 */
 	public abstract void paint_under(Graphics g, Location map_ref);
-
 
 }

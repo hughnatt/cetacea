@@ -26,7 +26,7 @@ public class Options {
 
 	public static final int DIM_BLOC = 32; // coté d'un bloc en pixel
 
-	public static final int DIMX_MAP = 1000; // dim de la map
+	public static final int DIMX_MAP = 1000; // dim de la map en bloc
 	public static final int DIMY_MAP = 1000;
 
 	public static final int DIMX_WINDOW = 1000; // dim de la fenêtre en pixel
@@ -34,10 +34,18 @@ public class Options {
 
 	public static final int DIMX_VIEW = 31; // dim de la view en pixel
 	public static final int DIMY_VIEW = 21;
-	
-	public static final int MAX_WHALERS = 10; //nb max d'entités
+
+	public static final int MAX_WHALERS = 10; // nb max d'entités
 	public static final int MAX_DESTROYERS = 10;
 	public static final int MAX_PROJECTILES = 10;
 	public static final int MAX_OIL = 10;
 	public static final int MAX_WHALES = 10;
+
+	public static final int PLAYER_LIFE = 20;
+	public static final int DESTROYER_LIFE = 20;
+	public static final int WHALER_LIFE = 20;
+
+	public static final int PROJECTILE_DPS = 1;
+	public static final long PROJECTILE_SPD_STANDARD = 500L;
+	public static final long PROJECTILE_SPD_IMPROVED = 300L;
 }

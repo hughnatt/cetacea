@@ -93,14 +93,14 @@ public class View extends GameView {
 
 		// call the method paint on all the instances you want to print
 		m_model.m_current_background.paint(g);
-		
+
 		// Viewport paint of the map
-		if(m_model.UNDER_WATER) {
-			m_model.m_map.paint_under(g);
-		}else {
-			m_model.m_map.paint(g);
+		if (m_model.UNDER_WATER) {
+			m_model.map().paint_under(g);
+		} else {
+			m_model.map().paint(g);
 		}
-		
+
 	}
 	}
 }

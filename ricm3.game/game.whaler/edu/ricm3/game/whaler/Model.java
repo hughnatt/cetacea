@@ -17,11 +17,16 @@
  */
 package edu.ricm3.game.whaler;
 
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
+
 import edu.ricm3.game.GameModel;
+import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Destroyer;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
@@ -31,7 +36,7 @@ import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
-import edu.ricm3.game.whaler.Entities.Bulle;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
@@ -47,6 +52,7 @@ public class Model extends GameModel {
 	private BufferedImage m_icebergSprite;
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
+
 	private BufferedImage m_scoreSprite;
 	private BufferedImage m_baleinemenuSprite;
 	private BufferedImage m_destroyer_menuSprite;
@@ -57,7 +63,7 @@ public class Model extends GameModel {
 	private BufferedImage m_bulleSprite;
 
 	// Boolean indiquant si le joueur est underwater
-	public static boolean UNDER_WATER = false;
+	public boolean UNDER_WATER;
 
 	// Background
 	Background m_current_background;
@@ -65,7 +71,7 @@ public class Model extends GameModel {
 	Background m_underwater;
 
 	// Map
-	Map m_map;
+	private Map m_map;
 
 	// Entity List
 	Player m_player;
@@ -75,15 +81,19 @@ public class Model extends GameModel {
 	Whale[] m_whales;
 	Oil[] m_oil;
 
-	public Model() {
+	// Random generation
+	public Random rand = new Random();
+
+	public Model() throws Map_exception {
+
 		// Loading Sprites Model
 		loadSprites();
 		BufferedImage[] im = new BufferedImage[4];
-		im[0]=m_baleinemenuSprite;
-		im[1]=m_destroyer_menuSprite;
-		im[2]=m_projectile_menuSprite;
-		im[3]=m_fondmenu;
-		m_menu = new Menu(im,this, 350, 150, 2);
+		im[0] = m_baleinemenuSprite;
+		im[1] = m_destroyer_menuSprite;
+		im[2] = m_projectile_menuSprite;
+		im[3] = m_fondmenu;
+		m_menu = new Menu(im, this, 350, 150, (float) 2);
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -94,48 +104,51 @@ public class Model extends GameModel {
 		m_map = new Map(this);
 
 		// Bulles
-		new Bulle(new Location(2,2),null, m_bulleSprite, this);
+
+		new Bulle(new Location(2, 2), null, m_bulleSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			new Stone(new Location(i, 0), m_stoneSprite,null, this);
-			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite,null, this);
+			new Stone(new Location(i, 0), m_stoneSprite, null, this);
+			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, null, this);
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			new Stone(new Location(0, i), m_stoneSprite,null, this);
-			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite,null, this);
+			new Stone(new Location(0, i), m_stoneSprite, null, this);
+			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, null, this);
 		}
 
 		// Islands
-		new Island(new Location(3,6), m_islandSprite,null, this);
-		//Icebergs
-		new Iceberg(new Location(3,7), m_icebergSprite,null, this);
-		
+
+		new Island(new Location(3, 6), m_islandSprite, null, this);
+		// Icebergs
+		new Iceberg(new Location(3, 7), m_icebergSprite, null, this);
+
 		// Entities
 
 		// Oil
 		m_oil = new Oil[Options.MAX_OIL];
-		m_oil[0] = new Oil(new Location(3,2), m_oilSprite,null, this, Direction.WEST);
-		
-		
+
+		m_oil[0] = new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST);
+
 		// Destroyers
- 		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
-		m_destroyers[0] = new Destroyer(new Location(3,4), m_destroyerSprite,null, this, Direction.WEST);
-		
-		//Whalers
+		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
+		m_destroyers[0] = new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST);
+
+		// Whalers
 		m_whalers = new Whaler[Options.MAX_WHALERS];
-		m_whalers[0] = new Whaler(new Location(3,5), m_whalerSprite,null, this, Direction.WEST);
-		
-		//Whales
-		m_whales  = new Whale[Options.MAX_WHALES];
-		m_whales[0] = new Whale(new Location(3,8), m_whaleSprite,null, this, Direction.WEST);
-		
-		//Projectiles
+		m_whalers[0] = new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST);
+
+		// Whales
+		m_whales = new Whale[Options.MAX_WHALES];
+		m_whales[0] = new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST);
+
+		// Projectiles
 		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
-		m_projectiles[0] = new Projectile(new Location(3,9), m_projectileSprite,null, this, Direction.WEST, 0, 0);
-		
-		//Player
-		m_player = new Player(new Location(3, 3), m_playerSprite,null, this, Direction.WEST);
+		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
+
+		// Player
+		m_player = new Player(new Location(3, 3), m_playerSprite, null, this, Direction.WEST);
+
 	}
 
 	public Map map() {
@@ -144,15 +157,11 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
-		// TODO Auto-generated method stub
 		m_current_background.step(now);
 	}
 
 	@Override
 	public void shutdown() {
-		// TODO Auto-generated method stub
-		
-		// m_map.step(); Is this a good idea ?
 	}
 
 	public void swap() {
@@ -162,6 +171,21 @@ public class Model extends GameModel {
 		} else {
 			m_current_background = m_underwater;
 			UNDER_WATER = true;
+		}
+	}
+
+	public Direction rand_direction() {
+		switch (rand.nextInt(4)) {
+		case 0:
+			return Direction.NORTH;
+
+		case 1:
+			return Direction.EAST;
+
+		case 2:
+			return Direction.SOUTH;
+		default:
+			return Direction.WEST;
 		}
 	}
 
@@ -175,14 +199,14 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		imageFile = new File("game.whaler/sprites/fond.png");
 		try {
 			m_fondmenu = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
-		}	
+		}
 
 		imageFile = new File("game.whaler/sprites/water.png");
 		try {
@@ -276,6 +300,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+
 		/*
 		 * Custom Texture
 		 */
@@ -305,6 +330,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+
 		/*
 		 * Custom Texture
 		 */
@@ -325,7 +351,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		/*
 		 * Custom Texture
 		 */
