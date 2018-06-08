@@ -41,8 +41,11 @@ public class Projectile extends Mobile_Entity {
 
 	@Override
 	public void step(long now) throws Map_exception, Tile_exception {
-		long elapsed = this.m_lastStep - now;
+		long elapsed = now - this.m_lastStep;
+
 		if (elapsed > m_speed) {
+
+			m_lastStep = now;
 
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 			if (m_remaining != 0) {

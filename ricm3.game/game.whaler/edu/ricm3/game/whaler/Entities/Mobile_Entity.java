@@ -12,7 +12,7 @@ import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 public abstract class Mobile_Entity extends Entity {
 
 	long m_lastStep;
-	Direction m_direction;
+	public Direction m_direction;
 
 	/**
 	 * @param pos
@@ -23,6 +23,7 @@ public abstract class Mobile_Entity extends Entity {
 	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
 			Direction dir) throws Map_exception {
 		super(pos, solid, sprite, underSprite, model);
+		m_lastStep = 0;
 		m_direction = dir;
 	}
 

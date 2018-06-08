@@ -81,7 +81,7 @@ public class View extends GameView {
 					m_model.map().paint(g);
 				}
 			} catch (Location_exception l) {
-				System.exit(3);
+				System.exit(-1);
 			}
 			break;
 		case OPTIONS:
