@@ -14,8 +14,8 @@ public final class Stone extends Static_Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	public Stone(Location pos, BufferedImage sprite, Model model) {
-		super(pos, true, sprite, model);
+	public Stone(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) {
+		super(pos, false, sprite, underSprite, model);
 	}
 	
 	@Override
@@ -28,8 +28,8 @@ public final class Stone extends Static_Entity {
 	}
 	
 	@Override
-	public void paint_under(Graphics g, Location map_ref) {
-		
+	public void paint_under(Graphics g, Location ref_map) {
+		g.drawImage(m_sprite, (this.getx() - ref_map.x) * 32, (this.gety() - ref_map.y) * 32, 32, 32, null);
 	}
 
 
