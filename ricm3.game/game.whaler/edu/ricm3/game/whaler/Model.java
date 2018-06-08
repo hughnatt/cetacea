@@ -56,6 +56,7 @@ public class Model extends GameModel {
 	private BufferedImage m_stoneUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
+	private BufferedImage m_playerUnderSprite;
 	
 	// Boolean indiquant si le joueur est underwater
 	public static boolean UNDER_WATER = false;
@@ -145,7 +146,7 @@ public class Model extends GameModel {
 		m_projectiles[0] = new Projectile(new Location(3,9), m_projectileSprite,null, this, Direction.WEST, 0, 0);
 		
 		//Player
-		m_player = new Player(new Location(3, 3), m_playerSprite,null, this, Direction.WEST);
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
 	}
 	
 	public Map map() {
@@ -354,6 +355,17 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/coral.png");
 		try {
 			m_coralUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/submarine.png");
+		try {
+			m_playerUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

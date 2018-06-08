@@ -33,32 +33,21 @@ public final class Player extends Mobile_Entity {
 		loadSprites();
 		switch(dir) {
 		case EAST:
-			if(m_model.UNDER_WATER) {
-				m_sprite = m_playerEastUnder;
-			}else {
-				m_sprite = m_playerEast;
-			}
+			m_underSprite = m_playerEastUnder;
+			m_sprite = m_playerEast;
 			break;
 		case WEST:
-			if(m_model.UNDER_WATER) {
-				m_sprite = m_playerWestUnder;
-			}else {
-				m_sprite = m_playerWest;
-			}
+			m_underSprite = m_playerWestUnder;
+			m_sprite = m_playerWest;
 			break;
 		case NORTH:
-			if(m_model.UNDER_WATER) {
-				m_sprite = m_playerNorthUnder;
-			}else {
-				m_sprite = m_playerNorth;
-			}
+			m_underSprite = m_playerNorthUnder;
+			m_sprite = m_playerNorth;
+			
 			break;
 		case SOUTH:
-			if(m_model.UNDER_WATER) {
-				m_sprite = m_playerSouthUnder;
-			}else {
-				m_sprite = m_playerSouth;
-			}
+			m_underSprite = m_playerSouthUnder;
+			m_sprite = m_playerSouth;
 			break;
 		}
 	}
@@ -94,7 +83,7 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+		g.drawImage(m_underSprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 	}
 
 }
