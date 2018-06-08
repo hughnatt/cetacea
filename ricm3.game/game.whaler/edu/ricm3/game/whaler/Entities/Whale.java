@@ -6,7 +6,10 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public final class Whale extends Mobile_Entity {
 
@@ -29,7 +32,7 @@ public final class Whale extends Mobile_Entity {
 
 	@Override
 	public void step(long now) {
-
+		// TODO à faire
 	}
 
 	@Override
@@ -48,8 +51,23 @@ public final class Whale extends Mobile_Entity {
 	}
 
 	@Override
-	public void wizz() {
-		// TODO
+	public void wizz() throws Map_exception, Tile_exception, Location_exception {
+		int transl_x = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of the
+																				// whale in x
+		if (m_model.rand.nextInt(2) == 1) {
+			transl_x *= -1;
+		}
+
+		int transl_y = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of the
+																				// whale in y
+		if (m_model.rand.nextInt(2) == 1) {
+			transl_y *= -1;
+		}
+
+		m_model.map().tile(this.getx(), this.gety()).remove(this);
+		this.m_pos = new Location(this.getx() + transl_x, this.gety() + transl_y); // TODO valide ? pas de fuite mémoire
+																					// ou autre méthode ?
+		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
 	@Override

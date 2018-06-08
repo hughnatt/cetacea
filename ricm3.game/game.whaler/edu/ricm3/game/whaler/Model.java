@@ -17,7 +17,6 @@
  */
 package edu.ricm3.game.whaler;
 
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +35,7 @@ import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Model extends GameModel {
@@ -84,7 +84,7 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model() throws Map_exception {
+	public Model() throws Map_exception, Location_exception {
 
 		// Loading Sprites Model
 		loadSprites();

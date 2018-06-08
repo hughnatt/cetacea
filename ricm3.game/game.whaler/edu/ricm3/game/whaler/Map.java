@@ -2,6 +2,7 @@ package edu.ricm3.game.whaler;
 
 import java.awt.Graphics;
 
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Map {
@@ -47,7 +48,7 @@ public class Map {
 	 * 
 	 * @param g
 	 */
-	public void paint(Graphics g) {
+	public void paint(Graphics g) throws Location_exception {
 		// We'll render only the part of the map which is visible
 
 		// Getting player location
@@ -85,7 +86,7 @@ public class Map {
 	 * 
 	 * @param g
 	 */
-	public void paint_under(Graphics g) {
+	public void paint_under(Graphics g) throws Location_exception {
 		// We'll render only the part of the map which is visible
 
 		// Getting player location

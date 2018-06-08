@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
@@ -68,7 +69,7 @@ public abstract class Mobile_Entity extends Entity {
 
 	public abstract void pop();
 
-	public abstract void wizz();
+	public abstract void wizz() throws Map_exception, Tile_exception, Location_exception;
 
 	public abstract void hit();
 
