@@ -20,33 +20,34 @@ package edu.ricm3.game.whaler;
 import java.awt.Dimension;
 
 import edu.ricm3.game.GameUI;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class GameMain {
 
-  public static void main(String[] args) {
+	public static void main(String[] args) throws Map_exception, Location_exception {
 
-    // construct the game elements: model, controller, and view.
-    Model model = new Model();
-    Controller controller = new Controller(model);
-    View view = new View(model,controller);
+		// construct the game elements: model, controller, and view.
+		Model model = new Model();
+		Controller controller = new Controller(model);
+		View view = new View(model, controller);
 
-    Dimension d = new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW);
-    new GameUI(model,view,controller,d);
-    
-    // notice that the main thread will exit here,
-    // but not your program... hence the hooking
-    // of the window events to System.exit(0) when
-    // the window is closed. See class WindowListener.
+		Dimension d = new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW);
+		new GameUI(model, view, controller, d);
 
-    /*
-     * *** WARNING *** WARNING *** WARNING *** WARNING ***
-     * If you do something here, on this "main" thread,
-     * you will have parallelism and thus race conditions.
-     * 
-     *           ONLY FOR ADVANCED DEVELOPERS
-     *           
-     * *** WARNING *** WARNING *** WARNING *** WARNING ***
-     */
-    return;
-  }
+		// notice that the main thread will exit here,
+		// but not your program... hence the hooking
+		// of the window events to System.exit(0) when
+		// the window is closed. See class WindowListener.
+
+		/*
+		 * *** WARNING *** WARNING *** WARNING *** WARNING *** If you do something here,
+		 * on this "main" thread, you will have parallelism and thus race conditions.
+		 * 
+		 * ONLY FOR ADVANCED DEVELOPERS
+		 * 
+		 * *** WARNING *** WARNING *** WARNING *** WARNING ***
+		 */
+		return;
+	}
 }

@@ -18,9 +18,11 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import edu.ricm3.game.GameView;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 
 public class View extends GameView {
 
@@ -32,6 +34,7 @@ public class View extends GameView {
 	int m_fps;
 	Model m_model;
 	Controller m_ctr;
+	Boolean afficherOptions = true;
 
 	public View(Model m, Controller c) {
 		m_model = m;
@@ -53,20 +56,48 @@ public class View extends GameView {
 	protected void _paint(Graphics g) {
 		computeFPS();
 
-		// erase background
-		g.setColor(m_background);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		// call the method paint on all the instances you want to print
-		m_model.m_current_background.paint(g);
-		
-		// Viewport paint of the map
-		if(m_model.UNDER_WATER) {
-			m_model.m_map.paint_under(g);
-		}else {
-			m_model.m_map.paint(g);
-		}
-		
-	}
+		switch (m_model.currentScreen()) {
 
+		case HOME:
+			m_model.m_menu.paint(g, getWidth(), getHeight());
+			break;
+		case GAME:
+			g.setColor(Color.BLUE);
+
+			g.fillRect(0, 0, getWidth(), getHeight());
+			// call the method paint on all the instances you want to print
+			m_model.m_current_background.paint(g);
+
+			// Viewport paint of the map
+			// Viewport paint of the map
+			try {
+
+				if (m_model.UNDER_WATER) {
+					m_model.map().paint_under(g);
+				} else {
+					m_model.map().paint(g);
+				}
+			} catch (Location_exception l) {
+				System.exit(-1);
+			}
+			break;
+		case OPTIONS:
+			Font f = new Font("Verdana", Font.BOLD, 35);
+			g.setFont(f);
+			g.setColor(Color.BLACK);
+			g.drawString("Baleine", 200, 40);
+			g.drawString("Baleinier", 200, 120);
+			g.drawString("Destroyer", 200, 200);
+			g.drawString("Joueur", 200, 270);
+			g.drawString("Pétrole", 200, 340);
+			g.drawString("Projectile", 200, 420);
+			break;
+		default:
+			break;
+		}
+
+	}
 }
