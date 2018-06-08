@@ -58,25 +58,30 @@ public class View extends GameView {
 
 	@Override
 	protected void _paint(Graphics g) {
+		computeFPS();
+
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		if (!(m_ctr.op)) {
-			g.setColor(Color.WHITE);
+		switch (m_model.currentScreen()) {
+
+		case HOME:
+			m_model.m_menu.paint(g, getWidth(), getHeight());
+			break;
+		case GAME:
+			g.setColor(Color.BLUE);
 			g.fillRect(0, 0, getWidth(), getHeight());
-			Image img1=null;
-			File ImFile = new File("game.whaler/sprites/fond.png");
-			try {
-				img1 = ImageIO.read(ImFile);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-				System.exit(-1);
-			}	
-			g.drawImage(img1, 0, 0, getWidth(), getHeight(),null);
-			m_model.m_menu.paint(g, getWidth(),getHeight());
-		} else {
-			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, getWidth(), getHeight());
+			// call the method paint on all the instances you want to print
+			m_model.m_current_background.paint(g);
+
+			// Viewport paint of the map
+			if (m_model.UNDER_WATER) {
+				m_model.map().paint_under(g);
+			} else {
+				m_model.map().paint(g);
+			}
+			break;
+		case OPTIONS:
 			Font f = new Font("Verdana", Font.BOLD, 35);
 			g.setFont(f);
 			g.setColor(Color.BLACK);
@@ -86,21 +91,9 @@ public class View extends GameView {
 			g.drawString("Joueur", 200, 270);
 			g.drawString("Pétrole", 200, 340);
 			g.drawString("Projectile", 200, 420);
+			break;
+		default:
+			break;
 		}
-		if (m_ctr.GameOn) {
-			g.setColor(Color.BLUE);
-			g.fillRect(0, 0, getWidth(), getHeight());
-
-		// call the method paint on all the instances you want to print
-		m_model.m_current_background.paint(g);
-
-		// Viewport paint of the map
-		if (m_model.UNDER_WATER) {
-			m_model.map().paint_under(g);
-		} else {
-			m_model.map().paint(g);
-		}
-
-	}
 	}
 }
