@@ -14,7 +14,7 @@ public abstract class Entity {
 	boolean m_solid;
 	BufferedImage m_sprite;
 	BufferedImage m_underSprite;
-	Model m_model;
+	public Model m_model;
 
 	/**
 	 * @param pos

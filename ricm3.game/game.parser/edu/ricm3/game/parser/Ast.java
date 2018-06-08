@@ -1,7 +1,13 @@
 package edu.ricm3.game.parser;
+
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+
+import edu.ricm3.game.whaler.Interpretor.*;
+import edu.ricm3.game.whaler.Interpretor.IAction.*;
+import edu.ricm3.game.whaler.Interpretor.ICondition.*;
 
 /* Michael PÉRIN, Verimag / Univ. Grenoble Alpes, june 2018
  *
@@ -33,12 +39,16 @@ public class Ast {
 	public String as_dot_automata() {
 		return "undefined";
 	}
-	
-	public Object  make() {
-		  return null; // TODO à définir dans la plupart des classes internes ci-dessous.
+
+	// public Object make() {
+	// return null; // TODO à définir dans la plupart des classes internes
+	// ci-dessous.
+	// }
+
+	public static abstract class Expression extends Ast {
+
+		public abstract Object make();
 	}
-	
-	public static abstract class Expression extends Ast {}
 
 	public static class Terminal extends Ast {
 		String value;
@@ -50,6 +60,11 @@ public class Ast {
 		public String as_tree_son_of(Ast father) {
 			return Dot.terminal_edge(father.id, value);
 		}
+
+		public String make() {
+			return value;
+		}
+
 	}
 
 	public static class Constant extends Expression {
@@ -64,6 +79,11 @@ public class Ast {
 		public String tree_edges() {
 			return value.as_tree_son_of(this);
 		}
+
+		public Object make() {
+			return value.make();
+		}
+
 	}
 
 	public static class Variable extends Expression {
@@ -77,6 +97,10 @@ public class Ast {
 
 		public String tree_edges() {
 			return name.as_tree_son_of(this);
+		}
+
+		public Object make() {
+			return name.make();
 		}
 	}
 
@@ -92,6 +116,27 @@ public class Ast {
 		public String tree_edges() {
 			return value.as_tree_son_of(this);
 		}
+
+		public Object make() {
+			String s = (String) value.make();
+			if (s.equals("E")) {
+				
+			} else if (s.equals("N")) {
+				
+			} else if (s.equals("S")) {
+				
+			} else if (s.equals("O")) {
+				
+			} else if (s.equals("F")) {
+				
+			} else if (s.equals("B")) {
+				
+			} else if (s.equals("L")) {
+				
+			} else {
+				
+			}
+		}
 	}
 
 	public static class Entity extends Expression {
@@ -105,6 +150,11 @@ public class Ast {
 
 		public String tree_edges() {
 			return value.as_tree_son_of(this);
+		}
+
+		@Override
+		public Object make() {
+			return value.make();
 		}
 	}
 
@@ -121,6 +171,11 @@ public class Ast {
 
 		public String tree_edges() {
 			return operator.as_tree_son_of(this) + operand.as_tree_son_of(this);
+		}
+
+		@Override
+		public Object make() {
+			return new INot(null);
 		}
 	}
 
@@ -140,6 +195,18 @@ public class Ast {
 		public String tree_edges() {
 			return left_operand.as_tree_son_of(this) + operator.as_tree_son_of(this)
 					+ right_operand.as_tree_son_of(this);
+		}
+
+		public Object make() {
+
+			if (operator.make().equals("\\")) {
+				return new IOr((ICondition) left_operand.make(), (ICondition) right_operand.make());
+
+			} else if (operator.make().equals("&")) {
+				return new IAnd((ICondition) left_operand.make(), (ICondition) right_operand.make());
+			} 
+			return null;
+
 		}
 	}
 
@@ -164,6 +231,63 @@ public class Ast {
 			}
 			return output;
 		}
+
+		public Object make() {
+
+			Iterator<Expression> iter = parameters.iterator();
+			/*
+			 * CONDITIONS
+			 */
+			if (name.make().equals("True")) {
+				return new ITrue();
+			} else if (name.make().equals("Key")) {
+				
+				return new IKey((String) iter.next().make());
+			} else if (name.make().equals("MyDir")) {
+
+				return new IMyDir();
+			} else if (name.make().equals("Cell")) {
+
+				return new ICell();
+			} else if (name.make().equals("Closest")) {
+
+				return new IClosest();
+			} else if (name.make().equals("GetPower")) {
+
+				return new IGetPower();
+			}
+			
+			/*
+			 * ACTIONS
+			 */
+			else if (name.make().equals("Move")) {
+				return new IMove();
+			} else if (name.make().equals("Jump")) {
+				return new IJump();
+			} else if (name.make().equals("Wizz")) {
+				return new IWizz();
+			} else if (name.make().equals("Pop")) {
+				return new IPop();
+			} else if (name.make().equals("Turn")) {
+				return new ITurn();
+			} else if (name.make().equals("Hit")) {
+				return new IHit();
+			} else if (name.make().equals("Protect")) {
+				return new IProtect();
+			} else if (name.make().equals("Pick")) {
+				return new IPick();
+			} else if (name.make().equals("Throw")) {
+				return new IThrow();
+			} else if (name.make().equals("Store")) {
+				return new IStore();
+			} else if (name.make().equals("Get")) {
+				return new IGet();
+			} else if (name.make().equals("Power")) {
+				return new IPower();
+			} else if (name.make().equals("Kamikaze")) {
+				return new IKamikaze();
+			}
+		}
 	}
 
 	public static class Condition extends Ast {
@@ -177,6 +301,10 @@ public class Ast {
 
 		public String tree_edges() {
 			return expression.as_tree_son_of(this);
+		}
+
+		public ICondition make() {
+			return (ICondition) expression.make();
 		}
 	}
 
@@ -192,6 +320,10 @@ public class Ast {
 		public String tree_edges() {
 			return expression.as_tree_son_of(this);
 		}
+
+		public IAction make() {
+			return (IAction) expression.make();
+		}
 	}
 
 	public static class State extends Ast {
@@ -205,6 +337,10 @@ public class Ast {
 
 		public String tree_edges() {
 			return name.as_tree_son_of(this);
+		}
+
+		public IState make() {
+			return new IState(name.make());
 		}
 	}
 
@@ -234,6 +370,20 @@ public class Ast {
 		public String as_dot_automata() {
 			return Dot.graph("Automata", this.as_tree_node());
 		}
+
+		public List<IAutomata> make() {
+
+			LinkedList<IAutomata> list = new LinkedList<IAutomata>();
+
+			Iterator<Automaton> iter = automata.iterator();
+			while (iter.hasNext()) {
+				Automaton a = iter.next();
+
+				list.add(a.make());
+			}
+
+			return list;
+		}
 	}
 
 	public static class Automaton extends Ast {
@@ -260,6 +410,18 @@ public class Ast {
 			}
 			return output;
 		}
+
+		public IAutomata make() {
+			List<IBehaviour> l = new LinkedList<IBehaviour>();
+
+			Iterator<Behaviour> iter = behaviours.iterator();
+			while (iter.hasNext()) {
+				Behaviour b = iter.next();
+				l.add(b.make());
+			}
+
+			return new IAutomata(name.make(), l, entry.make());
+		}
 	}
 
 	public static class Behaviour extends Ast {
@@ -271,6 +433,18 @@ public class Ast {
 			this.kind = "Behaviour";
 			this.source = state;
 			this.transitions = transitions;
+		}
+
+		public IBehaviour make() {
+
+			List<ITransition> l = new LinkedList<ITransition>();
+			Iterator<Transition> iter = transitions.iterator();
+			while (iter.hasNext()) {
+				Transition t = iter.next();
+				l.add(t.make());
+			}
+
+			return new IBehaviour(l, source.make());
 		}
 
 		public String tree_edges() {
@@ -300,6 +474,10 @@ public class Ast {
 
 		public String tree_edges() {
 			return condition.as_tree_son_of(this) + action.as_tree_son_of(this) + target.as_tree_son_of(this);
+		}
+
+		public ITransition make() {
+			return new ITransition(action.make(), target.make(), condition.make());
 		}
 	}
 }

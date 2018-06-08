@@ -19,6 +19,7 @@ package edu.ricm3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -117,7 +118,8 @@ public class GameUI {
     m_frame.setTitle("Cetacea");
     m_frame.setLayout(new BorderLayout());
     m_frame.setResizable(false);
-    
+    //Container c  = m_frame.getContentPane();
+    // TODO : Check That
     
     File f = new File("game.whaler/sprites/whale.png");
     Image icone;

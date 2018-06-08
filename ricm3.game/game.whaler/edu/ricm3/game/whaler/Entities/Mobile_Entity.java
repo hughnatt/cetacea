@@ -7,11 +7,16 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
+import edu.ricm3.game.whaler.Interpretor.IState;
 
 public abstract class Mobile_Entity extends Entity {
 
 	long m_lastStep;
-	Direction m_direction;
+	public Direction m_direction;
+	
+	public IState m_current;
+	public IAutomata m_automata;
 
 	/**
 	 * @param pos
@@ -66,10 +71,24 @@ public abstract class Mobile_Entity extends Entity {
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
+	
+	
+	//Specific Actions
 	public abstract void pop();
 
 	public abstract void wizz();
 
 	public abstract void hit();
+	
+	//public abstract void jump();
+	//public abstract void protect();
+	//public abstract void pick();
+	//public abstract void throw();
+	//public abstract void store();
+	//public abstract void get();
+	//public abstract void power();
+	//public abstract void kamikaze();
+	
+	
 
 }
