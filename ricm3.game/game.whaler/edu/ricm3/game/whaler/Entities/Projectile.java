@@ -38,4 +38,9 @@ public class Projectile extends Mobile_Entity {
 		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 	}
 	
+	@Override
+	public void paint_under(Graphics g, Location map_ref) {
+		
+	}
+	
 }

@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 
 import edu.ricm3.game.GameController;
+import edu.ricm3.game.whaler.Model;
 
 /**
  * This class is to illustrate the most simple game controller. It does not
@@ -79,6 +80,12 @@ public class Controller extends GameController implements ActionListener {
 		 * if (e.getKeyChar() == 'a letter') { try { something } catch
 		 * (InterruptedException ex) { } }
 		 */
+		
+		
+		if (e.getKeyChar() == 'u'|| e.getKeyChar() == 'U' ) {
+			m_model.swap();
+		}
+	      
 	}
 
 	@Override
