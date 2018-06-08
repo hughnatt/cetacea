@@ -29,7 +29,7 @@ public final class Stone extends Static_Entity {
 	
 	@Override
 	public void paint_under(Graphics g, Location ref_map) {
-		g.drawImage(m_sprite, (this.getx() - ref_map.x) * 32, (this.gety() - ref_map.y) * 32, 32, 32, null);
+		g.drawImage(m_underSprite, (this.getx() - ref_map.x) * 32, (this.gety() - ref_map.y) * 32, 32, 32, null);
 	}
 
 

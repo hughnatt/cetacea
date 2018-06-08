@@ -34,6 +34,7 @@ import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Entities.Bulle;
+import edu.ricm3.game.whaler.Entities.YellowAlgae;
 
 public class Model extends GameModel {
 	// Sprite-sheets (BufferedImage) and instances of elements
@@ -51,6 +52,8 @@ public class Model extends GameModel {
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleSprite;
+	private BufferedImage m_stoneUnderSprite;
+	private BufferedImage m_yellowAlgaeUnderSprite;
 	
 	// Boolean indiquant si le joueur est underwater
 	public static boolean UNDER_WATER = false;
@@ -87,15 +90,22 @@ public class Model extends GameModel {
 		
 		// Bulles
 		new Bulle(new Location(2,2),null, m_bulleSprite, this);
+		new Bulle(new Location(8,16),null, m_bulleSprite, this);
+		new Bulle(new Location(23,6),null, m_bulleSprite, this);
+		
+		// Algues
+		new YellowAlgae(new Location(6,10), null, m_yellowAlgaeUnderSprite, this);
+		new YellowAlgae(new Location(18,18), null, m_yellowAlgaeUnderSprite, this);
+		new YellowAlgae(new Location(4,17), null, m_yellowAlgaeUnderSprite, this);
 
 		//Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			new Stone(new Location(i, 0), m_stoneSprite,null, this);
-			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite,null, this);
+			new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this);
+			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite,m_stoneUnderSprite, this);
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			new Stone(new Location(0, i), m_stoneSprite,null, this);
-			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite,null, this);
+			new Stone(new Location(0, i), m_stoneSprite,m_stoneUnderSprite, this);
+			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite,m_stoneUnderSprite, this);
 		}
 
 		// Islands
@@ -304,6 +314,28 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/bulles.png");
 		try {
 			m_bulleSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/stoneUnder.png");
+		try {
+			m_stoneUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/yellow_algae.png");
+		try {
+			m_yellowAlgaeUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
