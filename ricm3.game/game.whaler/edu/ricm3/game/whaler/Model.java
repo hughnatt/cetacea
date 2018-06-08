@@ -17,7 +17,6 @@
  */
 package edu.ricm3.game.whaler;
 
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,25 +35,25 @@ import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Model extends GameModel {
-	
+
 	public enum Screen {
-		OPTIONS,HOME,GAME;
+		OPTIONS, HOME, GAME;
 	}
-	
+
 	private Screen m_screen;
-	
-	
-	public Screen currentScreen(){
+
+	public Screen currentScreen() {
 		return m_screen;
 	}
+
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
-	
-	
+
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -76,10 +75,10 @@ public class Model extends GameModel {
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleSprite;
 
-	//Menu d'accueil
+	// Menu d'accueil
 	Menu m_menu;
-	
-	// Boolean indiquant si le joueur est underwater
+
+	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;
 
 	// Background
@@ -101,14 +100,13 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model() throws Map_exception {
+	public Model() throws Map_exception, Location_exception {
 
 		m_screen = Screen.HOME;
-		
+
 		// Loading Sprites Model
 		loadSprites();
-		
-		
+
 		m_menu = new Menu(this, 350, 150, (float) 2);
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
@@ -173,7 +171,12 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
-		m_current_background.step(now);
+		try {
+			m_current_background.step(now);
+			m_whales[0].step(now);
+		} catch (Exception e) {
+
+		}
 	}
 
 	@Override
@@ -207,8 +210,6 @@ public class Model extends GameModel {
 
 	private void loadSprites() {
 		File imageFile;
-
-
 
 		imageFile = new File("game.whaler/sprites/water.png");
 		try {
@@ -295,8 +296,6 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
-
-
 		/*
 		 * Custom Texture
 		 */
@@ -318,8 +317,6 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-
-
 
 		/*
 		 * Custom Texture

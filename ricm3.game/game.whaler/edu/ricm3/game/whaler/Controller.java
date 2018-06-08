@@ -79,12 +79,19 @@ public class Controller extends GameController implements ActionListener {
 		 * if (e.getKeyChar() == 'a letter') { try { something } catch
 		 * (InterruptedException ex) { } }
 		 */
-		
-		
-		if (e.getKeyChar() == 'u'|| e.getKeyChar() == 'U' ) {
+
+		if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') {
 			m_model.swap();
 		}
-	      
+
+		if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
+			m_model.m_whales[0].pop();
+		}
+
+		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
+			m_model.m_whales[0].m_capture = 20;
+		}
+
 	}
 
 	@Override
@@ -185,12 +192,12 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+
 	}
 
 	public void notifyVisible() {
@@ -211,7 +218,7 @@ public class Controller extends GameController implements ActionListener {
 		play.setBorderPainted(false);
 		play.setFocusPainted(false);
 		cont.add(play);
-		
+
 		ImageIcon image1 = new ImageIcon("game.whaler/sprites/option.png");
 		option = new JButton(image1);
 		option.addActionListener(this);
@@ -230,7 +237,7 @@ public class Controller extends GameController implements ActionListener {
 		retour.setFocusPainted(false);
 		retour.setVisible(false);
 		cont.add(retour);
-		
+
 		ImageIcon image3 = new ImageIcon("game.whaler/sprites/annuler.png");
 		annuler = new JButton(image3);
 		annuler.addActionListener(this);
@@ -240,7 +247,7 @@ public class Controller extends GameController implements ActionListener {
 		annuler.setFocusPainted(false);
 		annuler.setVisible(false);
 		cont.add(annuler);
-		
+
 		infoLabel = new JLabel("Sélectionnez un item");
 		infoLabel.setVisible(false);
 
@@ -255,11 +262,11 @@ public class Controller extends GameController implements ActionListener {
 					Object o = ((JComboBox<?>) e.getSource()).getSelectedItem();
 					String s = (String) o;
 					infoLabel.setText(s);
-					//ici on affecte à l'entité correspondante l'automate sélectionné
+					// ici on affecte à l'entité correspondante l'automate sélectionné
 				}
 			});
 		}
-		
+
 		cont.add(infoLabel);
 		m_game.addSouth(cont);
 		m_game.addEast(main);
@@ -292,12 +299,14 @@ public class Controller extends GameController implements ActionListener {
 			annuler.setVisible(false);
 			infoLabel.setVisible(false);
 		}
-		
-		if (s==annuler) {
+
+		if (s == annuler) {
 			infoLabel.setText("Sélectionnez un item");
-			/* Ici on met le champ m_automate de toutes les entités à NULL ou on introduit un last automate
-			 * On garde en mémoire l'ancien automate assigné quand on en assigne un nouveau
-			 * Et en cliquant sur annuler, on remet l'ancien automate  */
+			/*
+			 * Ici on met le champ m_automate de toutes les entités à NULL ou on introduit
+			 * un last automate On garde en mémoire l'ancien automate assigné quand on en
+			 * assigne un nouveau Et en cliquant sur annuler, on remet l'ancien automate
+			 */
 		}
 
 	}

@@ -20,11 +20,12 @@ package edu.ricm3.game.whaler;
 import java.awt.Dimension;
 
 import edu.ricm3.game.GameUI;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class GameMain {
 
-	public static void main(String[] args) throws Map_exception {
+	public static void main(String[] args) throws Map_exception, Location_exception {
 
 		// construct the game elements: model, controller, and view.
 		Model model = new Model();
