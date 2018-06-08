@@ -31,6 +31,7 @@ import javax.swing.JComboBox;
 
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Model.Screen;
 
 /**
  * This class is to illustrate the most simple game controller. It does not
@@ -53,8 +54,6 @@ public class Controller extends GameController implements ActionListener {
 	JButton option;
 	JButton annuler;
 	JButton retour;
-	Boolean GameOn = false;
-	Boolean op = false;
 	JLabel infoLabel;
 	JComboBox<?> b[];
 
@@ -271,12 +270,12 @@ public class Controller extends GameController implements ActionListener {
 
 		Object s = e.getSource();
 		if (s == play) {
-			GameOn = true;
+			m_model.setScreen(Screen.GAME);
 			cont.setVisible(false);
 		}
 
 		if (s == option) {
-			op = true;
+			m_model.setScreen(Screen.OPTIONS);
 			option.setVisible(false);
 			play.setVisible(false);
 			retour.setVisible(true);
@@ -285,7 +284,7 @@ public class Controller extends GameController implements ActionListener {
 			infoLabel.setVisible(true);
 		}
 		if (s == retour) {
-			op = false;
+			m_model.setScreen(Screen.HOME);
 			option.setVisible(true);
 			play.setVisible(true);
 			retour.setVisible(false);

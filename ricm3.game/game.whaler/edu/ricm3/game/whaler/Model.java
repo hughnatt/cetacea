@@ -39,6 +39,22 @@ import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Model extends GameModel {
+	
+	public enum Screen {
+		OPTIONS,HOME,GAME;
+	}
+	
+	private Screen m_screen;
+	
+	
+	public Screen currentScreen(){
+		return m_screen;
+	}
+	public void setScreen(Screen s) {
+		m_screen = s;
+	}
+	
+	
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -52,16 +68,17 @@ public class Model extends GameModel {
 	private BufferedImage m_icebergSprite;
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
-
 	private BufferedImage m_scoreSprite;
 	private BufferedImage m_baleinemenuSprite;
 	private BufferedImage m_destroyer_menuSprite;
 	private BufferedImage m_projectile_menuSprite;
 	private BufferedImage m_fondmenu;
-	Menu m_menu;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleSprite;
 
+	//Menu d'accueil
+	Menu m_menu;
+	
 	// Boolean indiquant si le joueur est underwater
 	public boolean UNDER_WATER;
 
@@ -86,14 +103,13 @@ public class Model extends GameModel {
 
 	public Model() throws Map_exception {
 
+		m_screen = Screen.HOME;
+		
 		// Loading Sprites Model
 		loadSprites();
-		BufferedImage[] im = new BufferedImage[4];
-		im[0] = m_baleinemenuSprite;
-		im[1] = m_destroyer_menuSprite;
-		im[2] = m_projectile_menuSprite;
-		im[3] = m_fondmenu;
-		m_menu = new Menu(im, this, 350, 150, (float) 2);
+		
+		
+		m_menu = new Menu(this, 350, 150, (float) 2);
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -192,21 +208,7 @@ public class Model extends GameModel {
 	private void loadSprites() {
 		File imageFile;
 
-		imageFile = new File("game.whaler/sprites/help.png");
-		try {
-			m_baleinemenuSprite = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
 
-		imageFile = new File("game.whaler/sprites/fond.png");
-		try {
-			m_fondmenu = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
 
 		imageFile = new File("game.whaler/sprites/water.png");
 		try {
@@ -293,13 +295,7 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
-		imageFile = new File("game.whaler/sprites/Destroyer_menu.png");
-		try {
-			m_destroyer_menuSprite = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
+
 
 		/*
 		 * Custom Texture
@@ -323,13 +319,7 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
-		imageFile = new File("game.whaler/sprites/Projectile_menu.png");
-		try {
-			m_projectile_menuSprite = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
+
 
 		/*
 		 * Custom Texture
