@@ -54,8 +54,6 @@ public class Controller extends GameController implements ActionListener {
 	JButton option;
 	JButton annuler;
 	JButton retour;
-	Boolean GameOn = false;
-	Boolean op = false;
 	JLabel infoLabel;
 	JComboBox<?> b[];
 
