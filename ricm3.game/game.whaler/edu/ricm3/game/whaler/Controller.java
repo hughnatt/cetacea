@@ -24,7 +24,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -51,11 +60,13 @@ public class Controller extends GameController implements ActionListener {
 	Model m_model;
 	JButton play;
 	Music m_player;
-	JButton option;
+	JButton automata;
 	JButton annuler;
 	JButton retour;
+	JButton preference;
 	JLabel infoLabel;
 	JComboBox<?> b[];
+	JButton valider;
 
 	public Controller(Model m) {
 		m_model = m;
@@ -79,12 +90,11 @@ public class Controller extends GameController implements ActionListener {
 		 * if (e.getKeyChar() == 'a letter') { try { something } catch
 		 * (InterruptedException ex) { } }
 		 */
-		
-		
-		if (e.getKeyChar() == 'u'|| e.getKeyChar() == 'U' ) {
+
+		if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') {
 			m_model.swap();
 		}
-	      
+
 	}
 
 	@Override
@@ -110,9 +120,9 @@ public class Controller extends GameController implements ActionListener {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/retour_click.png");
 			retour.setIcon(img);
 		}
-		if (s == option) {
+		if (s == automata) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/option_click.png");
-			option.setIcon(img);
+			automata.setIcon(img);
 		}
 		if (s == annuler) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler_click.png");
@@ -135,9 +145,9 @@ public class Controller extends GameController implements ActionListener {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler.png");
 			annuler.setIcon(img);
 		}
-		if (s == option) {
+		if (s == automata) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/option.png");
-			option.setIcon(img);
+			automata.setIcon(img);
 		}
 	}
 
@@ -156,9 +166,9 @@ public class Controller extends GameController implements ActionListener {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler_hover.png");
 			annuler.setIcon(img);
 		}
-		if (s == option) {
+		if (s == automata) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/option_hover.png");
-			option.setIcon(img);
+			automata.setIcon(img);
 		}
 	}
 
@@ -177,20 +187,20 @@ public class Controller extends GameController implements ActionListener {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler.png");
 			annuler.setIcon(img);
 		}
-		if (s == option) {
+		if (s == automata) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/option.png");
-			option.setIcon(img);
+			automata.setIcon(img);
 		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+
 	}
 
 	public void notifyVisible() {
@@ -211,15 +221,15 @@ public class Controller extends GameController implements ActionListener {
 		play.setBorderPainted(false);
 		play.setFocusPainted(false);
 		cont.add(play);
-		
+
 		ImageIcon image1 = new ImageIcon("game.whaler/sprites/option.png");
-		option = new JButton(image1);
-		option.addActionListener(this);
-		option.addMouseListener(this);
-		option.setContentAreaFilled(false);
-		option.setBorderPainted(false);
-		option.setFocusPainted(false);
-		cont.add(option);
+		automata = new JButton(image1);
+		automata.addActionListener(this);
+		automata.addMouseListener(this);
+		automata.setContentAreaFilled(false);
+		automata.setBorderPainted(false);
+		automata.setFocusPainted(false);
+		cont.add(automata);
 
 		ImageIcon image2 = new ImageIcon("game.whaler/sprites/retour.png");
 		retour = new JButton(image2);
@@ -230,7 +240,7 @@ public class Controller extends GameController implements ActionListener {
 		retour.setFocusPainted(false);
 		retour.setVisible(false);
 		cont.add(retour);
-		
+
 		ImageIcon image3 = new ImageIcon("game.whaler/sprites/annuler.png");
 		annuler = new JButton(image3);
 		annuler.addActionListener(this);
@@ -240,64 +250,108 @@ public class Controller extends GameController implements ActionListener {
 		annuler.setFocusPainted(false);
 		annuler.setVisible(false);
 		cont.add(annuler);
-		
+
+		preference = new JButton("Préférences");
+		preference.addActionListener(this);
+		preference.addMouseListener(this);
+		cont.add(preference);
+
+		valider = new JButton("Valider");
+		valider.addActionListener(this);
+		valider.addMouseListener(this);
+		valider.setVisible(false);
+		cont.add(valider);
+
 		infoLabel = new JLabel("Sélectionnez un item");
 		infoLabel.setVisible(false);
 
-		// ici on récupère les automates et on en fait une liste
-		String[] items = { "Baleine", "Pétrole", "Baleinier", "Destroyer", "Joueur", "Projectile" };
+		String[] items = { "Baleine", "Baleinier", "Destroyer", "Joueur", "Pétrole", "Projectile" };
 		b = new JComboBox[6];
-		for (int i = 0; i < 6; i++) {
+		int i = 0;
+		while (i < 6) {
 			b[i] = new JComboBox<Object>(items);
 			main.add(b[i]);
 			b[i].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Object o = ((JComboBox<?>) e.getSource()).getSelectedItem();
-					String s = (String) o;
-					infoLabel.setText(s);
-					//ici on affecte à l'entité correspondante l'automate sélectionné
+					String string = (String) o;
+					infoLabel.setText(string);
 				}
 			});
+			i++;
 		}
-		
+
 		cont.add(infoLabel);
 		m_game.addSouth(cont);
 		m_game.addEast(main);
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		Object s = e.getSource();
+
+		if (s == retour) {
+			m_model.setScreen(Screen.HOME);
+			automata.setVisible(true);
+			play.setVisible(true);
+			preference.setVisible(true);
+			retour.setVisible(false);
+			main.setVisible(false);
+			annuler.setVisible(false);
+			infoLabel.setVisible(false);
+			valider.setVisible(false);
+		}
+		
+		if (s == annuler) {
+			infoLabel.setText("Sélectionnez un item");
+			for (int i = 0; i < 6; i++)
+				b[i].setSelectedIndex(0);
+		}
+		
 		if (s == play) {
 			m_model.setScreen(Screen.GAME);
 			cont.setVisible(false);
 		}
 
-		if (s == option) {
-			m_model.setScreen(Screen.OPTIONS);
-			option.setVisible(false);
+		if (s == valider) {
+			File file = new File("game.whaler/sprites/choix_automates.txt");
+			BufferedWriter out = null;
+			try {
+				out = new BufferedWriter(new FileWriter(file));
+				for (int i = 0; i < 6; i++)
+					out.write(b[i].getSelectedItem().toString() + ";");
+			} catch (IOException ae) {
+				ae.printStackTrace();
+			} finally {
+				try {
+					out.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		if (s == automata) {
+			m_model.setScreen(Screen.AUTOMATA);
+			automata.setVisible(false);
 			play.setVisible(false);
+			preference.setVisible(false);
 			retour.setVisible(true);
 			main.setVisible(true);
 			annuler.setVisible(true);
 			infoLabel.setVisible(true);
+			valider.setVisible(true);
 		}
-		if (s == retour) {
-			m_model.setScreen(Screen.HOME);
-			option.setVisible(true);
-			play.setVisible(true);
-			retour.setVisible(false);
-			main.setVisible(false);
-			annuler.setVisible(false);
-			infoLabel.setVisible(false);
-		}
-		
-		if (s==annuler) {
-			infoLabel.setText("Sélectionnez un item");
-			/* Ici on met le champ m_automate de toutes les entités à NULL ou on introduit un last automate
-			 * On garde en mémoire l'ancien automate assigné quand on en assigne un nouveau
-			 * Et en cliquant sur annuler, on remet l'ancien automate  */
+
+		if (s == preference) {
+			m_model.setScreen(Screen.PREFERENCES);
+			automata.setVisible(false);
+			play.setVisible(false);
+			preference.setVisible(false);
+			retour.setVisible(true);
+			annuler.setVisible(true);
 		}
 
 	}

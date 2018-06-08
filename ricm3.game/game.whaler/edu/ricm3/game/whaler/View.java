@@ -65,6 +65,8 @@ public class View extends GameView {
 
 		switch (m_model.currentScreen()) {
 
+		case PREFERENCES:
+			break;
 		case HOME:
 			m_model.m_menu.paint(g, getWidth(), getHeight());
 			break;
@@ -81,7 +83,7 @@ public class View extends GameView {
 				m_model.map().paint(g);
 			}
 			break;
-		case OPTIONS:
+		case AUTOMATA:
 			Font f = new Font("Verdana", Font.BOLD, 35);
 			g.setFont(f);
 			g.setColor(Color.BLACK);

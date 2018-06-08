@@ -41,7 +41,7 @@ import edu.ricm3.game.whaler.Game_exception.Map_exception;
 public class Model extends GameModel {
 	
 	public enum Screen {
-		OPTIONS,HOME,GAME;
+		AUTOMATA,HOME,GAME,PREFERENCES;
 	}
 	
 	private Screen m_screen;
