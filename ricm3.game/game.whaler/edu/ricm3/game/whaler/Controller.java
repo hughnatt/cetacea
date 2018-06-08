@@ -17,11 +17,17 @@
  */
 package edu.ricm3.game.whaler;
 
-
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
 
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model;
@@ -38,9 +44,19 @@ import edu.ricm3.game.whaler.Model;
  */
 
 public class Controller extends GameController implements ActionListener {
-
+	Panel cont;
+	Panel p;
+	Panel main;
 	Model m_model;
-	// Button, Music
+	JButton play;
+	Music m_player;
+	JButton option;
+	JButton annuler;
+	JButton retour;
+	Boolean GameOn = false;
+	Boolean op = false;
+	JLabel infoLabel;
+	JComboBox<?> b[];
 
 	public Controller(Model m) {
 		m_model = m;
@@ -86,59 +102,205 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play_clicked.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour_click.png");
+			retour.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option_click.png");
+			option.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler_click.png");
+			annuler.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play_unclicked.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour.png");
+			retour.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler.png");
+			annuler.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option.png");
+			option.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour_hover.png");
+			retour.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler_hover.png");
+			annuler.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option_hover.png");
+			option.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play_unclicked.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour.png");
+			retour.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler.png");
+			annuler.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option.png");
+			option.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		
 	}
 
 	public void notifyVisible() {
-		//Container cont = new Container();
-		//cont.setLayout(new FlowLayout());
+		cont = new Panel();
+		p = new Panel();
+		main = new Panel();
+		main.setLayout(new GridLayout(9, 1, 0, 15));
+		main.setBackground(Color.WHITE);
 
-		// example of initialisation of a button
+		main.setVisible(false);
+		cont.setBackground(Color.WHITE);
 
-		/*
-		 * name_button = new Button("chain_on_the_button");
-		 * name_button.addActionListener(this); cont.add(name_button);
-		 */
+		ImageIcon image = new ImageIcon("game.whaler/sprites/play_unclicked.png");
+		play = new JButton(image);
+		play.addActionListener(this);
+		play.addMouseListener(this);
+		play.setContentAreaFilled(false);
+		play.setBorderPainted(false);
+		play.setFocusPainted(false);
+		cont.add(play);
+		
+		ImageIcon image1 = new ImageIcon("game.whaler/sprites/option.png");
+		option = new JButton(image1);
+		option.addActionListener(this);
+		option.addMouseListener(this);
+		option.setContentAreaFilled(false);
+		option.setBorderPainted(false);
+		option.setFocusPainted(false);
+		cont.add(option);
 
-		// example of initialisation of a music
+		ImageIcon image2 = new ImageIcon("game.whaler/sprites/retour.png");
+		retour = new JButton(image2);
+		retour.addActionListener(this);
+		retour.addMouseListener(this);
+		retour.setContentAreaFilled(false);
+		retour.setBorderPainted(false);
+		retour.setFocusPainted(false);
+		retour.setVisible(false);
+		cont.add(retour);
+		
+		ImageIcon image3 = new ImageIcon("game.whaler/sprites/annuler.png");
+		annuler = new JButton(image3);
+		annuler.addActionListener(this);
+		annuler.addMouseListener(this);
+		annuler.setContentAreaFilled(false);
+		annuler.setBorderPainted(false);
+		annuler.setFocusPainted(false);
+		annuler.setVisible(false);
+		cont.add(annuler);
+		
+		infoLabel = new JLabel("Sélectionnez un item");
+		infoLabel.setVisible(false);
 
-		/*
-		 * File file = new File("game.sample/sprites/Future-RPG.wav"); try { this.music
-		 * = new Music(file); cont.add(this.music.getControls()); } catch (Exception ex)
-		 * { }
-		 */
-
-		//m_game.addSouth(cont);
+		// ici on récupère les automates et on en fait une liste
+		String[] items = { "Baleine", "Pétrole", "Baleinier", "Destroyer", "Joueur", "Projectile" };
+		b = new JComboBox[6];
+		for (int i = 0; i < 6; i++) {
+			b[i] = new JComboBox<Object>(items);
+			main.add(b[i]);
+			b[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Object o = ((JComboBox<?>) e.getSource()).getSelectedItem();
+					String s = (String) o;
+					infoLabel.setText(s);
+					//ici on affecte à l'entité correspondante l'automate sélectionné
+				}
+			});
+		}
+		
+		cont.add(infoLabel);
+		m_game.addSouth(cont);
+		m_game.addEast(main);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//Object s = e.getSource();
-		/*
-		 * if (s == some_button_or_other_stuff){ actions; }
-		 */
+
+		Object s = e.getSource();
+		if (s == play) {
+			GameOn = true;
+			cont.setVisible(false);
+		}
+
+		if (s == option) {
+			op = true;
+			option.setVisible(false);
+			play.setVisible(false);
+			retour.setVisible(true);
+			main.setVisible(true);
+			annuler.setVisible(true);
+			infoLabel.setVisible(true);
+		}
+		if (s == retour) {
+			op = false;
+			option.setVisible(true);
+			play.setVisible(true);
+			retour.setVisible(false);
+			main.setVisible(false);
+			annuler.setVisible(false);
+			infoLabel.setVisible(false);
+		}
+		
+		if (s==annuler) {
+			infoLabel.setText("Sélectionnez un item");
+			/* Ici on met le champ m_automate de toutes les entités à NULL ou on introduit un last automate
+			 * On garde en mémoire l'ancien automate assigné quand on en assigne un nouveau
+			 * Et en cliquant sur annuler, on remet l'ancien automate  */
+		}
+
 	}
 
 }
