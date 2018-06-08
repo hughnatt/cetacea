@@ -12,6 +12,7 @@ public abstract class Entity {
 	Location m_pos;
 	boolean m_solid;
 	BufferedImage m_sprite;
+	BufferedImage m_underSprite;
 	Model m_model;
 
 	/**
@@ -20,11 +21,12 @@ public abstract class Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	protected Entity(Location pos, boolean solid, BufferedImage sprite, Model model) {
+	protected Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model) {
 		this.m_pos = pos;
 		this.m_solid = solid;
 		this.m_sprite = sprite;
 		this.m_model = model;
+		this.m_underSprite = underSprite;
 		
 		//Adding the Entity to the Map (for rendering and fast access to locations)
 		m_model.map().tile(m_pos.x,m_pos.y).addForeground(this);
