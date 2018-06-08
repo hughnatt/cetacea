@@ -79,7 +79,7 @@ public class Model extends GameModel {
 	//Menu d'accueil
 	Menu m_menu;
 	
-	// Boolean indiquant si le joueur est underwater
+	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;
 
 	// Background

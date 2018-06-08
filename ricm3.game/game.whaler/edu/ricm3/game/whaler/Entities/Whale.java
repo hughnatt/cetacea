@@ -14,6 +14,7 @@ import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 public final class Whale extends Mobile_Entity {
 
 	int m_capture; // Catch gauge
+	int m_damage; // DPS to the hit
 
 	/**
 	 * @param pos
@@ -26,8 +27,8 @@ public final class Whale extends Mobile_Entity {
 	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Map_exception {
 		super(pos, true, sprite, underSprite, model, dir);
-		m_capture = 10;
-
+		m_capture = Options.WHALE_CAPTURE_INIT;
+		m_damage = Options.WHALE_DPS;
 	}
 
 	@Override
@@ -71,8 +72,13 @@ public final class Whale extends Mobile_Entity {
 	}
 
 	@Override
-	public void hit() {
-		// TODO
+	public void hit() throws Map_exception {
+		Location new_pos = this.pos_front();
+		Entity result = m_model.map().tile(new_pos).contain(Player.class); // Is there a player ?
+		if (result != null) {
+			Player result_player = (Player) result;
+			result_player.m_life -= m_damage; // if yes, it takes damages
+		}
 	}
 
 }

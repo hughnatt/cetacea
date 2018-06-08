@@ -26,6 +26,25 @@ public abstract class Mobile_Entity extends Entity {
 		m_direction = dir;
 	}
 
+	protected Location pos_front() {
+		Location front = new Location(this.m_pos); // Calculation of the front location
+		switch (m_direction) {
+		case NORTH:
+			front.up();
+			break;
+		case EAST:
+			front.right();
+			break;
+		case SOUTH:
+			front.down();
+			break;
+		case WEST:
+			front.left();
+			break;
+		}
+		return front;
+	}
+
 	/**
 	 * @throws Map_exception
 	 * @throws Tile_exception
@@ -71,6 +90,6 @@ public abstract class Mobile_Entity extends Entity {
 
 	public abstract void wizz() throws Map_exception, Tile_exception, Location_exception;
 
-	public abstract void hit();
+	public abstract void hit() throws Map_exception;
 
 }

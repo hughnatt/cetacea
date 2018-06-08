@@ -46,21 +46,8 @@ public class Projectile extends Mobile_Entity {
 
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 			if (m_remaining != 0) {
-				Location new_pos = new Location(this.m_pos); // Calculation of the new location
-				switch (m_direction) {
-				case NORTH:
-					new_pos.up();
-					break;
-				case EAST:
-					new_pos.right();
-					break;
-				case SOUTH:
-					new_pos.down();
-					break;
-				case WEST:
-					new_pos.left();
-					break;
-				}
+
+				Location new_pos = this.pos_front();
 
 				Tile tile = m_model.map().tile(new_pos); // Tile for the new location
 
