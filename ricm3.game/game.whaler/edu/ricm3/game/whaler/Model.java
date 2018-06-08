@@ -17,6 +17,7 @@
  */
 package edu.ricm3.game.whaler;
 
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -52,10 +53,16 @@ public class Model extends GameModel {
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
 
+	private BufferedImage m_scoreSprite;
+	private BufferedImage m_baleinemenuSprite;
+	private BufferedImage m_destroyer_menuSprite;
+	private BufferedImage m_projectile_menuSprite;
+	private BufferedImage m_fondmenu;
+	Menu m_menu;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleSprite;
 
-	// Boolean for the underwater player mode
+	// Boolean indiquant si le joueur est underwater
 	public boolean UNDER_WATER;
 
 	// Background
@@ -78,9 +85,15 @@ public class Model extends GameModel {
 	public Random rand = new Random();
 
 	public Model() throws Map_exception {
+
 		// Loading Sprites Model
 		loadSprites();
-
+		BufferedImage[] im = new BufferedImage[4];
+		im[0] = m_baleinemenuSprite;
+		im[1] = m_destroyer_menuSprite;
+		im[2] = m_projectile_menuSprite;
+		im[3] = m_fondmenu;
+		m_menu = new Menu(im, this, 350, 150, (float) 2);
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -143,21 +156,12 @@ public class Model extends GameModel {
 	}
 
 	@Override
-	public void shutdown() {
-
+	public void step(long now) {
+		m_current_background.step(now);
 	}
 
-	/**
-	 * Simulation step.
-	 * 
-	 * @param now
-	 *            is the current time in milliseconds.
-	 */
 	@Override
-	public void step(long now) {
-
-		m_current_background.step(now);
-		// m_map.step(); Is this a good idea ?
+	public void shutdown() {
 	}
 
 	public void swap() {
@@ -186,12 +190,24 @@ public class Model extends GameModel {
 	}
 
 	private void loadSprites() {
-
 		File imageFile;
-		/*
-		 * Texture from Minecraft Faithful 32 RessourcePack
-		 * https://www.curseforge.com/minecraft/texture-packs/faithful-32x
-		 */
+
+		imageFile = new File("game.whaler/sprites/help.png");
+		try {
+			m_baleinemenuSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		imageFile = new File("game.whaler/sprites/fond.png");
+		try {
+			m_fondmenu = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
 		imageFile = new File("game.whaler/sprites/water.png");
 		try {
 			m_waterSprite = ImageIO.read(imageFile);
@@ -277,6 +293,14 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
+		imageFile = new File("game.whaler/sprites/Destroyer_menu.png");
+		try {
+			m_destroyer_menuSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
 		/*
 		 * Custom Texture
 		 */
@@ -294,6 +318,14 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/iceberg.png");
 		try {
 			m_icebergSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		imageFile = new File("game.whaler/sprites/Projectile_menu.png");
+		try {
+			m_projectile_menuSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -331,5 +363,4 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 	}
-
 }

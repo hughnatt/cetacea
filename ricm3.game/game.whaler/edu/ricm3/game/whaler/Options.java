@@ -18,6 +18,9 @@
 package edu.ricm3.game.whaler;
 
 public class Options {
+	
+	//some public static variables, final or not, initialized or not
+	public static boolean VERBOSE = false;
 
 	// some public static variables, final or not, initialized or not
 
