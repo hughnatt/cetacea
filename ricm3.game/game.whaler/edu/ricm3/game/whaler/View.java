@@ -20,11 +20,6 @@ package edu.ricm3.game.whaler;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameView;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
@@ -59,42 +54,24 @@ public class View extends GameView {
 
 	@Override
 	protected void _paint(Graphics g) {
+		computeFPS();
+
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		if (!(m_ctr.op)) {
-			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, getWidth(), getHeight());
-			Image img1 = null;
-			File ImFile = new File("game.whaler/sprites/fond.png");
-			try {
-				img1 = ImageIO.read(ImFile);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-			g.drawImage(img1, 0, 0, getWidth(), getHeight(), null);
-			m_model.m_menu.paint(g, getWidth(), getHeight());
-		} else {
-			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, getWidth(), getHeight());
-			Font f = new Font("Verdana", Font.BOLD, 35);
-			g.setFont(f);
-			g.setColor(Color.BLACK);
-			g.drawString("Baleine", 200, 40);
-			g.drawString("Baleinier", 200, 120);
-			g.drawString("Destroyer", 200, 200);
-			g.drawString("Joueur", 200, 270);
-			g.drawString("Pétrole", 200, 340);
-			g.drawString("Projectile", 200, 420);
-		}
-		if (m_ctr.GameOn) {
-			g.setColor(Color.BLUE);
-			g.fillRect(0, 0, getWidth(), getHeight());
+		switch (m_model.currentScreen()) {
 
+		case HOME:
+			m_model.m_menu.paint(g, getWidth(), getHeight());
+			break;
+		case GAME:
+			g.setColor(Color.BLUE);
+
+			g.fillRect(0, 0, getWidth(), getHeight());
 			// call the method paint on all the instances you want to print
 			m_model.m_current_background.paint(g);
 
+			// Viewport paint of the map
 			// Viewport paint of the map
 			try {
 
@@ -106,6 +83,21 @@ public class View extends GameView {
 			} catch (Location_exception l) {
 				System.exit(3);
 			}
+			break;
+		case OPTIONS:
+			Font f = new Font("Verdana", Font.BOLD, 35);
+			g.setFont(f);
+			g.setColor(Color.BLACK);
+			g.drawString("Baleine", 200, 40);
+			g.drawString("Baleinier", 200, 120);
+			g.drawString("Destroyer", 200, 200);
+			g.drawString("Joueur", 200, 270);
+			g.drawString("Pétrole", 200, 340);
+			g.drawString("Projectile", 200, 420);
+			break;
+		default:
+			break;
 		}
+
 	}
 }
