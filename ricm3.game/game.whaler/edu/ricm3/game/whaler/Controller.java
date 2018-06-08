@@ -95,29 +95,96 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play_clicked.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour_click.png");
+			retour.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option_click.png");
+			option.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler_click.png");
+			annuler.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play_unclicked.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour.png");
+			retour.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler.png");
+			annuler.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option.png");
+			option.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour_hover.png");
+			retour.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler_hover.png");
+			annuler.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option_hover.png");
+			option.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		Object s = e.getSource();
+		if (s == play) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/play_unclicked.png");
+			play.setIcon(img);
+		}
+		if (s == retour) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/retour.png");
+			retour.setIcon(img);
+		}
+		if (s == annuler) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/annuler.png");
+			annuler.setIcon(img);
+		}
+		if (s == option) {
+			ImageIcon img = new ImageIcon("game.whaler/sprites/option.png");
+			option.setIcon(img);
+		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		
 	}
 
 	public void notifyVisible() {
@@ -138,8 +205,9 @@ public class Controller extends GameController implements ActionListener {
 		play.setBorderPainted(false);
 		play.setFocusPainted(false);
 		cont.add(play);
-
-		option = new JButton(image);
+		
+		ImageIcon image1 = new ImageIcon("game.whaler/sprites/option.png");
+		option = new JButton(image1);
 		option.addActionListener(this);
 		option.addMouseListener(this);
 		option.setContentAreaFilled(false);
@@ -147,13 +215,23 @@ public class Controller extends GameController implements ActionListener {
 		option.setFocusPainted(false);
 		cont.add(option);
 
-		retour = new JButton("Retour");
+		ImageIcon image2 = new ImageIcon("game.whaler/sprites/retour.png");
+		retour = new JButton(image2);
 		retour.addActionListener(this);
+		retour.addMouseListener(this);
+		retour.setContentAreaFilled(false);
+		retour.setBorderPainted(false);
+		retour.setFocusPainted(false);
 		retour.setVisible(false);
 		cont.add(retour);
 		
-		annuler = new JButton("Annuler");
+		ImageIcon image3 = new ImageIcon("game.whaler/sprites/annuler.png");
+		annuler = new JButton(image3);
 		annuler.addActionListener(this);
+		annuler.addMouseListener(this);
+		annuler.setContentAreaFilled(false);
+		annuler.setBorderPainted(false);
+		annuler.setFocusPainted(false);
 		annuler.setVisible(false);
 		cont.add(annuler);
 		

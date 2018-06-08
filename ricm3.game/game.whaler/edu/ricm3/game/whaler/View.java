@@ -20,6 +20,11 @@ package edu.ricm3.game.whaler;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameView;
 
@@ -59,7 +64,16 @@ public class View extends GameView {
 		if (!(m_ctr.op)) {
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, getWidth(), getHeight());
-			m_model.m_menu.paint(g, getWidth());
+			Image img1=null;
+			File ImFile = new File("game.whaler/sprites/fond.png");
+			try {
+				img1 = ImageIO.read(ImFile);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				System.exit(-1);
+			}	
+			g.drawImage(img1, 0, 0, getWidth(), getHeight(),null);
+			m_model.m_menu.paint(g, getWidth(),getHeight());
 		} else {
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, getWidth(), getHeight());

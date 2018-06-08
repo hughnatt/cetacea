@@ -50,6 +50,7 @@ public class Model extends GameModel {
 	BufferedImage m_baleinemenuSprite;
 	BufferedImage m_destroyer_menuSprite;
 	BufferedImage m_projectile_menuSprite;
+	BufferedImage m_fondmenu;
 	Menu m_menu;
 
 	// Background
@@ -137,13 +138,21 @@ public class Model extends GameModel {
 	private void loadSprites() {
 		File imageFile;
 
-		imageFile = new File("game.whaler/sprites/baleine_menu.png");
+		imageFile = new File("game.whaler/sprites/help.png");
 		try {
 			m_baleinemenuSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+		
+		imageFile = new File("game.whaler/sprites/fond.png");
+		try {
+			m_fondmenu = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}	
 
 		imageFile = new File("game.whaler/sprites/water.png");
 		try {
