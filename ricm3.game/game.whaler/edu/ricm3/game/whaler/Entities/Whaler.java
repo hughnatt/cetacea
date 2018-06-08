@@ -21,12 +21,15 @@ public class Whaler extends Mobile_Entity {
 	/**
 	 * @param pos
 	 * @param sprite
+	 * @param underSprite
 	 * @param model
 	 * @param dir
+	 * @throws Map_exception
 	 */
-	public Whaler(Location pos, BufferedImage sprite, Model model, Direction dir) throws Map_exception {
-		super(pos, true, sprite, model, dir);
-		m_life = Options.WHALER_LIFE;
+	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+			throws Map_exception {
+		super(pos, true, sprite, underSprite, model, dir);
+
 		loadSprites();
 		switch (dir) {
 		case EAST:

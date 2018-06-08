@@ -30,9 +30,10 @@ public class Projectile extends Mobile_Entity {
 	 * @param damage
 	 *            Damage power
 	 */
-	public Projectile(Location m_pos, BufferedImage m_sprite, Model m_model, Direction dir, int range)
-			throws Map_exception {
-		super(m_pos, false, m_sprite, m_model, dir);
+
+	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
+			int range, int damage) throws Map_exception {
+		super(pos, false, sprite, underSprite, model, dir);
 		m_remaining = range;
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;

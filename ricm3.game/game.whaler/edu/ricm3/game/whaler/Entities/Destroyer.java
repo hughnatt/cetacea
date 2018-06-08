@@ -28,9 +28,12 @@ public class Destroyer extends Mobile_Entity {
 	 * @param dir
 	 *            Initial Direction of the Destroyer
 	 */
-	public Destroyer(Location pos, BufferedImage sprite, Model model, Direction dir) throws Map_exception {
-		super(pos, true, sprite, model, dir);
+
+	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+			throws Map_exception {
+		super(pos, true, sprite, underSprite, model, dir);
 		m_life = Options.DESTROYER_LIFE;
+
 		loadSprites();
 
 		switch (dir) {

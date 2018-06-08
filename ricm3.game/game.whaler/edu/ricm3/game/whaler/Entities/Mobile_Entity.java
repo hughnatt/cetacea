@@ -19,9 +19,9 @@ public abstract class Mobile_Entity extends Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, Model model, Direction dir)
-			throws Map_exception {
-		super(pos, solid, sprite, model);
+	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
+			Direction dir) throws Map_exception {
+		super(pos, solid, sprite, underSprite, model);
 		m_direction = dir;
 	}
 
