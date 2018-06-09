@@ -1,10 +1,33 @@
 package edu.ricm3.game.whaler.Interpretor;
 
+import edu.ricm3.game.whaler.Direction;
 
 public abstract class ICondition {
 	
 	public abstract boolean eval();
 
+	public static Direction strToDir(String str){ //TODO, création d'une méthode IString avec méthodes de conversion incluse à la place de fonctions statiques
+		if (str.equals("N")) {
+			return Direction.NORTH;
+		} else if (str.equals("S")){
+			return Direction.SOUTH;
+		} else if (str.equals("E")){
+			return Direction.EAST;
+		} else if (str.equals("O")){
+			return Direction.WEST;
+		} else if (str.equals("F")){
+			return Direction.FORWARD;
+		} else if (str.equals("B")){
+			return Direction.BACKWARD;
+		} else if (str.equals("R")){
+			return Direction.RIGHT;
+		} else if (str.equals("L")){
+			return Direction.LEFT;
+		}else {
+			System.out.println("Unknown Direction, will be interpreted as FORWARD");
+			return Direction.FORWARD;
+		}
+	}
 	
 	public static class ITrue extends ICondition {
 		
@@ -30,10 +53,10 @@ public abstract class ICondition {
 	}
 
 	public static class IMyDir extends ICondition {
-		String m_dir;
+		Direction m_dir;
 		
-		public IMyDir(String string){
-			m_dir = string;
+		public IMyDir(String string) {
+			m_dir = strToDir(string);
 		}
 		
 		public boolean eval() {
@@ -43,11 +66,11 @@ public abstract class ICondition {
 
 	public static class ICell extends ICondition  {
 		String m_entity;
-		String m_dir;
+		Direction m_dir;
 		
 		public ICell(String entity, String dir){
 			m_entity = entity;
-			m_dir = dir;
+			m_dir = strToDir(dir);
 		}
 		
 		public boolean eval() {
@@ -57,11 +80,11 @@ public abstract class ICondition {
 	
 	public static class IClosest extends ICondition  {
 		String m_entity;
-		String m_dir;
+		Direction m_dir;
 		
 		public IClosest(String entity, String dir){
 			m_entity = entity;
-			m_dir = dir;
+			m_dir = strToDir(dir);
 		}
 		
 		public boolean eval() {
