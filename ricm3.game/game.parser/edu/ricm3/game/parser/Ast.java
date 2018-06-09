@@ -52,7 +52,7 @@ public class Ast {
 	// AST as active automata (interpreter of transitions)
 
 	public Object make() throws Automata_Exception {
-		return null; 
+		return null;
 	}
 
 	public static class Terminal extends Ast {
@@ -227,7 +227,7 @@ public class Ast {
 		}
 
 		public IAction makeAction() throws Automata_Exception {
-			throw new Automata_Exception("Opérateur Unaire incorrect sur Action");
+			throw new Automata_Exception("Opérateur Unaire toujours incorrect sur Action");
 		}
 	}
 
@@ -256,7 +256,7 @@ public class Ast {
 			} else if (operator.make().equals("&")) {
 				return new IAnd((ICondition) left_operand.make(), (ICondition) right_operand.make());
 			} else {
-				throw new Automata_Exception("Unkown Operator" + operator.toString() + "\n");
+				throw new Automata_Exception("Unkown Operator : " + operator.toString() + "\n");
 			}
 
 		}
@@ -267,10 +267,9 @@ public class Ast {
 				return new IAction.IOr(left_operand.makeAction(), right_operand.makeAction());
 
 			} else if (operator.make().equals("&")) {
-				throw new Automata_Exception("Can't execute 2 actions at the same time"); // TODO : Do we need to
-																							// support this ?
+				throw new Automata_Exception("Can't execute 2 actions at the same time"); 
 			} else {
-				throw new Automata_Exception("Unkown Operator" + operator.toString() + "\n");
+				throw new Automata_Exception("Unkown Operator : " + operator.toString() + "\n");
 			}
 
 		}
@@ -301,65 +300,123 @@ public class Ast {
 
 		public ICondition makeCondition() throws Automata_Exception {
 
-			Iterator<Parameter> iter = parameters.iterator();
 			/*
-			 * CONDITIONS //TODO
+			 * CONDITIONS
 			 */
 			if (name.make().equals("True")) {
+
+				assert (parameters.size() == 0);
 				return new ITrue();
+
 			} else if (name.make().equals("Key")) {
 
-				return new IKey((String) iter.next().make());
+				assert (parameters.size() == 1);
+				return new IKey(parameters.get(0).make());
+
 			} else if (name.make().equals("MyDir")) {
 
-				return new IMyDir('0');
+				assert (parameters.size() == 1);
+				return new IMyDir(parameters.get(0).make());
+
 			} else if (name.make().equals("Cell")) {
 
-				return new ICell('0', '0');
+				assert (parameters.size() == 2);
+				return new ICell(parameters.get(0).make(), parameters.get(1).make());
+
 			} else if (name.make().equals("Closest")) {
 
-				return new IClosest('0', '0');
-			} else if (name.make().equals("GetPower")) {
+				assert (parameters.size() == 2);
+				return new IClosest(parameters.get(0).make(), parameters.get(1).make());
 
+			} else if (name.make().equals("GetPower")) {
+				
+				assert(parameters.size() == 0);
 				return new IGetPower();
+				
+			} else if (name.make().equals("GotStuff")) {
+				
+				assert(parameters.size() == 0);
+				return new IGotStuff();
+				
 			} else {
+				
 				throw new Automata_Exception("Unknown Condition : " + name.make() + "\n");
 			}
 		}
 
 		public IAction makeAction() throws Automata_Exception {
-			//Iterator<Parameter> iter = parameters.iterator();
+
 			/*
-			 * ACTIONS //TODO
+			 * ACTIONS
 			 */
 			if (name.make().equals("Move")) {
-				return new IMove(null);
+				
+				assert(parameters.size() == 1);
+				return new IMove(parameters.get(0).make());
+				
 			} else if (name.make().equals("Jump")) {
-				return new IJump();
+				
+				assert(parameters.size() == 1);
+				return new IJump(parameters.get(0).make());
+				
 			} else if (name.make().equals("Wizz")) {
-				return new IWizz();
+				
+				assert(parameters.size() == 1);
+				return new IWizz(parameters.get(0).make());
+				
 			} else if (name.make().equals("Pop")) {
-				return new IPop();
+				
+				assert(parameters.size() == 1);
+				return new IPop(parameters.get(0).make());
+				
 			} else if (name.make().equals("Turn")) {
-				return new ITurn(null);
+				
+				assert(parameters.size() == 1);
+				return new ITurn(parameters.get(0).make());
+				
 			} else if (name.make().equals("Hit")) {
-				return new IHit();
+				
+				assert(parameters.size() == 1);
+				return new IHit(parameters.get(0).make());
+				
 			} else if (name.make().equals("Protect")) {
-				return new IProtect();
+				
+				assert(parameters.size() == 1);
+				return new IProtect(parameters.get(0).make());
+				
 			} else if (name.make().equals("Pick")) {
-				return new IPick();
+				
+				assert(parameters.size() == 1);
+				return new IPick(parameters.get(0).make());
+				
 			} else if (name.make().equals("Throw")) {
-				return new IThrow();
+				
+				assert(parameters.size() == 1);
+				return new IThrow(parameters.get(0).make());
+				
 			} else if (name.make().equals("Store")) {
+				
+				assert(parameters.size() == 0);
 				return new IStore();
+				
 			} else if (name.make().equals("Get")) {
+				
+				assert(parameters.size() == 0);
 				return new IGet();
+				
 			} else if (name.make().equals("Power")) {
+				
+				assert(parameters.size() == 0);
 				return new IPower();
+				
 			} else if (name.make().equals("Kamikaze")) {
+				
+				assert(parameters.size() == 0);
 				return new IKamikaze();
+				
 			} else {
-				throw new Automata_Exception("");
+				
+				throw new Automata_Exception("Unknown Action : "+name.make()+"\n");
 			}
 
 		}
@@ -458,7 +515,7 @@ public class Ast {
 
 			IAutomata[] list = new IAutomata[automata.size()];
 			int i = 0;
-			
+
 			Iterator<Automaton> iter = automata.iterator();
 			while (iter.hasNext()) {
 				Automaton a = iter.next();

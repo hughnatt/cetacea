@@ -112,10 +112,9 @@ public class Model extends GameModel {
 		m_screen = Screen.HOME;
 		
 		//Loading automate file
-		Ast ast;
-		new AutomataParser(new BufferedReader(new FileReader("automata.txt")));
-		ast = AutomataParser.Run();
-		IAutomata[] automata_array = ((AI_Definitions) ast).make();
+		Ast ast = new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt"))).Run();
+		//ast = AutomataParser.Run();
+		//IAutomata[] automata_array = ((AI_Definitions) ast).make();
 
 		
 		

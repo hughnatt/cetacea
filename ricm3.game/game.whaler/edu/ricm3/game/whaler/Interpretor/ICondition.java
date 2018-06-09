@@ -30,10 +30,10 @@ public abstract class ICondition {
 	}
 
 	public static class IMyDir extends ICondition {
-		char m_dir;
+		String m_dir;
 		
-		public IMyDir(char dir){
-			m_dir = dir;
+		public IMyDir(String string){
+			m_dir = string;
 		}
 		
 		public boolean eval() {
@@ -42,10 +42,10 @@ public abstract class ICondition {
 	}
 
 	public static class ICell extends ICondition  {
-		char m_entity;
-		char m_dir;
+		String m_entity;
+		String m_dir;
 		
-		public ICell(char entity, char dir){
+		public ICell(String entity, String dir){
 			m_entity = entity;
 			m_dir = dir;
 		}
@@ -56,10 +56,10 @@ public abstract class ICondition {
 	}
 	
 	public static class IClosest extends ICondition  {
-		char m_entity;
-		char m_dir;
+		String m_entity;
+		String m_dir;
 		
-		public IClosest(char entity, char dir){
+		public IClosest(String entity, String dir){
 			m_entity = entity;
 			m_dir = dir;
 		}
@@ -72,6 +72,16 @@ public abstract class ICondition {
 	public static class IGetPower extends ICondition  {
 		
 		public IGetPower(){
+		}
+		
+		public boolean eval() {
+			return false; //TODO
+		}
+	}
+	
+public static class IGotStuff extends ICondition  {
+		
+		public IGotStuff(){
 		}
 		
 		public boolean eval() {

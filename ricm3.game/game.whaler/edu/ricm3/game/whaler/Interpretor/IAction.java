@@ -1,7 +1,6 @@
 package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
-import edu.ricm3.game.whaler.Map;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
@@ -9,29 +8,14 @@ import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 public abstract class IAction{
 
 
-	public IAction() {
-	}
-
 	abstract void step(Mobile_Entity e) throws Map_exception, Tile_exception;
 
-	
-	public static class ITurn extends IAction {
-
-		Direction m_dir;
-		
-		public ITurn(Direction dir) {
-			m_dir = dir;
-		}
-
-		void step(Mobile_Entity e) {
-		}
-	}
 
 	public static class IMove extends IAction {
 
 		Direction m_dir;
-		public IMove(Direction dir) {
-			m_dir = dir;
+		
+		public IMove(String dir) {
 		}
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
@@ -55,11 +39,26 @@ public abstract class IAction{
 	
 	
 	public static class IJump extends IAction {
+		
+		Direction m_dir;
+		
+		public IJump(String dir) {
+		}
+		
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}	
 	}
 	
 	public static class IWizz extends IAction {
+		
+
+		Direction m_dir;
+		
+		public IWizz(String dir) {
+			
+		}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 			e.wizz();
 		}
@@ -67,14 +66,38 @@ public abstract class IAction{
 	}
 	public static class IPop extends IAction {
 
+
+		Direction m_dir;
+		
+		public IPop(String dir) {
+			
+		}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 			e.pop();
 		}
+	}
+	
+	public static class ITurn extends IAction {
+
+		Direction m_dir;
 		
+		public ITurn(String dir) {
+		}
+
+		void step(Mobile_Entity e) {
+		}
 	}
 	
 	
 	public static class IHit extends IAction {
+		
+
+		Direction m_dir;
+		
+		public IHit(String dir) {
+			
+		}
 		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 			e.hit();
@@ -84,6 +107,12 @@ public abstract class IAction{
 	
 	public static class IProtect extends IAction {
 
+		Direction m_dir;
+		
+		public IProtect(String dir) {
+			
+		}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
@@ -91,6 +120,12 @@ public abstract class IAction{
 	
 	public static class IPick extends IAction {
 
+		Direction m_dir;
+		
+		public IPick(String dir) {
+			
+		}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
@@ -98,6 +133,12 @@ public abstract class IAction{
 	
 	public static class IThrow extends IAction {
 
+		Direction m_dir;
+		
+		public IThrow(String dir) {
+			
+		}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
@@ -105,6 +146,8 @@ public abstract class IAction{
 	
 	public static class IStore extends IAction {
 
+		public IStore() {}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
@@ -112,6 +155,8 @@ public abstract class IAction{
 	
 	public static class IGet extends IAction {
 
+		public IGet() {}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {	
 		}
 		
@@ -119,6 +164,8 @@ public abstract class IAction{
 	
 	public static class IPower extends IAction {
 
+		public IPower() {}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
@@ -126,7 +173,8 @@ public abstract class IAction{
 	
 	public static class IKamikaze extends IAction {
 
-		@Override
+		public IKamikaze() {}
+		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
@@ -153,8 +201,3 @@ public abstract class IAction{
 	}
 
 }
-
-/*
- * IWhizz IPop IMove IJump ITurn IHit IProtect IPick IThrow IStore IGet IPower
- * IKamikaze
- */
