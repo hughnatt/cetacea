@@ -6,7 +6,7 @@ public abstract class ICondition {
 	public abstract boolean eval();
 
 	
-	public class ITrue extends ICondition {
+	public static class ITrue extends ICondition {
 		
 		public ITrue(){
 			
@@ -17,7 +17,7 @@ public abstract class ICondition {
 		}
 	}
 	
-	public class IKey extends ICondition {
+	public static class IKey extends ICondition {
 		String m_key;
 		
 		public IKey(String key){
@@ -29,7 +29,7 @@ public abstract class ICondition {
 		}
 	}
 
-	public class IMyDir extends ICondition {
+	public static class IMyDir extends ICondition {
 		char m_dir;
 		
 		public IMyDir(char dir){
@@ -41,7 +41,7 @@ public abstract class ICondition {
 		}
 	}
 
-	public class ICell extends ICondition  {
+	public static class ICell extends ICondition  {
 		char m_entity;
 		char m_dir;
 		
@@ -55,7 +55,7 @@ public abstract class ICondition {
 		}
 	}
 	
-	public class IClosest extends ICondition  {
+	public static class IClosest extends ICondition  {
 		char m_entity;
 		char m_dir;
 		
@@ -69,7 +69,7 @@ public abstract class ICondition {
 		}
 	}
 	
-	public class IGetPower extends ICondition  {
+	public static class IGetPower extends ICondition  {
 		
 		public IGetPower(){
 		}
@@ -79,7 +79,7 @@ public abstract class ICondition {
 		}
 	}
 	
-	public class IAnd extends ICondition {
+	public static class IAnd extends ICondition {
 		ICondition m_a;
 		ICondition m_b;
 
@@ -93,7 +93,7 @@ public abstract class ICondition {
 		}
 	}
 
-	public class IOr extends ICondition {
+	public static class IOr extends ICondition {
 		ICondition m_a;
 		ICondition m_b;
 
@@ -107,7 +107,7 @@ public abstract class ICondition {
 		}
 	}
 
-	public class INot extends ICondition {
+	public static class INot extends ICondition {
 		ICondition m_a;
 
 		public INot(ICondition a) {

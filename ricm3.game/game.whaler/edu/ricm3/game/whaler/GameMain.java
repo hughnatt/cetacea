@@ -24,7 +24,7 @@ import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class GameMain {
 
-	public static void main(String[] args) throws Map_exception {
+	public static void main(String[] args) throws Exception {
 
 		// construct the game elements: model, controller, and view.
 		Model model = new Model();

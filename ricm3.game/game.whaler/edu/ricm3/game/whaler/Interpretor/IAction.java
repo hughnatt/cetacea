@@ -15,7 +15,7 @@ public abstract class IAction{
 	abstract void step(Mobile_Entity e) throws Map_exception, Tile_exception;
 
 	
-	public class ITurn extends IAction {
+	public static class ITurn extends IAction {
 
 		Direction m_dir;
 		
@@ -27,7 +27,7 @@ public abstract class IAction{
 		}
 	}
 
-	public class IMove extends IAction {
+	public static class IMove extends IAction {
 
 		Direction m_dir;
 		public IMove(Direction dir) {
@@ -54,18 +54,18 @@ public abstract class IAction{
 	
 	
 	
-	public class IJump extends IAction {
+	public static class IJump extends IAction {
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}	
 	}
 	
-	public class IWizz extends IAction {
+	public static class IWizz extends IAction {
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 			e.wizz();
 		}
 		
 	}
-	public class IPop extends IAction {
+	public static class IPop extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 			e.pop();
@@ -74,7 +74,7 @@ public abstract class IAction{
 	}
 	
 	
-	public class IHit extends IAction {
+	public static class IHit extends IAction {
 		
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 			e.hit();
@@ -82,49 +82,49 @@ public abstract class IAction{
 		
 	}
 	
-	public class IProtect extends IAction {
+	public static class IProtect extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
 	}
 	
-	public class IPick extends IAction {
+	public static class IPick extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
 	}
 	
-	public class IThrow extends IAction {
+	public static class IThrow extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
 	}
 	
-	public class IStore extends IAction {
+	public static class IStore extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
 	}
 	
-	public class IGet extends IAction {
+	public static class IGet extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {	
 		}
 		
 	}
 	
-	public class IPower extends IAction {
+	public static class IPower extends IAction {
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
 		}
 		
 	}
 	
-	public class IKamikaze extends IAction {
+	public static class IKamikaze extends IAction {
 
 		@Override
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
@@ -132,7 +132,7 @@ public abstract class IAction{
 		
 	}
 	
-	public class IOr extends IAction {
+	public static class IOr extends IAction {
 		IAction m_a;
 		IAction m_b;
 

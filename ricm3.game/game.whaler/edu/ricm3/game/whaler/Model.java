@@ -19,13 +19,19 @@ package edu.ricm3.game.whaler;
 
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameModel;
+import edu.ricm3.game.parser.Ast;
+import edu.ricm3.game.parser.Ast.*;
+import edu.ricm3.game.parser.AutomataParser;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Destroyer;
 import edu.ricm3.game.whaler.Entities.Iceberg;
@@ -36,7 +42,7 @@ import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 	
@@ -101,9 +107,17 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model() throws Map_exception {
+	public Model() throws Exception {
 
 		m_screen = Screen.HOME;
+		
+		//Loading automate file
+		Ast ast;
+		new AutomataParser(new BufferedReader(new FileReader("automata.txt")));
+		ast = AutomataParser.Run();
+		IAutomata[] automata_array = ((AI_Definitions) ast).make();
+
+		
 		
 		// Loading Sprites Model
 		loadSprites();
