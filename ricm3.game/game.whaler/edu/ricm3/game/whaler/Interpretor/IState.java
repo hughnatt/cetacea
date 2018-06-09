@@ -7,6 +7,9 @@ public class IState {
 		this.m_name = m_name;
 	}
 	
+	public String toString() {
+		return m_name;
+	}
 	
 
 }

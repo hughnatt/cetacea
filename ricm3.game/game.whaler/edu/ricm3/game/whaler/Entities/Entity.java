@@ -56,8 +56,9 @@ public abstract class Entity {
 
 	/**
 	 * @param now
+	 * @throws Exception 
 	 */
-	public abstract void step(long now) throws Map_exception, Tile_exception;
+	public abstract void step(long now) throws Exception;
 
 	/**
 	 * @param g

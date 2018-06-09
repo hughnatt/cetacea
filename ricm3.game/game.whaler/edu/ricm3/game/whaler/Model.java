@@ -111,10 +111,11 @@ public class Model extends GameModel {
 
 		m_screen = Screen.HOME;
 		
+		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		//Loading automate file
-		Ast ast = new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt"))).Run();
+		Ast ast = AutomataParser.Run();
 		//ast = AutomataParser.Run();
-		//IAutomata[] automata_array = ((AI_Definitions) ast).make();
+		IAutomata[] automata_array = ((AI_Definitions) ast).make();
 
 		
 		
@@ -176,7 +177,7 @@ public class Model extends GameModel {
 		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
 
 		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, null, this, Direction.WEST);
+		m_player = new Player(new Location(3, 3), m_playerSprite, null, this, Direction.WEST, automata_array[0]);
 
 	}
 
@@ -187,6 +188,13 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 		m_current_background.step(now);
+	
+		try {
+			m_player.step(now);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

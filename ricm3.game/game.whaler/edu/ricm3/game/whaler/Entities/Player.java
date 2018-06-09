@@ -7,7 +7,10 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends Mobile_Entity {
 
@@ -29,10 +32,11 @@ public final class Player extends Mobile_Entity {
 	 *            Modèle interne
 	 */
 
-	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, IAutomata auto)
 			throws Map_exception {
 		super(pos, true, sprite, underSprite, model, dir);
 		m_life = Options.PLAYER_LIFE;
+		m_automata = auto;
 		loadSprites();
 		switch (dir) {
 		case EAST:
@@ -44,7 +48,7 @@ public final class Player extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_playerNorth;
 			break;
-		case SOUTH:
+		default:
 			m_sprite = m_playerSouth;
 			break;
 		}
@@ -61,8 +65,12 @@ public final class Player extends Mobile_Entity {
 	}
 
 	@Override
-	public void step(long now) {
-
+	public void step(long now) throws Exception {
+		long elapsed = now - m_lastStep;
+		if (elapsed > 200L) {
+			m_lastStep = now;
+			m_automata.step(this);
+		}
 	}
 
 	@Override

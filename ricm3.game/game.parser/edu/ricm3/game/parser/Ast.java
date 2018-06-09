@@ -303,7 +303,7 @@ public class Ast {
 			/*
 			 * CONDITIONS
 			 */
-			if (name.make().equals("True")) {
+			if (name.toString().equals("True")) {
 
 				assert (parameters.size() == 0);
 				return new ITrue();
@@ -349,7 +349,7 @@ public class Ast {
 			/*
 			 * ACTIONS
 			 */
-			if (name.make().equals("Move")) {
+			if (name.toString().equals("Move")) {
 				
 				assert(parameters.size() == 1);
 				return new IMove(parameters.get(0).make());

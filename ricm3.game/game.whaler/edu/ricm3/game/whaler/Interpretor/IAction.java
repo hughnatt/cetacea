@@ -42,7 +42,11 @@ public abstract class IAction{
 		}
 
 		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
-			
+			switch (m_dir) {
+				default:
+						e.right();
+						break;
+			}
 		}
 	}
 	

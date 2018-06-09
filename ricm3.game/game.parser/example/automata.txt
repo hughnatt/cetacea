@@ -1,4 +1,4 @@
-Baleine(Init){
-  * (Init): True ? Move(F) :(Init)
+Player(Init){
+  * (Init): True ? Move(E) :(Init)
 }
 

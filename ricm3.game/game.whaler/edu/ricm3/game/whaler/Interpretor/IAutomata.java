@@ -47,7 +47,7 @@ public class IAutomata {
 		IBehaviour currentBehaviour = null;
 		while (iter.hasNext()) {
 			IBehaviour b = iter.next();
-			if (b.m_source == e.m_current) {
+			if (b.m_source.toString().equals(e.m_current.toString())) {
 				currentBehaviour = b;
 				break;
 			}
