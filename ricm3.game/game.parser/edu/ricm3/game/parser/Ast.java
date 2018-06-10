@@ -66,6 +66,10 @@ public class Ast {
 		public String toString() {
 			return value;
 		}
+		
+		public String make() {
+			return value;
+		}
 
 		public String tree_edges() {
 			String value_id = Dot.node_id(-this.id);

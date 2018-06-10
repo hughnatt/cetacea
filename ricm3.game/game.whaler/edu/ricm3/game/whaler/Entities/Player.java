@@ -70,6 +70,21 @@ public final class Player extends Mobile_Entity {
 		if (elapsed > 200L) {
 			m_lastStep = now;
 			m_automata.step(this);
+			//Changement du sprite si changement de direction
+			switch (m_direction) {
+			case EAST:
+				m_sprite = m_playerEast;
+				break;
+			case WEST:
+				m_sprite = m_playerWest;
+				break;
+			case NORTH:
+				m_sprite = m_playerNorth;
+				break;
+			default:
+				m_sprite = m_playerSouth;
+				break;
+			}
 		}
 	}
 

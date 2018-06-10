@@ -10,6 +10,5 @@ public class IState {
 	public String toString() {
 		return m_name;
 	}
-	
 
 }
