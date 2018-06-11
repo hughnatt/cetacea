@@ -20,16 +20,16 @@ package edu.ricm3.game.whaler;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
-import edu.ricm3.game.parser.Ast.*;
+import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
@@ -39,15 +39,14 @@ import edu.ricm3.game.whaler.Entities.Island;
 import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
+import edu.ricm3.game.whaler.Entities.RedCoral;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
-import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
-import edu.ricm3.game.whaler.Entities.RedCoral;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 
@@ -119,7 +118,8 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model() throws Exception {
+	public Model()
+			throws FileNotFoundException, Automata_Exception, Game_exception, edu.ricm3.game.parser.ParseException {
 
 		// Set the current screen on the home menu
 		m_screen = Screen.HOME;
@@ -192,6 +192,8 @@ public class Model extends GameModel {
 		// une fonction DEL. Cette fonctionnalité serait utile dans Projectile et Whale
 		// déjà
 
+		// TODO utiliser des listes chainées
+
 		// Oil
 		m_oil = new Oil[Options.MAX_OIL];
 
@@ -229,18 +231,13 @@ public class Model extends GameModel {
 
 		try {
 			m_player.step(now);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
 			m_current_background.step(now);
 			m_whales[0].step(now);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Game_exception | Automata_Exception e1) {
+			System.exit(-1);
+			e1.printStackTrace();
 		}
 
-		//
 	}
 
 	@Override
@@ -461,7 +458,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		imageFile = new File("game.whaler/sprites/Fire_Sprite.png");
 		try {
 			m_fireSprite = ImageIO.read(imageFile);
@@ -479,6 +476,6 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-	
+
 	}
 }

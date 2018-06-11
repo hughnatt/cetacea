@@ -2,7 +2,7 @@ package edu.ricm3.game.whaler;
 
 import java.awt.Graphics;
 
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Map {
@@ -29,6 +29,13 @@ public class Map {
 		m_model = model;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 *            coordonnees of the tile
+	 * @return Tile searched
+	 * @throws Map_exception
+	 */
 	public Tile tile(int x, int y) throws Map_exception {
 		if ((x < 0) || (x > Options.DIMX_MAP)) {
 			throw new Map_exception("Coordonnee x unfitted");
@@ -47,8 +54,9 @@ public class Map {
 	 * 'Viewport' rendering of the map
 	 * 
 	 * @param g
+	 * @throws Game_exception
 	 */
-	public void paint(Graphics g) throws Location_exception {
+	public void paint(Graphics g) throws Game_exception {
 		// We'll render only the part of the map which is visible
 
 		// Getting player location
@@ -85,8 +93,9 @@ public class Map {
 	 * 'Viewport' rendering of the map
 	 * 
 	 * @param g
+	 * @throws Game_exception
 	 */
-	public void paint_under(Graphics g) throws Location_exception {
+	public void paint_under(Graphics g) throws Game_exception {
 		// We'll render only the part of the map which is visible
 
 		// Getting player location

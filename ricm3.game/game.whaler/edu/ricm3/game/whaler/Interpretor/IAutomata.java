@@ -6,8 +6,7 @@ import java.util.List;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class IAutomata {
 
@@ -32,11 +31,10 @@ public class IAutomata {
 	 * 
 	 * @param e
 	 * @throws Automata_Exception
-	 * @throws Tile_exception
-	 * @throws Map_exception
+	 * @throws Game_Exception
 	 */
 
-	public void step(Mobile_Entity e, Model model) throws Exception {
+	public void step(Model model, Mobile_Entity e) throws Exception, Automata_Exception, Game_exception {
 
 		Iterator<IBehaviour> iter = m_behaviours.iterator();
 

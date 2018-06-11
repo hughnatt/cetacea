@@ -30,10 +30,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import edu.ricm3.game.GameController;
-import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Model.Screen;
 
 /**
@@ -392,8 +391,8 @@ public class Controller extends GameController implements ActionListener {
 			retour.setVisible(true);
 			cont.setVisible(true);
 			annuler.setVisible(true);
-			infoLabel.setVisible(true);
 			valider.setVisible(true);
+			
 		}
 
 		/**

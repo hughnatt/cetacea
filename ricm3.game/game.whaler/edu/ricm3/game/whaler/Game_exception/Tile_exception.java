@@ -1,6 +1,6 @@
 package edu.ricm3.game.whaler.Game_exception;
 
-public class Tile_exception extends Exception {
+public class Tile_exception extends Game_exception {
 
 	/**
 	 * 
