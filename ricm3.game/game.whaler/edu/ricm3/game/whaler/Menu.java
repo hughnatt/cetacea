@@ -16,7 +16,7 @@ public class Menu {
 	float m_scale;
 	Model m_model;
 	
-	
+	//BufferedImages to be displayed on the menu
 	BufferedImage m_fondmenu;
 	BufferedImage m_whaleSprite;
 	BufferedImage m_destroyerSprite;
@@ -32,7 +32,10 @@ public class Menu {
 		loadSprites();
 	}
 
-	
+	/**
+	 * Load the sprites that need to be displayed on the menu
+	 * no @param
+	 */
 	private void loadSprites() {
 		
 		File imageFile;
@@ -74,7 +77,8 @@ public class Menu {
 	/**
 	 * paints this square on the screen.
 	 * 
-	 * @param g
+	 * @param g, width, height
+	 * 							are the width and height of the game window
 	 */
 
 	public void paint(Graphics g, int width, int height) {
@@ -97,8 +101,6 @@ public class Menu {
 		int w3 = (int) (m_scale * 75);
 		int h3 = (int) (m_scale * 75);
 		g.drawImage(img3, width / 6, 420, w3, h3, null);
-
-		
 		
 		Image img4 = m_projectileSprite;
 		int w4 = (int) (m_scale * 64);
