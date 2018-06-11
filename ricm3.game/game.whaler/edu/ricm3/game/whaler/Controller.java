@@ -40,7 +40,7 @@ import javax.swing.JComboBox;
 
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Model.Screen;
+
 
 /**
  * This class is to illustrate the most simple game controller. It does not

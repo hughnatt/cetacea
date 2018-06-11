@@ -50,22 +50,7 @@ import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Model extends GameModel {
 
-	//enum for the menu, to determine which screen should be displayed
-	public enum Screen {
-		AUTOMATA,HOME,GAME,PREFERENCES;
-	}
 
-	private Screen m_screen;
-
-	//getter for Screen
-	public Screen currentScreen() {
-		return m_screen;
-	}
-
-	//setter for Screen
-	public void setScreen(Screen s) {
-		m_screen = s;
-	}
 
 	// Sprite-sheets (BufferedImage) and instances of elements
 
