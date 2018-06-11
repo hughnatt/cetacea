@@ -59,7 +59,7 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-		public boolean eval(Mobile_Entity current,Model model) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			int length = m_key.length();
 			char carac = m_key.charAt(0);
 			int ascii = (int) carac;
@@ -122,12 +122,13 @@ public abstract class ICondition {
 		}
 	}
 
+	
+
 	/**
 	 * La plus proche entité de type m_entity est dans la direction m_dir NB :
 	 * (@Tanguy) : Celle là elle a pas l'air facile à faire, il faudra passer la map
-	 * complète en argument galère, galère, ... m_entity peut valoir : V T A D P J G
-	 * M NB2 : Une entité dangereux pour le joueur n'est pas dangereux pour un
-	 * Destroyer "DANGER" est donc à définir en fonction de l'entité courante
+	 * complète en argument galère, galère, ... m_entity peut valoir : Void Team
+	 * Adversaire Danger Pick
 	 */
 	public static class IClosest extends ICondition {
 		String m_entity;
@@ -139,6 +140,8 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(Mobile_Entity current, Model model) {
+			//
+			model.map();
 			return true;
 		}
 	}
@@ -153,7 +156,7 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(Mobile_Entity current, Model model) {
-			return current.m_life>5;
+			return current.m_life > 5;
 		}
 
 	}
@@ -187,7 +190,7 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(Mobile_Entity current, Model model) {
-			return (m_a.eval(current,model) && m_b.eval(current,model));
+			return (m_a.eval(current, model) && m_b.eval(current, model));
 		}
 	}
 
@@ -206,7 +209,7 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(Mobile_Entity current, Model model) {
-			return (m_a.eval(current,model) || m_b.eval(current,model));
+			return (m_a.eval(current, model) || m_b.eval(current, model));
 		}
 	}
 
@@ -222,7 +225,7 @@ public abstract class ICondition {
 			m_a = a;
 		}
 
-		public boolean eval(Mobile_Entity current,Model model) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return !(m_a.eval(current, model));
 		}
 	}
