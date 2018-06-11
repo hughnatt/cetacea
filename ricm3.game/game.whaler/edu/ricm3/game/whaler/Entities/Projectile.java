@@ -19,6 +19,53 @@ public class Projectile extends Mobile_Entity {
 	private long m_speed;
 
 	/**
+	 * @param tile
+	 * 
+	 *            the tile where apply the projectile
+	 * @return boolean
+	 * 
+	 *         true if the projectile hits something, else false
+	 */
+	private boolean apply_projectile(Tile tile) {
+		boolean hit = false; // test if the projectile hit something
+
+		Entity result = tile.contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_capture += m_damage; // if yes, it takes damages
+			hit = true;
+		}
+
+		result = tile.contain(Player.class); // Is there a player ?
+		if (result != null) {
+			Player result_player = (Player) result;
+			result_player.m_life -= m_damage; // if yes, it takes damages
+			hit = true;
+		}
+
+		result = tile.contain(Destroyer.class); // Is there a destroyer ?
+		if (result != null) {
+			Destroyer result_destroyer = (Destroyer) result;
+			result_destroyer.m_life -= m_damage; // if yes, it takes damages
+			hit = true;
+		}
+
+		result = tile.contain(Whaler.class); // Is there a whaler ?
+		if (result != null) {
+			Whaler result_whaler = (Whaler) result;
+			result_whaler.m_life -= m_damage; // if yes, it takes damages
+			hit = true;
+		}
+
+		if (tile.isSolid()) { // Is there a solid entity
+			hit = true; // if yes, the projectile hit something
+		}
+
+		return hit;
+
+	}
+
+	/**
 	 * @param pos
 	 *            Initial position of the Projectile
 	 * @param sprite
@@ -29,18 +76,23 @@ public class Projectile extends Mobile_Entity {
 	 *            Indicate the range of the projectile
 	 * @param damage
 	 *            Damage power
+	 * @throws Map_exception
+	 * @throws Tile_exception
 	 */
-
 	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			int range, int damage) throws Map_exception {
+			int range, int damage) throws Map_exception, Tile_exception {
 		super(pos, false, sprite, underSprite, model, dir);
 		m_remaining = range;
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
+		if (apply_projectile(m_model.map().tile(pos))) { // We apply the projectile on the case of the beginning
+			m_model.map().tile(pos).remove(this); // if it hits something, it disappears
+		}
 	}
 
 	@Override
 	public void step(long now) throws Map_exception, Tile_exception {
+
 		long elapsed = now - this.m_lastStep;
 
 		if (elapsed > m_speed) {
@@ -50,43 +102,16 @@ public class Projectile extends Mobile_Entity {
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 			if (m_remaining != 0) {
 
-				Location new_pos = this.pos_front();
+				m_remaining--;
 
-				Tile tile = m_model.map().tile(new_pos); // Tile for the new location
+				Location next_pos = this.pos_front();
+				Tile next_tile = m_model.map().tile(next_pos);
 
-				boolean hit = false;
-
-				Entity result = tile.contain(Whale.class); // Is there a whale ?
-				if (result != null) {
-					Whale result_whale = (Whale) result;
-					result_whale.m_capture += m_damage; // if yes, it takes damages
-					hit = true;
+				if (!apply_projectile(next_tile)) {
+					m_pos = next_pos;
+					m_model.map().tile(this.getx(), this.gety()).addForeground(this); // it goes to the new lcoation
 				}
 
-				result = tile.contain(Player.class); // Is there a player ?
-				if (result != null) {
-					Player result_player = (Player) result;
-					result_player.m_life -= m_damage; // if yes, it takes damages
-					hit = true;
-				}
-
-				result = tile.contain(Destroyer.class); // Is there a destroyer ?
-				if (result != null) {
-					Destroyer result_destroyer = (Destroyer) result;
-					result_destroyer.m_life -= m_damage; // if yes, it takes damages
-					hit = true;
-				}
-
-				result = tile.contain(Whaler.class); // Is there a whaler ?
-				if (result != null) {
-					Whaler result_whaler = (Whaler) result;
-					result_whaler.m_life -= m_damage; // if yes, it takes damages
-					hit = true;
-				}
-
-				if (!hit) { // if the projectile hasn't hit nothing
-					m_model.map().tile(new_pos.x, new_pos.y).addForeground(this); // it goes to the new lcoation
-				}
 			}
 		}
 	}
@@ -105,7 +130,7 @@ public class Projectile extends Mobile_Entity {
 	}
 
 	public void hit() {
-		// TODO qqch à faire ?
+
 	}
 
 	@Override

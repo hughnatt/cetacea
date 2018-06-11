@@ -107,8 +107,8 @@ public final class Whale extends Mobile_Entity {
 		}
 
 		m_model.map().tile(this.getx(), this.gety()).remove(this);
-		this.m_pos = new Location(this.getx() + transl_x, this.gety() + transl_y); // TODO valide ? pas de fuite mémoire
-																					// ou autre méthode ?
+		this.m_pos = new Location(this.getx() + transl_x, this.gety() + transl_y);
+
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
