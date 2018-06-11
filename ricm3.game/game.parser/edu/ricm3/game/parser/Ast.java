@@ -254,11 +254,11 @@ public class Ast {
 		}
 
 		public ICondition makeCondition() throws Automata_Exception {
-			if (operator.make().equals("\\")) {
+			if (operator.make().equals("/")) {
 				return new ICondition.IOr(left_operand.makeCondition(), right_operand.makeCondition());
 
 			} else if (operator.make().equals("&")) {
-				return new IAnd((ICondition) left_operand.make(), (ICondition) right_operand.make());
+				return new IAnd(left_operand.makeCondition(), right_operand.makeCondition());
 			} else {
 				throw new Automata_Exception("Unkown Operator : " + operator.toString() + "\n");
 			}
@@ -267,7 +267,7 @@ public class Ast {
 
 		public IAction makeAction() throws Automata_Exception {
 
-			if (operator.make().equals("\\")) {
+			if (operator.make().equals("/")) {
 				return new IAction.IOr(left_operand.makeAction(), right_operand.makeAction());
 
 			} else if (operator.make().equals("&")) {

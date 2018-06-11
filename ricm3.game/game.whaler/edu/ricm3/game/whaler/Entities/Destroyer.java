@@ -16,6 +16,8 @@ public class Destroyer extends Mobile_Entity {
 	BufferedImage m_destroyerEast;
 	BufferedImage m_destroyerWest;
 
+	private long m_speed;
+	
 	/**
 	 * @param pos
 	 *            Initial Position of the Destroyer
@@ -30,6 +32,7 @@ public class Destroyer extends Mobile_Entity {
 	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Map_exception {
 		super(pos, true, sprite, underSprite, model, dir, life);
+		m_speed = Options.DESTROYER_SPD_STANDARD;
 
 		loadSprites();
 
@@ -62,7 +65,11 @@ public class Destroyer extends Mobile_Entity {
 
 	@Override
 	public void step(long now) {
-
+		long elapsed = now - m_lastStep;
+		if (elapsed > m_speed) {
+			m_speed =Options.DESTROYER_SPD_STANDARD;
+			
+		}
 	}
 
 	@Override
@@ -82,12 +89,12 @@ public class Destroyer extends Mobile_Entity {
 
 	@Override
 	public void wizz() {
-		// TODO
+		this.m_speed = Options.DESTROYER_SPD_IMPROVED;
 	}
 
 	@Override
 	public void hit() {
-		// TODO
+		
 	}
 
 }

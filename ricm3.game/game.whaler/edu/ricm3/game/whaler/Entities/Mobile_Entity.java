@@ -121,6 +121,26 @@ public abstract class Mobile_Entity extends Entity {
 			break;
 		}
 	}
+	
+	public void turnleft() {
+		switch (m_direction) {
+		case SOUTH:
+			m_direction = Direction.EAST;
+			break;
+		case NORTH:
+			m_direction = Direction.WEST;
+			break;
+		case WEST:
+			m_direction = Direction.SOUTH;
+			break;
+		case EAST:
+			m_direction = Direction.NORTH;
+			break;
+		default:
+			break;
+		}
+	}
+	
 
 	// Specific Actions
 	public abstract void pop();
@@ -128,7 +148,7 @@ public abstract class Mobile_Entity extends Entity {
 	public abstract void wizz() throws Map_exception, Tile_exception, Location_exception;
 
 	public abstract void hit() throws Map_exception;
-
+	
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
 	// public abstract void jump();

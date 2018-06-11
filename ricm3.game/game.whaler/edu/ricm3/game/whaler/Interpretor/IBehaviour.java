@@ -28,6 +28,7 @@ public class IBehaviour {
 			ITransition t = iter.next();
 			if (t.eval(model, e) == true) {
 				t.step(e);
+				break;
 			}
 		}
 	}

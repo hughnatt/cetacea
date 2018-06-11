@@ -15,6 +15,8 @@ public class Whaler extends Mobile_Entity {
 	private BufferedImage m_whalerEast;
 	private BufferedImage m_whalerNorth;
 
+	int m_damage;
+
 	/**
 	 * @param pos
 	 * @param sprite
@@ -72,17 +74,31 @@ public class Whaler extends Mobile_Entity {
 
 	@Override
 	public void pop() {
-		// TODO
+		this.m_life ++;
 	}
 
 	@Override
-	public void wizz() {
-		// TODO
+	public void wizz() throws Map_exception {
+		Location new_pos = this.pos_front();
+
+		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_life+=3; // if yes, caught gauge increases by 3
+		}
+
 	}
 
 	@Override
-	public void hit() {
-		// TODO
+	public void hit() throws Map_exception {
+		Location new_pos = this.pos_front();
+
+		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_life++; // if yes, caught gauge increases
+		}
+
 	}
 
 }
