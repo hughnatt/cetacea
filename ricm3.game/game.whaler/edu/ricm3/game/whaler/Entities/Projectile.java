@@ -8,6 +8,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
@@ -16,7 +17,7 @@ public class Projectile extends Mobile_Entity {
 	int m_remaining; // before destruction, 0 = destruction at the next move
 	int m_damage; // The damage that will be done by the projectile
 
-	private long m_speed;
+	private long m_speed; // speed of the projectile
 
 	/**
 	 * @param tile
@@ -76,11 +77,10 @@ public class Projectile extends Mobile_Entity {
 	 *            Indicate the range of the projectile
 	 * @param damage
 	 *            Damage power
-	 * @throws Map_exception
-	 * @throws Tile_exception
+	 * @throws Game_exception
 	 */
 	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			int range, int damage) throws Map_exception, Tile_exception {
+			int range, int damage) throws Game_exception {
 		super(pos, false, sprite, underSprite, model, dir);
 		m_remaining = range;
 		m_damage = Options.PROJECTILE_DPS;
@@ -91,23 +91,23 @@ public class Projectile extends Mobile_Entity {
 	}
 
 	@Override
-	public void step(long now) throws Map_exception, Tile_exception {
+	public void step(long now) throws Game_exception {
 
 		long elapsed = now - this.m_lastStep;
 
-		if (elapsed > m_speed) {
+		if (elapsed > m_speed) { // the projectile position is updata according to its speed
 
 			m_lastStep = now;
 
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			if (m_remaining != 0) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this); // we remove it from the map
+			if (m_remaining != 0) { // if the max range isn't reach
 
 				m_remaining--;
 
 				Location next_pos = this.pos_front();
-				Tile next_tile = m_model.map().tile(next_pos);
+				Tile next_tile = m_model.map().tile(next_pos); // we get the next tile
 
-				if (!apply_projectile(next_tile)) {
+				if (!apply_projectile(next_tile)) { // if the projectile hit nothing
 					m_pos = next_pos;
 					m_model.map().tile(this.getx(), this.gety()).addForeground(this); // it goes to the new lcoation
 				}

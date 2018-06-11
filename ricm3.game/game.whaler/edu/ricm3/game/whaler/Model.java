@@ -20,6 +20,7 @@ package edu.ricm3.game.whaler;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
@@ -42,23 +43,25 @@ import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 
-	//enum for the menu, to determine which screen should be displayed
+	// enum for the menu, to determine which screen should be displayed
 	public enum Screen {
-		AUTOMATA,HOME,GAME,PREFERENCES;
+		AUTOMATA, HOME, GAME, PREFERENCES;
 	}
 
 	private Screen m_screen;
 
-	//getter for Screen
+	// getter for Screen
 	public Screen currentScreen() {
 		return m_screen;
 	}
 
-	//setter for Screen
+	// setter for Screen
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
@@ -110,7 +113,8 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model() throws Exception {
+	public Model()
+			throws FileNotFoundException, Automata_Exception, Game_exception, edu.ricm3.game.parser.ParseException {
 
 		// Set the current screen on the home menu
 		m_screen = Screen.HOME;
@@ -126,7 +130,7 @@ public class Model extends GameModel {
 
 		// Makes a new Menu
 		m_menu = new Menu(this, 350, 150, (float) 2);
-		
+
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -178,6 +182,8 @@ public class Model extends GameModel {
 		// les tableaux et donc en mémoire. Il faut mettre à jour les tableaux ou écrire
 		// une fonction DEL. Cette fonctionnalité serait utile dans Projectile et Whale
 		// déjà
+
+		// TODO utiliser des listes chainées
 
 		// Oil
 		m_oil = new Oil[Options.MAX_OIL];

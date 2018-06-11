@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class Entity {
 
@@ -18,13 +18,18 @@ public abstract class Entity {
 
 	/**
 	 * @param pos
+	 *            location of the entity
 	 * @param solid
+	 *            the entity is solid or not
 	 * @param sprite
+	 *            sprite at the surface
+	 * @param underSprite
+	 *            sprite under water
 	 * @param model
+	 * @throws Game_exception
 	 */
-
 	protected Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model)
-			throws Map_exception {
+			throws Game_exception {
 
 		this.m_pos = pos;
 		this.m_solid = solid;
@@ -56,19 +61,21 @@ public abstract class Entity {
 
 	/**
 	 * @param now
-	 * @throws Exception 
+	 * @throws Game_exception
 	 */
-	public abstract void step(long now) throws Exception;
+	public abstract void step(long now) throws Game_exception, Automata_Exception;
 
 	/**
 	 * @param g
 	 * @param map_ref
+	 *            location of the left-up corner of the view
 	 */
 	public abstract void paint(Graphics g, Location map_ref);
 
 	/**
 	 * @param g
 	 * @param map_ref
+	 *            location of the left-up corner of the view
 	 */
 	public abstract void paint_under(Graphics g, Location map_ref);
 
