@@ -2,10 +2,12 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 
 public abstract class ICondition {
 
-	public abstract boolean eval(Model model); // Il y aura besoin de rajouter (au moins) la map (voir model complet) et
+	public abstract boolean eval(Model model, Mobile_Entity current); // Il y aura besoin de rajouter (au moins) la map
+																		// (voir model complet) et
 	// l'entité courante
 
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
@@ -41,7 +43,7 @@ public abstract class ICondition {
 
 		}
 
-		public boolean eval(Model model) {
+		public boolean eval(Model model, Mobile_Entity current) {
 			return true;
 		}
 	}
@@ -57,29 +59,24 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-		public boolean eval(Model model) {
+		public boolean eval(Model model, Mobile_Entity current) {
 			int length = m_key.length();
 			char carac = m_key.charAt(0);
 			int ascii = (int) carac;
-			if (length>1) {
+			if (length > 1) {
 				char carac2 = m_key.charAt(1);
-				if(carac=='S') {
-					ascii=32;
-				}
-				else if(carac=='E') {
-					ascii=10;
-				}
-				else if(carac2=='U') {
-					ascii=38;
-				}
-				else if(carac2=='D') {
-					ascii=40;
-				}
-				else if(carac2=='R') {
-					ascii=39;
-				}
-				else if(carac2=='L') {
-					ascii=37;
+				if (carac == 'S') {
+					ascii = 32;
+				} else if (carac == 'E') {
+					ascii = 10;
+				} else if (carac2 == 'U') {
+					ascii = 38;
+				} else if (carac2 == 'D') {
+					ascii = 40;
+				} else if (carac2 == 'R') {
+					ascii = 39;
+				} else if (carac2 == 'L') {
+					ascii = 37;
 				}
 			}
 			return model.keyPressed[ascii];
@@ -99,7 +96,7 @@ public abstract class ICondition {
 			m_dir = strToDir(string);
 		}
 
-		public boolean eval(Model model) {
+		public boolean eval(Model model, Mobile_Entity current) {
 			return true;
 		}
 	}
@@ -120,7 +117,7 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval(Model model) {
+		public boolean eval(Model model, Mobile_Entity current) {
 			return true;
 		}
 	}
@@ -141,7 +138,7 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval(Model model) {
+		public boolean eval(Model model, Mobile_Entity current) {
 			return true;
 		}
 	}
@@ -150,14 +147,15 @@ public abstract class ICondition {
 	 * Reste t-il de l'énergie à l'entité NB : Regarder pour faire un truc relatif à
 	 * la vie
 	 */
-	public static class IGetPower extends ICondition {
+	public static class IGotPower extends ICondition {
 
-		public IGetPower() {
+		public IGotPower() {
 		}
 
-		public boolean eval(Model model) {
-			return true;
+		public boolean eval(Model model, Mobile_Entity current) {
+			return current.m_life>5;
 		}
+
 	}
 
 	/**
@@ -169,8 +167,8 @@ public abstract class ICondition {
 		public IGotStuff() {
 		}
 
-		public boolean eval(Model model) {
-			return true;
+		public boolean eval(Model model, Mobile_Entity current) {
+			return false;
 		}
 	}
 
@@ -188,8 +186,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval(Model model) {
-			return (m_a.eval(model) && m_b.eval(model));
+		public boolean eval(Model model, Mobile_Entity current) {
+			return (m_a.eval(model, current) && m_b.eval(model, current));
 		}
 	}
 
@@ -207,8 +205,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval(Model model) {
-			return (m_a.eval(model) || m_b.eval(model));
+		public boolean eval(Model model, Mobile_Entity current) {
+			return (m_a.eval(model, current) || m_b.eval(model, current));
 		}
 	}
 
@@ -224,8 +222,8 @@ public abstract class ICondition {
 			m_a = a;
 		}
 
-		public boolean eval(Model model) {
-			return !(m_a.eval(model));
+		public boolean eval(Model model, Mobile_Entity current) {
+			return !(m_a.eval(model, current));
 		}
 	}
 

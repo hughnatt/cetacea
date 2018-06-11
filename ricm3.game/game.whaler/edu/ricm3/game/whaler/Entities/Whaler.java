@@ -15,19 +15,18 @@ public class Whaler extends Mobile_Entity {
 	private BufferedImage m_whalerEast;
 	private BufferedImage m_whalerNorth;
 
-	int m_life;
-
 	/**
 	 * @param pos
 	 * @param sprite
 	 * @param underSprite
 	 * @param model
 	 * @param dir
+	 * @param life
 	 * @throws Map_exception
 	 */
-	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Map_exception {
-		super(pos, true, sprite, underSprite, model, dir);
+		super(pos, true, sprite, underSprite, model, dir, life);
 
 		loadSprites();
 		switch (dir) {

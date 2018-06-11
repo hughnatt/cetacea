@@ -102,7 +102,7 @@ public class Controller extends GameController implements ActionListener {
 		}
 
 		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
-			m_model.m_whales[0].m_capture = 20;
+			m_model.m_whales[0].m_life = 20;
 		}
 	}
 

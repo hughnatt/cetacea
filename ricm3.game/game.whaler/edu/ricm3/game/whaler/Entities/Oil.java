@@ -17,9 +17,9 @@ public final class Oil extends Mobile_Entity {
 	 * @param sprite
 	 * @param model
 	 */
-	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Map_exception {
-		super(pos, false, sprite, underSprite, model, dir);
+		super(pos, false, sprite, underSprite, model, dir, life);
 		this.is_burning = false;
 	}
 

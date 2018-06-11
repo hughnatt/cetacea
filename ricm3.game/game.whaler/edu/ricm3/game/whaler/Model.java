@@ -110,7 +110,7 @@ public class Model extends GameModel {
 	Whale[] m_whales;
 	Oil[] m_oil;
 
-	public Boolean[] keyPressed;
+	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
 
@@ -187,19 +187,19 @@ public class Model extends GameModel {
 		// Oil
 		m_oil = new Oil[Options.MAX_OIL];
 
-		m_oil[0] = new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST);
+		m_oil[0] = new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 5);
 
 		// Destroyers
 		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
-		m_destroyers[0] = new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST);
+		m_destroyers[0] = new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, Options.DESTROYER_LIFE);
 
 		// Whalers
 		m_whalers = new Whaler[Options.MAX_WHALERS];
-		m_whalers[0] = new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST);
+		m_whalers[0] = new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE);
 
 		// Whales
 		m_whales = new Whale[Options.MAX_WHALES];
-		m_whales[0] = new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST);
+		m_whales[0] = new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT);
 
 		// Projectiles
 		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
@@ -207,9 +207,9 @@ public class Model extends GameModel {
 		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
 
 		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0]);
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0], Options.PLAYER_LIFE);
 
-		keyPressed=new Boolean[256];
+		keyPressed=new boolean[128];
 	}
 
 	public Map map() {

@@ -332,10 +332,10 @@ public class Ast {
 				assert (parameters.size() == 2);
 				return new IClosest(parameters.get(0).make(), parameters.get(1).make());
 
-			} else if (name.make().equals("GetPower")) {
+			} else if (name.make().equals("GotPower")) {
 				
 				assert(parameters.size() == 0);
-				return new IGetPower();
+				return new IGotPower();
 				
 			} else if (name.make().equals("GotStuff")) {
 				
