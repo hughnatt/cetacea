@@ -19,6 +19,7 @@ package edu.ricm3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -224,5 +225,4 @@ public class GameUI {
 		m_fps = fps;
 		m_msg = msg;
 	}
-
 }

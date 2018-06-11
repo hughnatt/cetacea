@@ -18,13 +18,19 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import edu.ricm3.game.GameModel;
+import edu.ricm3.game.parser.Ast;
+import edu.ricm3.game.parser.Ast.*;
+import edu.ricm3.game.parser.AutomataParser;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
@@ -36,6 +42,7 @@ import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
@@ -108,10 +115,17 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model() throws Map_exception, Location_exception, Tile_exception {
+	public Model() throws Exception {
 
 		m_screen = Screen.HOME;
+		
+		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
+		//Loading automate file
+		Ast ast = AutomataParser.Run();
+		//ast = AutomataParser.Run();
+		IAutomata[] automata_array = ((AI_Definitions) ast).make();
 
+		
 		// Loading Sprites Model
 		loadSprites();
 
@@ -191,7 +205,8 @@ public class Model extends GameModel {
 		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
 
 		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0]);
+
 	}
 
 	public Map map() {
@@ -200,11 +215,18 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
+	
+		try {
+			m_player.step(now);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		try {
 			m_current_background.step(now);
 			m_whales[0].step(now);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 
