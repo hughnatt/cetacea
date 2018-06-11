@@ -11,6 +11,7 @@ import javax.swing.*;
 
 public class CreateButton extends JButton {
 
+	private static final long serialVersionUID = 1L;
 	String m_name;
 	String m_icon;
 	String m_icon_over;
@@ -25,6 +26,7 @@ public class CreateButton extends JButton {
 
 	
 	public void setButton() {
+		
 		setIcon(new ImageIcon(m_icon));
 		setRolloverIcon(new ImageIcon(m_icon_over));
 		setActionCommand(m_name);
@@ -32,7 +34,7 @@ public class CreateButton extends JButton {
 		setContentAreaFilled(false);
 		setVerticalTextPosition(JLabel.BOTTOM);
 		setHorizontalTextPosition(JLabel.CENTER);
-		setPreferredSize(new Dimension(320,350));
+		setPreferredSize(new Dimension(300,300));
 		setBorderPainted(false);
 		
 		

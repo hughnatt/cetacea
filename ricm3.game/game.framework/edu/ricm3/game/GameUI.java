@@ -19,7 +19,6 @@ package edu.ricm3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -30,8 +29,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.Timer;
-
 
 public class GameUI {
 
@@ -64,6 +64,7 @@ public class GameUI {
 
 	JFrame m_frame;
 	GameView m_view;
+	JMenuBar m_menuBar;
 	Timer m_timer;
 	GameModel m_model;
 	GameController m_controller;
@@ -94,22 +95,21 @@ public class GameUI {
 		createTimer();
 	}
 
-	//enum for the menu, to determine which screen should be displayed
+	// enum for the menu, to determine which screen should be displayed
 	public enum Screen {
-		MENU,PLAY,AUTOMATA,OPTIONS,PREFERENCES;
+		MENU, PLAY, AUTOMATA, OPTIONS, RULES, PAUSE, EXIT;
 	}
 
-	//getter for Screen
+	// getter for Screen
 	public Screen currentScreen() {
 		return m_screen;
 	}
 
-	//setter for Screen
+	// setter for Screen
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
-	
-	
+
 	public GameModel getModel() {
 		return m_model;
 	}
@@ -139,13 +139,13 @@ public class GameUI {
 	}
 
 	public void createWindow(Dimension d) {
-		
-		if(currentScreen() == Screen.PLAY) {
+
+		if (currentScreen() == Screen.PLAY) {
 			m_frame = new JFrame();
 			m_frame.setTitle("Cetacea");
 			m_frame.setLayout(new BorderLayout());
 			m_frame.setResizable(false);
-	
+
 			File f = new File("game.whaler/sprites/cetacea.png");
 			Image icone;
 			try {
@@ -155,44 +155,69 @@ public class GameUI {
 				ex.printStackTrace();
 				System.exit(-1);
 			}
-	
+
 			m_frame.add(m_view, BorderLayout.CENTER);
-	
+
 			m_text = new JLabel();
 			m_text.setText("Starting up...");
 			m_frame.add(m_text, BorderLayout.NORTH);
-	
+
+			// Create the menu bar.
+			/*m_menuBar = new JMenuBar();
+			JMenu pause = new JMenu("Pause");
+			JMenu exit = new JMenu("Exit");
+
+			m_menuBar.add(pause);
+			m_menuBar.add(exit);
+
+			
+			 pause.addActionListener(new ActionListener() { public void
+			 actionPerformed(ActionEvent e) { setScreen(Screen.PAUSE); } });
+			 
+			 exit.addActionListener(new ActionListener() { public void
+			 actionPerformed(ActionEvent e) { setScreen(Screen.EXIT); } });
+			 
+
+			m_frame.setJMenuBar(m_menuBar);*/
+
 			m_frame.setSize(d);
 			m_frame.doLayout();
 			m_frame.setVisible(true);
-	
+
 			// hook window events so that we exit the Java Platform
 			// when the window is closed by the end user.
 			m_frame.addWindowListener(new WindowListener(m_model));
-	
+
 			m_frame.pack();
 			m_frame.setLocationRelativeTo(null);
-	
+
 			GameController ctr = getController();
-	
+
 			// let's hook the controller,
 			// so it gets mouse events and keyboard events.
 			m_view.addKeyListener(ctr);
 			m_view.addMouseListener(ctr);
 			m_view.addMouseMotionListener(ctr);
-	
+
 			// grab the focus on this JPanel, meaning keyboard events
 			// are coming to our controller. Indeed, the focus controls
 			// which part of the overall GUI receives the keyboard events.
 			m_view.setFocusable(true);
 			m_view.requestFocusInWindow();
-	
+
 			m_controller.notifyVisible();
-		}else if(currentScreen() == Screen.MENU) {
+
+		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
-			createTimer();
+			// createTimer();
 			m.create_frame();
 			m.create_menu();
+
+		} else if (currentScreen() == Screen.RULES) {
+			Rules r = new Rules(this);
+			// createTimer();
+			r.create_frame();
+			r.create_rules();
 		}
 	}
 
