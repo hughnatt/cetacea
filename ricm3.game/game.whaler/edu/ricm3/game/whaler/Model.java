@@ -44,6 +44,7 @@ import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.whaler.Entities.RedCoral;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
@@ -88,6 +89,7 @@ public class Model extends GameModel {
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
+	private BufferedImage m_redCoralUnderSprite;
 
 	// Home menu
 	Menu m_menu;
@@ -156,8 +158,11 @@ public class Model extends GameModel {
 		new Coral(new Location(10, 6), null, m_coralUnderSprite, this);
 		new Coral(new Location(20, 18), null, m_coralUnderSprite, this);
 		new Coral(new Location(20, 2), null, m_coralUnderSprite, this);
-
-		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		
+		// Corail Rouge
+		new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this);
+		new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this);
+		new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -442,6 +447,17 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/submarine.png");
 		try {
 			m_playerUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/red_coral.png");
+		try {
+			m_redCoralUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
