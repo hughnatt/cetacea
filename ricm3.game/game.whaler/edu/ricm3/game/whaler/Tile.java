@@ -16,6 +16,10 @@ public class Tile {
 	protected Tile() {
 		m_level = new LinkedList<Entity>();
 	}
+	
+	public Iterator<Entity> iterator() {
+		return m_level.iterator();
+	}
 
 	/**
 	 * Add an entity at the bottom (The entity will be rendered in background)

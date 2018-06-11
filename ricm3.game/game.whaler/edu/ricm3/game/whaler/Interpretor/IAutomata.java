@@ -3,6 +3,7 @@ package edu.ricm3.game.whaler.Interpretor;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
@@ -34,7 +35,7 @@ public class IAutomata {
 	 * @throws Tile_exception 
 	 * @throws Map_exception 
 	 */
-	public void step(Mobile_Entity e) throws Exception {
+	public void step(Mobile_Entity e, Model model) throws Exception {
 		Iterator<IBehaviour> iter = m_behaviours.iterator();
 
 		// Si l'état courant de l'entité n'est pas fixé
@@ -58,7 +59,7 @@ public class IAutomata {
 			throw new Automata_Exception("Missing State\n");
 		}
 
-		currentBehaviour.step(e);		
+		currentBehaviour.step(e, model);		
 		
 	}
 

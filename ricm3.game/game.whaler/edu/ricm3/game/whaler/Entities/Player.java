@@ -90,7 +90,7 @@ public final class Player extends Mobile_Entity {
 		long elapsed = now - m_lastStep;
 		if (elapsed > 200L) {
 			m_lastStep = now;
-			m_automata.step(this);
+			m_automata.step(this, m_model);
 			//Changement du sprite si changement de direction
 			switch (m_direction) {
 			case EAST:

@@ -1,10 +1,15 @@
 package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
+import edu.ricm3.game.whaler.Location;
+import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Entities.*;
 
 public abstract class ICondition {
 
-	public abstract boolean eval(); // Il y aura besoin de rajouter (au moins) la map (voir model complet) et
+	public abstract boolean eval(Mobile_Entity current, Model model); // Il y aura besoin de rajouter (au moins) la map (voir model complet) et
 									// l'entité courante
 
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
@@ -30,6 +35,10 @@ public abstract class ICondition {
 			return Direction.FORWARD;
 		}
 	}
+	
+	public enum EntityType {
+		DESTROYER, OIL, PLAYER, PROJECTILE, WHALE, WHALER
+	}
 
 	/**
 	 * La condition est toujours vérifiée
@@ -40,7 +49,7 @@ public abstract class ICondition {
 
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true;
 		}
 	}
@@ -56,7 +65,7 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true; // TODO
 		}
 	}
@@ -74,8 +83,10 @@ public abstract class ICondition {
 			m_dir = strToDir(string);
 		}
 
-		public boolean eval() {
-			return true; // TODO
+		public boolean eval(Mobile_Entity current, Model model) {
+			
+			return current.m_direction == m_dir;
+			
 		}
 	}
 
@@ -96,7 +107,43 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model){
+			
+			if (m_dir.equals("N")) {
+				
+				//int whale = EntityType.WHALE.ordinal();
+				
+				char matrice[][] = null;
+				
+				matrice[EntityType.DESTROYER.ordinal()][EntityType.DESTROYER.ordinal()] = 'T';
+				matrice[EntityType.OIL.ordinal()][EntityType.DESTROYER.ordinal()] = 'T';
+				matrice[EntityType.PLAYER.ordinal()][EntityType.DESTROYER.ordinal()] = 'T';
+				matrice[EntityType.PROJECTILE.ordinal()][EntityType.DESTROYER.ordinal()] = 'T';
+				matrice[EntityType.WHALE.ordinal()][EntityType.DESTROYER.ordinal()] = 'T';
+				matrice[EntityType.WHALER.ordinal()][EntityType.DESTROYER.ordinal()] = 'T';
+				
+				
+				
+						
+			} else if (m_dir.equals("S")) {
+				
+			} else if (m_dir.equals("E")) {
+		
+			} else if (m_dir.equals("O")) {
+				
+			} else if (m_dir.equals("F")) {
+				
+			} else if (m_dir.equals("B")) {
+			
+			} else if (m_dir.equals("R")) {
+			
+			} else if (m_dir.equals("L")) {
+		
+			}
+			
+			
+			
+			
 			return true; // TODO
 		}
 	}
@@ -118,7 +165,7 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true; // TODO
 		}
 	}
@@ -132,7 +179,7 @@ public abstract class ICondition {
 		public IGetPower() {
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return false; // TODO
 		}
 	}
@@ -146,7 +193,7 @@ public abstract class ICondition {
 		public IGotStuff() {
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return false; // TODO
 		}
 	}
@@ -165,8 +212,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval() {
-			return (m_a.eval() && m_b.eval());
+		public boolean eval(Mobile_Entity current, Model model) {
+			return (m_a.eval(current, model) && m_b.eval(current, model));
 		}
 	}
 
@@ -184,8 +231,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval() {
-			return (m_a.eval() || m_b.eval());
+		public boolean eval(Mobile_Entity current, Model model) {
+			return (m_a.eval(current, model) || m_b.eval(current, model));
 		}
 	}
 
@@ -201,8 +248,8 @@ public abstract class ICondition {
 			m_a = a;
 		}
 
-		public boolean eval() {
-			return !(m_a.eval());
+		public boolean eval(Mobile_Entity current, Model model) {
+			return !(m_a.eval(current, model));
 		}
 	}
 
