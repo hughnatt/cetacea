@@ -41,10 +41,16 @@ public class Whaler extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_whalerNorth;
 			break;
-		case SOUTH:
+		default:
 			m_sprite = m_whalerSouth;
 			break;
 		}
+	}
+
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_whalers.remove(this);
 	}
 
 	/*

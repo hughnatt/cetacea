@@ -10,8 +10,8 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class Entity {
 
-	Location m_pos;
-	boolean m_solid;
+	protected Location m_pos;
+	private boolean m_solid;
 	BufferedImage m_sprite;
 	BufferedImage m_underSprite;
 	public Model m_model;
@@ -51,7 +51,7 @@ public abstract class Entity {
 		return m_pos.y;
 	}
 
-	/*
+	/**
 	 * Indicate whether the Entity is solid (Boats, Stone, ...) or not (Oil,
 	 * Projectile, ...)
 	 */

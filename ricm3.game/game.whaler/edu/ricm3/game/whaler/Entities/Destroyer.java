@@ -16,7 +16,6 @@ public class Destroyer extends Mobile_Entity {
 	BufferedImage m_destroyerEast;
 	BufferedImage m_destroyerWest;
 
-
 	int m_life;
 	private long m_speed;
 
@@ -49,11 +48,17 @@ public class Destroyer extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_destroyerNorth;
 			break;
-		case SOUTH:
+		default:
 			m_sprite = m_destroyerSouth;
 			break;
 		}
 
+	}
+
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_destroyers.remove(this);
 	}
 
 	private void loadSprites() {
@@ -70,8 +75,8 @@ public class Destroyer extends Mobile_Entity {
 	public void step(long now) {
 		long elapsed = now - m_lastStep;
 		if (elapsed > m_speed) {
-			m_speed =Options.DESTROYER_SPD_STANDARD;
-			
+			m_speed = Options.DESTROYER_SPD_STANDARD;
+
 		}
 	}
 
@@ -97,7 +102,7 @@ public class Destroyer extends Mobile_Entity {
 
 	@Override
 	public void hit() {
-		
+
 	}
 
 }
