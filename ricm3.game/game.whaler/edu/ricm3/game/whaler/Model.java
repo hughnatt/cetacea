@@ -85,16 +85,16 @@ public class Model extends GameModel {
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_scoreSprite;
 	private BufferedImage m_underSprite;
-
 	private BufferedImage m_bulleUnderSprite;
 	private BufferedImage m_stoneUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
-
 	private BufferedImage m_fireSprite;
-
 	private BufferedImage m_redCoralUnderSprite;
+
+	// Automaton array
+	IAutomata[] automata_array;
 
 	// Home menu
 	Menu m_menu;
@@ -122,6 +122,7 @@ public class Model extends GameModel {
 	public List<Whale> m_whales = new LinkedList<Whale>();
 	public List<Oil> m_oils = new LinkedList<Oil>();
 
+	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
 
@@ -134,8 +135,21 @@ public class Model extends GameModel {
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
-		// ast = AutomataParser.Run();
-		IAutomata[] automata_array = ((AI_Definitions) ast).make();
+		automata_array = ((AI_Definitions) ast).make();
+		int[] st = null;
+		BufferedReader bis = null;
+		try {
+			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
+			st = new int[7];
+			for (int i = 0; i < 6; i++) {
+				st[i] = Integer.parseInt(bis.readLine());
+			}
+			bis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// Loading Sprites Model
 		loadSprites();
@@ -175,9 +189,11 @@ public class Model extends GameModel {
 		m_statics.add(new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this));
 
 		// Stones
+
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
 			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this));
+
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
 			m_statics.add(new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this));
@@ -194,24 +210,26 @@ public class Model extends GameModel {
 		// Entities
 
 		// Oil
-		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST));
+		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
 
 		// Destroyers
-		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST));
+		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, 1));
 
 		// Whalers
-		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST));
+		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, 1));
 
 		// Whales
-		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST));
+		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, 1));
 
 		// Projectiles
 		m_projectiles.add(new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0));
 
+		int indice_automata = st[3];
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
-				automata_array[0]);
+				automata_array[indice_automata], Options.PLAYER_LIFE);
 
+		keyPressed = new boolean[128];
 	}
 
 	public Map map() {

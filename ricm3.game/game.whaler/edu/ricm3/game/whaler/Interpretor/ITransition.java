@@ -1,5 +1,6 @@
 package edu.ricm3.game.whaler.Interpretor;
 
+import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
@@ -23,9 +24,9 @@ public class ITransition {
 		this.m_destination = destination;
 		this.m_condition = condition;
 	}
-
-	public boolean eval() {
-		return m_condition.eval();
+	
+	public boolean eval(Mobile_Entity entity,Model model) {
+		return m_condition.eval(entity,model);
 	}
 
 	public void step(Mobile_Entity e) throws Game_exception {

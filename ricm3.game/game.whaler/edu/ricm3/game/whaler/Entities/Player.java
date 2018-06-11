@@ -9,6 +9,7 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends Mobile_Entity {
@@ -23,8 +24,6 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
 
-	int m_life; // Live gauge
-
 	/**
 	 * @param pos
 	 * @param sprite
@@ -36,10 +35,11 @@ public final class Player extends Mobile_Entity {
 	 *            player's automata
 	 * @throws Game_exception
 	 */
+
 	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			IAutomata auto) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir);
-		m_life = Options.PLAYER_LIFE;
+			IAutomata auto, int life) throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, life);
+
 		m_automata = auto;
 		loadSprites();
 		switch (dir) {
@@ -84,10 +84,15 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void step(long now) throws Game_exception, Automata_Exception {
 		long elapsed = now - m_lastStep;
-		if (elapsed > 200L) {
+		if (elapsed > 50L) {
 			m_lastStep = now;
-			m_automata.step(this);
-			// Changement du sprite si changement de direction
+
+			try {
+				m_automata.step(m_model, this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			switch (m_direction) {
 			case EAST:
 				m_underSprite = m_playerEastUnder;
@@ -127,7 +132,7 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void wizz() {
-
+		// TODO
 	}
 
 	@Override

@@ -8,10 +8,11 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public final class Whale extends Mobile_Entity {
 
-	public int m_capture; // Catch gauge
+	// public int m_capture; // Catch gauge
 	int m_damage; // DPS to the hit
 	private boolean m_pop_triggered; // true until the jet reach its maximal height
 
@@ -27,10 +28,10 @@ public final class Whale extends Mobile_Entity {
 	 * @param dir
 	 * @throws Game_exception
 	 */
-	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+
+	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir);
-		m_capture = Options.WHALE_CAPTURE_INIT;
+		super(pos, true, sprite, underSprite, model, dir, life);
 		m_damage = Options.WHALE_DPS;
 		m_pop_triggered = false;
 
@@ -56,7 +57,7 @@ public final class Whale extends Mobile_Entity {
 
 	@Override
 	public void step(long now) throws Game_exception {
-		if ((m_capture == 0) || (m_capture == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
+		if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 		}
 
