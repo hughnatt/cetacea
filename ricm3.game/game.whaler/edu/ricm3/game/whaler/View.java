@@ -59,24 +59,25 @@ public class View extends GameView {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
+		//displays a different view depending on the current screen
+		
 		switch (m_model.currentScreen()) {
 
 		case PREFERENCES:
 			break;
 		case HOME:
+			//paints the home menu
 			m_model.m_menu.paint(g, getWidth(), getHeight());
 			break;
 		case GAME:
+			//paints a blue canvas then the map's viewport
+			
 			g.setColor(Color.BLUE);
-
 			g.fillRect(0, 0, getWidth(), getHeight());
-			// call the method paint on all the instances you want to print
 			m_model.m_current_background.paint(g);
 
 			// Viewport paint of the map
-			// Viewport paint of the map
 			try {
-
 				if (m_model.UNDER_WATER) {
 					m_model.map().paint_under(g);
 				} else {
@@ -86,7 +87,9 @@ public class View extends GameView {
 				System.exit(-1);
 			}
 			break;
+			
 		case AUTOMATA:
+			//paints the automaton menu, where you can assign automatons to entities
 			Font f = new Font("Verdana", Font.BOLD, 35);
 			g.setFont(f);
 			g.setColor(Color.BLACK);
