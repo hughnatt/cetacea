@@ -27,6 +27,7 @@ public class IBehaviour {
 			ITransition t = iter.next();
 			if (t.eval() == true) {
 				t.step(e);
+				break;
 			}
 		}
 	}

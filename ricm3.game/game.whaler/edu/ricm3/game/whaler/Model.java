@@ -44,25 +44,26 @@ import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.whaler.Entities.RedCoral;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Model extends GameModel {
 
-	//enum for the menu, to determine which screen should be displayed
+	// enum for the menu, to determine which screen should be displayed
 	public enum Screen {
-		AUTOMATA,HOME,GAME,PREFERENCES;
+		AUTOMATA, HOME, GAME, PREFERENCES;
 	}
 
 	private Screen m_screen;
 
-	//getter for Screen
+	// getter for Screen
 	public Screen currentScreen() {
 		return m_screen;
 	}
 
-	//setter for Screen
+	// setter for Screen
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
@@ -88,8 +89,10 @@ public class Model extends GameModel {
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
-	
+
 	private BufferedImage m_fireSprite;
+
+	private BufferedImage m_redCoralUnderSprite;
 
 	// Home menu
 	Menu m_menu;
@@ -120,20 +123,19 @@ public class Model extends GameModel {
 
 		// Set the current screen on the home menu
 		m_screen = Screen.HOME;
-		
+
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
-		//Loading automate file
+		// Loading automate file
 		Ast ast = AutomataParser.Run();
-		//ast = AutomataParser.Run();
+		// ast = AutomataParser.Run();
 		IAutomata[] automata_array = ((AI_Definitions) ast).make();
 
-		
 		// Loading Sprites Model
 		loadSprites();
 
 		// Makes a new Menu
 		m_menu = new Menu(this, 350, 150, (float) 2);
-		
+
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -148,6 +150,7 @@ public class Model extends GameModel {
 		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
 		new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this);
 		new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this);
+		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
 
 		// Algues
 		new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this);
@@ -159,7 +162,10 @@ public class Model extends GameModel {
 		new Coral(new Location(20, 18), null, m_coralUnderSprite, this);
 		new Coral(new Location(20, 2), null, m_coralUnderSprite, this);
 
-		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		// Corail Rouge
+		new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this);
+		new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this);
+		new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -209,7 +215,8 @@ public class Model extends GameModel {
 		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
 
 		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0]);
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
+				automata_array[0]);
 
 	}
 
@@ -219,19 +226,21 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
-	
+
 		try {
 			m_player.step(now);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			m_current_background.step(now);
 			m_whales[0].step(now);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		//
 	}
 
 	@Override
@@ -247,7 +256,7 @@ public class Model extends GameModel {
 			UNDER_WATER = true;
 		}
 	}
-	
+
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
 	}
@@ -460,5 +469,16 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/red_coral.png");
+		try {
+			m_redCoralUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+	
 	}
 }
