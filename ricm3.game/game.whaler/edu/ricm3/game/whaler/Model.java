@@ -222,16 +222,13 @@ public class Model extends GameModel {
 
 		try {
 			m_player.step(now);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
 			m_current_background.step(now);
 			m_whales[0].step(now);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Game_exception | Automata_Exception e1) {
+			System.exit(-1);
+			e1.printStackTrace();
 		}
+
 	}
 
 	@Override

@@ -24,22 +24,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.swing.ImageIcon;
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 import edu.ricm3.game.GameController;
-import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Model.Screen;
 
 /**
