@@ -25,8 +25,8 @@ public class ITransition {
 		this.m_condition = condition;
 	}
 	
-	public boolean eval(Model model, Mobile_Entity entity) {
-		return m_condition.eval(model, entity);
+	public boolean eval(Mobile_Entity entity,Model model) {
+		return m_condition.eval(entity,model);
 	}
 
 	public void step(Mobile_Entity e) throws Game_exception {

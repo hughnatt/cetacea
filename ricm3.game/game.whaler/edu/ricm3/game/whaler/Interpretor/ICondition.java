@@ -6,7 +6,7 @@ import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 
 public abstract class ICondition {
 
-	public abstract boolean eval(Model model, Mobile_Entity current); // Il y aura besoin de rajouter (au moins) la map
+	public abstract boolean eval(Mobile_Entity current, Model model); // Il y aura besoin de rajouter (au moins) la map
 																		// (voir model complet) et
 	// l'entité courante
 
@@ -43,7 +43,7 @@ public abstract class ICondition {
 
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true;
 		}
 	}
@@ -59,7 +59,7 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			int length = m_key.length();
 			char carac = m_key.charAt(0);
 			int ascii = (int) carac;
@@ -96,7 +96,7 @@ public abstract class ICondition {
 			m_dir = strToDir(string);
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true;
 		}
 	}
@@ -117,17 +117,18 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true;
 		}
 	}
 
+	
+
 	/**
 	 * La plus proche entité de type m_entity est dans la direction m_dir NB :
 	 * (@Tanguy) : Celle là elle a pas l'air facile à faire, il faudra passer la map
-	 * complète en argument galère, galère, ... m_entity peut valoir : V T A D P J G
-	 * M NB2 : Une entité dangereux pour le joueur n'est pas dangereux pour un
-	 * Destroyer "DANGER" est donc à définir en fonction de l'entité courante
+	 * complète en argument galère, galère, ... m_entity peut valoir : Void Team
+	 * Adversaire Danger Pick
 	 */
 	public static class IClosest extends ICondition {
 		String m_entity;
@@ -138,7 +139,9 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
+		public boolean eval(Mobile_Entity current, Model model) {
+			//
+			model.map();
 			return true;
 		}
 	}
@@ -152,8 +155,8 @@ public abstract class ICondition {
 		public IGotPower() {
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
-			return current.m_life>5;
+		public boolean eval(Mobile_Entity current, Model model) {
+			return current.m_life > 5;
 		}
 
 	}
@@ -167,7 +170,7 @@ public abstract class ICondition {
 		public IGotStuff() {
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return false;
 		}
 	}
@@ -186,8 +189,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
-			return (m_a.eval(model, current) && m_b.eval(model, current));
+		public boolean eval(Mobile_Entity current, Model model) {
+			return (m_a.eval(current, model) && m_b.eval(current, model));
 		}
 	}
 
@@ -205,8 +208,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
-			return (m_a.eval(model, current) || m_b.eval(model, current));
+		public boolean eval(Mobile_Entity current, Model model) {
+			return (m_a.eval(current, model) || m_b.eval(current, model));
 		}
 	}
 
@@ -222,8 +225,8 @@ public abstract class ICondition {
 			m_a = a;
 		}
 
-		public boolean eval(Model model, Mobile_Entity current) {
-			return !(m_a.eval(model, current));
+		public boolean eval(Mobile_Entity current, Model model) {
+			return !(m_a.eval(current, model));
 		}
 	}
 
