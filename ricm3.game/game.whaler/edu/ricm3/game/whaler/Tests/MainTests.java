@@ -1,4 +1,4 @@
-package edu.ricm.game.whaler.Tests;
+package edu.ricm3.game.whaler.Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +8,7 @@ class MainTests {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 }
