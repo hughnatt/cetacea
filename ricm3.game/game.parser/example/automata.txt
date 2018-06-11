@@ -1,0 +1,5 @@
+Player(Init){
+  * (Init): True ? Move(E) :(Turning)
+  * (Turning): True ? Turn(R) : (Init)
+}
+
