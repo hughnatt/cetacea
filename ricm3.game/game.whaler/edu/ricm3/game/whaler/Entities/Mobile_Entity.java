@@ -124,6 +124,25 @@ public abstract class Mobile_Entity extends Entity {
 		}
 	}
 
+	public void turnleft() {
+		switch (m_direction) {
+		case SOUTH:
+			m_direction = Direction.EAST;
+			break;
+		case NORTH:
+			m_direction = Direction.WEST;
+			break;
+		case WEST:
+			m_direction = Direction.SOUTH;
+			break;
+		case EAST:
+			m_direction = Direction.NORTH;
+			break;
+		default:
+			break;
+		}
+	}
+
 	// Specific Actions
 	public abstract void pop();
 

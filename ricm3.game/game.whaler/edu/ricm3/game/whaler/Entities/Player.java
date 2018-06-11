@@ -87,15 +87,20 @@ public final class Player extends Mobile_Entity {
 			// Changement du sprite si changement de direction
 			switch (m_direction) {
 			case EAST:
+				m_underSprite = m_playerEastUnder;
 				m_sprite = m_playerEast;
 				break;
 			case WEST:
+				m_underSprite = m_playerWestUnder;
 				m_sprite = m_playerWest;
 				break;
 			case NORTH:
+				m_underSprite = m_playerNorthUnder;
 				m_sprite = m_playerNorth;
+				
 				break;
 			default:
+				m_underSprite = m_playerSouthUnder;
 				m_sprite = m_playerSouth;
 				break;
 			}
@@ -114,12 +119,15 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void pop() {
-		// TODO
+		m_model.swap();
 	}
 
 	@Override
 	public void wizz() {
-		// TODO
+		for(int i =0; i<Options.MAX_OIL; i++) {
+			m_model.m_oil[i].is_burning = true;
+		}
+		
 	}
 
 	@Override

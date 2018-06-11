@@ -186,9 +186,7 @@ public abstract class IAction {
 				e.turnright();
 				e.turnright();
 			case LEFT:
-				e.turnright();
-				e.turnright();
-				e.turnright();
+				e.turnleft();
 			default:
 				break;
 			}

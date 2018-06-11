@@ -39,6 +39,7 @@ import edu.ricm3.game.whaler.Entities.Island;
 import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
+import edu.ricm3.game.whaler.Entities.RedCoral;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
@@ -88,6 +89,10 @@ public class Model extends GameModel {
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
 
+	private BufferedImage m_fireSprite;
+
+	private BufferedImage m_redCoralUnderSprite;
+
 	// Home menu
 	Menu m_menu;
 
@@ -108,7 +113,7 @@ public class Model extends GameModel {
 	Whaler[] m_whalers;
 	Projectile[] m_projectiles;
 	Whale[] m_whales;
-	Oil[] m_oil;
+	public Oil[] m_oil;
 
 	// Random generation
 	public Random rand = new Random();
@@ -145,6 +150,7 @@ public class Model extends GameModel {
 		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
 		new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this);
 		new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this);
+		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
 
 		// Algues
 		new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this);
@@ -156,7 +162,10 @@ public class Model extends GameModel {
 		new Coral(new Location(20, 18), null, m_coralUnderSprite, this);
 		new Coral(new Location(20, 2), null, m_coralUnderSprite, this);
 
-		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		// Corail Rouge
+		new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this);
+		new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this);
+		new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -243,6 +252,10 @@ public class Model extends GameModel {
 			m_current_background = m_underwater;
 			UNDER_WATER = true;
 		}
+	}
+
+	public BufferedImage get_fire_sprite() {
+		return m_fireSprite;
 	}
 
 	public Direction rand_direction() {
@@ -445,5 +458,24 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+
+		imageFile = new File("game.whaler/sprites/Fire_Sprite.png");
+		try {
+			m_fireSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/red_coral.png");
+		try {
+			m_redCoralUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
 	}
 }
