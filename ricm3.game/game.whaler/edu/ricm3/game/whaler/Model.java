@@ -46,16 +46,19 @@ import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 
+	//enum for the menu, to determine which screen should be displayed
 	public enum Screen {
-		OPTIONS, HOME, GAME;
+		AUTOMATA,HOME,GAME,PREFERENCES;
 	}
 
 	private Screen m_screen;
 
+	//getter for Screen
 	public Screen currentScreen() {
 		return m_screen;
 	}
 
+	//setter for Screen
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
@@ -74,10 +77,6 @@ public class Model extends GameModel {
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_scoreSprite;
-	private BufferedImage m_baleinemenuSprite;
-	private BufferedImage m_destroyer_menuSprite;
-	private BufferedImage m_projectile_menuSprite;
-	private BufferedImage m_fondmenu;
 	private BufferedImage m_underSprite;
 
 	private BufferedImage m_bulleUnderSprite;
@@ -86,7 +85,7 @@ public class Model extends GameModel {
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
 
-	// Menu d'accueil
+	// Home menu
 	Menu m_menu;
 
 	// Boolean true if the player is under the surface
@@ -113,6 +112,7 @@ public class Model extends GameModel {
 
 	public Model() throws Exception {
 
+		// Set the current screen on the home menu
 		m_screen = Screen.HOME;
 
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
@@ -124,7 +124,9 @@ public class Model extends GameModel {
 		// Loading Sprites Model
 		loadSprites();
 
+		// Makes a new Menu
 		m_menu = new Menu(this, 350, 150, (float) 2);
+		
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);

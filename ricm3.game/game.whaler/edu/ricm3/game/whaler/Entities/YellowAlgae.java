@@ -9,8 +9,7 @@ import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class YellowAlgae extends Static_Entity {
 
-	public YellowAlgae(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model)
-			throws Map_exception {
+	public YellowAlgae(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Map_exception {
 		super(pos, false, sprite, underSprite, model);
 	}
 
