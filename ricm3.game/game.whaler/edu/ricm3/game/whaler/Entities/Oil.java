@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public final class Oil extends Mobile_Entity {
 
@@ -18,11 +18,16 @@ public final class Oil extends Mobile_Entity {
 	/**
 	 * @param pos
 	 * @param sprite
+	 * @param underSprite
 	 * @param model
+	 * @param dir
+	 * @throws Game_exception
 	 */
+
 	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
-			throws Map_exception {
+			throws Game_exception {
 		super(pos, false, sprite, underSprite, model, dir, life);
+
 		this.is_burning = false;
 
 		m_spriteFire = new BufferedImage[32];

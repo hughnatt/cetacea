@@ -1,12 +1,11 @@
 package edu.ricm3.game.whaler.Entities;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-
-import java.awt.Graphics;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class Bulle extends Static_Entity {
 
@@ -18,7 +17,14 @@ public class Bulle extends Static_Entity {
 	long m_lastStep;
 	long m_stepSpeed = 100L; // Medium Animation Speed
 
-	public Bulle(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Map_exception {
+	/**
+	 * @param pos
+	 * @param sprite
+	 * @param underSprite
+	 * @param model
+	 * @throws Game_exception
+	 */
+	public Bulle(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, false, sprite, underSprite, model);
 
 		// Default sprite index is 0 (first image)

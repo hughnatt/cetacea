@@ -8,7 +8,6 @@ Player(Init){
   | Key(w) ? Wizz(F) :(Init)
   | Key(SPACE) ? Hit(F) :(Init)
   | Key(f) ? Pick(F) :(Init)
-  | GotPower ? Move(S) :(Turn_S)
   | True ? Power :(Init)
 
   * (Turn_N): True ? Turn(N) :(Init)
