@@ -144,7 +144,8 @@ public class Model extends GameModel {
 		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
 		new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this);
 		new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this);
-
+		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		
 		// Algues
 		new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this);
 		new YellowAlgae(new Location(22, 18), null, m_yellowAlgaeUnderSprite, this);
@@ -155,7 +156,7 @@ public class Model extends GameModel {
 		new Coral(new Location(20, 18), null, m_coralUnderSprite, this);
 		new Coral(new Location(20, 2), null, m_coralUnderSprite, this);
 
-		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -228,6 +229,8 @@ public class Model extends GameModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		//
 	}
 
 	@Override
