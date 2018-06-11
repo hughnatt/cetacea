@@ -151,3 +151,16 @@
   - Voir comment fonctionne le parseur
   - Continuer interface graphique
   - Voir comment choisir les automates au début du jeu
+  
+## Vendredi 8 Juin
+  
+###### Tâches effectuées :
+  - Implémentation dee l'interpréteur d'automate
+  - Travail sur l'UI
+  - Implémentation des actions des entités
+ 
+###### Travail à faire lors de la prochaine séance :
+  - Finaliser l'interpréteur d'automates
+  - Mettre en place l'automate du joueur
+  
+##
