@@ -1,4 +1,59 @@
 Player(Init){
+  * (Init) : 
+  | Key(FU) ? Move(N) :(Move_N)
+  | Key(FL) ? Move(O) :(Move_O)
+  | Key(FD) ? Move(S) :(Move_S)
+  | Key(FR) ? Move(E) :(Move_E)
+  | Key(p) ? Pop(F) :(Init)
+  | Key(w) ? Wizz(F) :(Init)
+  | Key(SPACE) ? Hit(F) :(Init)
+  | Key(f) ? Pick(F) :(Init)
+  | True ? Power :(Init)
+  * (Move_N): True ? Move(N) :(Init)
+  * (Move_O): True ? Move(O) :(Init)
+  * (Move_S): True ? Move(S) :(Init)
+  * (Move_E): True ? Move(E) :(Init)
+}
+  
+  Whale(Init){
+  * (Init) :
+  | Key(FU) ? Move(N) :(Turn_N)
+  | Key(FL) ? Move(O) :(Turn_O)
+  | Key(FD) ? Move(S) :(Turn_S)
+  | Key(FR) ? Move(E) :(Turn_E)
+  | Key(p) ? Pop(F) :(Init)
+  | Key(w) ? Wizz(F) :(Init)
+  | Key(SPACE) ? Hit(F) :(Init)
+  | Key(f) ? Pick(F) :(Init)
+  | True ? Power :(Init)
+
+  * (Turn_N): True ? Turn(N) :(Init)
+  * (Turn_O): True ? Turn(O) :(Init)
+  * (Turn_S): True ? Turn(S) :(Init)
+  * (Turn_E): True ? Turn(E) :(Init)
+  
+  }
+  
+  Foe(Init){
+  * (Init) :
+  | Key(FU) ? Move(N) :(Turn_N)
+  | Key(FL) ? Move(O) :(Turn_O)
+  | Key(FD) ? Move(S) :(Turn_S)
+  | Key(FR) ? Move(E) :(Turn_E)
+  | Key(p) ? Pop(F) :(Init)
+  | Key(w) ? Wizz(F) :(Init)
+  | Key(SPACE) ? Hit(F) :(Init)
+  | Key(f) ? Pick(F) :(Init)
+  | True ? Power :(Init)
+
+  * (Turn_N): True ? Turn(N) :(Init)
+  * (Turn_O): True ? Turn(O) :(Init)
+  * (Turn_S): True ? Turn(S) :(Init)
+  * (Turn_E): True ? Turn(E) :(Init)
+  
+  }
+  
+  Traitor(Init){
   * (Init) :
   | Key(FU) ? Turn(N) :(Move_N)
   | Key(FL) ? Turn(O) :(Move_O)
@@ -14,3 +69,4 @@ Player(Init){
   * (Move_S): True ? Move(S) :(Init)
   * (Move_E): True ? Move(E) :(Init)
 }
+

@@ -34,6 +34,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model.Screen;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 /**
  * This class is to illustrate the most simple game controller. It does not
@@ -298,7 +299,9 @@ public class Controller extends GameController implements ActionListener {
 		main.add(infoLabel);
 
 		// Example items for the moment, but there should be automatons here
-		String[] items = { "Baleine", "Baleinier", "Destroyer", "Joueur", "Pétrole", "Projectile" };
+		
+		IAutomata[] items = m_model.automata_array;
+		
 		b = new JComboBox[6];
 		int i = 0;
 		while (i < 6) {
@@ -342,7 +345,6 @@ public class Controller extends GameController implements ActionListener {
 		 **/
 
 		if (s == annuler) {
-			infoLabel.setText("Sélectionnez un item");
 			for (int i = 0; i < 6; i++)
 				b[i].setSelectedIndex(0);
 		}
@@ -367,8 +369,11 @@ public class Controller extends GameController implements ActionListener {
 			BufferedWriter out = null;
 			try {
 				out = new BufferedWriter(new FileWriter(file));
-				for (int i = 0; i < 6; i++)
-					out.write(b[i].getSelectedItem().toString() + ";");
+				for (int i = 0; i < 6; i++) {
+					out.write(String.valueOf(b[i].getSelectedIndex()));
+					if(i!=5)
+						out.write('\n');
+				}
 				infoLabel.setVisible(true);
 			} catch (IOException ae) {
 				ae.printStackTrace();
