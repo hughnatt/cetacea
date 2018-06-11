@@ -21,7 +21,7 @@ public class IBehaviour {
 		m_source = source;
 	}
 	
-	public void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+	public void step(Mobile_Entity e) throws Exception {
 		Iterator<ITransition> iter = m_transitions.iterator();
 		while (iter.hasNext()) {
 			ITransition t = iter.next();

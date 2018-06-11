@@ -2,12 +2,13 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public abstract class IAction {
 
-	abstract void step(Mobile_Entity e) throws Map_exception, Tile_exception;
+	abstract void step(Mobile_Entity e) throws Exception;
 
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
 													// incluse à la place de fonctions statiques
@@ -152,7 +153,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			e.wizz();
 		}
 
@@ -204,7 +205,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			e.hit();
 		}
 
@@ -218,7 +219,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			//TODO
 		}
 
@@ -232,7 +233,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			//TODO
 		}
 
@@ -246,7 +247,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			//TODO
 		}
 
@@ -257,7 +258,7 @@ public abstract class IAction {
 		public IStore() {
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			//TODO
 		}
 
@@ -268,7 +269,7 @@ public abstract class IAction {
 		public IGet() {
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			//TODO
 		}
 
@@ -279,7 +280,7 @@ public abstract class IAction {
 		public IPower() {
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception{
 			//TODO
 		}
 
@@ -290,7 +291,7 @@ public abstract class IAction {
 		public IKamikaze() {
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			//TODO
 		}
 
@@ -306,7 +307,7 @@ public abstract class IAction {
 		}
 
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Exception {
 			int r = e.m_model.rand.nextInt(2);
 			if (r == 0) {
 				m_a.step(e);

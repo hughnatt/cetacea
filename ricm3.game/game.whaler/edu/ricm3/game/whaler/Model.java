@@ -17,7 +17,6 @@
  */
 package edu.ricm3.game.whaler;
 
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +32,7 @@ import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.*;
 import edu.ricm3.game.parser.AutomataParser;
 import edu.ricm3.game.whaler.Entities.Bulle;
+import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
@@ -43,24 +43,27 @@ import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
+import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Model extends GameModel {
-	
+
 	public enum Screen {
-		OPTIONS,HOME,GAME;
+		OPTIONS, HOME, GAME;
 	}
-	
+
 	private Screen m_screen;
-	
-	
-	public Screen currentScreen(){
+
+	public Screen currentScreen() {
 		return m_screen;
 	}
+
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
-	
-	
+
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -80,12 +83,17 @@ public class Model extends GameModel {
 	private BufferedImage m_projectile_menuSprite;
 	private BufferedImage m_fondmenu;
 	private BufferedImage m_underSprite;
-	private BufferedImage m_bulleSprite;
 
-	//Menu d'accueil
+	private BufferedImage m_bulleUnderSprite;
+	private BufferedImage m_stoneUnderSprite;
+	private BufferedImage m_yellowAlgaeUnderSprite;
+	private BufferedImage m_coralUnderSprite;
+	private BufferedImage m_playerUnderSprite;
+
+	// Menu d'accueil
 	Menu m_menu;
-	
-	// Boolean indiquant si le joueur est underwater
+
+	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;
 
 	// Background
@@ -118,11 +126,9 @@ public class Model extends GameModel {
 		IAutomata[] automata_array = ((AI_Definitions) ast).make();
 
 		
-		
 		// Loading Sprites Model
 		loadSprites();
-		
-		
+
 		m_menu = new Menu(this, 350, 150, (float) 2);
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
@@ -135,16 +141,32 @@ public class Model extends GameModel {
 
 		// Bulles
 
-		new Bulle(new Location(2, 2), null, m_bulleSprite, this);
+		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this);
+		new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this);
+
+		// Algues
+		new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this);
+		new YellowAlgae(new Location(22, 18), null, m_yellowAlgaeUnderSprite, this);
+		new YellowAlgae(new Location(4, 17), null, m_yellowAlgaeUnderSprite, this);
+
+		// Corail
+		new Coral(new Location(10, 6), null, m_coralUnderSprite, this);
+		new Coral(new Location(20, 18), null, m_coralUnderSprite, this);
+		new Coral(new Location(20, 2), null, m_coralUnderSprite, this);
+
+		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
 
 		// Stones
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			new Stone(new Location(i, 0), m_stoneSprite, null, this);
-			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, null, this);
+
+			new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this);
+			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this);
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			new Stone(new Location(0, i), m_stoneSprite, null, this);
-			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, null, this);
+			new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this);
+			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this);
+
 		}
 
 		// Islands
@@ -154,6 +176,11 @@ public class Model extends GameModel {
 		new Iceberg(new Location(3, 7), m_icebergSprite, null, this);
 
 		// Entities
+
+		// TODO problème à régler : une instance qui n'est plus sur la map, reste dans
+		// les tableaux et donc en mémoire. Il faut mettre à jour les tableaux ou écrire
+		// une fonction DEL. Cette fonctionnalité serait utile dans Projectile et Whale
+		// déjà
 
 		// Oil
 		m_oil = new Oil[Options.MAX_OIL];
@@ -174,10 +201,11 @@ public class Model extends GameModel {
 
 		// Projectiles
 		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
+
 		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
 
 		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, null, this, Direction.WEST, automata_array[0]);
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0]);
 
 	}
 
@@ -187,7 +215,6 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
-		m_current_background.step(now);
 	
 		try {
 			m_player.step(now);
@@ -195,6 +222,12 @@ public class Model extends GameModel {
 			e.printStackTrace();
 		}
 		
+		try {
+			m_current_background.step(now);
+			m_whales[0].step(now);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -228,8 +261,6 @@ public class Model extends GameModel {
 
 	private void loadSprites() {
 		File imageFile;
-
-
 
 		imageFile = new File("game.whaler/sprites/water.png");
 		try {
@@ -316,8 +347,6 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
-
-
 		/*
 		 * Custom Texture
 		 */
@@ -339,8 +368,6 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-
-
 
 		/*
 		 * Custom Texture
@@ -368,7 +395,51 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/bulles.png");
 		try {
-			m_bulleSprite = ImageIO.read(imageFile);
+			m_bulleUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/stoneUnder.png");
+		try {
+			m_stoneUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/yellow_algae.png");
+		try {
+			m_yellowAlgaeUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/coral.png");
+		try {
+			m_coralUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/submarine.png");
+		try {
+			m_playerUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

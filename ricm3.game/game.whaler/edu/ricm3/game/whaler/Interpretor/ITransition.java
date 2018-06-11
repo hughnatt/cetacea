@@ -26,7 +26,7 @@ public class ITransition {
 		return m_condition.eval();
 	}
 	
-	public void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+	public void step(Mobile_Entity e) throws Exception {
 		m_action.step(e);
 		e.m_current = m_destination; 
 	}

@@ -20,6 +20,7 @@ package edu.ricm3.game.whaler;
 import java.awt.Dimension;
 
 import edu.ricm3.game.GameUI;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class GameMain {

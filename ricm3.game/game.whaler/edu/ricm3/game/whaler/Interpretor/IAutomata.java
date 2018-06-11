@@ -34,7 +34,7 @@ public class IAutomata {
 	 * @throws Tile_exception 
 	 * @throws Map_exception 
 	 */
-	public void step(Mobile_Entity e) throws Automata_Exception, Map_exception, Tile_exception {
+	public void step(Mobile_Entity e) throws Exception {
 		Iterator<IBehaviour> iter = m_behaviours.iterator();
 
 		// Si l'état courant de l'entité n'est pas fixé

@@ -5,7 +5,7 @@ public class Map_exception extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1630793801934617443L;
 
 	public Map_exception() {
 	}
