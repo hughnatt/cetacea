@@ -88,6 +88,8 @@ public class Model extends GameModel {
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
+	
+	private BufferedImage m_fireSprite;
 
 	// Home menu
 	Menu m_menu;
@@ -109,7 +111,7 @@ public class Model extends GameModel {
 	Whaler[] m_whalers;
 	Projectile[] m_projectiles;
 	Whale[] m_whales;
-	Oil[] m_oil;
+	public Oil[] m_oil;
 
 	// Random generation
 	public Random rand = new Random();
@@ -244,6 +246,10 @@ public class Model extends GameModel {
 			m_current_background = m_underwater;
 			UNDER_WATER = true;
 		}
+	}
+	
+	public BufferedImage get_fire_sprite() {
+		return m_fireSprite;
 	}
 
 	public Direction rand_direction() {
@@ -442,6 +448,14 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/submarine.png");
 		try {
 			m_playerUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		imageFile = new File("game.whaler/sprites/Fire_Sprite.png");
+		try {
+			m_fireSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

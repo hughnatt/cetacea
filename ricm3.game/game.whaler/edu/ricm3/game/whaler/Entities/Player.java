@@ -121,12 +121,15 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void pop() {
-		// TODO
+		m_model.swap();
 	}
 
 	@Override
 	public void wizz() {
-		// TODO
+		for(int i =0; i<Options.MAX_OIL; i++) {
+			m_model.m_oil[i].is_burning = true;
+		}
+		
 	}
 
 	@Override
