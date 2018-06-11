@@ -1,4 +1,4 @@
-package edu.ricm.game.whaler.tests;
+package edu.ricm.game.whaler.Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
