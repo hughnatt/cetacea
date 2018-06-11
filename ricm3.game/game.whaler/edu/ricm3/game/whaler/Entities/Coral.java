@@ -13,7 +13,7 @@ public class Coral extends Static_Entity {
 	}
 
 	@Override
-	public void step(long now) {		
+	public void step(long now) {
 	}
 
 	@Override
@@ -22,9 +22,8 @@ public class Coral extends Static_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);	
-		
+		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
+
 	}
-	
-	
+
 }
