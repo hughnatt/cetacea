@@ -3,6 +3,7 @@ package edu.ricm3.game.whaler.Interpretor;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
@@ -20,11 +21,12 @@ public class IBehaviour {
 		m_source = source;
 	}
 
-	public void step(Mobile_Entity e) throws Game_exception {
+	
+	public void step(Model model, Mobile_Entity e) throws Game_exception {
 		Iterator<ITransition> iter = m_transitions.iterator();
 		while (iter.hasNext()) {
 			ITransition t = iter.next();
-			if (t.eval() == true) {
+			if (t.eval(model, e) == true) {
 				t.step(e);
 				break;
 			}
