@@ -3,6 +3,7 @@ package edu.ricm3.game.whaler.Entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
@@ -42,7 +43,45 @@ public abstract class Entity {
 		m_model.map().tile(m_pos.x, m_pos.y).addForeground(this);
 
 	}
-
+	
+	public enum EntityType {
+		DESTROYER, OIL, PLAYER, PROJECTILE, WHALE, WHALER, ISLAND, STONE, ICEBERG, VOID
+	}
+	
+	public EntityType getType() {
+		
+		if(this instanceof Destroyer) {
+			return EntityType.DESTROYER;
+		}
+		else if(this instanceof Oil) {
+			return EntityType.OIL;
+		}
+		else if(this instanceof Player) {
+			return EntityType.PLAYER;
+		}
+		else if(this instanceof Projectile) {
+			return EntityType.PROJECTILE;
+		}
+		else if(this instanceof Whale) {
+			return EntityType.WHALE;
+		}
+		else if(this instanceof Whaler) {
+			return EntityType.WHALER;
+		}
+		else if(this instanceof Island) {
+			return EntityType.ISLAND;
+		}
+		else if(this instanceof Stone) {
+			return EntityType.STONE;
+		}
+		else if(this instanceof Iceberg) {
+			return EntityType.ICEBERG;
+		}
+		else {
+			return EntityType.VOID; //TODO
+		}
+	}
+	
 	public int getx() {
 		return m_pos.x;
 	}
