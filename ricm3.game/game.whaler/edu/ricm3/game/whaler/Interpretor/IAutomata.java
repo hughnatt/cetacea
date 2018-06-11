@@ -59,8 +59,7 @@ public class IAutomata {
 			throw new Automata_Exception("Missing State\n");
 		}
 
-
-		currentBehaviour.step(model, e);		
+		currentBehaviour.step(e,model);		
 		
 	}
 
