@@ -164,3 +164,19 @@
   - Mettre en place l'automate du joueur
   
 ##
+
+## Lundi 11 Juin
+  
+###### Tâches effectuées :
+  - Ebauche du nouveau menu
+  - Implémentation de IAction et Icondition
+  - Implémentation de l'interpréteur 
+  - Gestion des exceptions
+  - Modification modèle
+  - 
+ 
+###### Travail à faire lors de la prochaine séance :
+  - Fin du menu
+  - Fin des conditions et actions
+  
+##
