@@ -16,7 +16,7 @@ public abstract class Mobile_Entity extends Entity {
 
 	long m_lastStep;
 	public Direction m_direction;
-
+	public int m_life;
 	// L'automate associé à l'entité mobile
 	public IAutomata m_automata;
 	public IState m_current; // !\ Ne pas initialiser, l'initialisation aura lieu au premier step de
@@ -29,13 +29,14 @@ public abstract class Mobile_Entity extends Entity {
 	 * @param underSprite
 	 * @param model
 	 * @param dir
-	 * @throws Game_exception
+	 * 
 	 */
 	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
-			Direction dir) throws Game_exception {
+			Direction dir, int life) throws Game_exception {
 		super(pos, solid, sprite, underSprite, model);
 		m_lastStep = 0;
 		m_direction = dir;
+		m_life = life;
 	}
 
 	/**

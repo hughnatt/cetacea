@@ -33,7 +33,7 @@ public class Projectile extends Mobile_Entity {
 		Entity result = tile.contain(Whale.class); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
-			result_whale.m_capture += m_damage; // if yes, it takes damages
+			result_whale.m_life += m_damage; // if yes, it takes damages
 			hit = true;
 		}
 
@@ -81,11 +81,10 @@ public class Projectile extends Mobile_Entity {
 	 */
 	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
 			int range, int damage) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir);
-		m_remaining = range;
+		super(pos, false, sprite, underSprite, model, dir, range);
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
-		if (apply_projectile(m_model.map().tile(pos))) { // We apply the projectile on the case of the beginning
+		if (apply_projectile(m_model.map().tile(pos))) { // We apply the projectile on the square of the beginning
 			m_model.map().tile(pos).remove(this); // if it hits something, it disappears
 		}
 	}
@@ -99,10 +98,10 @@ public class Projectile extends Mobile_Entity {
 
 			m_lastStep = now;
 
-			m_model.map().tile(this.getx(), this.gety()).remove(this); // we remove it from the map
-			if (m_remaining != 0) { // if the max range isn't reach
+			m_model.map().tile(this.getx(), this.gety()).remove(this);// we remove it from the map
+			if (m_life != 0) {// if the max range isn't reach
 
-				m_remaining--;
+				m_life--;
 
 				Location next_pos = this.pos_front();
 				Tile next_tile = m_model.map().tile(next_pos); // we get the next tile

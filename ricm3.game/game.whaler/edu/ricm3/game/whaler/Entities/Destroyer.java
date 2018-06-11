@@ -16,10 +16,8 @@ public class Destroyer extends Mobile_Entity {
 	BufferedImage m_destroyerEast;
 	BufferedImage m_destroyerWest;
 
-
-	int m_life;
 	private long m_speed;
-
+	
 	/**
 	 * @param pos
 	 *            Initial Position of the Destroyer
@@ -31,10 +29,10 @@ public class Destroyer extends Mobile_Entity {
 	 *            Initial Direction of the Destroyer
 	 * @throws Game_exception
 	 */
-	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+
+	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir);
-		m_life = Options.DESTROYER_LIFE;
+		super(pos, true, sprite, underSprite, model, dir, life);
 		m_speed = Options.DESTROYER_SPD_STANDARD;
 
 		loadSprites();
