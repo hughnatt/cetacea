@@ -50,4 +50,9 @@ public class Options {
 	public static final int WHALE_DPS = 1;
 	public static final int WHALE_CAPTURE_MAX = 20;
 	public static final int WHALE_CAPTURE_INIT = 10;
+	
+	public static final long DESTROYER_SPD_STANDARD = 500L;
+	public static final long DESTROYER_SPD_IMPROVED = 300L;
+	
+	
 }

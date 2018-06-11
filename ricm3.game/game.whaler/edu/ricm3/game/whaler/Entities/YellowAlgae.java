@@ -5,11 +5,19 @@ import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class YellowAlgae extends Static_Entity {
 
-	public YellowAlgae(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Map_exception {
+	/**
+	 * @param pos
+	 * @param sprite
+	 * @param underSprite
+	 * @param model
+	 * @throws Game_exception
+	 */
+	public YellowAlgae(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model)
+			throws Game_exception {
 		super(pos, false, sprite, underSprite, model);
 	}
 

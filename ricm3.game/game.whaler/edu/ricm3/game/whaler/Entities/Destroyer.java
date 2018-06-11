@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class Destroyer extends Mobile_Entity {
 
@@ -16,7 +16,9 @@ public class Destroyer extends Mobile_Entity {
 	BufferedImage m_destroyerEast;
 	BufferedImage m_destroyerWest;
 
+
 	int m_life;
+	private long m_speed;
 
 	/**
 	 * @param pos
@@ -27,12 +29,13 @@ public class Destroyer extends Mobile_Entity {
 	 *            Internal Model
 	 * @param dir
 	 *            Initial Direction of the Destroyer
+	 * @throws Game_exception
 	 */
-
 	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
-			throws Map_exception {
+			throws Game_exception {
 		super(pos, true, sprite, underSprite, model, dir);
 		m_life = Options.DESTROYER_LIFE;
+		m_speed = Options.DESTROYER_SPD_STANDARD;
 
 		loadSprites();
 
@@ -65,7 +68,11 @@ public class Destroyer extends Mobile_Entity {
 
 	@Override
 	public void step(long now) {
-
+		long elapsed = now - m_lastStep;
+		if (elapsed > m_speed) {
+			m_speed =Options.DESTROYER_SPD_STANDARD;
+			
+		}
 	}
 
 	@Override
@@ -85,12 +92,12 @@ public class Destroyer extends Mobile_Entity {
 
 	@Override
 	public void wizz() {
-		// TODO
+		this.m_speed = Options.DESTROYER_SPD_IMPROVED;
 	}
 
 	@Override
 	public void hit() {
-		// TODO
+		
 	}
 
 }
