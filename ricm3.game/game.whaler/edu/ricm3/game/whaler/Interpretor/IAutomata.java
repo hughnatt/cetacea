@@ -60,7 +60,6 @@ public class IAutomata {
 		}
 
 		currentBehaviour.step(e, model);
-
 	}
 
 	public String toString() {

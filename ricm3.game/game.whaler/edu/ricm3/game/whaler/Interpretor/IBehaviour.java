@@ -20,14 +20,14 @@ public class IBehaviour {
 		m_transitions = transitions;
 		m_source = source;
 	}
-	
+
 	public void step(Mobile_Entity e, Model model) throws Game_exception {
 
 		Iterator<ITransition> iter = m_transitions.iterator();
 		while (iter.hasNext()) {
 			ITransition t = iter.next();
-			if (t.eval(e, model) == true) {
 
+			if (t.eval(e, model) == true) {
 				t.step(e);
 				break;
 			}

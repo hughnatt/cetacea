@@ -14,7 +14,7 @@ public abstract class ICondition {
 
 	public abstract boolean eval(Mobile_Entity current, Model model) throws Map_exception; // Il y aura besoin de rajouter (au moins) la map (voir model complet) et
 									// l'entité courante
-	
+
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
 													// incluse à la place de fonctions statiques
 		if (str.equals("N")) {
@@ -93,7 +93,6 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-
 		public boolean eval(Mobile_Entity current, Model model) {
 			int length = m_key.length();
 			char carac = m_key.charAt(0);
@@ -133,6 +132,7 @@ public abstract class ICondition {
 
 		public boolean eval(Mobile_Entity current, Model model) {			
 			return current.m_direction == m_dir;
+
 		}
 	}
 
@@ -283,12 +283,13 @@ public abstract class ICondition {
 		}
 	}
 
+	
+
 	/**
 	 * La plus proche entité de type m_entity est dans la direction m_dir NB :
 	 * (@Tanguy) : Celle là elle a pas l'air facile à faire, il faudra passer la map
-	 * complète en argument galère, galère, ... m_entity peut valoir : V T A D P J G
-	 * M NB2 : Une entité dangereux pour le joueur n'est pas dangereux pour un
-	 * Destroyer "DANGER" est donc à définir en fonction de l'entité courante
+	 * complète en argument galère, galère, ... m_entity peut valoir : Void Team
+	 * Adversaire Danger Pick
 	 */
 	public static class IClosest extends ICondition {
 		String m_entity;
@@ -314,7 +315,7 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(Mobile_Entity current, Model model) {
-			return false; // TODO
+			return current.m_life > 5;
 		}
 
 	}

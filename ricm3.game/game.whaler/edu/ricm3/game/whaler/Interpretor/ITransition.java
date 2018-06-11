@@ -26,6 +26,7 @@ public class ITransition {
 		this.m_condition = condition;
 	}
 	
+
 	public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
 		return m_condition.eval(current, model);
 	}
