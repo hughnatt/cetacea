@@ -31,6 +31,7 @@ import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
+import edu.ricm3.game.parser.ParseException;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
@@ -119,7 +120,7 @@ public class Model extends GameModel {
 	public Random rand = new Random();
 
 	public Model()
-			throws FileNotFoundException, Automata_Exception, Game_exception, edu.ricm3.game.parser.ParseException {
+			throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
 		// Set the current screen on the home menu
 		m_screen = Screen.HOME;

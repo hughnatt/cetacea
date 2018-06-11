@@ -69,38 +69,44 @@ public abstract class Mobile_Entity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void movenorth() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map //TODO vérifier
-																	// si Mouvement valide (Solidité du bloc)
-		this.m_pos.up(); // We update its location
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for its
-																			// new location
+		if (!m_model.map().tile(this.getx(), this.gety() - 1).isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map
+			this.m_pos.up(); // We update its location
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for
+		}
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movesouth() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
-		this.m_pos.down();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		if (!m_model.map().tile(this.getx(), this.gety() + 1).isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.m_pos.down();
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		}
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void moveeast() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
-		this.m_pos.right();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		if (!m_model.map().tile(this.getx() + 1, this.gety()).isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.m_pos.right();
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		}
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movewest() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
-		this.m_pos.left();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		if (!m_model.map().tile(this.getx() - 1, this.gety()).isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.m_pos.left();
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		}
 	}
 
 	/**
