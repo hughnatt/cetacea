@@ -64,6 +64,65 @@ public abstract class Mobile_Entity extends Entity {
 		}
 		return front;
 	}
+	
+	//Retourne direction asbolue depuis Forward (F)
+	public Direction getFDir() {
+		return this.m_direction;
+	}
+	
+	//Retourne direction asbolue depuis Backward (B)
+	public Direction getBDir() {
+		
+		switch(this.m_direction) {
+		case NORTH :
+			return Direction.SOUTH;
+		case SOUTH :
+			return Direction.NORTH;
+		case EAST:
+			return Direction.WEST;
+		case WEST:
+			return Direction.EAST;
+		default:
+			System.out.println("Unknown Direction, will be interpreted as NORTH");
+			return Direction.NORTH;
+		}
+	}
+	
+	//Retourne direction asbolue depuis Right (R)
+	public Direction getRDir() {
+		
+		switch(this.m_direction) {
+		case NORTH:
+			return Direction.EAST;
+		case SOUTH:
+			return Direction.WEST;
+		case EAST:
+			return Direction.SOUTH;
+		case WEST:
+			return Direction.NORTH;
+		default:
+			System.out.println("Unknown Direction, will be interpreted as NORTH");
+			return Direction.NORTH;
+		}	
+	}
+	
+	//Retourne direction asbolue depuis Left (L)
+	public Direction getLDir() {
+		
+		switch(this.m_direction) {
+		case NORTH:
+			return Direction.WEST;
+		case SOUTH:
+			return Direction.EAST;
+		case EAST:
+			return Direction.NORTH;
+		case WEST:
+			return Direction.SOUTH;
+		default:
+			System.out.println("Unknown Direction, will be interpreted as NORTH");
+			return Direction.NORTH;
+		}	
+	}
 
 	/**
 	 * @throws Game_exception

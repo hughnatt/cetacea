@@ -1,5 +1,5 @@
 Player(Init){
-  * (Init) :
+  * (Init) : 
   | Key(FU) ? Move(N) :(Turn_N)
   | Key(FL) ? Move(O) :(Turn_O)
   | Key(FD) ? Move(S) :(Turn_S)
