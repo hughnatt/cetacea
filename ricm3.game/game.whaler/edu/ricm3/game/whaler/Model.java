@@ -89,9 +89,7 @@ public class Model extends GameModel {
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
 
-	// Home menu
-	Menu m_menu;
-
+	
 	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;
 
@@ -116,8 +114,6 @@ public class Model extends GameModel {
 
 	public Model() throws Exception {
 
-		// Set the current screen on the home menu
-		m_screen = Screen.HOME;
 		
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		//Loading automate file
@@ -129,9 +125,7 @@ public class Model extends GameModel {
 		// Loading Sprites Model
 		loadSprites();
 
-		// Makes a new Menu
-		m_menu = new Menu(this, 350, 150, (float) 2);
-		
+				
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);

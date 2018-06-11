@@ -59,17 +59,6 @@ public class View extends GameView {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		//displays a different view depending on the current screen
-		
-		switch (m_model.currentScreen()) {
-
-		case PREFERENCES:
-			break;
-		case HOME:
-			//paints the home menu
-			m_model.m_menu.paint(g, getWidth(), getHeight());
-			break;
-		case GAME:
 			//paints a blue canvas then the map's viewport
 			
 			g.setColor(Color.BLUE);
@@ -86,23 +75,7 @@ public class View extends GameView {
 			} catch (Location_exception l) {
 				System.exit(-1);
 			}
-			break;
 			
-		case AUTOMATA:
-			//paints the automaton menu, where you can assign automatons to entities
-			Font f = new Font("Verdana", Font.BOLD, 35);
-			g.setFont(f);
-			g.setColor(Color.BLACK);
-			g.drawString("Baleine", 200, 40);
-			g.drawString("Baleinier", 200, 120);
-			g.drawString("Destroyer", 200, 200);
-			g.drawString("Joueur", 200, 270);
-			g.drawString("Pétrole", 200, 340);
-			g.drawString("Projectile", 200, 420);
-			break;
-		default:
-			break;
-		}
 
-	}
+		}
 }
