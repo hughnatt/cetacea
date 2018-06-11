@@ -82,7 +82,6 @@ public class Model extends GameModel {
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_scoreSprite;
 	private BufferedImage m_underSprite;
-
 	private BufferedImage m_bulleUnderSprite;
 	private BufferedImage m_stoneUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
@@ -111,6 +110,7 @@ public class Model extends GameModel {
 	Whale[] m_whales;
 	Oil[] m_oil;
 
+	public Boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
 
@@ -209,6 +209,7 @@ public class Model extends GameModel {
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0]);
 
+		keyPressed=new Boolean[256];
 	}
 
 	public Map map() {

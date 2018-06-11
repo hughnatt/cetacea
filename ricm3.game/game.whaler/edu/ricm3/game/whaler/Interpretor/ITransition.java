@@ -23,7 +23,7 @@ public class ITransition {
 	}
 	
 	public boolean eval() {
-		return m_condition.eval();
+		return m_condition.eval(null);
 	}
 	
 	public void step(Mobile_Entity e) throws Exception {
