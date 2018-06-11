@@ -31,11 +31,13 @@ public class IAutomata {
 	 * Automata Step
 	 * 
 	 * @param e
-	 * @throws Automata_Exception 
-	 * @throws Tile_exception 
-	 * @throws Map_exception 
+	 * @throws Automata_Exception
+	 * @throws Tile_exception
+	 * @throws Map_exception
 	 */
+
 	public void step(Mobile_Entity e, Model model) throws Exception {
+
 		Iterator<IBehaviour> iter = m_behaviours.iterator();
 
 		// Si l'état courant de l'entité n'est pas fixé
@@ -44,7 +46,7 @@ public class IAutomata {
 			e.m_current = m_initial;
 		}
 
-		//On rechercher le comportement associé à l'état courant
+		// On rechercher le comportement associé à l'état courant
 		IBehaviour currentBehaviour = null;
 		while (iter.hasNext()) {
 			IBehaviour b = iter.next();
@@ -54,13 +56,13 @@ public class IAutomata {
 			}
 		}
 
-		//Si jamais on ne trouve pas l'état indiqué
+		// Si jamais on ne trouve pas l'état indiqué
 		if (currentBehaviour == null) {
 			throw new Automata_Exception("Missing State\n");
 		}
 
-		currentBehaviour.step(e, model);		
-		
+		currentBehaviour.step(e, model);
+
 	}
 
 	public String toString() {

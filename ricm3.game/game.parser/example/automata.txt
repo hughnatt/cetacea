@@ -1,5 +1,13 @@
 Player(Init){
-  * (Init): True ? Move(E) :(Turning)
-  * (Turning): True ? Turn(R) : (Init)
-}
+  * (Init) : 
+  | Key(FU) ? Move(N) :(Turn_N)
+  | Key(FL) ? Move(O) :(Turn_O)
+  | Key(FD) ? Move(S) :(Turn_S)
+  | Key(FR) ? Move(E) :(Turn_E)
+  | Cell(F,A) ? Move(S) :(Init)
 
+  * (Turn_N): True ? Turn(N) :(Init)
+  * (Turn_O): True ? Turn(O) :(Init)
+  * (Turn_S): True ? Turn(S) :(Init)
+  * (Turn_E): True ? Turn(E) :(Init)
+}

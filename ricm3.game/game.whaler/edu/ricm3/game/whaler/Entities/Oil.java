@@ -11,26 +11,46 @@ import edu.ricm3.game.whaler.Game_exception.Map_exception;
 public final class Oil extends Mobile_Entity {
 
 	boolean is_burning;
+	int m_idx;
+
+	BufferedImage[] m_spriteFire;
 
 	/**
 	 * @param pos
 	 * @param sprite
 	 * @param model
 	 */
-	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Map_exception {
-		super(pos, false, sprite, underSprite, model, dir);
+		super(pos, false, sprite, underSprite, model, dir, life);
 		this.is_burning = false;
+
+		m_spriteFire = new BufferedImage[32];
+
+		for (int i = 0; i < 32; i++) {
+			m_spriteFire[i] = m_model.get_fire_sprite().getSubimage(0, 32 * i, 32, 32);
+		}
 	}
 
 	@Override
 	public void step(long now) {
+		if (is_burning) {
+			long elapsed = now - m_lastStep;
+			if (elapsed > 100L) {
+				m_idx = (m_idx + 1) % m_spriteFire.length;
+				m_lastStep = now;
+			}
 
+		}
 	}
 
 	@Override
 	public void paint(Graphics g, Location map_ref) {
+
 		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+		if (is_burning) {
+			g.drawImage(m_spriteFire[m_idx], (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+		}
 	}
 
 	@Override
@@ -45,7 +65,8 @@ public final class Oil extends Mobile_Entity {
 
 	@Override
 	public void wizz() {
-		// TODO
+		this.is_burning = true;
+
 	}
 
 	@Override

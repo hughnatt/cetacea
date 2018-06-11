@@ -24,14 +24,6 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerSouthUnder;
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
-	
-	
-	
-
-
-	int m_life; // Live gauge
-
-
 
 	/**
 	 * 
@@ -43,10 +35,10 @@ public final class Player extends Mobile_Entity {
 	 * @param auto
 	 * @throws Map_exception
 	 */
-	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, IAutomata auto)
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, IAutomata auto, int life)
 			throws Map_exception {
-		super(pos, true, sprite, underSprite, model, dir);
-		m_life = Options.PLAYER_LIFE;
+		super(pos, true, sprite, underSprite, model, dir, life);
+	
 		m_automata = auto;
 		loadSprites();
 		switch (dir) {
@@ -88,21 +80,27 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void step(long now) throws Exception {
 		long elapsed = now - m_lastStep;
-		if (elapsed > 200L) {
+		if (elapsed > 50L) {
 			m_lastStep = now;
 			m_automata.step(this, m_model);
+
 			//Changement du sprite si changement de direction
 			switch (m_direction) {
 			case EAST:
+				m_underSprite = m_playerEastUnder;
 				m_sprite = m_playerEast;
 				break;
 			case WEST:
+				m_underSprite = m_playerWestUnder;
 				m_sprite = m_playerWest;
 				break;
 			case NORTH:
+				m_underSprite = m_playerNorthUnder;
 				m_sprite = m_playerNorth;
+				
 				break;
 			default:
+				m_underSprite = m_playerSouthUnder;
 				m_sprite = m_playerSouth;
 				break;
 			}
@@ -121,12 +119,15 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void pop() {
-		// TODO
+		m_model.swap();
 	}
 
 	@Override
 	public void wizz() {
-		// TODO
+		for(int i =0; i<Options.MAX_OIL; i++) {
+			m_model.m_oil[i].is_burning = true;
+		}
+		
 	}
 
 	@Override

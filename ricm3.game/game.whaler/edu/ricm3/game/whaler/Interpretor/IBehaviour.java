@@ -21,16 +21,17 @@ public class IBehaviour {
 		m_transitions = transitions;
 		m_source = source;
 	}
-	
+
 	public void step(Mobile_Entity e, Model model) throws Exception {
 		Iterator<ITransition> iter = m_transitions.iterator();
 		while (iter.hasNext()) {
 			ITransition t = iter.next();
 			if (t.eval(e, model) == true) {
+
 				t.step(e);
+				break;
 			}
 		}
 	}
-	
 
 }

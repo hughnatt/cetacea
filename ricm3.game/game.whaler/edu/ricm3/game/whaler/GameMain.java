@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import edu.ricm3.game.GameUI;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class GameMain {
 

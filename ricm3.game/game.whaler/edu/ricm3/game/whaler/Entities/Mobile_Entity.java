@@ -15,7 +15,7 @@ public abstract class Mobile_Entity extends Entity {
 
 	long m_lastStep;
 	public Direction m_direction;
-
+	public int m_life;
 	// L'automate associé à l'entité mobile
 	public IAutomata m_automata;
 	public IState m_current; // !\ Ne pas initialiser, l'initialisation aura lieu au premier step de
@@ -26,12 +26,15 @@ public abstract class Mobile_Entity extends Entity {
 	 * @param solid
 	 * @param sprite
 	 * @param model
+	 * @param dir
+	 * 
 	 */
 	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
-			Direction dir) throws Map_exception {
+			Direction dir, int life) throws Map_exception {
 		super(pos, solid, sprite, underSprite, model);
 		m_lastStep = 0;
 		m_direction = dir;
+		m_life = life;
 	}
 
 	protected Location pos_front() {
@@ -53,6 +56,65 @@ public abstract class Mobile_Entity extends Entity {
 			break;
 		}
 		return front;
+	}
+	
+	//Retourne direction asbolue depuis Forward (F)
+	public Direction getFDir() {
+		return this.m_direction;
+	}
+	
+	//Retourne direction asbolue depuis Backward (B)
+	public Direction getBDir() {
+		
+		switch(this.m_direction) {
+		case NORTH :
+			return Direction.SOUTH;
+		case SOUTH :
+			return Direction.NORTH;
+		case EAST:
+			return Direction.WEST;
+		case WEST:
+			return Direction.EAST;
+		default:
+			System.out.println("Unknown Direction, will be interpreted as NORTH");
+			return Direction.NORTH;
+		}
+	}
+	
+	//Retourne direction asbolue depuis Right (R)
+	public Direction getRDir() {
+		
+		switch(this.m_direction) {
+		case NORTH:
+			return Direction.EAST;
+		case SOUTH:
+			return Direction.WEST;
+		case EAST:
+			return Direction.SOUTH;
+		case WEST:
+			return Direction.NORTH;
+		default:
+			System.out.println("Unknown Direction, will be interpreted as NORTH");
+			return Direction.NORTH;
+		}	
+	}
+	
+	//Retourne direction asbolue depuis Left (L)
+	public Direction getLDir() {
+		
+		switch(this.m_direction) {
+		case NORTH:
+			return Direction.WEST;
+		case SOUTH:
+			return Direction.EAST;
+		case EAST:
+			return Direction.NORTH;
+		case WEST:
+			return Direction.SOUTH;
+		default:
+			System.out.println("Unknown Direction, will be interpreted as NORTH");
+			return Direction.NORTH;
+		}	
 	}
 
 	/**
@@ -118,6 +180,26 @@ public abstract class Mobile_Entity extends Entity {
 			break;
 		}
 	}
+	
+	public void turnleft() {
+		switch (m_direction) {
+		case SOUTH:
+			m_direction = Direction.EAST;
+			break;
+		case NORTH:
+			m_direction = Direction.WEST;
+			break;
+		case WEST:
+			m_direction = Direction.SOUTH;
+			break;
+		case EAST:
+			m_direction = Direction.NORTH;
+			break;
+		default:
+			break;
+		}
+	}
+	
 
 	// Specific Actions
 	public abstract void pop();
@@ -125,7 +207,7 @@ public abstract class Mobile_Entity extends Entity {
 	public abstract void wizz() throws Map_exception, Tile_exception, Location_exception;
 
 	public abstract void hit() throws Map_exception;
-
+	
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
 	// public abstract void jump();

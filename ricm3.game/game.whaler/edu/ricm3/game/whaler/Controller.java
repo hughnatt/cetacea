@@ -24,20 +24,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.swing.ImageIcon;
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Model.Screen;
@@ -54,25 +48,26 @@ import edu.ricm3.game.whaler.Model.Screen;
  */
 
 public class Controller extends GameController implements ActionListener {
-	//The two main panels, the main one has the buttons and is displayed on all menus, the cont one is only displayed on the automaton menu
+	// The two main panels, the main one has the buttons and is displayed on all
+	// menus, the cont one is only displayed on the automaton menu
 	Panel cont;
 	Panel main;
-	
+
 	Model m_model;
-	
-	//All the buttons, to navigate between menu screens or to start the game
+
+	// All the buttons, to navigate between menu screens or to start the game
 	JButton play;
 	JButton automata;
 	JButton annuler;
 	JButton retour;
 	JButton preference;
-	
+
 	JLabel infoLabel;
-	
-	//An array of scrolling box to choose the automatons
+
+	// An array of scrolling box to choose the automatons
 	JComboBox<?> b[];
-	
-	//A button to write the automaton assignment
+
+	// A button to write the automaton assignment
 	JButton valider;
 
 	public Controller(Model m) {
@@ -107,16 +102,23 @@ public class Controller extends GameController implements ActionListener {
 		}
 
 		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
-			m_model.m_whales[0].m_capture = 20;
+			m_model.m_whales[0].m_life = 20;
 		}
 	}
 
+	/* 
+	 * keyPressed est un tableau de booléens de 127 cases, on met une case à true quand on appuie sur la touche correspondant au numéro ascii de la case
+	 */
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		//Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de façon permanente
+		m_model.keyPressed[e.getKeyCode()] = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		m_model.keyPressed[e.getKeyCode()] = false;
 	}
 
 	@Override
@@ -126,9 +128,9 @@ public class Controller extends GameController implements ActionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Object s = e.getSource();
-		
+
 		/** Changes the buttons' sprites when you click on them **/
-		
+
 		if (s == play) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/play_clicked.png");
 			play.setIcon(img);
@@ -150,9 +152,9 @@ public class Controller extends GameController implements ActionListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		Object s = e.getSource();
-		
+
 		/** Changes the buttons' sprites when you stop clicking on them **/
-		
+
 		if (s == play) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/play_unclicked.png");
 			play.setIcon(img);
@@ -174,9 +176,9 @@ public class Controller extends GameController implements ActionListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		Object s = e.getSource();
-		
+
 		/** Changes the buttons' sprites when you hover (put the mouse) on them **/
-		
+
 		if (s == play) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/play.png");
 			play.setIcon(img);
@@ -198,9 +200,9 @@ public class Controller extends GameController implements ActionListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		Object s = e.getSource();
-		
+
 		/** Changes the buttons' sprites when you move the mouth away from them **/
-		
+
 		if (s == play) {
 			ImageIcon img = new ImageIcon("game.whaler/sprites/play_unclicked.png");
 			play.setIcon(img);
@@ -232,14 +234,16 @@ public class Controller extends GameController implements ActionListener {
 	public void notifyVisible() {
 		main = new Panel();
 		main.setBackground(Color.WHITE);
-		
-		//The cont panel has a grid layout to display the ComboBoxes in a grid. In the home menu it's not visible
+
+		// The cont panel has a grid layout to display the ComboBoxes in a grid. In the
+		// home menu it's not visible
 		cont = new Panel();
 		cont.setLayout(new GridLayout(9, 1, 0, 15));
 		cont.setBackground(Color.WHITE);
 		cont.setVisible(false);
 
-		//The buttons are all but images, without any border and with a mouse and action listener
+		// The buttons are all but images, without any border and with a mouse and
+		// action listener
 		ImageIcon image = new ImageIcon("game.whaler/sprites/play_unclicked.png");
 		play = new JButton(image);
 		play.addActionListener(this);
@@ -288,23 +292,23 @@ public class Controller extends GameController implements ActionListener {
 		valider.addMouseListener(this);
 		valider.setVisible(false);
 		main.add(valider);
-		
-		//A confirmation text to ensure the automaton assignment has worked
+
+		// A confirmation text to ensure the automaton assignment has worked
 		infoLabel = new JLabel("Automates assignés!");
 		infoLabel.setVisible(false);
 		main.add(infoLabel);
 
-		//Example items for the moment, but there should be automatons here
+		// Example items for the moment, but there should be automatons here
 		String[] items = { "Baleine", "Baleinier", "Destroyer", "Joueur", "Pétrole", "Projectile" };
 		b = new JComboBox[6];
 		int i = 0;
 		while (i < 6) {
-			//We create 6 ComboBox, one for each entity, and add it to the panel
+			// We create 6 ComboBox, one for each entity, and add it to the panel
 			b[i] = new JComboBox<Object>(items);
 			cont.add(b[i]);
 			i++;
 		}
-		
+
 		m_game.addSouth(main);
 		m_game.addEast(cont);
 
@@ -314,9 +318,13 @@ public class Controller extends GameController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		Object s = e.getSource();
-		
-		/** When we click on the return button, we should go back to the home menu, so the automata, play and preferences buttons are visible but anything else isn't **/
-		
+
+		/**
+		 * When we click on the return button, we should go back to the home menu, so
+		 * the automata, play and preferences buttons are visible but anything else
+		 * isn't
+		 **/
+
 		if (s == retour) {
 			m_model.setScreen(Screen.HOME);
 			automata.setVisible(true);
@@ -329,23 +337,32 @@ public class Controller extends GameController implements ActionListener {
 			valider.setVisible(false);
 		}
 
-		/** When we click on the discard button, it resets the ComboBoxes to its first value **/
-		
+		/**
+		 * When we click on the discard button, it resets the ComboBoxes to its first
+		 * value
+		 **/
+
 		if (s == annuler) {
 			infoLabel.setText("Sélectionnez un item");
 			for (int i = 0; i < 6; i++)
 				b[i].setSelectedIndex(0);
 		}
 
-		/** When we click on the play button, it starts the game and erases the main panel since no buttons are necessary anymore **/
-		
+		/**
+		 * When we click on the play button, it starts the game and erases the main
+		 * panel since no buttons are necessary anymore
+		 **/
+
 		if (s == play) {
 			m_model.setScreen(Screen.GAME);
 			main.setVisible(false);
 		}
 
-		/** When we click on the verify button, it writes the automatons' assignment in a particular file **/
-	
+		/**
+		 * When we click on the verify button, it writes the automatons' assignment in a
+		 * particular file
+		 **/
+
 		if (s == valider) {
 			File file = new File("game.whaler/sprites/choix_automates.txt");
 			BufferedWriter out = null;
@@ -364,7 +381,7 @@ public class Controller extends GameController implements ActionListener {
 				}
 			}
 		}
-		
+
 		/** When we click on the automata button, it displays the automaton menu **/
 
 		if (s == automata) {
@@ -378,8 +395,10 @@ public class Controller extends GameController implements ActionListener {
 			infoLabel.setVisible(true);
 			valider.setVisible(true);
 		}
-		
-		/** When we click on the preferences button, it displays the preferences menu **/
+
+		/**
+		 * When we click on the preferences button, it displays the preferences menu
+		 **/
 
 		if (s == preference) {
 			m_model.setScreen(Screen.PREFERENCES);
