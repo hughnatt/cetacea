@@ -14,7 +14,7 @@ public abstract class Entity {
 	boolean m_solid;
 	BufferedImage m_sprite;
 	BufferedImage m_underSprite;
-	Model m_model;
+	public Model m_model;
 
 	/**
 	 * @param pos
@@ -56,8 +56,9 @@ public abstract class Entity {
 
 	/**
 	 * @param now
+	 * @throws Exception 
 	 */
-	public abstract void step(long now) throws Map_exception, Tile_exception;
+	public abstract void step(long now) throws Exception;
 
 	/**
 	 * @param g
