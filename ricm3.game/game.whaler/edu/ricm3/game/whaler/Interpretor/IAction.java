@@ -2,13 +2,11 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class IAction {
 
-	abstract void step(Mobile_Entity e) throws Exception;
+	abstract void step(Mobile_Entity e) throws Game_exception;
 
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
 													// incluse à la place de fonctions statiques
@@ -42,7 +40,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			switch (m_dir) {
 			case NORTH:
 				e.movenorth();
@@ -140,8 +138,8 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 	}
 
@@ -153,7 +151,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			e.wizz();
 		}
 
@@ -167,7 +165,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) {
 			e.pop();
 		}
 	}
@@ -188,9 +186,7 @@ public abstract class IAction {
 				e.turnright();
 				e.turnright();
 			case LEFT:
-				e.turnright();
-				e.turnright();
-				e.turnright();
+				e.turnleft();
 			default:
 				break;
 			}
@@ -205,7 +201,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			e.hit();
 		}
 
@@ -219,8 +215,8 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -233,8 +229,8 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -247,8 +243,8 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -258,8 +254,8 @@ public abstract class IAction {
 		public IStore() {
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -269,8 +265,8 @@ public abstract class IAction {
 		public IGet() {
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -280,8 +276,8 @@ public abstract class IAction {
 		public IPower() {
 		}
 
-		void step(Mobile_Entity e) throws Exception{
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -291,8 +287,8 @@ public abstract class IAction {
 		public IKamikaze() {
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
@@ -306,8 +302,7 @@ public abstract class IAction {
 			m_b = b;
 		}
 
-
-		void step(Mobile_Entity e) throws Exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			int r = e.m_model.rand.nextInt(2);
 			if (r == 0) {
 				m_a.step(e);

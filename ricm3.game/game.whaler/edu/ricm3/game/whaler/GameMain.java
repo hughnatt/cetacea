@@ -18,18 +18,28 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
 
 import edu.ricm3.game.GameUI;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.parser.ParseException;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
+
 
 public class GameMain {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 
 		// construct the game elements: model, controller, and view.
-		Model model = new Model();
+		Model model;
+
+		try {
+			model = new Model();
+		} catch (FileNotFoundException | Automata_Exception | Game_exception | ParseException e) {
+			e.printStackTrace();
+			return;
+		}
+
 		Controller controller = new Controller(model);
 		View view = new View(model, controller);
 

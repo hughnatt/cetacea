@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
@@ -15,7 +16,7 @@ public abstract class Mobile_Entity extends Entity {
 
 	long m_lastStep;
 	public Direction m_direction;
-
+	public int m_life;
 	// L'automate associé à l'entité mobile
 	public IAutomata m_automata;
 	public IState m_current; // !\ Ne pas initialiser, l'initialisation aura lieu au premier step de
@@ -25,17 +26,26 @@ public abstract class Mobile_Entity extends Entity {
 	 * @param pos
 	 * @param solid
 	 * @param sprite
+	 * @param underSprite
 	 * @param model
+	 * @param dir
+	 * 
 	 */
 	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
-			Direction dir) throws Map_exception {
+			Direction dir, int life) throws Game_exception {
 		super(pos, solid, sprite, underSprite, model);
 		m_lastStep = 0;
 		m_direction = dir;
+		m_life = life;
 	}
 
+	/**
+	 * // Calculation of the front location
+	 * 
+	 * @return Location
+	 */
 	protected Location pos_front() {
-		Location front = new Location(this.m_pos); // Calculation of the front location
+		Location front = new Location(this.m_pos);
 		switch (m_direction) {
 		case NORTH:
 			front.up();
@@ -56,10 +66,9 @@ public abstract class Mobile_Entity extends Entity {
 	}
 
 	/**
-	 * @throws Map_exception
-	 * @throws Tile_exception
+	 * @throws Game_exception
 	 */
-	public void movenorth() throws Map_exception, Tile_exception {
+	public void movenorth() throws Game_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map //TODO vérifier
 																	// si Mouvement valide (Solidité du bloc)
 		this.m_pos.up(); // We update its location
@@ -68,30 +77,27 @@ public abstract class Mobile_Entity extends Entity {
 	}
 
 	/**
-	 * @throws Map_exception
-	 * @throws Tile_exception
+	 * @throws Game_exception
 	 */
-	public void movesouth() throws Map_exception, Tile_exception {
+	public void movesouth() throws Game_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
 		this.m_pos.down();
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
 	/**
-	 * @throws Map_exception
-	 * @throws Tile_exception
+	 * @throws Game_exception
 	 */
-	public void moveeast() throws Map_exception, Tile_exception {
+	public void moveeast() throws Game_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
 		this.m_pos.right();
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 	}
 
 	/**
-	 * @throws Map_exception
-	 * @throws Tile_exception
+	 * @throws Game_exception
 	 */
-	public void movewest() throws Map_exception, Tile_exception {
+	public void movewest() throws Game_exception {
 		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
 		this.m_pos.left();
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
@@ -119,12 +125,31 @@ public abstract class Mobile_Entity extends Entity {
 		}
 	}
 
+	public void turnleft() {
+		switch (m_direction) {
+		case SOUTH:
+			m_direction = Direction.EAST;
+			break;
+		case NORTH:
+			m_direction = Direction.WEST;
+			break;
+		case WEST:
+			m_direction = Direction.SOUTH;
+			break;
+		case EAST:
+			m_direction = Direction.NORTH;
+			break;
+		default:
+			break;
+		}
+	}
+
 	// Specific Actions
 	public abstract void pop();
 
-	public abstract void wizz() throws Map_exception, Tile_exception, Location_exception;
+	public abstract void wizz() throws Game_exception;
 
-	public abstract void hit() throws Map_exception;
+	public abstract void hit() throws Game_exception;
 
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
