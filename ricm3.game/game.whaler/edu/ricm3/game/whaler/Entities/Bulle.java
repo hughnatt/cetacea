@@ -15,7 +15,7 @@ public class Bulle extends Static_Entity {
 
 	/* Controlling Step Speed */
 	long m_lastStep;
-	long m_stepSpeed = 100L; // Medium Animation Speed
+	long m_stepSpeed = 400L; // Medium Animation Speed
 
 	/**
 	 * @param pos
