@@ -62,7 +62,7 @@ public class Model extends GameModel {
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
-	
+
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -171,7 +171,6 @@ public class Model extends GameModel {
 
 		undergroundFloreGenerator(8);
 		seaGenerator(2);
-		
 
 		// Stones
 
@@ -186,20 +185,31 @@ public class Model extends GameModel {
 
 		}
 
-
 		// Entities
 
 		// Oil
 		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
+		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this, Direction.WEST, 1));
+		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this, Direction.WEST, 1));
+
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this, Direction.WEST, 1));
+			}
+		}
 
 		// Destroyers
-		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, 1));
+		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST,
+				Options.DESTROYER_LIFE));
 
 		// Whalers
-		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, 1));
+
+		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
 
 		// Whales
-		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, 1));
+		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
 
 		// Projectiles
 
@@ -220,16 +230,42 @@ public class Model extends GameModel {
 
 		if (m_screen == Screen.GAME) {
 			try {
-				
+
 				m_garbage = new LinkedList<Mobile_Entity>();
-				
+
 				m_current_background.step(now);
 
 				m_player.step(now);
 
+				Iterator<Static_Entity> iterstatics = m_statics.iterator();
+				while (iterstatics.hasNext()) {
+					Static_Entity e = iterstatics.next();
+					e.step(now);
+				}
+
 				Iterator<Whale> iterwhales = m_whales.iterator();
 				while (iterwhales.hasNext()) {
 					Whale e = iterwhales.next();
+					e.step(now);
+				}
+
+				Iterator<Oil> iteroil = m_oils.iterator();
+
+				while (iteroil.hasNext()) {
+
+					Oil tmp = iteroil.next();
+					tmp.step(now);
+				}
+
+				Iterator<Whaler> iterwhalers = m_whalers.iterator();
+				while (iterwhalers.hasNext()) {
+					Whaler e = iterwhalers.next();
+					e.step(now);
+				}
+
+				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+				while (iterdestroyers.hasNext()) {
+					Destroyer e = iterdestroyers.next();
 					e.step(now);
 				}
 
@@ -238,9 +274,9 @@ public class Model extends GameModel {
 					Projectile e = iterprojs.next();
 					e.step(now);
 				}
-				
-				
-				//Last Iterator
+
+				// Garbage Iterator
+
 				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
 				while (iterdestroy.hasNext()) {
 					Mobile_Entity e = iterdestroy.next();
@@ -273,6 +309,7 @@ public class Model extends GameModel {
 				e1.printStackTrace();
 				System.exit(-1);
 			}
+
 		}
 	}
 
@@ -308,27 +345,28 @@ public class Model extends GameModel {
 			UNDER_WATER = true;
 		}
 	}
-	
+
 	/**
-	 * Génère la flore sous-marine selon un pourcentage donné en paramètre
+	 * Gï¿½nï¿½re la flore sous-marine selon un pourcentage donnï¿½ en paramï¿½tre
+	 * 
 	 * @param pourcentage
-	 * @throws Game_exception 
-	 * @throws Location_exception 
+	 * @throws Game_exception
+	 * @throws Location_exception
 	 */
 	private void undergroundFloreGenerator(int pourcentage) throws Location_exception, Game_exception {
-		
+
 		Random rand = new Random();
 		int min = 1;
-		int max = Options.DIMX_MAP-2;
-		
-		int nbparColonne = (pourcentage*max)/100;
-		
-		for(int i=1; i< Options.DIMY_MAP; i++) {
-			for(int j=1; j< nbparColonne; j++) {
+		int max = Options.DIMX_MAP - 2;
+
+		int nbparColonne = (pourcentage * max) / 100;
+
+		for (int i = 1; i < Options.DIMY_MAP; i++) {
+			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(4);
-				
-				switch(flore) {
+
+				switch (flore) {
 				case 0:
 					m_statics.add(new Bulle(new Location(x, i), null, m_bulleUnderSprite, this));
 					break;
@@ -342,31 +380,31 @@ public class Model extends GameModel {
 					m_statics.add(new RedCoral(new Location(x, i), null, m_redCoralUnderSprite, this));
 					break;
 				}
-				
+
 			}
 		}
 	}
-	
+
 	/**
-	 * Génère la mer selon un pourcentage donné en paramètre
+	 * Gï¿½nï¿½re la mer selon un pourcentage donnï¿½ en paramï¿½tre
 	 * @param pourcentage
-	 * @throws Game_exception 
-	 * @throws Location_exception 
+	 * @throws Game_exception
+	 * @throws Location_exception
 	 */
 	private void seaGenerator(int pourcentage) throws Location_exception, Game_exception {
 
 		Random rand = new Random();
 		int min = 1;
-		int max = Options.DIMX_MAP-2;
-		
-		int nbparColonne = (pourcentage*max)/100;
-		
-		for(int i=1; i< Options.DIMY_MAP; i++) {
-			for(int j=1; j< nbparColonne; j++) {
+		int max = Options.DIMX_MAP - 2;
+
+		int nbparColonne = (pourcentage * max) / 100;
+
+		for (int i = 1; i < Options.DIMY_MAP; i++) {
+			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(3);
-				
-				switch(flore) {
+
+				switch (flore) {
 				case 0:
 					m_statics.add(new Island(new Location(x, i), m_islandSprite, null, this));
 					break;
@@ -377,11 +415,10 @@ public class Model extends GameModel {
 					m_statics.add(new Rocher(new Location(x, i), m_rocherSprite, m_rocherUnderSprite, this));
 					break;
 				}
-				
+
 			}
 		}
 	}
-	
 
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
@@ -389,6 +426,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_projectile_sprite() {
 		return m_projectileSprite;
+	}
+
+	public BufferedImage get_boom_sprite() {
+		return m_boomSprite;
 	}
 
 	public Direction rand_direction() {
