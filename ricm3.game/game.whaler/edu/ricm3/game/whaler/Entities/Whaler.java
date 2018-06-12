@@ -90,7 +90,11 @@ public class Whaler extends Mobile_Entity {
 		}
 
 	}
-
+	
+	public void pick() {
+		this.pop();
+	}
+	
 	@Override
 	public void hit() throws Game_exception {
 		Location new_pos = this.pos_front();

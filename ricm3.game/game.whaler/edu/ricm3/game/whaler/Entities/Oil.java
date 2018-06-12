@@ -79,4 +79,9 @@ public final class Oil extends Mobile_Entity {
 		// TODO
 	}
 
+	@Override
+	public void pick() {
+		this.pop();
+	}
+
 }

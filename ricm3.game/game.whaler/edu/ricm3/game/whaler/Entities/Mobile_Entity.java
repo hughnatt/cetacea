@@ -143,6 +143,25 @@ public abstract class Mobile_Entity extends Entity {
 			break;
 		}
 	}
+	
+	public void turndown() {
+		switch (m_direction) {
+		case SOUTH:
+			m_direction = Direction.NORTH;
+			break;
+		case NORTH:
+			m_direction = Direction.SOUTH;
+			break;
+		case WEST:
+			m_direction = Direction.EAST;
+			break;
+		case EAST:
+			m_direction = Direction.WEST;
+			break;
+		default:
+			break;
+		}
+	}
 
 	// Specific Actions
 	public abstract void pop();
@@ -150,6 +169,10 @@ public abstract class Mobile_Entity extends Entity {
 	public abstract void wizz() throws Game_exception;
 
 	public abstract void hit() throws Game_exception;
+	
+	public abstract void pick();
+	
+	
 
 	// TODO
 	// Placebo actions (decide if Specific or Generic)

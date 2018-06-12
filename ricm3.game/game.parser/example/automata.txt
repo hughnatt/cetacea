@@ -4,10 +4,12 @@ Player(Init){
   | Key(FL) ? Move(O) :(Turn_O)
   | Key(FD) ? Move(S) :(Turn_S)
   | Key(FR) ? Move(E) :(Turn_E)
+  | Key(o) ? Protect(F) :(Init)
   | Key(p) ? Pop(F) :(Init)
   | Key(w) ? Wizz(F) :(Init)
   | Key(SPACE) ? Hit(F) :(Init)
   | Key(f) ? Pick(F) :(Init)
+  | Key(j) ? Jump(F) :(Init)
   | True ? Power :(Init)
 
   * (Turn_N): True ? Turn(N) :(Init)

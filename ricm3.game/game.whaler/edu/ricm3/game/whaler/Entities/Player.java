@@ -23,6 +23,8 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerSouthUnder;
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
+	
+	int oil_jauge;
 
 
 	/**
@@ -133,6 +135,13 @@ public final class Player extends Mobile_Entity {
 		}
 		
 	}
+
+	public void pick() {
+		this.oil_jauge+=Options.OIL_PICKED;
+		//TODO: faire disparaitre le pétrole
+	}
+	
+	
 
 	@Override
 	public void hit() {

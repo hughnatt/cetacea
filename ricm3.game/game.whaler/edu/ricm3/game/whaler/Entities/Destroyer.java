@@ -98,4 +98,9 @@ public class Destroyer extends Mobile_Entity {
 		
 	}
 
+	@Override
+	public void pick() {
+		this.pop();
+	}
+
 }

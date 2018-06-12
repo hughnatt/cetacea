@@ -85,24 +85,18 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// if (Options.ECHO_KEYBOARD)
-		// System.out.println("KeyTyped: " + e);
-		/*
-		 * if (e.getKeyChar() == 'a letter') { try { something } catch
-		 * (InterruptedException ex) { } }
-		 */
 
 		if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') {
 			m_model.swap();
 		}
-
+/*
 		if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
 			m_model.m_whales[0].pop();
 		}
 
 		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
 			m_model.m_whales[0].m_life = 20;
-		}
+		}*/
 	}
 
 	/* 

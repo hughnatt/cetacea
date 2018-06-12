@@ -113,7 +113,7 @@ public class Model extends GameModel {
 	Projectile[] m_projectiles;
 	Whale[] m_whales;
 	public Oil[] m_oil;
-
+	IAutomata[] automata_array;
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
@@ -127,8 +127,21 @@ public class Model extends GameModel {
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
-		// ast = AutomataParser.Run();
-		IAutomata[] automata_array = ((AI_Definitions) ast).make();
+		automata_array = ((AI_Definitions) ast).make();
+		int[] st = null;
+		BufferedReader bis = null;
+		try {
+			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
+			st = new int[6];
+			for (int i = 0; i < 6; i++) {
+				st[i] = Integer.parseInt(bis.readLine());
+			}
+			bis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// Loading Sprites Model
 		loadSprites();

@@ -2,6 +2,7 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class IAction {
@@ -138,8 +139,10 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life--;
+			e.movesouth();
+			e.pop();
 		}
 	}
 
@@ -183,8 +186,7 @@ public abstract class IAction {
 			case RIGHT:
 				e.turnright();
 			case BACKWARD:
-				e.turnright();
-				e.turnright();
+				e.turndown();
 			case LEFT:
 				e.turnleft();
 			default:
@@ -215,8 +217,10 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.turndown();
+			e.m_life++;
+			e.movesouth();
 		}
 
 	}
@@ -230,7 +234,9 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) {
-			// TODO
+			if (e instanceof Player) {
+				e.pick();
+			}
 		}
 
 	}
@@ -243,8 +249,8 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.hit();
 		}
 
 	}
@@ -254,8 +260,9 @@ public abstract class IAction {
 		public IStore() {
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life--;
+			e.movesouth();
 		}
 
 	}
@@ -288,7 +295,7 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) {
-			// TODO
+			e.m_life = 0;
 		}
 
 	}
