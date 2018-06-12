@@ -53,8 +53,9 @@ public class Projectile extends Mobile_Entity {
 	 *         true if the projectile hits something, else false
 	 * @throws Map_exception
 	 */
-	private boolean hasHitSomething(int x, int y) throws Map_exception {
-		Tile tile = m_model.map().tile(x, y);
+	private boolean hasHitSomething() throws Map_exception {
+		Tile tile = m_model.map().tile(this.m_pos);
+
 		Iterator<Entity> iter = tile.iterator();
 		while (iter.hasNext()) {
 			Entity e = iter.next();
@@ -66,7 +67,6 @@ public class Projectile extends Mobile_Entity {
 				case WHALE:
 					Mobile_Entity me = (Mobile_Entity) e;
 					me.m_life -= m_damage;
-					break;
 				default:
 					return true;
 				}
@@ -94,7 +94,7 @@ public class Projectile extends Mobile_Entity {
 		if (elapsed > m_speed) { // the projectile position is updated according to its speed
 			m_lastStep = now;
 
-			if ((hasHitSomething(this.getx(), this.gety())) || (m_life <= 0)) { // if the projectile hit nothing
+			if ((hasHitSomething()) || (m_life <= 0)) { // if the projectile hit nothing
 				this.destroy();
 				return;
 			}
