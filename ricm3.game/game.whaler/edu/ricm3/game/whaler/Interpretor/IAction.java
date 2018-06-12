@@ -186,10 +186,25 @@ public abstract class IAction {
 			switch (m_dir) {
 			case RIGHT:
 				e.turnright();
+				break;
 			case BACKWARD:
 				e.turndown();
+				break;
 			case LEFT:
 				e.turnleft();
+				break;
+			case SOUTH:
+				e.m_direction = Direction.SOUTH;
+				break;
+			case NORTH:
+				e.m_direction = Direction.NORTH;
+				break;
+			case EAST:
+				e.m_direction = Direction.EAST;
+				break;
+			case WEST:
+				e.m_direction = Direction.WEST;
+				break;
 			default:
 				break;
 			}

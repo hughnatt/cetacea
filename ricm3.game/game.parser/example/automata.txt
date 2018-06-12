@@ -79,3 +79,8 @@ Player(Init){
   * (Turn_E): True ? Turn(E) :(Init)
   
   }
+=======
+Projectile(Init){
+	*(Init) : True ? Move(F): (Init)
+}
+>>>>>>> master

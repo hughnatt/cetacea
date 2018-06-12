@@ -57,7 +57,7 @@ public class Destroyer extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		m_model.m_destroyers.remove(this);
+		m_model.m_garbage.add(this);
 	}
 
 	private void loadSprites() {
