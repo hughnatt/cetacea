@@ -24,7 +24,6 @@ public class Whaler extends Mobile_Entity {
 	 * @param underSprite
 	 * @param model
 	 * @param dir
-<<<<<<< HEAD
 	 * @param life
 	 * @throws Map_exception
 	 */
@@ -43,10 +42,16 @@ public class Whaler extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_whalerNorth;
 			break;
-		case SOUTH:
+		default:
 			m_sprite = m_whalerSouth;
 			break;
 		}
+	}
+
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_whalers.remove(this);
 	}
 
 	/*
@@ -86,7 +91,7 @@ public class Whaler extends Mobile_Entity {
 		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
-			result_whale.m_life+=3; // if yes, caught gauge increases by 3
+			result_whale.m_life += 3; // if yes, caught gauge increases by 3
 		}
 
 	}

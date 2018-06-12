@@ -1,18 +1,6 @@
 package edu.ricm3.game.whaler.Tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStream;
-
-import org.junit.jupiter.api.Test;
-
-import edu.ricm3.game.parser.*;
-import edu.ricm3.game.parser.Ast.AI_Definitions;
-import edu.ricm3.game.whaler.*;
-import edu.ricm3.game.whaler.Entities.*;
-import edu.ricm3.game.whaler.Interpretor.*;
+import org.junit.Test;
 
 class MainTests {
 

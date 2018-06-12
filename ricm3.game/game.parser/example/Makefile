@@ -134,6 +134,8 @@ SuperHero(Explore){\
 * (Build_1): True ? Throw :(Build) \
 }"
 
+test11 = "Test1(Init){ *(Init) : True ? Turn(N) :(Init) }"
+
 test%:
 	@ clear
 	@ echo ``Parsing = \"$(test$*)\"``

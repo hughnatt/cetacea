@@ -9,8 +9,6 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Projectile extends Mobile_Entity {
 
@@ -87,6 +85,12 @@ public class Projectile extends Mobile_Entity {
 		if (apply_projectile(m_model.map().tile(pos))) { // We apply the projectile on the square of the beginning
 			m_model.map().tile(pos).remove(this); // if it hits something, it disappears
 		}
+	}
+
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_projectiles.remove(this);
 	}
 
 	@Override
