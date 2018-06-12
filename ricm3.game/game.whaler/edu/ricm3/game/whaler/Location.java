@@ -67,4 +67,8 @@ public class Location {
 			x++;
 		}
 	}
+	
+	public String toString(){
+		return "( "+x+" , "+y+" )";
+	}
 }
