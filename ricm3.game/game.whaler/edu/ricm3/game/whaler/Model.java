@@ -77,7 +77,6 @@ public class Model extends GameModel {
 	private BufferedImage m_whaleSprite;
 	private BufferedImage m_playerSprite;
 	private BufferedImage m_stoneSprite;
-	private BufferedImage m_projectileSprite;
 	private BufferedImage m_whalerSprite;
 	private BufferedImage m_waterSprite;
 	private BufferedImage m_destroyerSprite;
@@ -94,9 +93,10 @@ public class Model extends GameModel {
 	private BufferedImage m_playerUnderSprite;
 	private BufferedImage m_fireSprite;
 	private BufferedImage m_redCoralUnderSprite;
+	private BufferedImage m_projectileSprite;
 
 	// Automaton array
-	IAutomata[] automata_array;
+	public IAutomata[] automata_array;
 
 	// Home menu
 	Menu m_menu;
@@ -116,7 +116,7 @@ public class Model extends GameModel {
 	Player m_player;
 	Destroyer[] m_destroyers;
 	Whaler[] m_whalers;
-	Projectile[] m_projectiles;
+	public Projectile[] m_projectiles;
 	Whale[] m_whales;
 	public Oil[] m_oil;
 
@@ -124,8 +124,7 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	public Model()
-			throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
+	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
 		// Set the current screen on the home menu
 		m_screen = Screen.HOME;
@@ -134,14 +133,25 @@ public class Model extends GameModel {
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
 		automata_array = ((AI_Definitions) ast).make();
-		int[] st = null;
+
+		// Loading setting file
+		int[] automata_settings = null;
 		BufferedReader bis = null;
 		try {
 			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
-			st = new int[7];
+			
+			automata_settings = new int[7];
 			for (int i = 0; i < 6; i++) {
-				st[i] = Integer.parseInt(bis.readLine());
+				automata_settings[i] = Integer.parseInt(bis.readLine());
 			}
+			// Baleines
+			// Baleiniers
+			// Destroyers
+			
+			// Joueurs
+			// Pétrole
+			// Projectile
+			
 			bis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -237,9 +247,9 @@ public class Model extends GameModel {
 		// Projectiles
 		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
 
-		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
 
-		int indice_automata=st[3];
+		
+		int indice_automata = st[3];
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
 				automata_array[indice_automata], Options.PLAYER_LIFE);
@@ -253,16 +263,26 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
-
-		try {
-			m_player.step(now);
-			m_current_background.step(now);
-			m_whales[0].step(now);
-		} catch (Game_exception | Automata_Exception e1) {
-			System.exit(-1);
-			e1.printStackTrace();
+		if (m_screen == Screen.GAME) {
+			try {
+				m_player.step(now);
+				m_current_background.step(now);
+				for (int i = 0; i < Options.MAX_WHALES; i++) {
+					if (m_whales[i] != null) {
+						m_whales[i].step(now);
+					}
+				}
+				
+				for (int i = 0; i < Options.MAX_PROJECTILES; i++) {
+					if (m_projectiles[i] != null) {
+						m_projectiles[i].step(now);
+					}
+				}
+			} catch (Game_exception | Automata_Exception e1) {
+				System.exit(-1);
+				e1.printStackTrace();
+			}
 		}
-
 	}
 
 	@Override
@@ -281,6 +301,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
+	}
+
+	public BufferedImage get_projectile_sprite() {
+		return m_projectileSprite;
 	}
 
 	public Direction rand_direction() {
