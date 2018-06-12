@@ -156,7 +156,6 @@ public final class Player extends Mobile_Entity {
 			this.oil_jauge += Options.OIL_PICKED;
 			to_pick.destroy();
 		}
-
 	}
 
 	@Override
