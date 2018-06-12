@@ -62,6 +62,7 @@ public class Tile {
 	 * @return Entity or null if there is no entity of this c class
 	 */
 	public Entity contain(Class<? extends Entity> c) {
+		// TODO update like Projectile with EntityType
 		Iterator<Entity> iter = m_level.iterator();
 		while (iter.hasNext()) {
 			Entity E = iter.next();

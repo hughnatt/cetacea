@@ -41,7 +41,7 @@ public class Projectile extends Mobile_Entity {
 		m_automata = m_model.getAutomata(this);
 		m_model.m_projectiles.add(this);
 
-		m_lastStep = -1;
+		m_lastStep = 0;
 	}
 
 	/**
@@ -63,8 +63,10 @@ public class Projectile extends Mobile_Entity {
 				case PLAYER:
 				case DESTROYER:
 				case WHALER:
+				case WHALE:
 					Mobile_Entity me = (Mobile_Entity) e;
 					me.m_life -= m_damage;
+					break;
 				default:
 					return true;
 				}
@@ -131,7 +133,7 @@ public class Projectile extends Mobile_Entity {
 
 	public void hit() {
 	}
-	
+
 	public void pick() {
 		this.pop();
 	}

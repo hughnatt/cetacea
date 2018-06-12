@@ -22,14 +22,13 @@ public final class Oil extends Mobile_Entity {
 	 * @param sprite
 	 * @param underSprite
 	 * @param model
-	 * @param dir
 	 * @throws Game_exception
 	 */
 
-	// TODO enlever la direction du constructeur
-	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
-			throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir, life);
+	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
+		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE); // We use a default direction,
+																							// because it
+		// has no importance
 
 		this.is_burning = false;
 		m_lastSpread = 0;

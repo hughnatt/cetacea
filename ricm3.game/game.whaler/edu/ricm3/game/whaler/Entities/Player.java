@@ -23,7 +23,7 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerSouthUnder;
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
-	
+
 	int oil_jauge;
 
 	/**
@@ -39,8 +39,8 @@ public final class Player extends Mobile_Entity {
 	 */
 
 	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			IAutomata auto, int life) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+			IAutomata auto) throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
 
 		m_automata = auto;
 		loadSprites();
@@ -145,11 +145,9 @@ public final class Player extends Mobile_Entity {
 	}
 
 	public void pick() {
-		this.oil_jauge+=Options.OIL_PICKED;
-		//TODO: faire disparaitre le pétrole
+		this.oil_jauge += Options.OIL_PICKED;
+		// TODO: faire disparaitre le pétrole
 	}
-	
-	
 
 	@Override
 	public void hit() throws Game_exception {

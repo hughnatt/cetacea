@@ -35,10 +35,22 @@ import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
 import edu.ricm3.game.parser.ParseException;
-
-import edu.ricm3.game.whaler.Entities.*;
+import edu.ricm3.game.whaler.Entities.Bulle;
+import edu.ricm3.game.whaler.Entities.Coral;
+import edu.ricm3.game.whaler.Entities.Destroyer;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
-
+import edu.ricm3.game.whaler.Entities.Iceberg;
+import edu.ricm3.game.whaler.Entities.Island;
+import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Entities.Oil;
+import edu.ricm3.game.whaler.Entities.Player;
+import edu.ricm3.game.whaler.Entities.Projectile;
+import edu.ricm3.game.whaler.Entities.RedCoral;
+import edu.ricm3.game.whaler.Entities.Static_Entity;
+import edu.ricm3.game.whaler.Entities.Stone;
+import edu.ricm3.game.whaler.Entities.Whale;
+import edu.ricm3.game.whaler.Entities.Whaler;
+import edu.ricm3.game.whaler.Entities.YellowAlgae;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
@@ -169,6 +181,7 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
+		// TODO à mettre dans options
 		undergroundFloreGenerator(8);
 		seaGenerator(2);
 
@@ -188,35 +201,33 @@ public class Model extends GameModel {
 		// Entities
 
 		// Oil
-		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
-		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this, Direction.WEST, 1));
-		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this, Direction.WEST, 1));
+		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this));
+		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this));
+		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this));
 
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this, Direction.WEST, 1));
+				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this));
 			}
 		}
 
 		// Destroyers
-		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST,
-				Options.DESTROYER_LIFE));
+		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST));
 
 		// Whalers
 
-		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
+		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST));
 
 		// Whales
-		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST));
+		m_whales.add(new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST));
+		m_whales.add(new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST));
 
 		// Projectiles
 
-		// int indice_automata = st[3];
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
-				automata_array[0], Options.PLAYER_LIFE);
+				automata_array[0]);
 
 		keyPressed = new boolean[128];
 	}
@@ -235,7 +246,13 @@ public class Model extends GameModel {
 
 				m_current_background.step(now);
 
-				m_player.step(now);
+				Iterator<Oil> iteroil = m_oils.iterator();
+
+				while (iteroil.hasNext()) {
+
+					Oil tmp = iteroil.next();
+					tmp.step(now);
+				}
 
 				Iterator<Static_Entity> iterstatics = m_statics.iterator();
 				while (iterstatics.hasNext()) {
@@ -243,18 +260,12 @@ public class Model extends GameModel {
 					e.step(now);
 				}
 
+				m_player.step(now);
+
 				Iterator<Whale> iterwhales = m_whales.iterator();
 				while (iterwhales.hasNext()) {
 					Whale e = iterwhales.next();
 					e.step(now);
-				}
-
-				Iterator<Oil> iteroil = m_oils.iterator();
-
-				while (iteroil.hasNext()) {
-
-					Oil tmp = iteroil.next();
-					tmp.step(now);
 				}
 
 				Iterator<Whaler> iterwhalers = m_whalers.iterator();
@@ -282,6 +293,7 @@ public class Model extends GameModel {
 					Mobile_Entity e = iterdestroy.next();
 					switch (e.getType()) {
 					case PLAYER:
+						// TODO à adapter selon le destroy du Player
 						break;
 					case WHALE:
 						m_whales.remove(e);
@@ -387,6 +399,7 @@ public class Model extends GameModel {
 
 	/**
 	 * G�n�re la mer selon un pourcentage donn� en param�tre
+	 * 
 	 * @param pourcentage
 	 * @throws Game_exception
 	 * @throws Location_exception

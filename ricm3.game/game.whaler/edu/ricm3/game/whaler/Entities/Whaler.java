@@ -10,7 +10,6 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Whaler extends Mobile_Entity {
 
@@ -32,12 +31,11 @@ public class Whaler extends Mobile_Entity {
 	 * @param underSprite
 	 * @param model
 	 * @param dir
-	 * @param life
-	 * @throws Map_exception
+	 * @throws Game_exception
 	 */
-	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+		super(pos, true, sprite, underSprite, model, dir, Options.WHALER_LIFE);
 		m_exploding = false;
 		m_explode_idx = 0;
 		m_automata = m_model.getAutomata(this);
@@ -157,11 +155,11 @@ public class Whaler extends Mobile_Entity {
 		}
 
 	}
-	
+
 	public void pick() {
 		this.pop();
 	}
-	
+
 	@Override
 	public void hit() throws Game_exception {
 		Location new_pos = this.pos_front();
