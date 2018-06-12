@@ -349,7 +349,7 @@ public class Model extends GameModel {
 
 	public void swap() {
 		
-		if (m_lastSwap > 6000) { //Tick Number
+		if (m_lastSwap > 500) { //Tick Number
 			m_lastSwap = 0;
 			if (UNDER_WATER) {
 				m_current_background = m_ocean;

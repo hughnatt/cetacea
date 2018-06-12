@@ -66,7 +66,7 @@ public class Ast {
 		public String toString() {
 			return value;
 		}
-		
+
 		public String make() {
 			return value;
 		}
@@ -271,7 +271,7 @@ public class Ast {
 				return new IAction.IOr(left_operand.makeAction(), right_operand.makeAction());
 
 			} else if (operator.make().equals("&")) {
-				throw new Automata_Exception("Can't execute 2 actions at the same time"); 
+				throw new Automata_Exception("Can't execute 2 actions at the same time");
 			} else {
 				throw new Automata_Exception("Unkown Operator : " + operator.toString() + "\n");
 			}
@@ -308,42 +308,49 @@ public class Ast {
 			 * CONDITIONS
 			 */
 			if (name.toString().equals("True")) {
-
-				assert (parameters.size() == 0);
 				return new ITrue();
-
 			} else if (name.make().equals("Key")) {
 
-				assert (parameters.size() == 1);
-				return new IKey(parameters.get(0).make());
+				if (parameters.size() >= 1) {
+					return new IKey(parameters.get(0).make());
+				} else {
+					throw new Automata_Exception("Argument attendu pour Key()");
+				}
 
 			} else if (name.make().equals("MyDir")) {
 
-				assert (parameters.size() == 1);
-				return new IMyDir(parameters.get(0).make());
+				if (parameters.size() >= 1) {
+					return new IMyDir(parameters.get(0).make());
+				} else {
+					throw new Automata_Exception("Argument attendu pour MyDir()");
+				}
 
 			} else if (name.make().equals("Cell")) {
 
-				assert (parameters.size() == 2);
-				return new ICell(parameters.get(0).make(), parameters.get(1).make());
+				if (parameters.size() >= 2) {
+					return new ICell(parameters.get(0).make(), parameters.get(1).make());
+				} else {
+					throw new Automata_Exception("2 Arguments attendus pour Cell()");
+				}
 
 			} else if (name.make().equals("Closest")) {
 
-				assert (parameters.size() == 2);
-				return new IClosest(parameters.get(0).make(), parameters.get(1).make());
+				if (parameters.size() >= 2) {
+					return new IClosest(parameters.get(0).make(), parameters.get(1).make());
+				} else {
+					throw new Automata_Exception("2 Arguments attendus pour Cell()");
+				}
 
 			} else if (name.make().equals("GotPower")) {
-				
-				assert(parameters.size() == 0);
+
 				return new IGotPower();
-				
+
 			} else if (name.make().equals("GotStuff")) {
-				
-				assert(parameters.size() == 0);
+
 				return new IGotStuff();
-				
+
 			} else {
-				
+
 				throw new Automata_Exception("Unknown Condition : " + name.make() + "\n");
 			}
 		}
@@ -354,73 +361,99 @@ public class Ast {
 			 * ACTIONS
 			 */
 			if (name.toString().equals("Move")) {
-				
-				assert(parameters.size() == 1);
-				return new IMove(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IMove(parameters.get(0).make());
+				} else {
+					return new IMove("F");
+				}
 			} else if (name.make().equals("Jump")) {
 				
-				assert(parameters.size() == 1);
-				return new IJump(parameters.get(0).make());
-				
+				if (parameters.size() >= 1) {
+					return new IJump(parameters.get(0).make());
+				} else {
+					return new IJump("F");
+				}
+
 			} else if (name.make().equals("Wizz")) {
-				
-				assert(parameters.size() == 1);
-				return new IWizz(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IWizz(parameters.get(0).make());
+				} else {
+					return new IWizz("F");
+				}
+
 			} else if (name.make().equals("Pop")) {
-				
-				assert(parameters.size() == 1);
-				return new IPop(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IPop(parameters.get(0).make());
+				} else {
+					return new IPop("F");
+				}
+
 			} else if (name.make().equals("Turn")) {
-				
-				assert(parameters.size() == 1);
-				return new ITurn(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new ITurn(parameters.get(0).make());
+				} else {
+					return new ITurn("R");
+				}
+
 			} else if (name.make().equals("Hit")) {
-				
-				assert(parameters.size() == 1);
-				return new IHit(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IHit(parameters.get(0).make());
+				} else {
+					return new IHit("F");
+				}
+
+
 			} else if (name.make().equals("Protect")) {
-				
-				assert(parameters.size() == 1);
-				return new IProtect(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IProtect(parameters.get(0).make());
+				} else {
+					return new IProtect("F");
+				}
+
+
 			} else if (name.make().equals("Pick")) {
-				
-				assert(parameters.size() == 1);
-				return new IPick(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IPick(parameters.get(0).make());
+				} else {
+					return new IPick("F");
+				}
+
+
 			} else if (name.make().equals("Throw")) {
-				
-				assert(parameters.size() == 1);
-				return new IThrow(parameters.get(0).make());
-				
+
+				if (parameters.size() >= 1) {
+					return new IThrow(parameters.get(0).make());
+				} else {
+					return new IThrow("F");
+				}
+
+
 			} else if (name.make().equals("Store")) {
-				
-				assert(parameters.size() == 0);
+
 				return new IStore();
-				
+
 			} else if (name.make().equals("Get")) {
-				
-				assert(parameters.size() == 0);
+
 				return new IGet();
-				
+
 			} else if (name.make().equals("Power")) {
-				
-				assert(parameters.size() == 0);
+
 				return new IPower();
-				
+
 			} else if (name.make().equals("Kamikaze")) {
-				
-				assert(parameters.size() == 0);
+
 				return new IKamikaze();
-				
+
 			} else {
-				
-				throw new Automata_Exception("Unknown Action : "+name.make()+"\n");
+
+				throw new Automata_Exception("Unknown Action : " + name.make() + "\n");
 			}
 
 		}
