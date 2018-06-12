@@ -3,10 +3,11 @@ package edu.ricm3.game;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +30,7 @@ public class AutomataSelection {
 
 	
 	JFrame m_select;
+	JFrame frame;
 	JLabel m_title;
 	JPanel m_ctr;
 	GameUI m_g;
@@ -99,19 +101,53 @@ public class AutomataSelection {
 		b1.add(return_button);
 		b1.add(valide_button);
 
-		
+
 		//Création tableau déroulant avec les bons automates
+		frame = new JFrame();
+		GridLayout grid = new GridLayout(2,6);
+		frame.setLayout(grid);
+		grid.setHgap(20);
 		
 		JPanel b2 = new JPanel();
+		b2.setLayout(grid);
+	
+		BufferedImage image;
+		try {
+			image = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
+			 JLabel label = new JLabel(new ImageIcon(image));
+			 b2.add(label);
+			 image = ImageIO.read(new File("game.whaler/sprites/Destroyer_menu.png"));
+			 label = new JLabel(new ImageIcon(image));
+			 b2.add(label);
+			 image = ImageIO.read(new File("game.whaler/sprites/Destroyer_menu.png"));
+			 label = new JLabel(new ImageIcon(image));
+			 b2.add(label);
+			 image = ImageIO.read(new File("game.whaler/sprites/Destroyer_menu.png"));
+			 label = new JLabel(new ImageIcon(image));
+			 b2.add(label);
+			 image = ImageIO.read(new File("game.whaler/sprites/Destroyer_menu.png"));
+			 label = new JLabel(new ImageIcon(image));
+			 b2.add(label);
+			 image = ImageIO.read(new File("game.whaler/sprites/Destroyer_menu.png"));
+			 label = new JLabel(new ImageIcon(image));
+			 b2.add(label);
+			 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
 		Model m_model = (Model) m_g.m_model;
 		IAutomata[] items = m_model.automata_array;
-		
 		b = new JComboBox[6];
 		int i = 0;
 		while (i < 6) {
 			//We create 6 ComboBox, one for each entity, and add it to the panel
 			b[i] = new JComboBox<Object>(items);
+			b2.setSize(new Dimension(75,25));
 			b2.add(b[i]);
+			
 			i++;
 		}
 
