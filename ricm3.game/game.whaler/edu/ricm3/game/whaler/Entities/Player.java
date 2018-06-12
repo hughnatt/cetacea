@@ -64,9 +64,12 @@ public final class Player extends Mobile_Entity {
 		}
 	}
 
-	/*
-	 * 
-	 */
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		// TODO
+	}
+
 	public void loadSprites() {
 		m_playerSouth = m_sprite.getSubimage(0, 0, 32, 32);
 		m_playerWest = m_sprite.getSubimage(0, 32, 32, 32);
@@ -130,10 +133,7 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void wizz() {
-		for (int i = 0; i < Options.MAX_OIL; i++) {
-			m_model.m_oil[i].is_burning = true;
-		}
-
+		// TODO
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public final class Player extends Mobile_Entity {
 		
 		switch(m_direction) {
 		case SOUTH:
-			new Projectile(new Location(this.getx(),this.gety()+1),m_model.get_projectile_sprite(),m_model.get_projectile_sprite(),m_model,Direction.SOUTH,6,3s);
+			new Projectile(new Location(this.getx(),this.gety()+1),m_model.get_projectile_sprite(),m_model.get_projectile_sprite(),m_model,Direction.SOUTH,6,3);
 			break;
 		case NORTH:
 			new Projectile(new Location(this.getx(),this.gety()-1),m_model.get_projectile_sprite(),m_model.get_projectile_sprite(),m_model,Direction.NORTH,6,3);

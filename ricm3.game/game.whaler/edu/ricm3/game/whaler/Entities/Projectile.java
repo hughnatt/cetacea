@@ -10,8 +10,6 @@ import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Projectile extends Mobile_Entity {
 
@@ -39,7 +37,7 @@ public class Projectile extends Mobile_Entity {
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
 		
-		m_automata = m_model;
+		//m_automata = m_model;
 		
 		if (hasHitSomething(m_model.map().tile(pos))) { // We apply the projectile on the square of the beginning
 			m_model.map().tile(pos).remove(this); // if it hits something, it disappears
@@ -93,9 +91,17 @@ public class Projectile extends Mobile_Entity {
 
 	}
 
-	@Override
-	public void step(long now) throws Tile_exception, Map_exception {
+	
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_projectiles.remove(this);
+	}
 
+
+
+	@Override
+	public void step(long now) throws Game_exception {
+		
 		long elapsed = now - this.m_lastStep;
 
 		if (elapsed > m_speed) { // the projectile position is updated according to its speed

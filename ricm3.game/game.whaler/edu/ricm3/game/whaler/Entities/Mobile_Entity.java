@@ -6,9 +6,6 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Interpretor.IState;
 
@@ -38,6 +35,8 @@ public abstract class Mobile_Entity extends Entity {
 		m_direction = dir;
 		m_life = life;
 	}
+
+	public abstract void destroy() throws Game_exception;
 
 	/**
 	 * // Calculation of the front location
