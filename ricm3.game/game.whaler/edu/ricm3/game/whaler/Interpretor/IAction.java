@@ -143,6 +143,7 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
+			System.out.println("Impossible to jump, the entity hurt itself and moved back");
 			e.m_life--;
 			e.movesouth();
 		}
@@ -242,7 +243,7 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
-			System.out.println("Impossible for a boat to protect itself, interpreted as hit");
+			System.out.println("Impossible for the entity to protect itself, interpreted as hit");
 			e.hit();
 		}
 

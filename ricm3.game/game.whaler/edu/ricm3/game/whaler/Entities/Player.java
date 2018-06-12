@@ -69,9 +69,8 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-
-		// TODO : END OF THE GAME
-
+		System.exit(0);
+		//TODO: un écran de Game Over
 	}
 
 	public void loadSprites() {
@@ -116,6 +115,9 @@ public final class Player extends Mobile_Entity {
 				m_underSprite = m_playerSouthUnder;
 				m_sprite = m_playerSouth;
 				break;
+			}
+			if (m_life <= 0) {
+				destroy();
 			}
 		}
 	}
