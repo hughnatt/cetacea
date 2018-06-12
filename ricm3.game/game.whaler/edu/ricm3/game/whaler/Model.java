@@ -35,21 +35,10 @@ import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
 import edu.ricm3.game.parser.ParseException;
-import edu.ricm3.game.whaler.Entities.Bulle;
-import edu.ricm3.game.whaler.Entities.Coral;
-import edu.ricm3.game.whaler.Entities.Destroyer;
-import edu.ricm3.game.whaler.Entities.Entity;
-import edu.ricm3.game.whaler.Entities.Iceberg;
-import edu.ricm3.game.whaler.Entities.Island;
-import edu.ricm3.game.whaler.Entities.Oil;
-import edu.ricm3.game.whaler.Entities.Player;
-import edu.ricm3.game.whaler.Entities.Projectile;
-import edu.ricm3.game.whaler.Entities.RedCoral;
-import edu.ricm3.game.whaler.Entities.Static_Entity;
-import edu.ricm3.game.whaler.Entities.Stone;
-import edu.ricm3.game.whaler.Entities.Whale;
-import edu.ricm3.game.whaler.Entities.Whaler;
-import edu.ricm3.game.whaler.Entities.YellowAlgae;
+
+import edu.ricm3.game.whaler.Entities.*;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
+
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
@@ -98,6 +87,8 @@ public class Model extends GameModel {
 
 	// Automaton array
 	public IAutomata[] automata_array;
+	// Automata Choices
+	int[] automata_choices;
 
 	// Home menu
 	Menu m_menu;
@@ -124,6 +115,7 @@ public class Model extends GameModel {
 	public List<Projectile> m_projectiles = new LinkedList<Projectile>();
 	public List<Whale> m_whales = new LinkedList<Whale>();
 	public List<Oil> m_oils = new LinkedList<Oil>();
+	public List<Mobile_Entity> m_garbage;
 
 	public boolean[] keyPressed;
 	// Random generation
@@ -140,22 +132,19 @@ public class Model extends GameModel {
 		automata_array = ((AI_Definitions) ast).make();
 
 		// Loading setting file
-		int[] automata_settings = null;
+		// 6 Entities
+		automata_choices = new int[EntityType.values().length];
+
 		BufferedReader bis = null;
 		try {
 			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
 
-			automata_settings = new int[7];
-			for (int i = 0; i < 6; i++) {
-				automata_settings[i] = Integer.parseInt(bis.readLine());
-			}
-			// Baleines
-			// Baleiniers
-			// Destroyers
-
-			// Joueurs
-			// Pétrole
-			// Projectile
+			automata_choices[EntityType.WHALE.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.WHALER.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.DESTROYER.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.PLAYER.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.OIL.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(bis.readLine());
 
 			bis.close();
 		} catch (FileNotFoundException e) {
@@ -253,21 +242,54 @@ public class Model extends GameModel {
 
 		if (m_screen == Screen.GAME) {
 			try {
+				
+				m_garbage = new LinkedList<Mobile_Entity>();
+				
 				m_current_background.step(now);
 
 				m_player.step(now);
-				
+
 				Iterator<Whale> iterwhales = m_whales.iterator();
 				while (iterwhales.hasNext()) {
 					Whale e = iterwhales.next();
 					e.step(now);
 				}
-				
+
 				Iterator<Projectile> iterprojs = m_projectiles.iterator();
 				while (iterprojs.hasNext()) {
 					Projectile e = iterprojs.next();
 					e.step(now);
 				}
+				
+				
+				//Last Iterator
+				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
+				while (iterdestroy.hasNext()) {
+					Mobile_Entity e = iterdestroy.next();
+					switch (e.getType()) {
+					case PLAYER:
+						break;
+					case WHALE:
+						m_whales.remove(e);
+						break;
+					case WHALER:
+						m_whalers.remove(e);
+						break;
+					case DESTROYER:
+						m_destroyers.remove(e);
+						break;
+					case OIL:
+						m_oils.remove(e);
+						break;
+					case PROJECTILE:
+						m_projectiles.remove(e);
+						break;
+					default:
+						break;
+					}
+				}
+				// Suppression des références
+				m_garbage = null;
 
 			} catch (Game_exception | Automata_Exception e1) {
 				e1.printStackTrace();
@@ -278,6 +300,25 @@ public class Model extends GameModel {
 
 	@Override
 	public void shutdown() {
+	}
+
+	public IAutomata getAutomata(Mobile_Entity m) throws Game_exception {
+		switch (m.getType()) {
+		case PLAYER:
+			return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];
+		case DESTROYER:
+			return automata_array[automata_choices[EntityType.DESTROYER.ordinal()]];
+		case WHALE:
+			return automata_array[automata_choices[EntityType.WHALE.ordinal()]];
+		case WHALER:
+			return automata_array[automata_choices[EntityType.WHALER.ordinal()]];
+		case PROJECTILE:
+			return automata_array[automata_choices[EntityType.PROJECTILE.ordinal()]];
+		case OIL:
+			return automata_array[automata_choices[EntityType.OIL.ordinal()]];
+		default:
+			throw new Game_exception("Unexpected Entity. Have you added a new entity ?\n");
+		}
 	}
 
 	public void swap() {

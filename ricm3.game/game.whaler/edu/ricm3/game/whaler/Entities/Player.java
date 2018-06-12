@@ -67,7 +67,7 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		// TODO
+		// TODO : END OF THE GAME
 	}
 
 	public void loadSprites() {

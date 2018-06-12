@@ -2,14 +2,15 @@ package edu.ricm3.game.whaler.Entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
-import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Projectile extends Mobile_Entity {
 
@@ -36,12 +37,11 @@ public class Projectile extends Mobile_Entity {
 		super(pos, false, sprite, underSprite, model, dir, range);
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
+
+		m_automata = m_model.getAutomata(this);
+		m_model.m_projectiles.add(this);
 		
-		//m_automata = m_model;
-		
-		if (hasHitSomething(m_model.map().tile(pos))) { // We apply the projectile on the square of the beginning
-			m_model.map().tile(pos).remove(this); // if it hits something, it disappears
-		}
+		m_lastStep = -1;
 	}
 
 	/**
@@ -51,86 +51,64 @@ public class Projectile extends Mobile_Entity {
 	 * @return boolean
 	 * 
 	 *         true if the projectile hits something, else false
+	 * @throws Map_exception
 	 */
-	private boolean hasHitSomething(Tile tile) {
-		boolean hit = false; // test if the projectile hit something
-
-		Entity result = tile.contain(Whale.class); // Is there a whale ?
-		if (result != null) {
-			Whale result_whale = (Whale) result;
-			result_whale.m_life += m_damage; // if yes, it takes damages
-			hit = true;
+	private boolean hasHitSomething(int x, int y) throws Map_exception {
+		Tile tile = m_model.map().tile(x, y) ;
+		Iterator<Entity> iter = tile.iterator();
+		while (iter.hasNext()) {
+			Entity e = iter.next();
+			if (e.isSolid()) {
+				switch(e.getType()) {
+				case PLAYER:
+				case DESTROYER:
+				case WHALER:
+					Mobile_Entity me = (Mobile_Entity) e;
+					me.m_life -= m_damage;
+				default:
+					return true;
+				}
+			}
 		}
-
-		result = tile.contain(Player.class); // Is there a player ?
-		if (result != null) {
-			Player result_player = (Player) result;
-			result_player.m_life -= m_damage; // if yes, it takes damages
-			hit = true;
-		}
-
-		result = tile.contain(Destroyer.class); // Is there a destroyer ?
-		if (result != null) {
-			Destroyer result_destroyer = (Destroyer) result;
-			result_destroyer.m_life -= m_damage; // if yes, it takes damages
-			hit = true;
-		}
-
-		result = tile.contain(Whaler.class); // Is there a whaler ?
-		if (result != null) {
-			Whaler result_whaler = (Whaler) result;
-			result_whaler.m_life -= m_damage; // if yes, it takes damages
-			hit = true;
-		}
-
-		if (tile.isSolid()) { // Is there a solid entity
-			hit = true; // if yes, the projectile hit something
-		}
-
-		return hit;
-
+		
+		return false;
+		
 	}
 
 	
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		m_model.m_projectiles.remove(this);
+		m_model.m_garbage.add(this);
 	}
-
-
 
 	@Override
 	public void step(long now) throws Game_exception {
+		
+		if (this.m_lastStep == -1) {
+			m_lastStep = now;
+		}
+		
 		
 		long elapsed = now - this.m_lastStep;
 
 		if (elapsed > m_speed) { // the projectile position is updated according to its speed
 			m_lastStep = now;
 
+			
+			if ((hasHitSomething(this.getx(), this.gety())) || (m_life <= 0)) { // if the projectile hit nothing
+				this.destroy();
+				return;
+			}
+			
 			// Automata Transition
+			
+			m_life--;
+			
 			try {
 				m_automata.step(m_model, this);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			// Vérification vie + collision
-
-			m_life--;
-
-			Location next_pos = this.pos_front();
-			Tile next_tile = m_model.map().tile(next_pos); // we get the next tile
-
-			if (!hasHitSomething(next_tile)) { // if the projectile hit nothing
-				m_model.map().tile(this.getx(), this.gety()).remove(this);// we remove it from the map
-				m_pos = next_pos;
-				m_model.map().tile(this.getx(), this.gety()).addForeground(this); // it goes to the new lcoation
-			}
-
-			if (m_life != 0) {
-				m_model.map().tile(this.getx(), this.gety()).remove(this);// we remove it from the map
-			}
-
 		}
 	}
 

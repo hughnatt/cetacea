@@ -44,8 +44,8 @@ public class Options {
 	public static final int WHALER_LIFE = 20;
 
 	public static final int PROJECTILE_DPS = 1;
-	public static final long PROJECTILE_SPD_STANDARD = 500L;
-	public static final long PROJECTILE_SPD_IMPROVED = 300L;
+	public static final long PROJECTILE_SPD_STANDARD = 250L;
+	public static final long PROJECTILE_SPD_IMPROVED = 100L;
 
 	public static final int MAX_RANGE_WHALE_ESCAPE = 10;
 	public static final int WHALE_DPS = 1;

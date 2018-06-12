@@ -14,3 +14,7 @@ Player(Init){
   * (Move_S): True ? Move(S) :(Init)
   * (Move_E): True ? Move(E) :(Init)
 }
+
+Projectile(Init){
+	*(Init) : True ? Move(F): (Init)
+}

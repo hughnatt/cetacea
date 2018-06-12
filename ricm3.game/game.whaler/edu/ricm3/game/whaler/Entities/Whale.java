@@ -52,7 +52,7 @@ public final class Whale extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		m_model.m_whales.remove(this);
+		m_model.m_garbage.add(this);
 	}
 
 	@Override

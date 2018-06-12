@@ -127,7 +127,7 @@ public abstract class Mobile_Entity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void movenorth() throws Game_exception {
-		if (!m_model.map().tile(this.getx(), this.gety() - 1).isSolid()) {
+		if (!m_model.map().tile(this.getx(), this.gety() - 1).isSolid() || !this.isSolid()) {
 			m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map
 			this.m_pos.up(); // We update its location
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for
@@ -138,7 +138,7 @@ public abstract class Mobile_Entity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void movesouth() throws Game_exception {
-		if (!m_model.map().tile(this.getx(), this.gety() + 1).isSolid()) {
+		if (!m_model.map().tile(this.getx(), this.gety() + 1).isSolid() || !this.isSolid()) {
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 			this.m_pos.down();
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
@@ -149,7 +149,7 @@ public abstract class Mobile_Entity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void moveeast() throws Game_exception {
-		if (!m_model.map().tile(this.getx() + 1, this.gety()).isSolid()) {
+		if (!m_model.map().tile(this.getx() + 1, this.gety()).isSolid() || !this.isSolid()) {
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 			this.m_pos.right();
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
@@ -160,7 +160,7 @@ public abstract class Mobile_Entity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void movewest() throws Game_exception {
-		if (!m_model.map().tile(this.getx() - 1, this.gety()).isSolid()) {
+		if (!m_model.map().tile(this.getx() - 1, this.gety()).isSolid() || !this.isSolid()) {
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 			this.m_pos.left();
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
