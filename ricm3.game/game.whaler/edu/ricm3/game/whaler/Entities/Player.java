@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
@@ -22,6 +23,8 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerSouthUnder;
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
+	
+	int oil_jauge;
 
 	/**
 	 * @param pos
@@ -140,6 +143,13 @@ public final class Player extends Mobile_Entity {
 		}
 
 	}
+
+	public void pick() {
+		this.oil_jauge+=Options.OIL_PICKED;
+		//TODO: faire disparaitre le pétrole
+	}
+	
+	
 
 	@Override
 	public void hit() throws Game_exception {

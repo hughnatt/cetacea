@@ -130,7 +130,10 @@ public class Projectile extends Mobile_Entity {
 	}
 
 	public void hit() {
-		// nothing
+	}
+	
+	public void pick() {
+		this.pop();
 	}
 
 }

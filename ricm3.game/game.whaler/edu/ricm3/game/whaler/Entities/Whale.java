@@ -211,5 +211,9 @@ public final class Whale extends Mobile_Entity {
 			result_whale.m_life -= m_damage; // if yes, it takes damages
 		}
 	}
+	
+	public void pick() {
+		this.pop();
+	}
 
 }

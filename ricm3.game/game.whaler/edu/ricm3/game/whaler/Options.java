@@ -54,7 +54,9 @@ public class Options {
 
 	public static final long DESTROYER_SPD_STANDARD = 500L;
 	public static final long DESTROYER_SPD_IMPROVED = 300L;
-
+	
+	public static final long OIL_PICKED = 20;
+	
 	public static final long BURNING_OIL_SPD_SPRITE = 100L;
 	public static final long BURNING_OIL_SPD_SPREAD = 600L;
 
