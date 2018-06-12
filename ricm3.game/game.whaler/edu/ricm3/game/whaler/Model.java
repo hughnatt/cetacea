@@ -59,8 +59,6 @@ import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 
-
-
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -113,7 +111,6 @@ public class Model extends GameModel {
 	public List<Oil> m_oils = new LinkedList<Oil>();
 	public List<Mobile_Entity> m_garbage;
 
-
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
@@ -121,14 +118,19 @@ public class Model extends GameModel {
 	// Tick Speed
 	long m_lastSwap;
 
-	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
+	/*
+	 * Side Panel Icon, leave PUBLIC ! ! !
+	 */
+	public BufferedImage m_bartopSprite;
+	public BufferedImage m_lifeemptySprite;
+	public BufferedImage m_lifefullSprite;
 
+	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
 		automata_array = ((AI_Definitions) ast).make();
-
 
 		// Loading setting file
 		// 6 Entities
@@ -155,14 +157,12 @@ public class Model extends GameModel {
 		// Loading Sprites Model
 		loadSprites();
 
-
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
 		m_current_background = m_ocean;
-		
-		
-		//Which key is currently pressed ?
+
+		// Which key is currently pressed ?
 		keyPressed = new boolean[128];
 
 		m_lastSwap = 10000000000L;
@@ -170,7 +170,7 @@ public class Model extends GameModel {
 		/*** Creating the map ***/
 
 		m_map = new Map(this);
-		
+
 		generateMap();
 
 		// Player
@@ -182,10 +182,8 @@ public class Model extends GameModel {
 
 		undergroundFloreGenerator(8);
 
-
 		// Static sea blocks generator
 		seaGenerator(2);
-
 
 		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -197,8 +195,38 @@ public class Model extends GameModel {
 			m_statics.add(new Stone(new Location(0, i), m_rocherSprite, m_rocherUnderSprite, this));
 			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
 		}
-		
-		//TODO : GENERATE ENTITIES AND REPOP PROCESS
+
+		// TODO : GENERATE ENTITIES AND REPOP PROCESS
+		entitiesGenerator();
+
+	}
+
+	/**
+	 * Génère les entités sur la Map
+	 * 
+	 * @throws Game_exception
+	 */
+	private void entitiesGenerator() throws Game_exception {
+		/*
+		 * 1) Générer les Baleines au hasard 2) Générer les Baleiniers (dans un rayon
+		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
+		 * (Full Random)
+		 */
+		boolean found_spawnpos = false;
+
+		for (int i = 0; i < Options.MAX_OIL; i++) {
+			found_spawnpos = false;
+			while (!found_spawnpos) {
+				int rx = this.rand.nextInt(Options.DIMX_VIEW);
+				int ry = this.rand.nextInt(Options.DIMY_VIEW);
+
+				if (!map().tile(rx, ry).isSolid()) {
+					m_oils.add(new Oil(new Location(rx, ry), m_oilSprite, null, this));
+				}
+
+				found_spawnpos = true;
+			}
+		}
 	}
 
 	public Map map() {
@@ -208,92 +236,88 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
+		m_lastSwap++; // Tick Number
 
-		m_lastSwap++; //Tick Number
-		
-			try {
+		try {
 
-				m_garbage = new LinkedList<Mobile_Entity>();
+			m_garbage = new LinkedList<Mobile_Entity>();
 
-				m_current_background.step(now);
+			m_current_background.step(now);
 
-				m_player.step(now);
+			m_player.step(now);
 
-				Iterator<Static_Entity> iterstatics = m_statics.iterator();
-				while (iterstatics.hasNext()) {
-					Static_Entity e = iterstatics.next();
-					e.step(now);
-				}
-
-				Iterator<Whale> iterwhales = m_whales.iterator();
-				while (iterwhales.hasNext()) {
-					Whale e = iterwhales.next();
-					e.step(now);
-				}
-
-				Iterator<Oil> iteroil = m_oils.iterator();
-
-				while (iteroil.hasNext()) {
-
-					Oil tmp = iteroil.next();
-					tmp.step(now);
-				}
-
-				Iterator<Whaler> iterwhalers = m_whalers.iterator();
-				while (iterwhalers.hasNext()) {
-					Whaler e = iterwhalers.next();
-					e.step(now);
-				}
-
-				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
-				while (iterdestroyers.hasNext()) {
-					Destroyer e = iterdestroyers.next();
-					e.step(now);
-				}
-
-				Iterator<Projectile> iterprojs = m_projectiles.iterator();
-				while (iterprojs.hasNext()) {
-					Projectile e = iterprojs.next();
-					e.step(now);
-				}
-
-				// Garbage Iterator
-
-				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
-				while (iterdestroy.hasNext()) {
-					Mobile_Entity e = iterdestroy.next();
-					switch (e.getType()) {
-					case PLAYER:
-						break;
-					case WHALE:
-						m_whales.remove(e);
-						break;
-					case WHALER:
-						m_whalers.remove(e);
-						break;
-					case DESTROYER:
-						m_destroyers.remove(e);
-						break;
-					case OIL:
-						m_oils.remove(e);
-						break;
-					case PROJECTILE:
-						m_projectiles.remove(e);
-						break;
-					default:
-						break;
-					}
-				}
-				// Suppression des références
-				m_garbage = null;
-
-			} catch (Game_exception | Automata_Exception e1) {
-				e1.printStackTrace();
-				System.exit(-1);
+			Iterator<Static_Entity> iterstatics = m_statics.iterator();
+			while (iterstatics.hasNext()) {
+				Static_Entity e = iterstatics.next();
+				e.step(now);
 			}
 
+			Iterator<Whale> iterwhales = m_whales.iterator();
+			while (iterwhales.hasNext()) {
+				Whale e = iterwhales.next();
+				e.step(now);
+			}
 
+			Iterator<Oil> iteroil = m_oils.iterator();
 
+			while (iteroil.hasNext()) {
+
+				Oil tmp = iteroil.next();
+				tmp.step(now);
+			}
+
+			Iterator<Whaler> iterwhalers = m_whalers.iterator();
+			while (iterwhalers.hasNext()) {
+				Whaler e = iterwhalers.next();
+				e.step(now);
+			}
+
+			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+			while (iterdestroyers.hasNext()) {
+				Destroyer e = iterdestroyers.next();
+				e.step(now);
+			}
+
+			Iterator<Projectile> iterprojs = m_projectiles.iterator();
+			while (iterprojs.hasNext()) {
+				Projectile e = iterprojs.next();
+				e.step(now);
+			}
+
+			// Garbage Iterator
+
+			Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
+			while (iterdestroy.hasNext()) {
+				Mobile_Entity e = iterdestroy.next();
+				switch (e.getType()) {
+				case PLAYER:
+					break;
+				case WHALE:
+					m_whales.remove(e);
+					break;
+				case WHALER:
+					m_whalers.remove(e);
+					break;
+				case DESTROYER:
+					m_destroyers.remove(e);
+					break;
+				case OIL:
+					m_oils.remove(e);
+					break;
+				case PROJECTILE:
+					m_projectiles.remove(e);
+					break;
+				default:
+					break;
+				}
+			}
+			// Suppression des références
+			m_garbage = null;
+
+		} catch (Game_exception | Automata_Exception e1) {
+			e1.printStackTrace();
+			System.exit(-1);
+		}
 
 	}
 
@@ -333,7 +357,6 @@ public class Model extends GameModel {
 			}
 		}
 	}
-
 
 	/**
 	 * G�n�re la flore sous-marine selon un pourcentage donn� en param�tre
@@ -410,11 +433,9 @@ public class Model extends GameModel {
 		}
 	}
 
-
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
 	}
-
 
 	public BufferedImage get_projectile_sprite() {
 		return m_projectileSprite;
@@ -423,7 +444,6 @@ public class Model extends GameModel {
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
 	}
-
 
 	public Direction rand_direction() {
 		switch (rand.nextInt(4)) {
@@ -639,6 +659,30 @@ public class Model extends GameModel {
 		imageFile = new File("game.whaler/sprites/rocherUnder.png");
 		try {
 			m_rocherUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		imageFile = new File("game.whaler/sprites/bar_top.png");
+		try {
+			m_bartopSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		imageFile = new File("game.whaler/sprites/lifebar_empty.png");
+		try {
+			m_lifeemptySprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+
+		imageFile = new File("game.whaler/sprites/lifebar_full.png");
+		try {
+			m_lifefullSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

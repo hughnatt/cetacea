@@ -24,60 +24,56 @@ import java.awt.Graphics;
 import edu.ricm3.game.GameView;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-
-
 public class View extends GameView {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    Color m_background = Color.blue;
-    long m_last;
-    int m_npaints;
-    int m_fps;
-    Model m_model;
-    Controller m_ctr;
-    Boolean afficherOptions = true;
+	Color m_background = Color.blue;
+	long m_last;
+	int m_npaints;
+	int m_fps;
+	Model m_model;
+	Controller m_ctr;
+	Boolean afficherOptions = true;
 
-    public View(Model m, Controller c) {
-        m_model = m;
-        m_ctr = c;
-    }
+	public View(Model m, Controller c) {
+		m_model = m;
+		m_ctr = c;
+	}
 
-    private void computeFPS() {
-        long now = System.currentTimeMillis();
-        if (now - m_last > 1000L) {
-            m_fps = m_npaints;
-            m_last = now;
-            m_npaints = 0;
-        }
-        m_game.setFPS(m_fps, "npaints=" + m_npaints);
-        m_npaints++;
-    }
+	private void computeFPS() {
+		long now = System.currentTimeMillis();
+		if (now - m_last > 1000L) {
+			m_fps = m_npaints;
+			m_last = now;
+			m_npaints = 0;
+		}
+		m_game.setFPS(m_fps, "npaints=" + m_npaints);
+		m_npaints++;
+	}
 
-    @Override
-    protected void _paint(Graphics g) throws Game_exception {
-        computeFPS();
-
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
-            //paints a blue canvas then the map's viewport
-           
-			g.setColor(Color.BLUE);
-			g.fillRect(0, 0, getWidth(), getHeight());
-			m_model.m_current_background.paint(g);
-
-			// Viewport paint of the map
-			try {
-				if (m_model.UNDER_WATER) {
-					m_model.map().paint_under(g);
-				} else {
-					m_model.map().paint(g);
-				}
-			} catch (Game_exception e) {
-				// TODO Catching des erreurs
-			}
+	@Override
+	protected void _paint(Graphics g) throws Game_exception {
+		computeFPS();
 
 		
-        }
+		
+		// paints a blue canvas then the map's viewport
+		g.setColor(Color.BLUE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		m_model.m_current_background.paint(g);
+
+		
+		// Viewport paint of the map
+		try {
+			if (m_model.UNDER_WATER) {
+				m_model.map().paint_under(g);
+			} else {
+				m_model.map().paint(g);
+			}
+		} catch (Game_exception e) {
+			// TODO Catching des erreurs
+		}
+
+	}
 }

@@ -25,11 +25,9 @@ public final class Oil extends Mobile_Entity {
 	 * @param dir
 	 * @throws Game_exception
 	 */
-
-	// TODO enlever la direction du constructeur
-	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model)
 			throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir);
+		super(pos, false, sprite, underSprite, model, Direction.WEST);
 		
 		m_automata = m_model.getAutomata(this);
 

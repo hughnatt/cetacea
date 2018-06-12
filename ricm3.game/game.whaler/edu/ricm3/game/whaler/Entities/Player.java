@@ -71,7 +71,8 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		System.exit(0);
+		//On va se calmer là non ?
+		//System.exit(0);
 		// TODO: un écran de Game Over
 	}
 
@@ -120,6 +121,7 @@ public final class Player extends Mobile_Entity {
 				break;
 			}
 			if (m_life <= 0) {
+				
 				destroy();
 			}
 		}
@@ -150,8 +152,6 @@ public final class Player extends Mobile_Entity {
 	}
 
 	public void pick() throws Game_exception {
-		this.oil_jauge += Options.OIL_PICKED;
-		// TODO: faire disparaitre la flaque de pétrole
 	}
 
 	@Override

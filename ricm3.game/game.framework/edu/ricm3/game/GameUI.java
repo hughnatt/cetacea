@@ -18,21 +18,31 @@
 package edu.ricm3.game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class GameUI {
@@ -71,6 +81,8 @@ public class GameUI {
 	GameModel m_model;
 	GameController m_controller;
 	JLabel m_text;
+	JPanel m_oil;
+	JPanel m_life;
 	int m_fps;
 	String m_msg;
 	long m_start;
@@ -146,7 +158,7 @@ public class GameUI {
 			m_frame = new JFrame();
 			m_frame.setTitle("Cetacea");
 			m_frame.setLayout(new BorderLayout());
-			m_frame.setResizable(false);
+			//m_frame.setResizable(false);
 
 			File f = new File("game.whaler/sprites/cetacea.png");
 			Image icone;
@@ -157,13 +169,31 @@ public class GameUI {
 				ex.printStackTrace();
 				System.exit(-1);
 			}
-
+			
+			//Primary Display on the center
 			m_frame.add(m_view, BorderLayout.CENTER);
 
+			//Info Bar (FPS, TICK,...)
 			m_text = new JLabel();
 			m_text.setText("Starting up...");
-			m_frame.add(m_text, BorderLayout.NORTH);
+			addNorth(m_text);
+			
 
+			//USE THAT INSTEAD
+			//onTheLeft.add(new JLabel(new ImageIcon(((Model) m_model).get_projectile_sprite())));
+			
+			
+			//
+			JPanel onTheRight = new JPanel(new GridLayout(1,1));
+			onTheRight.add(new JLabel(new ImageIcon("game.whaler/sprites/red.png")));
+			addEast(onTheRight);
+			
+			JPanel onTheBottom = new JPanel(new GridLayout(1,31));
+			onTheBottom.add(new JLabel(new ImageIcon("game.whaler/sprites/blue.png")));
+			addSouth(onTheBottom);
+			
+			refreshLife();
+			
 			m_frame.setSize(d);
 			m_frame.doLayout();
 			m_frame.setVisible(true);
@@ -209,6 +239,34 @@ public class GameUI {
 			a.create_frame();
 			a.create_automata_selection();
 		}
+	}
+	
+	public void refreshOil() {
+		
+	}
+	
+	public void refreshLife() {
+		Model m = (Model) m_model;
+		
+		//Left Panel
+		m_life = new JPanel();
+		m_life.setLayout(new BoxLayout(m_life,BoxLayout.Y_AXIS));
+		
+		m_life.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
+		
+		int currentLife = m.m_player.m_life;
+		if (currentLife <= 0) {
+			currentLife = 0;
+		}
+		
+		for (int i=edu.ricm3.game.whaler.Options.PLAYER_LIFE ; i > currentLife; i--) {
+			m_life.add(new JLabel(new ImageIcon(m.m_lifeemptySprite)));
+		}
+		
+		for (int i = currentLife; i >= 1 ; i--) {
+			m_life.add(new JLabel(new ImageIcon(m.m_lifefullSprite)));
+		}
+		addWest(m_life);
 	}
 
 	/*
@@ -263,6 +321,10 @@ public class GameUI {
 			// System.out.println(txt);
 			m_text.setText(txt);
 			m_text.repaint();
+			
+			refreshLife();
+			m_life.repaint();
+			
 			m_view.paint();
 			m_lastRepaint = now;
 		}
