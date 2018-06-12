@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Whaler extends Mobile_Entity {
@@ -15,7 +16,7 @@ public class Whaler extends Mobile_Entity {
 	private BufferedImage m_whalerEast;
 	private BufferedImage m_whalerNorth;
 
-	int m_life;
+	int m_damage;
 
 	/**
 	 * @param pos
@@ -23,11 +24,12 @@ public class Whaler extends Mobile_Entity {
 	 * @param underSprite
 	 * @param model
 	 * @param dir
+	 * @param life
 	 * @throws Map_exception
 	 */
-	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
-			throws Map_exception {
-		super(pos, true, sprite, underSprite, model, dir);
+	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+			throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, life);
 
 		loadSprites();
 		switch (dir) {
@@ -40,10 +42,16 @@ public class Whaler extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_whalerNorth;
 			break;
-		case SOUTH:
+		default:
 			m_sprite = m_whalerSouth;
 			break;
 		}
+	}
+
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_whalers.remove(this);
 	}
 
 	/*
@@ -73,17 +81,31 @@ public class Whaler extends Mobile_Entity {
 
 	@Override
 	public void pop() {
-		// TODO
+		this.m_life++;
 	}
 
 	@Override
-	public void wizz() {
-		// TODO
+	public void wizz() throws Game_exception {
+		Location new_pos = this.pos_front();
+
+		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_life += 3; // if yes, caught gauge increases by 3
+		}
+
 	}
 
 	@Override
-	public void hit() {
-		// TODO
+	public void hit() throws Game_exception {
+		Location new_pos = this.pos_front();
+
+		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_life++; // if yes, caught gauge increases
+		}
+
 	}
 
 }

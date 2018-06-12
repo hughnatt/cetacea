@@ -7,15 +7,14 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public final class Whale extends Mobile_Entity {
 
-	public int m_capture; // Catch gauge
+	// public int m_capture; // Catch gauge
 	int m_damage; // DPS to the hit
-	boolean m_pop_triggered;
+	private boolean m_pop_triggered; // true until the jet reach its maximal height
 
 	/* BufferedImage Array to store the sprite */
 	int m_sprite_idx;
@@ -27,12 +26,12 @@ public final class Whale extends Mobile_Entity {
 	 * @param underSprite
 	 * @param model
 	 * @param dir
-	 * @throws Map_exception
+	 * @throws Game_exception
 	 */
-	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
-			throws Map_exception {
-		super(pos, true, sprite, underSprite, model, dir);
-		m_capture = Options.WHALE_CAPTURE_INIT;
+
+	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+			throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, life);
 		m_damage = Options.WHALE_DPS;
 		m_pop_triggered = false;
 
@@ -51,26 +50,32 @@ public final class Whale extends Mobile_Entity {
 	}
 
 	@Override
-	public void step(long now) throws Map_exception, Tile_exception {
-		if ((m_capture == 0) || (m_capture == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_whales.remove(this);
+	}
+
+	@Override
+	public void step(long now) throws Game_exception {
+		if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
 			m_model.map().tile(this.getx(), this.gety()).remove(this);
 		}
 
 		long elapsed = now - this.m_lastStep;
-		if (elapsed > 200L) {
+		if (elapsed > 200L) { // speed for the changement of sprites
 
 			m_lastStep = now;
 
 			if (m_pop_triggered) {
 
-				if (m_sprite_idx < 5) {
+				if (m_sprite_idx < 5) { // the jet increases
 					m_sprite_idx++;
 				} else {
 					m_pop_triggered = false;
 				}
 
 			} else {
-				if (m_sprite_idx != 0) {
+				if (m_sprite_idx != 0) { // the jet decreases
 					m_sprite_idx--;
 				}
 			}
@@ -89,11 +94,11 @@ public final class Whale extends Mobile_Entity {
 
 	@Override
 	public void pop() {
-		m_pop_triggered = true;
+		m_pop_triggered = true; // Triggering of the jet
 	}
 
 	@Override
-	public void wizz() throws Map_exception, Tile_exception, Location_exception {
+	public void wizz() throws Game_exception {
 		int transl_x = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of the
 																				// whale in x
 		if (m_model.rand.nextInt(2) == 1) {
@@ -113,7 +118,7 @@ public final class Whale extends Mobile_Entity {
 	}
 
 	@Override
-	public void hit() throws Map_exception {
+	public void hit() throws Game_exception {
 		Location new_pos = this.pos_front();
 
 		Entity result = m_model.map().tile(new_pos).contain(Player.class); // Is there a player ?

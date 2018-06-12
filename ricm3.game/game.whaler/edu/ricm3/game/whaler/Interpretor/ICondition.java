@@ -1,10 +1,18 @@
 package edu.ricm3.game.whaler.Interpretor;
 
+import java.util.Iterator;
+
 import edu.ricm3.game.whaler.Direction;
+import edu.ricm3.game.whaler.Location;
+import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Entities.*;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 
 public abstract class ICondition {
 
-	public abstract boolean eval(); // Il y aura besoin de rajouter (au moins) la map (voir model complet) et
+	public abstract boolean eval(Mobile_Entity current, Model model) throws Map_exception; // Il y aura besoin de rajouter (au moins) la map (voir model complet) et
 									// l'entité courante
 
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
@@ -30,7 +38,36 @@ public abstract class ICondition {
 			return Direction.FORWARD;
 		}
 	}
-
+	
+	enum EntityDangerLevel {
+		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE	
+	}
+	
+	static EntityDangerLevel strToEDL(String s) {
+		
+		switch(s) {
+		case "V":
+			return EntityDangerLevel.VOID;
+		case "T":
+			return EntityDangerLevel.TEAM;
+		case "A":
+			return EntityDangerLevel.ADVERSAIRE;
+		case "D":
+			return EntityDangerLevel.DANGER;
+		case "P":
+			return EntityDangerLevel.PRENABLE;
+		case "J":
+			return EntityDangerLevel.JUMPABLE;
+		case "G":
+			return EntityDangerLevel.GATE;
+		case "M":
+			return EntityDangerLevel.MISSILE;
+		default : 
+			System.out.println("Unknown Entity, will be interpreted as VOID");
+			return EntityDangerLevel.VOID;
+		}
+	}
+	
 	/**
 	 * La condition est toujours vérifiée
 	 */
@@ -40,7 +77,7 @@ public abstract class ICondition {
 
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true;
 		}
 	}
@@ -56,8 +93,27 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-		public boolean eval() {
-			return true; // TODO
+		public boolean eval(Mobile_Entity current, Model model) {
+			int length = m_key.length();
+			char carac = m_key.charAt(0);
+			int ascii = (int) carac;
+			if (length > 1) {
+				char carac2 = m_key.charAt(1);
+				if (carac == 'S') {
+					ascii = 32;
+				} else if (carac == 'E') {
+					ascii = 10;
+				} else if (carac2 == 'U') {
+					ascii = 38;
+				} else if (carac2 == 'D') {
+					ascii = 40;
+				} else if (carac2 == 'R') {
+					ascii = 39;
+				} else if (carac2 == 'L') {
+					ascii = 37;
+				}
+			}
+			return model.keyPressed[ascii];
 		}
 	}
 
@@ -74,40 +130,166 @@ public abstract class ICondition {
 			m_dir = strToDir(string);
 		}
 
-		public boolean eval() {
-			return true; // TODO
+		public boolean eval(Mobile_Entity current, Model model) {			
+			return current.m_direction == m_dir;
+
 		}
 	}
 
 	/**
 	 * 
 	 * La cellule dans la direction m_dir contient une entité de type m_entity
-	 * m_entity peut valoir : V T A D P J G M 
-	 * NB: Une entité dangereux pour le
+	 * m_entity peut valoir : V T A D P J G M NB: Une entité dangereux pour le
 	 * joueur n'est pas dangereux pour un Destroyer "DANGER" est donc à définir en
 	 * fonction de l'entité courante
 	 */
 	public static class ICell extends ICondition {
-		String m_entity;
+		EntityDangerLevel m_entity;
 		Direction m_dir;
 
-		public ICell(String entity, String dir) {
-			m_entity = entity;
+		public ICell(String dir, String entity) {
+			m_entity = strToEDL(entity);
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval() {
-			return true; // TODO
+		public boolean eval(Mobile_Entity current, Model model) throws Map_exception{
+			
+			/*
+			 * DESTROYER = 0
+			 * OIL = 1
+			 * PLAYER = 2
+			 * PROJECTILE = 3
+			 * WHALE = 4
+			 * WHALER = 5
+			 */
+			
+			EntityDangerLevel[][] entity_behaviour = new EntityDangerLevel[10][10];
+			
+			//Column 1
+			entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.OIL.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.MISSILE;
+			entity_behaviour[EntityType.WHALE.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.WHALER.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.STONE.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.DANGER;
+		
+			//Column 2
+			entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.OIL.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.WHALE.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.WHALER.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.STONE.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.OIL.ordinal()] = EntityDangerLevel.DANGER;
+		
+			//Column 3
+			entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.OIL.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.PRENABLE;
+			entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.MISSILE;
+			entity_behaviour[EntityType.WHALE.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.WHALER.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.STONE.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.PLAYER.ordinal()] = EntityDangerLevel.DANGER;
+
+			//Column 4
+			entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.OIL.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.WHALE.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.WHALER.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.STONE.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.PROJECTILE.ordinal()] = EntityDangerLevel.DANGER;
+
+			//Column 5
+			entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.OIL.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.MISSILE;
+			entity_behaviour[EntityType.WHALE.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.WHALER.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.STONE.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.WHALE.ordinal()] = EntityDangerLevel.DANGER;
+		
+			//Column 6
+			entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.OIL.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.VOID;
+			entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.MISSILE;
+			entity_behaviour[EntityType.WHALE.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.ADVERSAIRE;
+			entity_behaviour[EntityType.WHALER.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.TEAM;
+			entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.STONE.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
+			entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
+		
+			
+			int px = current.getx();
+			int py = current.gety();
+			int cx = px;
+			int cy = py;
+			
+			switch(m_dir) {
+			case FORWARD:
+				m_dir = current.getFDir();
+			case BACKWARD:
+				m_dir = current.getBDir();
+			case LEFT:
+				m_dir = current.getLDir();
+			case RIGHT:
+				m_dir = current.getRDir();
+			case NORTH:
+				cx = px;
+				cy = py-1;
+				break;
+			case SOUTH:
+				cx = px;
+				cy = py+1;
+				break;
+			case EAST:
+				cx = px+1;
+				cy = py;
+				break;
+			case WEST:
+				cx = px-1;
+				cy = py;
+				break;	
+			}
+			
+			
+			Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
+
+			while(iter.hasNext()) {
+				
+				Entity e = iter.next();
+								
+				EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
+				
+				System.out.println(m_entity);
+				
+				if(level == m_entity) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
+
+	
 
 	/**
 	 * La plus proche entité de type m_entity est dans la direction m_dir NB :
 	 * (@Tanguy) : Celle là elle a pas l'air facile à faire, il faudra passer la map
-	 * complète en argument galère, galère, ... m_entity peut valoir : V T A D P J G
-	 * M 
-	 * NB2 : Une entité dangereux pour le joueur n'est pas dangereux pour un
-	 * Destroyer "DANGER" est donc à définir en fonction de l'entité courante
+	 * complète en argument galère, galère, ... m_entity peut valoir : Void Team
+	 * Adversaire Danger Pick
 	 */
 	public static class IClosest extends ICondition {
 		String m_entity;
@@ -118,7 +300,7 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return true; // TODO
 		}
 	}
@@ -127,14 +309,15 @@ public abstract class ICondition {
 	 * Reste t-il de l'énergie à l'entité NB : Regarder pour faire un truc relatif à
 	 * la vie
 	 */
-	public static class IGetPower extends ICondition {
+	public static class IGotPower extends ICondition {
 
-		public IGetPower() {
+		public IGotPower() {
 		}
 
-		public boolean eval() {
-			return false; // TODO
+		public boolean eval(Mobile_Entity current, Model model) {
+			return current.m_life > 5;
 		}
+
 	}
 
 	/**
@@ -146,7 +329,7 @@ public abstract class ICondition {
 		public IGotStuff() {
 		}
 
-		public boolean eval() {
+		public boolean eval(Mobile_Entity current, Model model) {
 			return false; // TODO
 		}
 	}
@@ -165,8 +348,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval() {
-			return (m_a.eval() && m_b.eval());
+		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
+			return (m_a.eval(current, model) && m_b.eval(current, model));
 		}
 	}
 
@@ -184,8 +367,8 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval() {
-			return (m_a.eval() || m_b.eval());
+		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
+			return (m_a.eval(current, model) || m_b.eval(current, model));
 		}
 	}
 
@@ -201,8 +384,8 @@ public abstract class ICondition {
 			m_a = a;
 		}
 
-		public boolean eval() {
-			return !(m_a.eval());
+		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
+			return !(m_a.eval(current, model));
 		}
 	}
 

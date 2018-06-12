@@ -8,15 +8,14 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class Projectile extends Mobile_Entity {
 
 	int m_remaining; // before destruction, 0 = destruction at the next move
 	int m_damage; // The damage that will be done by the projectile
 
-	private long m_speed;
+	private long m_speed; // speed of the projectile
 
 	/**
 	 * @param tile
@@ -32,7 +31,7 @@ public class Projectile extends Mobile_Entity {
 		Entity result = tile.contain(Whale.class); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
-			result_whale.m_capture += m_damage; // if yes, it takes damages
+			result_whale.m_life += m_damage; // if yes, it takes damages
 			hit = true;
 		}
 
@@ -76,38 +75,42 @@ public class Projectile extends Mobile_Entity {
 	 *            Indicate the range of the projectile
 	 * @param damage
 	 *            Damage power
-	 * @throws Map_exception
-	 * @throws Tile_exception
+	 * @throws Game_exception
 	 */
 	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			int range, int damage) throws Map_exception, Tile_exception {
-		super(pos, false, sprite, underSprite, model, dir);
-		m_remaining = range;
+			int range, int damage) throws Game_exception {
+		super(pos, false, sprite, underSprite, model, dir, range);
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
-		if (apply_projectile(m_model.map().tile(pos))) { // We apply the projectile on the case of the beginning
+		if (apply_projectile(m_model.map().tile(pos))) { // We apply the projectile on the square of the beginning
 			m_model.map().tile(pos).remove(this); // if it hits something, it disappears
 		}
 	}
 
 	@Override
-	public void step(long now) throws Map_exception, Tile_exception {
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		m_model.m_projectiles.remove(this);
+	}
+
+	@Override
+	public void step(long now) throws Game_exception {
 
 		long elapsed = now - this.m_lastStep;
 
-		if (elapsed > m_speed) {
+		if (elapsed > m_speed) { // the projectile position is updata according to its speed
 
 			m_lastStep = now;
 
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			if (m_remaining != 0) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);// we remove it from the map
+			if (m_life != 0) {// if the max range isn't reach
 
-				m_remaining--;
+				m_life--;
 
 				Location next_pos = this.pos_front();
-				Tile next_tile = m_model.map().tile(next_pos);
+				Tile next_tile = m_model.map().tile(next_pos); // we get the next tile
 
-				if (!apply_projectile(next_tile)) {
+				if (!apply_projectile(next_tile)) { // if the projectile hit nothing
 					m_pos = next_pos;
 					m_model.map().tile(this.getx(), this.gety()).addForeground(this); // it goes to the new lcoation
 				}
