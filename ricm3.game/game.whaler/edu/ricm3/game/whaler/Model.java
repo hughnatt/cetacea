@@ -167,7 +167,8 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-		floreGenerator(10);
+		undergroundFloreGenerator(8);
+		seaGenerator(2);
 		
 
 		// Stones
@@ -183,11 +184,6 @@ public class Model extends GameModel {
 
 		}
 
-		// Islands
-		m_statics.add(new Island(new Location(3, 6), m_islandSprite, null, this));
-
-		// Icebergs
-		m_statics.add(new Iceberg(new Location(3, 7), m_icebergSprite, null, this));
 
 		// Entities
 
@@ -253,7 +249,7 @@ public class Model extends GameModel {
 	 * @throws Game_exception 
 	 * @throws Location_exception 
 	 */
-	private void floreGenerator(int pourcentage) throws Location_exception, Game_exception {
+	private void undergroundFloreGenerator(int pourcentage) throws Location_exception, Game_exception {
 		
 		Random rand = new Random();
 		int min = 1;
@@ -284,6 +280,42 @@ public class Model extends GameModel {
 			}
 		}
 	}
+	
+	/**
+	 * Génère la mer selon un pourcentage donné en paramètre
+	 * @param pourcentage
+	 * @throws Game_exception 
+	 * @throws Location_exception 
+	 */
+	private void seaGenerator(int pourcentage) throws Location_exception, Game_exception {
+
+		Random rand = new Random();
+		int min = 1;
+		int max = Options.DIMX_MAP-2;
+		
+		int nbparColonne = (pourcentage*max)/100;
+		
+		for(int i=1; i< Options.DIMY_MAP; i++) {
+			for(int j=1; j< nbparColonne; j++) {
+				int x = rand.nextInt((max - min) + 1) + min;
+				int flore = rand.nextInt(3);
+				
+				switch(flore) {
+				case 0:
+					m_statics.add(new Island(new Location(x, i), m_islandSprite, null, this));
+					break;
+				case 1:
+					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
+					break;
+				default:
+					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
+					break;
+				}
+				
+			}
+		}
+	}
+	
 
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
