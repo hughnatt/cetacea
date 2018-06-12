@@ -59,7 +59,7 @@ public class Destroyer extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_destroyerNorth;
 			break;
-		default:
+		default: // direction by default, SOUTH
 			m_sprite = m_destroyerSouth;
 			break;
 		}
@@ -144,7 +144,7 @@ public class Destroyer extends Mobile_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+		// nothing
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public final class Whale extends Mobile_Entity {
 
@@ -58,7 +57,7 @@ public final class Whale extends Mobile_Entity {
 	@Override
 	public void step(long now) throws Game_exception {
 		if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.destroy();
 		}
 
 		long elapsed = now - this.m_lastStep;
@@ -89,7 +88,7 @@ public final class Whale extends Mobile_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+		// nothing
 	}
 
 	@Override
@@ -137,6 +136,12 @@ public final class Whale extends Mobile_Entity {
 		if (result != null) {
 			Destroyer result_destroyer = (Destroyer) result;
 			result_destroyer.m_life -= m_damage; // if yes, it takes damages
+		}
+
+		result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_life -= m_damage; // if yes, it takes damages
 		}
 	}
 
