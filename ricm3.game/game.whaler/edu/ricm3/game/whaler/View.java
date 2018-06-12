@@ -23,7 +23,8 @@ import java.awt.Graphics;
 
 import edu.ricm3.game.GameView;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
+
+
 
 public class View extends GameView {
 
@@ -61,22 +62,22 @@ public class View extends GameView {
         g.fillRect(0, 0, getWidth(), getHeight());
 
             //paints a blue canvas then the map's viewport
+           
+			g.setColor(Color.BLUE);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			m_model.m_current_background.paint(g);
 
-            g.setColor(Color.BLUE);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            m_model.m_current_background.paint(g);
+			// Viewport paint of the map
+			try {
+				if (m_model.UNDER_WATER) {
+					m_model.map().paint_under(g);
+				} else {
+					m_model.map().paint(g);
+				}
+			} catch (Game_exception e) {
+				// TODO Catching des erreurs
+			}
 
-            // Viewport paint of the map
-            try {
-                if (m_model.UNDER_WATER) {
-                    m_model.map().paint_under(g);
-                } else {
-                    m_model.map().paint(g);
-                }
-            } catch (Location_exception l) {
-                System.exit(-1);
-            }
-
-
+		
         }
 }

@@ -1,5 +1,6 @@
 package edu.ricm3.game.whaler.Entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -7,6 +8,7 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class Destroyer extends Mobile_Entity {
@@ -16,6 +18,14 @@ public class Destroyer extends Mobile_Entity {
 	BufferedImage m_destroyerEast;
 	BufferedImage m_destroyerWest;
 
+
+	private BufferedImage[] m_explode;
+	private int m_explode_idx;
+
+	private boolean m_exploding;
+	long m_lastAnim;
+
+	int m_damage;
 	private long m_speed;
 
 	/**
@@ -35,6 +45,10 @@ public class Destroyer extends Mobile_Entity {
 		super(pos, true, sprite, underSprite, model, dir, life);
 		m_speed = Options.DESTROYER_SPD_STANDARD;
 
+		m_exploding = false;
+		m_explode_idx = 0;
+		m_automata = m_model.getAutomata(this);
+
 		loadSprites();
 
 		switch (dir) {
@@ -47,7 +61,9 @@ public class Destroyer extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_destroyerNorth;
 			break;
-		default:
+
+		default: // direction by default, SOUTH
+
 			m_sprite = m_destroyerSouth;
 			break;
 		}
@@ -57,7 +73,7 @@ public class Destroyer extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		m_model.m_destroyers.remove(this);
+		m_model.m_garbage.add(this);
 	}
 
 	private void loadSprites() {
@@ -68,25 +84,73 @@ public class Destroyer extends Mobile_Entity {
 		;
 		m_destroyerNorth = m_sprite.getSubimage(0, 96, 32, 32);
 		;
+
+		m_sprite = m_model.get_boom_sprite();
+
+		m_explode = new BufferedImage[8];
+		for (int i = 0; i < 8; i++) {
+			m_explode[i] = m_sprite.getSubimage(32 * i, 0, 32, 32);
+		}
 	}
 
 	@Override
-	public void step(long now) {
+
+	public void step(long now) throws Game_exception {
+		stepAnim(now);
+
 		long elapsed = now - m_lastStep;
-		if (elapsed > m_speed) {
-			m_speed = Options.DESTROYER_SPD_STANDARD;
+
+		if (!m_exploding && elapsed > 1000L) {
+			m_lastStep = now;
+
+			try {
+				m_automata.step(m_model, this);
+			} catch (Automata_Exception e) {
+				e.printStackTrace();
+			} catch (Game_exception e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (m_life <= 0) {
+				m_exploding = true;
+			}
+		}
+	}
+
+	public void stepAnim(long now) throws Game_exception {
+		long elapsed = now - m_lastAnim;
+		if (elapsed > 100L) {
+			m_lastAnim = now;
+			if (m_exploding) {
+				m_explode_idx++;
+
+				if (m_explode_idx == 8) {
+					this.destroy();
+				}
+			}
 
 		}
 	}
 
 	@Override
 	public void paint(Graphics g, Location map_ref) {
-		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+		if (m_exploding) {
+
+			g.drawImage(m_explode[m_explode_idx], (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+		} else {
+			g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+			g.setColor(Color.RED);
+			g.fillRect((m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32,
+					(int) (((double) m_life / (double) (Options.DESTROYER_LIFE)) * 32), 2);
+		}
+
 	}
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+		// nothing
 	}
 
 	@Override
@@ -102,6 +166,12 @@ public class Destroyer extends Mobile_Entity {
 	@Override
 	public void hit() {
 
+
+	}
+
+	@Override
+	public void pick() {
+		this.pop();
 	}
 
 }

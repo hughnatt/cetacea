@@ -17,26 +17,17 @@
  */
 package edu.ricm3.game.whaler;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Panel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+
+
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model;
 
-import edu.ricm3.game.whaler.Model.Screen;
-import edu.ricm3.game.whaler.Interpretor.IAutomata;
+
 
 
 /**
@@ -51,29 +42,10 @@ import edu.ricm3.game.whaler.Interpretor.IAutomata;
  */
 
 public class Controller extends GameController implements ActionListener {
-
-	
 	// The two main panels, the main one has the buttons and is displayed on all
 	// menus, the cont one is only displayed on the automaton menu
-	Panel cont;
-	Panel main;
 
 	Model m_model;
-
-	// All the buttons, to navigate between menu screens or to start the game
-	JButton play;
-	JButton automata;
-	JButton annuler;
-	JButton retour;
-	JButton preference;
-
-	JLabel infoLabel;
-
-	// An array of scrolling box to choose the automatons
-	JComboBox<?> b[];
-
-	// A button to write the automaton assignment
-	JButton valider;
 
 
 	public Controller(Model m) {
@@ -92,26 +64,20 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// if (Options.ECHO_KEYBOARD)
-		// System.out.println("KeyTyped: " + e);
+
 		/*
-		 * if (e.getKeyChar() == 'a letter') { try { something } catch
-		 * (InterruptedException ex) { } }
+		 * if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') { m_model.swap(); }
+		 * 
+		 * if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
+		 * m_model.m_whales.get(0).pop(); }
+		 * 
+		 * if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
+		 * 
+		 * m_model.m_whales.get(0).m_life = 20;
+		 * 
+		 * }
 		 */
 
-		if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') {
-			m_model.swap();
-		}
-
-		if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
-			m_model.m_whales.get(0).pop();
-		}
-
-		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
-
-			m_model.m_whales.get(0).m_life = 20;
-
-		}
 	}
 
 	/*
@@ -124,6 +90,10 @@ public class Controller extends GameController implements ActionListener {
 		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
 		// façon permanente
 		m_model.keyPressed[e.getKeyCode()] = true;
+
+		//System.out.println(e.getKeyCode());
+		//System.out.println(m_model.keyPressed[e.getKeyCode()]);
+
 	}
 
 	@Override
@@ -137,23 +107,20 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
-		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 
-	
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-
 
 	}
 
@@ -169,11 +136,13 @@ public class Controller extends GameController implements ActionListener {
 
 	public void notifyVisible() {
 
+
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 
 
 	}

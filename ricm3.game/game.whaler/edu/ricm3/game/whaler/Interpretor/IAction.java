@@ -134,12 +134,16 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IJump() {
+		}
+
 		public IJump(String dir) {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life--;
+			e.movesouth();
 		}
 	}
 
@@ -182,11 +186,25 @@ public abstract class IAction {
 			switch (m_dir) {
 			case RIGHT:
 				e.turnright();
+				break;
 			case BACKWARD:
-				e.turnright();
-				e.turnright();
+				e.turndown();
+				break;
 			case LEFT:
 				e.turnleft();
+				break;
+			case SOUTH:
+				e.m_direction = Direction.SOUTH;
+				break;
+			case NORTH:
+				e.m_direction = Direction.NORTH;
+				break;
+			case EAST:
+				e.m_direction = Direction.EAST;
+				break;
+			case WEST:
+				e.m_direction = Direction.WEST;
+				break;
 			default:
 				break;
 			}
@@ -196,6 +214,9 @@ public abstract class IAction {
 	public static class IHit extends IAction {
 
 		Direction m_dir;
+
+		public IHit() {
+		}
 
 		public IHit(String dir) {
 			m_dir = strToDir(dir);
@@ -211,12 +232,17 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IProtect() {
+
+		}
+
 		public IProtect(String dir) {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life++;
+			e.movesouth();
 		}
 
 	}
@@ -225,12 +251,17 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IPick() {
+		}
+
 		public IPick(String dir) {
 			m_dir = strToDir(dir);
 		}
 
 		void step(Mobile_Entity e) {
-			// TODO
+
+			e.pick();
+
 		}
 
 	}
@@ -239,23 +270,32 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IThrow() {
+		}
+
 		public IThrow(String dir) {
 			m_dir = strToDir(dir);
 		}
-
-		void step(Mobile_Entity e) {
-			// TODO
+	
+		void step(Mobile_Entity e) throws Game_exception {
+			e.hit();
 		}
 
 	}
 
 	public static class IStore extends IAction {
+		Direction m_dir;
 
 		public IStore() {
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		public IStore(String dir) {
+			m_dir = strToDir(dir);
+		}
+
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life--;
+			e.movesouth();
 		}
 
 	}
@@ -272,12 +312,17 @@ public abstract class IAction {
 	}
 
 	public static class IPower extends IAction {
+		Direction m_dir;
 
 		public IPower() {
 		}
 
+		public IPower(String dir) {
+			m_dir = strToDir(dir);
+		}
+
 		void step(Mobile_Entity e) {
-			// TODO
+
 		}
 
 	}
@@ -287,8 +332,9 @@ public abstract class IAction {
 		public IKamikaze() {
 		}
 
-		void step(Mobile_Entity e) {
-			// TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life = 0;
+			e.destroy();
 		}
 
 	}

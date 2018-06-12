@@ -71,7 +71,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	//Retourne direction asbolue depuis Backward (B)
 	public Direction getBDir() {
-		
 		switch(this.m_direction) {
 		case NORTH :
 			return Direction.SOUTH;
@@ -89,7 +88,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	//Retourne direction asbolue depuis Right (R)
 	public Direction getRDir() {
-		
 		switch(this.m_direction) {
 		case NORTH:
 			return Direction.EAST;
@@ -107,7 +105,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	//Retourne direction asbolue depuis Left (L)
 	public Direction getLDir() {
-		
 		switch(this.m_direction) {
 		case NORTH:
 			return Direction.WEST;
@@ -127,38 +124,48 @@ public abstract class Mobile_Entity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void movenorth() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map //TODO vérifier
-																	// si Mouvement valide (Solidité du bloc)
-		this.m_pos.up(); // We update its location
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for its
-																			// new location
+		if (!m_model.map().tile(this.getx(), this.gety() - 1).isSolid() || !this.isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map
+			this.m_pos.up(); // We update its location
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for
+		}
+
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movesouth() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
-		this.m_pos.down();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		if (!m_model.map().tile(this.getx(), this.gety() + 1).isSolid() || !this.isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.m_pos.down();
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		}
+
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void moveeast() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
-		this.m_pos.right();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		if (!m_model.map().tile(this.getx() + 1, this.gety()).isSolid() || !this.isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.m_pos.right();
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		}
+
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movewest() throws Game_exception {
-		m_model.map().tile(this.getx(), this.gety()).remove(this); // TODO vérifier si Mouvement valide
-		this.m_pos.left();
-		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		if (!m_model.map().tile(this.getx() - 1, this.gety()).isSolid() || !this.isSolid()) {
+			m_model.map().tile(this.getx(), this.gety()).remove(this);
+			this.m_pos.left();
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+		}
+
 	}
 
 	/**
@@ -202,13 +209,35 @@ public abstract class Mobile_Entity extends Entity {
 		}
 	}
 
+	public void turndown() {
+		switch (m_direction) {
+		case SOUTH:
+			m_direction = Direction.NORTH;
+			break;
+		case NORTH:
+			m_direction = Direction.SOUTH;
+			break;
+		case WEST:
+			m_direction = Direction.EAST;
+			break;
+		case EAST:
+			m_direction = Direction.WEST;
+			break;
+		default:
+			break;
+		}
+	}
+
+
 	// Specific Actions
 	public abstract void pop();
 
 	public abstract void wizz() throws Game_exception;
 
 	public abstract void hit() throws Game_exception;
-
+	
+	public abstract void pick();
+	
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
 	// public abstract void jump();
