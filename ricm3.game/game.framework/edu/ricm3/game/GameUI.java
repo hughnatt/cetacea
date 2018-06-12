@@ -33,6 +33,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.Timer;
 
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
+
 public class GameUI {
 
 	static String license = "Copyright (C) 2017  Pr. Olivier Gruber "
@@ -219,7 +221,12 @@ public class GameUI {
 		m_lastTick = m_start;
 		m_timer = new Timer(tick, new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				tick();
+				try {
+					tick();
+				} catch (Game_exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		m_timer.start();
@@ -229,7 +236,7 @@ public class GameUI {
 	 * This is the period tick callback. We compute the elapsed time since the last
 	 * tick. We inform the model of the current time.
 	 */
-	private void tick() {
+	private void tick() throws Game_exception {
 		long now = System.currentTimeMillis() - m_start;
 		long elapsed = (now - m_lastTick);
 		m_elapsed += elapsed;
