@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -40,6 +42,7 @@ import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.RedCoral;
+import edu.ricm3.game.whaler.Entities.Static_Entity;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
@@ -87,10 +90,11 @@ public class Model extends GameModel {
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
-
 	private BufferedImage m_fireSprite;
-
 	private BufferedImage m_redCoralUnderSprite;
+
+	// Automaton array
+	IAutomata[] automata_array;
 
 	// Home menu
 	Menu m_menu;
@@ -106,13 +110,17 @@ public class Model extends GameModel {
 	// Map
 	private Map m_map;
 
-	// Entity List
-	Player m_player;
-	Destroyer[] m_destroyers;
-	Whaler[] m_whalers;
-	Projectile[] m_projectiles;
-	Whale[] m_whales;
-	public Oil[] m_oil;
+	// Static Entity tab
+
+	List<Static_Entity> m_statics = new LinkedList<Static_Entity>();
+
+	// Mobile Entity List
+	public Player m_player;
+	public List<Destroyer> m_destroyers = new LinkedList<Destroyer>();
+	public List<Whaler> m_whalers = new LinkedList<Whaler>();
+	public List<Projectile> m_projectiles = new LinkedList<Projectile>();
+	public List<Whale> m_whales = new LinkedList<Whale>();
+	public List<Oil> m_oils = new LinkedList<Oil>();
 
 	public boolean[] keyPressed;
 	// Random generation
@@ -127,8 +135,21 @@ public class Model extends GameModel {
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
-		// ast = AutomataParser.Run();
-		IAutomata[] automata_array = ((AI_Definitions) ast).make();
+		automata_array = ((AI_Definitions) ast).make();
+		int[] st = null;
+		BufferedReader bis = null;
+		try {
+			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
+			st = new int[7];
+			for (int i = 0; i < 6; i++) {
+				st[i] = Integer.parseInt(bis.readLine());
+			}
+			bis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// Loading Sprites Model
 		loadSprites();
@@ -147,79 +168,68 @@ public class Model extends GameModel {
 
 		// Bulles
 
-		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
-		new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this);
-		new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this);
-		new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this);
+		m_statics.add(new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this));
+		m_statics.add(new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this));
+		m_statics.add(new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this));
+		m_statics.add(new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this));
 
 		// Algues
-		new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this);
-		new YellowAlgae(new Location(22, 18), null, m_yellowAlgaeUnderSprite, this);
-		new YellowAlgae(new Location(4, 17), null, m_yellowAlgaeUnderSprite, this);
+		m_statics.add(new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this));
+		m_statics.add(new YellowAlgae(new Location(22, 18), null, m_yellowAlgaeUnderSprite, this));
+		m_statics.add(new YellowAlgae(new Location(4, 17), null, m_yellowAlgaeUnderSprite, this));
 
 		// Corail
-		new Coral(new Location(10, 6), null, m_coralUnderSprite, this);
-		new Coral(new Location(20, 18), null, m_coralUnderSprite, this);
-		new Coral(new Location(20, 2), null, m_coralUnderSprite, this);
+		m_statics.add(new Coral(new Location(10, 6), null, m_coralUnderSprite, this));
+		m_statics.add(new Coral(new Location(20, 18), null, m_coralUnderSprite, this));
+		m_statics.add(new Coral(new Location(20, 2), null, m_coralUnderSprite, this));
 
 		// Corail Rouge
-		new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this);
-		new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this);
-		new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this);
+		m_statics.add(new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this));
+		m_statics.add(new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this));
+		m_statics.add(new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this));
 
 		// Stones
-		for (int i = 0; i < Options.DIMX_MAP; i++) {
 
-			new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this);
-			new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this);
+		for (int i = 0; i < Options.DIMX_MAP; i++) {
+			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this));
+
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this);
-			new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this);
+			m_statics.add(new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
 
 		// Islands
+		m_statics.add(new Island(new Location(3, 6), m_islandSprite, null, this));
 
-		new Island(new Location(3, 6), m_islandSprite, null, this);
 		// Icebergs
-		new Iceberg(new Location(3, 7), m_icebergSprite, null, this);
+		m_statics.add(new Iceberg(new Location(3, 7), m_icebergSprite, null, this));
 
 		// Entities
 
-		// TODO problème à régler : une instance qui n'est plus sur la map, reste dans
-		// les tableaux et donc en mémoire. Il faut mettre à jour les tableaux ou écrire
-		// une fonction DEL. Cette fonctionnalité serait utile dans Projectile et Whale
-		// déjà
-
-		// TODO utiliser des listes chainées
-
 		// Oil
-		m_oil = new Oil[Options.MAX_OIL];
-
-		m_oil[0] = new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 5);
+		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
 
 		// Destroyers
-		m_destroyers = new Destroyer[Options.MAX_DESTROYERS];
-		m_destroyers[0] = new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, Options.DESTROYER_LIFE);
+		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, 1));
 
 		// Whalers
-		m_whalers = new Whaler[Options.MAX_WHALERS];
-		m_whalers[0] = new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE);
+		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, 1));
 
 		// Whales
-		m_whales = new Whale[Options.MAX_WHALES];
-		m_whales[0] = new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT);
+		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, 1));
 
 		// Projectiles
-		m_projectiles = new Projectile[Options.MAX_PROJECTILES];
+		m_projectiles.add(new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0));
 
-		m_projectiles[0] = new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0);
-
+		int indice_automata = st[3];
 		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST, automata_array[0], Options.PLAYER_LIFE);
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
+				automata_array[indice_automata], Options.PLAYER_LIFE);
 
-		keyPressed=new boolean[128];
+		keyPressed = new boolean[128];
 	}
 
 	public Map map() {
@@ -230,12 +240,13 @@ public class Model extends GameModel {
 	public void step(long now) {
 
 		try {
-			m_player.step(now);
 			m_current_background.step(now);
-			m_whales[0].step(now);
+
+			m_player.step(now);
+			m_whales.get(0).step(now);
 		} catch (Game_exception | Automata_Exception e1) {
-			System.exit(-1);
 			e1.printStackTrace();
+			System.exit(-1);
 		}
 
 	}

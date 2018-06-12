@@ -32,6 +32,7 @@ public class Options {
 	public static final int DIMX_VIEW = 31; // dim de la view en pixel
 	public static final int DIMY_VIEW = 21;
 
+	// TODO il faudra fixer des limites de spawn
 	public static final int MAX_WHALERS = 10; // nb max d'entités
 	public static final int MAX_DESTROYERS = 10;
 	public static final int MAX_PROJECTILES = 10;
@@ -50,9 +51,8 @@ public class Options {
 	public static final int WHALE_DPS = 1;
 	public static final int WHALE_CAPTURE_MAX = 20;
 	public static final int WHALE_CAPTURE_INIT = 10;
-	
+
 	public static final long DESTROYER_SPD_STANDARD = 500L;
 	public static final long DESTROYER_SPD_IMPROVED = 300L;
-	
-	
+
 }

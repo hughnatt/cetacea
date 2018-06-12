@@ -24,7 +24,6 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
 
-
 	/**
 	 * @param pos
 	 * @param sprite
@@ -37,10 +36,10 @@ public final class Player extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
-	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, IAutomata auto, int life)
-			throws Game_exception {
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
+			IAutomata auto, int life) throws Game_exception {
 		super(pos, true, sprite, underSprite, model, dir, life);
-	
+
 		m_automata = auto;
 		loadSprites();
 		switch (dir) {
@@ -64,9 +63,12 @@ public final class Player extends Mobile_Entity {
 		}
 	}
 
-	/*
-	 * 
-	 */
+	@Override
+	public void destroy() throws Game_exception {
+		m_model.map().tile(m_pos).remove(this);
+		// TODO
+	}
+
 	public void loadSprites() {
 		m_playerSouth = m_sprite.getSubimage(0, 0, 32, 32);
 		m_playerWest = m_sprite.getSubimage(0, 32, 32, 32);
@@ -84,11 +86,13 @@ public final class Player extends Mobile_Entity {
 		long elapsed = now - m_lastStep;
 		if (elapsed > 50L) {
 			m_lastStep = now;
+
 			try {
 				m_automata.step(m_model, this);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 			switch (m_direction) {
 			case EAST:
 				m_underSprite = m_playerEastUnder;
@@ -101,7 +105,7 @@ public final class Player extends Mobile_Entity {
 			case NORTH:
 				m_underSprite = m_playerNorthUnder;
 				m_sprite = m_playerNorth;
-				
+
 				break;
 			default:
 				m_underSprite = m_playerSouthUnder;
@@ -128,10 +132,7 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void wizz() {
-		for(int i =0; i<Options.MAX_OIL; i++) {
-			m_model.m_oil[i].is_burning = true;
-		}
-		
+		// TODO
 	}
 
 	@Override

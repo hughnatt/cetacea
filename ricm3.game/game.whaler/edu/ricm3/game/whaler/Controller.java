@@ -34,6 +34,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model.Screen;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 /**
  * This class is to illustrate the most simple game controller. It does not
@@ -97,21 +98,25 @@ public class Controller extends GameController implements ActionListener {
 		}
 
 		if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
-			m_model.m_whales[0].pop();
+			m_model.m_whales.get(0).pop();
 		}
 
 		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
-			m_model.m_whales[0].m_life = 20;
+
+			m_model.m_whales.get(0).m_life = 20;
+
 		}
 	}
 
-	/* 
-	 * keyPressed est un tableau de booléens de 127 cases, on met une case à true quand on appuie sur la touche correspondant au numéro ascii de la case
+	/*
+	 * keyPressed est un tableau de booléens de 127 cases, on met une case à true
+	 * quand on appuie sur la touche correspondant au numéro ascii de la case
 	 */
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de façon permanente
+		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
+		// façon permanente
 		m_model.keyPressed[e.getKeyCode()] = true;
 	}
 
@@ -298,7 +303,9 @@ public class Controller extends GameController implements ActionListener {
 		main.add(infoLabel);
 
 		// Example items for the moment, but there should be automatons here
-		String[] items = { "Baleine", "Baleinier", "Destroyer", "Joueur", "Pétrole", "Projectile" };
+
+		IAutomata[] items = m_model.automata_array;
+
 		b = new JComboBox[6];
 		int i = 0;
 		while (i < 6) {
@@ -342,7 +349,6 @@ public class Controller extends GameController implements ActionListener {
 		 **/
 
 		if (s == annuler) {
-			infoLabel.setText("Sélectionnez un item");
 			for (int i = 0; i < 6; i++)
 				b[i].setSelectedIndex(0);
 		}
@@ -367,8 +373,11 @@ public class Controller extends GameController implements ActionListener {
 			BufferedWriter out = null;
 			try {
 				out = new BufferedWriter(new FileWriter(file));
-				for (int i = 0; i < 6; i++)
-					out.write(b[i].getSelectedItem().toString() + ";");
+				for (int i = 0; i < 6; i++) {
+					out.write(String.valueOf(b[i].getSelectedIndex()));
+					if (i != 5)
+						out.write('\n');
+				}
 				infoLabel.setVisible(true);
 			} catch (IOException ae) {
 				ae.printStackTrace();
@@ -392,7 +401,7 @@ public class Controller extends GameController implements ActionListener {
 			cont.setVisible(true);
 			annuler.setVisible(true);
 			valider.setVisible(true);
-			
+
 		}
 
 		/**
