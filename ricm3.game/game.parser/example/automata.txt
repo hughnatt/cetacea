@@ -13,7 +13,7 @@ Player(Init){
   * (Move_O): True ? Move(O) :(Init)
   * (Move_S): True ? Move(S) :(Init)
   * (Move_E): True ? Move(E) :(Init)
-
+}
 
 Whale(Init){
   *(Init) : 

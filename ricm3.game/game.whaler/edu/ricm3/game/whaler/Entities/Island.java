@@ -33,7 +33,7 @@ public final class Island extends Static_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+		g.drawImage(m_underSprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 	}
 
 }

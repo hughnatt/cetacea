@@ -396,7 +396,7 @@ public class Model extends GameModel {
 
 				switch (flore) {
 				case 0:
-					m_statics.add(new Island(new Location(x, i), m_islandSprite, null, this));
+					m_statics.add(new Island(new Location(x, i), m_islandSprite, m_rocherUnderSprite, this));
 					break;
 				case 1:
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
