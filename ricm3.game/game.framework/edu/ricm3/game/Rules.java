@@ -6,11 +6,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,14 +25,14 @@ public class Rules {
 	JLabel m_title;
 	JPanel m_ctr;
 	GameUI m_g;
-	
+
 	public Rules(GameUI g) {
-		m_g =g;
+		m_g = g;
 	}
-	
+
 	public void create_frame() {
 		m_rules = new JFrame();
-		m_rules.setTitle("Cetacea - Rules");
+		m_rules.setTitle("Cetacea - Rules"); //Nom de la fenêtre
 		m_rules.setSize(Options.DIMX_WINDOW, Options.DIMY_WINDOW);
 		m_rules.setLocationRelativeTo(null);
 
@@ -50,15 +52,10 @@ public class Rules {
 			System.exit(-1);
 		}
 
-		/*
-		 * Charge fond f = new File("game.whaler/sprites/cetacea.png"); try { icone =
-		 * ImageIO.read(f); m_menu.setIconImage(icone); } catch (IOException ex) {
-		 * ex.printStackTrace(); System.exit(-1); }
-		 */
 
 		m_rules.setVisible(true);
 	}
-	
+
 	public void create_rules() {
 
 		// Creation des bouttons
@@ -69,7 +66,7 @@ public class Rules {
 		// Initialisation
 		breturn.setButton();
 
-		// Verification du clique sur l'un des bouttons
+		// Verification du clique sur le bouton retour
 		breturn.addActionListener(new IsClicked());
 
 
@@ -82,20 +79,31 @@ public class Rules {
 		b1.setLayout(new BoxLayout(b1, BoxLayout.LINE_AXIS));
 		b1.add(return_button);
 
-		
-		m_rules.getContentPane().add(b1);
+		//Affichage image des règles
+		m_ctr =new JPanel();
+	    BufferedImage image;
+		try {
+			image = ImageIO.read(new File("game.whaler/sprites/fond_rules.jpg"));
+			 JLabel label = new JLabel(new ImageIcon(image));
+			 m_ctr.add(label);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	   
+		m_rules.add(m_ctr, BorderLayout.CENTER);
+		m_rules.add(b1, BorderLayout.SOUTH);
 		m_rules.setVisible(true);
 	}
 
 	public class IsClicked implements ActionListener {
-
+		//On verifie où on clique
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String event = e.getActionCommand();
 			if (event.equals("RETURN")) {
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
-				m_g.createTimer();
+				
 				m_rules.dispose();
 			}
 		}
