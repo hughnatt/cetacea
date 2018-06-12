@@ -18,7 +18,7 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Color;
-import java.awt.Font;
+
 import java.awt.Graphics;
 
 import edu.ricm3.game.GameView;

@@ -27,15 +27,16 @@ public class MainMenu {
 	}
 
 	public void create_frame() {
+		
 		m_menu = new JFrame();
-		m_menu.setTitle("Cetacea");
-		m_menu.setSize(Options.DIMX_WINDOW, Options.DIMY_WINDOW);
+		m_menu.setTitle("Cetacea"); //Nom de la fenêtre
+		m_menu.setSize(Options.DIMX_WINDOW, Options.DIMY_WINDOW); //Dimension
 		m_menu.setLocationRelativeTo(null);
 
 		m_title = new JLabel("", JLabel.CENTER);
 		m_title.setText("Cetacea");
 		m_title.setFont(new Font("Serif", Font.PLAIN, 68));
-		m_menu.add(m_title, BorderLayout.NORTH);
+		m_menu.add(m_title, BorderLayout.NORTH); //Affichage du titre
 
 		// Lecture & affichage de l'icone du jeu
 		File f = new File("game.whaler/sprites/cetacea.png");
@@ -47,12 +48,7 @@ public class MainMenu {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-
-		/*
-		 * Charge fond f = new File("game.whaler/sprites/cetacea.png"); try { icone =
-		 * ImageIO.read(f); m_menu.setIconImage(icone); } catch (IOException ex) {
-		 * ex.printStackTrace(); System.exit(-1); }
-		 */
+				
 
 		m_menu.setVisible(true);
 	}
@@ -81,6 +77,7 @@ public class MainMenu {
 		options.addActionListener(new IsClicked());
 		rules.addActionListener(new IsClicked());
 
+		//Options et ajout des boutons
 		JPanel play_button = new JPanel();
 		play_button.setOpaque(false);
 		play_button.add(play);
@@ -119,7 +116,7 @@ public class MainMenu {
 	}
 
 	public class IsClicked implements ActionListener {
-
+		//On verifie où on clique
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String event = e.getActionCommand();
@@ -141,4 +138,6 @@ public class MainMenu {
 			}
 		}
 	}
+	
+	
 }

@@ -1,10 +1,6 @@
 package edu.ricm3.game;
 
 
-
-import java.awt.Dimension;
-
-
 import javax.swing.*;
 
 
@@ -24,7 +20,7 @@ public class CreateButton extends JButton {
 		this.m_icon_over = icon_over;
 	}
 
-	
+	//Choix des options
 	public void setButton() {
 		
 		setIcon(new ImageIcon(m_icon));
@@ -34,7 +30,6 @@ public class CreateButton extends JButton {
 		setContentAreaFilled(false);
 		setVerticalTextPosition(JLabel.BOTTOM);
 		setHorizontalTextPosition(JLabel.CENTER);
-		setPreferredSize(new Dimension(300,300));
 		setBorderPainted(false);
 		
 		

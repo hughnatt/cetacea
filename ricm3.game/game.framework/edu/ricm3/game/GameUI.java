@@ -29,7 +29,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
+
 import javax.swing.JMenuBar;
 import javax.swing.Timer;
 
@@ -92,7 +92,7 @@ public class GameUI {
 		// create the main window and the periodic timer
 		// to drive the overall clock of the simulation.
 		createWindow(d);
-		createTimer();
+	
 	}
 
 	// enum for the menu, to determine which screen should be displayed
