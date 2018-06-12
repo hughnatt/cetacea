@@ -184,15 +184,13 @@ public class GameUI {
 			
 			
 			//
-			JPanel onTheRight = new JPanel(new GridLayout(1,1));
-			onTheRight.add(new JLabel(new ImageIcon("game.whaler/sprites/red.png")));
-			addEast(onTheRight);
 			
 			JPanel onTheBottom = new JPanel(new GridLayout(1,31));
-			onTheBottom.add(new JLabel(new ImageIcon("game.whaler/sprites/blue.png")));
+			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));
 			addSouth(onTheBottom);
 			
 			refreshLife();
+			refreshOil();
 			
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -242,7 +240,30 @@ public class GameUI {
 	}
 	
 	public void refreshOil() {
+		Model m = (Model) m_model;
 		
+		m_oil = new JPanel();
+		m_oil.setLayout(new BoxLayout(m_oil,BoxLayout.Y_AXIS));
+		
+		m_oil.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
+		
+		
+		int currentOil = m.m_player.m_oil_jauge;
+		
+		//To Avoid display problems
+		if (currentOil <= 0) {
+			currentOil = 0;
+		}
+		
+		for (int i=20; i > currentOil; i--) {
+			m_oil.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
+		}
+		
+		for (int i = currentOil; i >= 1 ; i--) {
+			m_oil.add(new JLabel(new ImageIcon(m.m_oilfullSprite)));
+		}
+		
+		addEast(m_oil);
 	}
 	
 	public void refreshLife() {
@@ -260,7 +281,7 @@ public class GameUI {
 		}
 		
 		for (int i=edu.ricm3.game.whaler.Options.PLAYER_LIFE ; i > currentLife; i--) {
-			m_life.add(new JLabel(new ImageIcon(m.m_lifeemptySprite)));
+			m_life.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
 		}
 		
 		for (int i = currentLife; i >= 1 ; i--) {
@@ -323,7 +344,9 @@ public class GameUI {
 			m_text.repaint();
 			
 			refreshLife();
+			refreshOil();
 			m_life.repaint();
+			m_oil.repaint();
 			
 			m_view.paint();
 			m_lastRepaint = now;

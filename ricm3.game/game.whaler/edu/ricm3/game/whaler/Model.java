@@ -122,8 +122,10 @@ public class Model extends GameModel {
 	 * Side Panel Icon, leave PUBLIC ! ! !
 	 */
 	public BufferedImage m_bartopSprite;
-	public BufferedImage m_lifeemptySprite;
+	public BufferedImage m_baremptySprite;
 	public BufferedImage m_lifefullSprite;
+	public BufferedImage m_bardownSprite;
+	public BufferedImage m_oilfullSprite;
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
@@ -671,10 +673,26 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+		
+		imageFile = new File("game.whaler/sprites/bar_down.png");
+		try {
+			m_bardownSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
 
 		imageFile = new File("game.whaler/sprites/lifebar_empty.png");
 		try {
-			m_lifeemptySprite = ImageIO.read(imageFile);
+			m_baremptySprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
+		imageFile = new File("game.whaler/sprites/oilbar_full.png");
+		try {
+			m_oilfullSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);

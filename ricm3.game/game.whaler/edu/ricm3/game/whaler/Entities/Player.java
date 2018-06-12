@@ -25,7 +25,7 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
 
-	int oil_jauge;
+	public int m_oil_jauge;
 
 
 	/**
@@ -45,6 +45,7 @@ public final class Player extends Mobile_Entity {
 		
 		m_automata = m_model.getAutomata(this);
 		m_life = Options.PLAYER_LIFE;
+		m_oil_jauge = 20;
 
 		loadSprites();
 		switch (dir) {
@@ -70,8 +71,8 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void destroy() throws Game_exception {
-		m_model.map().tile(m_pos).remove(this);
 		//On va se calmer là non ?
+		//m_model.map().tile(m_pos).remove(this);
 		//System.exit(0);
 		// TODO: un écran de Game Over
 	}
