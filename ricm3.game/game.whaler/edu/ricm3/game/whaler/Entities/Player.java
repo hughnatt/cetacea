@@ -148,8 +148,15 @@ public final class Player extends Mobile_Entity {
 	}
 
 	public void pick() throws Game_exception {
-		this.oil_jauge += Options.OIL_PICKED;
-		// TODO: faire disparaitre la flaque de pétrole
+
+		Entity result = m_model.map().tile(this.m_pos).contain(EntityType.OIL);
+
+		if (result != null) {
+			Oil to_pick = (Oil) result;
+			this.oil_jauge += Options.OIL_PICKED;
+			to_pick.destroy();
+		}
+
 	}
 
 	@Override
