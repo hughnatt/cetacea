@@ -193,10 +193,10 @@ public class Model extends GameModel {
 		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
 
 		// Destroyers
-		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, 1));
+		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, Options.DESTROYER_LIFE));
 
 		// Whalers
-		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, 1));
+		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
 
 		// Whales
 		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, 1));
@@ -226,6 +226,12 @@ public class Model extends GameModel {
 				m_current_background.step(now);
 
 				m_player.step(now);
+				
+				Iterator<Static_Entity> iterstatics = m_statics.iterator();
+				while (iterstatics.hasNext()) {
+					Static_Entity e = iterstatics.next();
+					e.step(now);
+				}
 
 				Iterator<Whale> iterwhales = m_whales.iterator();
 				while (iterwhales.hasNext()) {
@@ -233,14 +239,28 @@ public class Model extends GameModel {
 					e.step(now);
 				}
 
+				Iterator<Whaler> iterwhalers = m_whalers.iterator();
+				while (iterwhalers.hasNext()) {
+					Whaler e = iterwhalers.next();
+					e.step(now);
+				}
+				
+				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+				while (iterdestroyers.hasNext()) {
+					Destroyer e = iterdestroyers.next();
+					e.step(now);
+				}
+				
 				Iterator<Projectile> iterprojs = m_projectiles.iterator();
 				while (iterprojs.hasNext()) {
 					Projectile e = iterprojs.next();
 					e.step(now);
 				}
 				
+
 				
-				//Last Iterator
+				
+				//Garbage Iterator
 				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
 				while (iterdestroy.hasNext()) {
 					Mobile_Entity e = iterdestroy.next();
@@ -389,6 +409,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_projectile_sprite() {
 		return m_projectileSprite;
+	}
+	
+	public BufferedImage get_boom_sprite() {
+		return m_boomSprite;
 	}
 
 	public Direction rand_direction() {
@@ -609,6 +633,6 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-
+		
 	}
 }
