@@ -23,8 +23,8 @@ public class Options {
 
 	public static final int DIM_BLOC = 32; // coté d'un bloc en pixel
 
-	public static final int DIMX_MAP = 1000; // dim de la map en bloc
-	public static final int DIMY_MAP = 1000;
+	public static final int DIMX_MAP = 500; // dim de la map en bloc
+	public static final int DIMY_MAP = 500;
 
 	public static final int DIMX_WINDOW = 1000; // dim de la fenêtre en pixel
 	public static final int DIMY_WINDOW = 720;

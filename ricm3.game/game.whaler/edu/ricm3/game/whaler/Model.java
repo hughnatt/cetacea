@@ -167,7 +167,7 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-		floreGenerator(40);
+		floreGenerator(10);
 		
 
 		// Stones
@@ -257,12 +257,29 @@ public class Model extends GameModel {
 		
 		Random rand = new Random();
 		int min = 1;
-		int max = Options.DIMX_MAP;
+		int max = Options.DIMX_MAP-2;
 		
-		int nbparColonne = (pourcentage*100)/max;
+		int nbparColonne = (pourcentage*max)/100;
 		
 		for(int i=1; i< Options.DIMY_MAP; i++) {
 			for(int j=1; j< nbparColonne; j++) {
+				int x = rand.nextInt((max - min) + 1) + min;
+				int flore = rand.nextInt(4);
+				
+				switch(flore) {
+				case 0:
+					m_statics.add(new Bulle(new Location(x, i), null, m_bulleUnderSprite, this));
+					break;
+				case 1:
+					m_statics.add(new YellowAlgae(new Location(x, i), null, m_yellowAlgaeUnderSprite, this));
+					break;
+				case 2:
+					m_statics.add(new Coral(new Location(x, i), null, m_coralUnderSprite, this));
+					break;
+				default:
+					m_statics.add(new RedCoral(new Location(x, i), null, m_redCoralUnderSprite, this));
+					break;
+				}
 				
 			}
 		}
