@@ -88,12 +88,6 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// if (Options.ECHO_KEYBOARD)
-		// System.out.println("KeyTyped: " + e);
-		/*
-		 * if (e.getKeyChar() == 'a letter') { try { something } catch
-		 * (InterruptedException ex) { } }
-		 */
 
 		/*
 		 * if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') { m_model.swap(); }
@@ -108,11 +102,6 @@ public class Controller extends GameController implements ActionListener {
 		 * }
 		 */
 
-		/*
-		 * if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') { try {
-		 * m_model.m_player.wizz(); } catch (Game_exception e1) { e1.printStackTrace();
-		 * System.exit(-1); } }
-		 */
 	}
 
 	/*
@@ -125,6 +114,8 @@ public class Controller extends GameController implements ActionListener {
 		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
 		// façon permanente
 		m_model.keyPressed[e.getKeyCode()] = true;
+		//System.out.println(e.getKeyCode());
+		//System.out.println(m_model.keyPressed[e.getKeyCode()]);
 	}
 
 	@Override

@@ -344,10 +344,7 @@ public class Model extends GameModel {
 	}
 
 	/**
-	 * G�n�re la flore sous-marine selon un pourcentage donn� en param�tre <<<<<<<
-	 * HEAD
-	 * 
-	 * ======= >>>>>>> master
+	 * G�n�re la flore sous-marine selon un pourcentage donn� en param�tre
 	 * 
 	 * @param pourcentage
 	 * @throws Game_exception
@@ -387,7 +384,6 @@ public class Model extends GameModel {
 
 	/**
 	 * G�n�re la mer selon un pourcentage donn� en param�tre
-	 * 
 	 * @param pourcentage
 	 * @throws Game_exception
 	 * @throws Location_exception
