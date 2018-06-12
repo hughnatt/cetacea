@@ -121,6 +121,9 @@ public class Model extends GameModel {
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
+	
+	//Tick Speed
+	long m_lastSwap;
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
@@ -207,9 +210,12 @@ public class Model extends GameModel {
 		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
 
 		// Whales
-		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(
+				new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(
+				new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(
+				new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
 
 		// Projectiles
 
@@ -219,6 +225,8 @@ public class Model extends GameModel {
 				automata_array[0], Options.PLAYER_LIFE);
 
 		keyPressed = new boolean[128];
+		
+		m_lastSwap = 10000000000L;
 	}
 
 	public Map map() {
@@ -228,6 +236,9 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
+		m_lastSwap++; //Tick Number
+		
+		
 		if (m_screen == Screen.GAME) {
 			try {
 
@@ -337,12 +348,16 @@ public class Model extends GameModel {
 	}
 
 	public void swap() {
-		if (UNDER_WATER) {
-			m_current_background = m_ocean;
-			UNDER_WATER = false;
-		} else {
-			m_current_background = m_underwater;
-			UNDER_WATER = true;
+		
+		if (m_lastSwap > 500) { //Tick Number
+			m_lastSwap = 0;
+			if (UNDER_WATER) {
+				m_current_background = m_ocean;
+				UNDER_WATER = false;
+			} else {
+				m_current_background = m_underwater;
+				UNDER_WATER = true;
+			}
 		}
 	}
 
@@ -387,6 +402,7 @@ public class Model extends GameModel {
 
 	/**
 	 * G�n�re la mer selon un pourcentage donn� en param�tre
+	 * 
 	 * @param pourcentage
 	 * @throws Game_exception
 	 * @throws Location_exception
