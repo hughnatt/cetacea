@@ -25,6 +25,7 @@ public final class Player extends Mobile_Entity {
 
 	int oil_jauge;
 
+
 	/**
 	 * @param pos
 	 * @param sprite
@@ -68,9 +69,8 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-
-		// TODO : END OF THE GAME
-
+		System.exit(0);
+		// TODO: un écran de Game Over
 	}
 
 	public void loadSprites() {
@@ -111,10 +111,14 @@ public final class Player extends Mobile_Entity {
 				m_sprite = m_playerNorth;
 
 				break;
+
 			default: // direction by default, SOUTH
 				m_underSprite = m_playerSouthUnder;
 				m_sprite = m_playerSouth;
 				break;
+			}
+			if (m_life <= 0) {
+				destroy();
 			}
 		}
 	}
@@ -143,9 +147,9 @@ public final class Player extends Mobile_Entity {
 		}
 	}
 
-	public void pick() {
+	public void pick() throws Game_exception {
 		this.oil_jauge += Options.OIL_PICKED;
-		// TODO: faire disparaitre le pétrole
+		// TODO: faire disparaitre la flaque de pétrole
 	}
 
 	@Override

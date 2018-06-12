@@ -24,6 +24,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
+
 /**
  * This is your game view, a canvas where the game is displayed.
  * 
@@ -115,7 +117,7 @@ public abstract class GameView extends Canvas {
     return m_game.getController();
   }
 
-  public final void paint() {
+  public final void paint() throws Game_exception {
     Graphics g = m_drawBuffer.getGraphics();
     g.draw3DRect(10, 10, 100, 100, true);
     _paint(g);
@@ -138,5 +140,5 @@ public abstract class GameView extends Canvas {
     paint(g);
   }
 
-  protected abstract void _paint(Graphics g);
+  protected abstract void _paint(Graphics g) throws Game_exception;
 }

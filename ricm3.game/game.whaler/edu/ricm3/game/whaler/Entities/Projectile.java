@@ -95,6 +95,7 @@ public class Projectile extends Mobile_Entity {
 			m_lastStep = now;
 
 			if ((hasHitSomething()) || (m_life <= 0)) { // if the projectile hit nothing
+
 				this.destroy();
 				return;
 			}

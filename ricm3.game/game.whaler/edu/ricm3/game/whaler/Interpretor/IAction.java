@@ -2,6 +2,7 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class IAction {
@@ -142,6 +143,7 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
+			System.out.println("Impossible to jump, the entity hurt itself and moved back");
 			e.m_life--;
 			e.movesouth();
 		}
@@ -241,8 +243,8 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
-			e.m_life++;
-			e.movesouth();
+			System.out.println("Impossible for the entity to protect itself, interpreted as hit");
+			e.hit();
 		}
 
 	}
@@ -258,10 +260,14 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) {
-			e.pick();
+		void step(Mobile_Entity e) throws Game_exception {
+			if (!(e instanceof Player)) {
+				System.out.println("Only the player can pick up oil, interpreted as a pop");
+				e.pop();
+			} else {
+				e.pick();
+			}
 		}
-
 	}
 
 	public static class IThrow extends IAction {
@@ -274,9 +280,10 @@ public abstract class IAction {
 		public IThrow(String dir) {
 			m_dir = strToDir(dir);
 		}
-
+	
 		void step(Mobile_Entity e) throws Game_exception {
-			e.hit();
+			System.out.println("Nothing to throw, interpreted as a wizz");
+			e.wizz();
 		}
 
 	}
@@ -292,7 +299,7 @@ public abstract class IAction {
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
-			e.m_life--;
+			System.out.println("Nothing to store, the entity will move instead");
 			e.movesouth();
 		}
 
@@ -314,13 +321,13 @@ public abstract class IAction {
 
 		public IPower() {
 		}
-		
+
 		public IPower(String dir) {
 			m_dir = strToDir(dir);
 		}
 
 		void step(Mobile_Entity e) {
-			
+
 		}
 
 	}

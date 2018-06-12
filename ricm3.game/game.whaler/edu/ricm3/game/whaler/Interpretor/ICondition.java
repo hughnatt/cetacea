@@ -120,13 +120,14 @@ public abstract class ICondition {
 		}
 	}
 
+	
 	enum EntityDangerLevel {
-		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE
+		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE	
 	}
-
+	
 	static EntityDangerLevel strToEDL(String s) {
-
-		switch (s) {
+		
+		switch(s) {
 		case "V":
 			return EntityDangerLevel.VOID;
 		case "T":
@@ -143,6 +144,7 @@ public abstract class ICondition {
 			return EntityDangerLevel.GATE;
 		case "M":
 			return EntityDangerLevel.MISSILE;
+
 		default:
 			System.out.println("Unknown Entity, will be interpreted as VOID");
 			return EntityDangerLevel.VOID;
@@ -176,8 +178,7 @@ public abstract class ICondition {
 
 		public boolean eval(Mobile_Entity current, Model model) {
 			m_key = m_key.toUpperCase();
-			
-			
+
 			int length = m_key.length();
 			char carac = m_key.charAt(0);
 			int ascii = (int) carac;
@@ -198,7 +199,7 @@ public abstract class ICondition {
 					ascii = 37;
 				}
 			}
-			
+
 			return model.keyPressed[ascii];
 		}
 	}
@@ -242,12 +243,14 @@ public abstract class ICondition {
 
 			EntityDangerLevel[][] entity_behaviour = fillMatrice();
 
+
 			int px = current.getx();
 			int py = current.gety();
 			int cx = px;
 			int cy = py;
 
 			switch (m_dir) {
+
 			case FORWARD:
 				m_dir = current.getFDir();
 			case BACKWARD:
@@ -285,11 +288,12 @@ public abstract class ICondition {
 				if (level == m_entity) {
 					return true;
 				}
-
 			}
 			return false;
 		}
 	}
+
+	
 
 	/**
 	 * La plus proche entité de type m_entity est dans la direction m_dir NB :
@@ -314,7 +318,10 @@ public abstract class ICondition {
 			int cx = px;
 			int cy = py;
 			int max_i = 0;
+			Direction d;
 
+			System.out.println("m_dir: " + m_dir);
+			System.out.println("current direction: " + current.m_direction);
 			switch (m_dir) {
 			case NORTH:
 				max_i = current.gety() - 1;
@@ -337,17 +344,8 @@ public abstract class ICondition {
 					max_i = 11;
 				break;
 			case BACKWARD:
-				switch (current.m_direction) {
-				case EAST:
-					max_i = current.getx() - 1;
-					if (current.getx() > 11)
-						max_i = 11;
-					break;
-				case WEST:
-					max_i = 11;
-					if (current.getx() >= Options.DIMX_MAP - 11)
-						max_i = Options.DIMX_MAP - current.getx() + 1;
-					break;
+				d = current.getBDir();
+				switch (d) {
 				case NORTH:
 					max_i = 11;
 					if (current.gety() >= Options.DIMY_MAP - 11)
@@ -358,22 +356,21 @@ public abstract class ICondition {
 					if (current.gety() > 11)
 						max_i = 11;
 					break;
-				default:
+				case EAST:
+					max_i = current.getx() - 1;
+					if (current.getx() > 11)
+						max_i = 11;
+					break;
+				case WEST:
+					max_i = 11;
+					if (current.getx() >= Options.DIMX_MAP - 11)
+						max_i = Options.DIMX_MAP - current.getx() + 1;
 					break;
 				}
 				break;
 			case FORWARD:
-				switch (current.m_direction) {
-				case EAST:
-					max_i = 11;
-					if (current.getx() >= Options.DIMX_MAP - 11)
-						max_i = Options.DIMX_MAP - current.getx() + 1;
-					break;
-				case WEST:
-					max_i = current.getx() - 1;
-					if (current.getx() > 11)
-						max_i = 11;
-					break;
+				d = current.getFDir();
+				switch (d) {
 				case NORTH:
 					max_i = current.gety() - 1;
 					if (current.gety() > 11)
@@ -384,74 +381,31 @@ public abstract class ICondition {
 					if (current.gety() >= Options.DIMY_MAP - 11)
 						max_i = Options.DIMY_MAP - current.gety() + 1;
 					break;
-				default:
+				case EAST:
+					max_i = 11;
+					if (current.getx() >= Options.DIMX_MAP - 11)
+						max_i = Options.DIMX_MAP - current.getx() + 1;
+					break;
+				case WEST:
+					max_i = current.getx() - 1;
+					if (current.getx() > 11)
+						max_i = 11;
 					break;
 				}
 				break;
 			case LEFT:
-				switch (current.m_direction) {
-				case EAST:
-					max_i = current.gety() - 1;
-					if (current.gety() > 11)
-						max_i = 11;
-					break;
-				case WEST:
-					max_i = 11;
-					if (current.gety() >= Options.DIMY_MAP - 11)
-						max_i = Options.DIMY_MAP - current.gety() + 1;
-					break;
-				case NORTH:
-					max_i = current.getx() - 1;
-					if (current.getx() > 11)
-						max_i = 11;
-					break;
-				case SOUTH:
-					max_i = 11;
-					if (current.getx() >= Options.DIMX_MAP - 11)
-						max_i = Options.DIMX_MAP - current.getx() + 1;
-					break;
-				default:
-					break;
-				}
+				d = current.getLDir();
 				break;
 			case RIGHT:
-				switch (current.m_direction) {
-				case EAST:
-					max_i = 11;
-					if (current.gety() >= Options.DIMY_MAP - 11)
-						max_i = Options.DIMY_MAP - current.gety() + 1;
-					break;
-				case WEST:
-					max_i = current.gety() - 1;
-					if (current.gety() > 11)
-						max_i = 11;
-					break;
-				case NORTH:
-					max_i = 11;
-					if (current.getx() >= Options.DIMX_MAP - 11)
-						max_i = Options.DIMX_MAP - current.getx() + 1;
-					break;
-				case SOUTH:
-					max_i = current.getx() - 1;
-					if (current.getx() > 11)
-						max_i = 11;
-					break;
-				default:
-					break;
-				}
+				d = current.getRDir();
 				break;
+			default:
+				break;
+
 			}
 
 			for (int i = 1; i < max_i; i++) {
 				switch (m_dir) {
-				case FORWARD:
-					m_dir = current.getFDir();
-				case BACKWARD:
-					m_dir = current.getBDir();
-				case LEFT:
-					m_dir = current.getLDir();
-				case RIGHT:
-					m_dir = current.getRDir();
 				case NORTH:
 					cx = px;
 					cy = py - i;
@@ -470,6 +424,8 @@ public abstract class ICondition {
 					break;
 				}
 
+				System.out.println(cy);
+				System.out.println(Options.DIMY_MAP);
 				Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
 				while (iter.hasNext()) {
 					Entity e = iter.next();

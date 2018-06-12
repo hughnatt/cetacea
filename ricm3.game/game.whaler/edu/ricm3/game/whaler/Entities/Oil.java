@@ -132,6 +132,7 @@ public final class Oil extends Mobile_Entity {
 		} else { // if the oil doestn't burn
 			m_lastSpread = now; // we keep the timers readied
 			m_lastStep = now;
+
 		}
 	}
 
@@ -165,9 +166,9 @@ public final class Oil extends Mobile_Entity {
 		// nothing
 	}
 
-	@Override
 	public void pick() {
-		this.pop();
+		// nothing
+
 	}
 
 }

@@ -18,6 +18,7 @@ public class Destroyer extends Mobile_Entity {
 	BufferedImage m_destroyerEast;
 	BufferedImage m_destroyerWest;
 
+
 	private BufferedImage[] m_explode;
 	private int m_explode_idx;
 
@@ -44,6 +45,7 @@ public class Destroyer extends Mobile_Entity {
 			throws Game_exception {
 		super(pos, true, sprite, underSprite, model, dir, Options.DESTROYER_LIFE);
 		m_speed = Options.DESTROYER_SPD_STANDARD;
+
 		m_exploding = false;
 		m_explode_idx = 0;
 		m_automata = m_model.getAutomata(this);
@@ -60,7 +62,9 @@ public class Destroyer extends Mobile_Entity {
 		case NORTH:
 			m_sprite = m_destroyerNorth;
 			break;
+
 		default: // direction by default, SOUTH
+
 			m_sprite = m_destroyerSouth;
 			break;
 		}
@@ -91,6 +95,7 @@ public class Destroyer extends Mobile_Entity {
 	}
 
 	@Override
+
 	public void step(long now) throws Game_exception {
 		stepAnim(now);
 
@@ -126,6 +131,7 @@ public class Destroyer extends Mobile_Entity {
 					this.destroy();
 				}
 			}
+
 		}
 	}
 
@@ -161,11 +167,12 @@ public class Destroyer extends Mobile_Entity {
 	@Override
 	public void hit() {
 
+
 	}
 
 	@Override
-	public void pick() {
-		this.pop();
+	public void pick() throws Game_exception {
+		//
+		
 	}
-
 }

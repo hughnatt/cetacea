@@ -59,23 +59,6 @@ import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 
-	// enum for the menu, to determine which screen should be displayed
-	public enum Screen {
-		AUTOMATA, HOME, GAME, PREFERENCES;
-	}
-
-	private Screen m_screen;
-
-	// getter for Screen
-	public Screen currentScreen() {
-		return m_screen;
-	}
-
-	// setter for Screen
-	public void setScreen(Screen s) {
-		m_screen = s;
-	}
-
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -87,7 +70,6 @@ public class Model extends GameModel {
 	private BufferedImage m_icebergSprite;
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
-	private BufferedImage m_scoreSprite;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
@@ -95,6 +77,7 @@ public class Model extends GameModel {
 	private BufferedImage m_playerUnderSprite;
 	private BufferedImage m_fireSprite;
 	private BufferedImage m_redCoralUnderSprite;
+
 	private BufferedImage m_projectileSprite;
 	private BufferedImage m_rocherSprite;
 	private BufferedImage m_rocherUnderSprite;
@@ -103,9 +86,6 @@ public class Model extends GameModel {
 	public IAutomata[] automata_array;
 	// Automata Choices
 	int[] automata_choices;
-
-	// Home menu
-	Menu m_menu;
 
 	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;
@@ -140,9 +120,6 @@ public class Model extends GameModel {
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
-		// Set the current screen on the home menu
-		m_screen = Screen.HOME;
-
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
@@ -173,9 +150,6 @@ public class Model extends GameModel {
 		// Loading Sprites Model
 		loadSprites();
 
-		// Makes a new Menu
-		m_menu = new Menu(this, 350, 150, (float) 2);
-
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -186,6 +160,7 @@ public class Model extends GameModel {
 		m_map = new Map(this);
 
 		// TODO à mettre dans options
+
 		undergroundFloreGenerator(8);
 		seaGenerator(2);
 
@@ -248,90 +223,88 @@ public class Model extends GameModel {
 
 		m_lastSwap++; // Tick Number
 
-		if (m_screen == Screen.GAME) {
-			try {
+		try {
 
-				m_garbage = new LinkedList<Mobile_Entity>();
+			m_garbage = new LinkedList<Mobile_Entity>();
 
-				m_current_background.step(now);
+			m_current_background.step(now);
 
-				Iterator<Oil> iteroil = m_oils.iterator();
+			Iterator<Oil> iteroil = m_oils.iterator();
 
-				while (iteroil.hasNext()) {
+			while (iteroil.hasNext()) {
 
-					Oil tmp = iteroil.next();
-					tmp.step(now);
-				}
-
-				Iterator<Static_Entity> iterstatics = m_statics.iterator();
-				while (iterstatics.hasNext()) {
-					Static_Entity e = iterstatics.next();
-					e.step(now);
-				}
-
-				m_player.step(now);
-
-				Iterator<Whale> iterwhales = m_whales.iterator();
-				while (iterwhales.hasNext()) {
-					Whale e = iterwhales.next();
-					e.step(now);
-				}
-
-				Iterator<Whaler> iterwhalers = m_whalers.iterator();
-				while (iterwhalers.hasNext()) {
-					Whaler e = iterwhalers.next();
-					e.step(now);
-				}
-
-				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
-				while (iterdestroyers.hasNext()) {
-					Destroyer e = iterdestroyers.next();
-					e.step(now);
-				}
-
-				Iterator<Projectile> iterprojs = m_projectiles.iterator();
-				while (iterprojs.hasNext()) {
-					Projectile e = iterprojs.next();
-					e.step(now);
-				}
-
-				// Garbage Iterator
-
-				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
-				while (iterdestroy.hasNext()) {
-					Mobile_Entity e = iterdestroy.next();
-					switch (e.getType()) {
-					case PLAYER:
-						// TODO à adapter selon le destroy du Player
-						break;
-					case WHALE:
-						m_whales.remove(e);
-						break;
-					case WHALER:
-						m_whalers.remove(e);
-						break;
-					case DESTROYER:
-						m_destroyers.remove(e);
-						break;
-					case OIL:
-						m_oils.remove(e);
-						break;
-					case PROJECTILE:
-						m_projectiles.remove(e);
-						break;
-					default:
-						break;
-					}
-				}
-				// Suppression des références
-				m_garbage = null;
-
-			} catch (Game_exception | Automata_Exception e1) {
-				e1.printStackTrace();
-				System.exit(-1);
+				Oil tmp = iteroil.next();
+				tmp.step(now);
 			}
 
+			Iterator<Static_Entity> iterstatics = m_statics.iterator();
+			while (iterstatics.hasNext()) {
+				Static_Entity e = iterstatics.next();
+				e.step(now);
+			}
+
+			m_player.step(now);
+
+			Iterator<Whale> iterwhales = m_whales.iterator();
+			while (iterwhales.hasNext()) {
+				Whale e = iterwhales.next();
+				e.step(now);
+			}
+
+			Iterator<Whaler> iterwhalers = m_whalers.iterator();
+			while (iterwhalers.hasNext()) {
+				Whaler e = iterwhalers.next();
+				e.step(now);
+			}
+
+			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+			while (iterdestroyers.hasNext()) {
+				Destroyer e = iterdestroyers.next();
+				e.step(now);
+			}
+
+			Iterator<Projectile> iterprojs = m_projectiles.iterator();
+			while (iterprojs.hasNext()) {
+				Projectile e = iterprojs.next();
+				e.step(now);
+			}
+
+			// Garbage Iterator
+
+			Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
+			while (iterdestroy.hasNext()) {
+				Mobile_Entity e = iterdestroy.next();
+				switch (e.getType()) {
+				case PLAYER:
+					// TODO à adapter selon le destroy du Player
+					break;
+				case WHALE:
+					m_whales.remove(e);
+					break;
+				case WHALER:
+					m_whalers.remove(e);
+					break;
+				case DESTROYER:
+					m_destroyers.remove(e);
+					break;
+				case OIL:
+					m_oils.remove(e);
+					break;
+				case PROJECTILE:
+					m_projectiles.remove(e);
+					break;
+				default:
+					break;
+				}
+			}
+			// Suppression des références
+			m_garbage = null;
+
+		} catch (Game_exception | Automata_Exception e1) {
+			e1.printStackTrace();
+			System.exit(-1);
 		}
+
 	}
 
 	@Override
