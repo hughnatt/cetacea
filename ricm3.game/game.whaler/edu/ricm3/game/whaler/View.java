@@ -75,7 +75,7 @@ public class View extends GameView {
 					m_model.map().paint(g);
 				}
 			} catch (Game_exception e) {
-				// TODO Catching des erreurs
+				// TODO Catching des erreurs de paint
 			}
 
 		

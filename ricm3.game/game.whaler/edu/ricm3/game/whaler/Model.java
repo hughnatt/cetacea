@@ -34,11 +34,14 @@ import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
+import edu.ricm3.game.parser.ParseException;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
+import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
@@ -50,16 +53,10 @@ import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.parser.ParseException;
-
-import edu.ricm3.game.whaler.Entities.*;
-import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
-
-
 
 	// Sprite-sheets (BufferedImage) and instances of elements
 
@@ -81,8 +78,8 @@ public class Model extends GameModel {
 	private BufferedImage m_redCoralUnderSprite;
 
 	private BufferedImage m_projectileSprite;
-	private BufferedImage m_rocherSprite;
-	private BufferedImage m_rocherUnderSprite;
+	private BufferedImage m_stoneSprite;
+	private BufferedImage m_stoneUnderSprite;
 
 	// Automaton array
 	public IAutomata[] automata_array;
@@ -113,22 +110,19 @@ public class Model extends GameModel {
 	public List<Oil> m_oils = new LinkedList<Oil>();
 	public List<Mobile_Entity> m_garbage;
 
-
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
-	
-	//Tick Speed
+
+	// Tick Speed
 	long m_lastSwap;
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
-
 
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
 		automata_array = ((AI_Definitions) ast).make();
-
 
 		// Loading setting file
 		// 6 Entities
@@ -155,7 +149,6 @@ public class Model extends GameModel {
 		// Loading Sprites Model
 		loadSprites();
 
-
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
@@ -165,63 +158,56 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-
-		undergroundFloreGenerator(8);
-		seaGenerator(2);
-
+		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
+		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);
 
 		// Stones
 
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			m_statics.add(new Stone(new Location(i, 0), m_rocherSprite, m_rocherUnderSprite, this));
-			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			m_statics.add(new Stone(new Location(0, i), m_rocherSprite, m_rocherUnderSprite, this));
-			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
-
 
 		// Entities
 
 		// Oil
-		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
-		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this, Direction.WEST, 1));
-		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this, Direction.WEST, 1));
+		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this));
+		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this));
+		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this));
 
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this, Direction.WEST, 1));
+				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this));
 			}
 		}
 
 		// Destroyers
-		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST,
-				Options.DESTROYER_LIFE));
+		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST));
 
 		// Whalers
 
-		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
+		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST));
 
 		// Whales
-		m_whales.add(
-				new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(
-				new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(
-				new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+
+		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST));
+		m_whales.add(new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST));
+		m_whales.add(new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST));
 
 		// Projectiles
 
-		// int indice_automata = st[3];
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
-				automata_array[0], Options.PLAYER_LIFE);
+				automata_array[0]);
 
 		keyPressed = new boolean[128];
-		
+
 		m_lastSwap = 10000000000L;
 	}
 
@@ -232,91 +218,89 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
-		m_lastSwap++; //Tick Number
-		
-			try {
+		m_lastSwap++; // Tick Number
 
-				m_garbage = new LinkedList<Mobile_Entity>();
+		try {
 
-				m_current_background.step(now);
+			m_garbage = new LinkedList<Mobile_Entity>();
 
-				m_player.step(now);
+			m_current_background.step(now);
 
-				Iterator<Static_Entity> iterstatics = m_statics.iterator();
-				while (iterstatics.hasNext()) {
-					Static_Entity e = iterstatics.next();
-					e.step(now);
-				}
+			Iterator<Oil> iteroil = m_oils.iterator();
 
-				Iterator<Whale> iterwhales = m_whales.iterator();
-				while (iterwhales.hasNext()) {
-					Whale e = iterwhales.next();
-					e.step(now);
-				}
+			while (iteroil.hasNext()) {
 
-				Iterator<Oil> iteroil = m_oils.iterator();
-
-				while (iteroil.hasNext()) {
-
-					Oil tmp = iteroil.next();
-					tmp.step(now);
-				}
-
-				Iterator<Whaler> iterwhalers = m_whalers.iterator();
-				while (iterwhalers.hasNext()) {
-					Whaler e = iterwhalers.next();
-					e.step(now);
-				}
-
-				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
-				while (iterdestroyers.hasNext()) {
-					Destroyer e = iterdestroyers.next();
-					e.step(now);
-				}
-
-				Iterator<Projectile> iterprojs = m_projectiles.iterator();
-				while (iterprojs.hasNext()) {
-					Projectile e = iterprojs.next();
-					e.step(now);
-				}
-
-				// Garbage Iterator
-
-				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
-				while (iterdestroy.hasNext()) {
-					Mobile_Entity e = iterdestroy.next();
-					switch (e.getType()) {
-					case PLAYER:
-						break;
-					case WHALE:
-						m_whales.remove(e);
-						break;
-					case WHALER:
-						m_whalers.remove(e);
-						break;
-					case DESTROYER:
-						m_destroyers.remove(e);
-						break;
-					case OIL:
-						m_oils.remove(e);
-						break;
-					case PROJECTILE:
-						m_projectiles.remove(e);
-						break;
-					default:
-						break;
-					}
-				}
-				// Suppression des références
-				m_garbage = null;
-
-			} catch (Game_exception | Automata_Exception e1) {
-				e1.printStackTrace();
-				System.exit(-1);
+				Oil tmp = iteroil.next();
+				tmp.step(now);
 			}
 
+			Iterator<Static_Entity> iterstatics = m_statics.iterator();
+			while (iterstatics.hasNext()) {
+				Static_Entity e = iterstatics.next();
+				e.step(now);
+			}
 
+			m_player.step(now);
 
+			Iterator<Whale> iterwhales = m_whales.iterator();
+			while (iterwhales.hasNext()) {
+				Whale e = iterwhales.next();
+				e.step(now);
+			}
+
+			Iterator<Whaler> iterwhalers = m_whalers.iterator();
+			while (iterwhalers.hasNext()) {
+				Whaler e = iterwhalers.next();
+				e.step(now);
+			}
+
+			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+			while (iterdestroyers.hasNext()) {
+				Destroyer e = iterdestroyers.next();
+				e.step(now);
+			}
+
+			Iterator<Projectile> iterprojs = m_projectiles.iterator();
+			while (iterprojs.hasNext()) {
+				Projectile e = iterprojs.next();
+				e.step(now);
+			}
+
+			// Garbage Iterator
+
+			Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
+			while (iterdestroy.hasNext()) {
+				Mobile_Entity e = iterdestroy.next();
+				switch (e.getType()) {
+				case PLAYER:
+					// TODO à adapter selon le destroy du Player
+					break;
+				case WHALE:
+					m_whales.remove(e);
+					break;
+				case WHALER:
+					m_whalers.remove(e);
+					break;
+				case DESTROYER:
+					m_destroyers.remove(e);
+					break;
+				case OIL:
+					m_oils.remove(e);
+					break;
+				case PROJECTILE:
+					m_projectiles.remove(e);
+					break;
+				default:
+					break;
+				}
+			}
+			// Suppression des références
+			m_garbage = null;
+
+		} catch (Game_exception | Automata_Exception e1) {
+			e1.printStackTrace();
+			System.exit(-1);
+		}
 
 	}
 
@@ -344,8 +328,8 @@ public class Model extends GameModel {
 	}
 
 	public void swap() {
-		
-		if (m_lastSwap > 500) { //Tick Number
+
+		if (m_lastSwap > 500) { // Tick Number
 			m_lastSwap = 0;
 			if (UNDER_WATER) {
 				m_current_background = m_ocean;
@@ -356,7 +340,6 @@ public class Model extends GameModel {
 			}
 		}
 	}
-
 
 	/**
 	 * G�n�re la flore sous-marine selon un pourcentage donn� en param�tre
@@ -425,7 +408,7 @@ public class Model extends GameModel {
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
 					break;
 				default:
-					m_statics.add(new Rocher(new Location(x, i), m_rocherSprite, m_rocherUnderSprite, this));
+					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
 					break;
 				}
 
@@ -433,11 +416,9 @@ public class Model extends GameModel {
 		}
 	}
 
-
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
 	}
-
 
 	public BufferedImage get_projectile_sprite() {
 		return m_projectileSprite;
@@ -446,7 +427,6 @@ public class Model extends GameModel {
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
 	}
-
 
 	public Direction rand_direction() {
 		switch (rand.nextInt(4)) {
@@ -495,8 +475,6 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-
-
 
 		/*
 		 * Custom Texture
@@ -646,13 +624,13 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		/*
 		 * Custom Texture
 		 */
 		imageFile = new File("game.whaler/sprites/rocher.png");
 		try {
-			m_rocherSprite = ImageIO.read(imageFile);
+			m_stoneSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -663,7 +641,7 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/rocherUnder.png");
 		try {
-			m_rocherUnderSprite = ImageIO.read(imageFile);
+			m_stoneUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
