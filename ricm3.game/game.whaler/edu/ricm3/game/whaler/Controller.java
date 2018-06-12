@@ -106,27 +106,25 @@ public class Controller extends GameController implements ActionListener {
 
 	/*
 	 * keyPressed est un tableau de booléens de 127 cases, on met une case à true
-	 * quand on appuie sur la touche correspondant au numéro ascii de la case
+	 * quand on appuie sur la touche correspondant au numéro de la case
 	 */
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
 		// façon permanente
-
-		if(Character.isAlphabetic(e.getKeyChar()))
-			m_model.keyPressed[e.getKeyChar()] = true;
-		else
+		try {
 			m_model.keyPressed[e.getKeyCode()] = true;
+		} catch(Exception err) {
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		if(Character.isAlphabetic(e.getKeyChar()))
-			m_model.keyPressed[e.getKeyChar()] = false;
-		else
+		try {
 			m_model.keyPressed[e.getKeyCode()] = false;
+		} catch(Exception err) {
+		}
 	}
 
 	@Override

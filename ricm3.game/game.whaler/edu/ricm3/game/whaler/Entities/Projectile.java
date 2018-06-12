@@ -63,6 +63,7 @@ public class Projectile extends Mobile_Entity {
 				case PLAYER:
 				case DESTROYER:
 				case WHALER:
+				case WHALE:
 					Mobile_Entity me = (Mobile_Entity) e;
 					me.m_life -= m_damage;
 				default:
