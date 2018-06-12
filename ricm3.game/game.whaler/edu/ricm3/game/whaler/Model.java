@@ -49,6 +49,7 @@ import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
@@ -69,7 +70,7 @@ public class Model extends GameModel {
 	public void setScreen(Screen s) {
 		m_screen = s;
 	}
-
+	
 	// Sprite-sheets (BufferedImage) and instances of elements
 
 	private BufferedImage m_whaleSprite;
@@ -166,27 +167,8 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-		// Bulles
-
-		m_statics.add(new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this));
-		m_statics.add(new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this));
-		m_statics.add(new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this));
-		m_statics.add(new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this));
-
-		// Algues
-		m_statics.add(new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this));
-		m_statics.add(new YellowAlgae(new Location(22, 18), null, m_yellowAlgaeUnderSprite, this));
-		m_statics.add(new YellowAlgae(new Location(4, 17), null, m_yellowAlgaeUnderSprite, this));
-
-		// Corail
-		m_statics.add(new Coral(new Location(10, 6), null, m_coralUnderSprite, this));
-		m_statics.add(new Coral(new Location(20, 18), null, m_coralUnderSprite, this));
-		m_statics.add(new Coral(new Location(20, 2), null, m_coralUnderSprite, this));
-
-		// Corail Rouge
-		m_statics.add(new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this));
-		m_statics.add(new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this));
-		m_statics.add(new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this));
+		floreGenerator(10);
+		
 
 		// Stones
 
@@ -262,6 +244,44 @@ public class Model extends GameModel {
 		} else {
 			m_current_background = m_underwater;
 			UNDER_WATER = true;
+		}
+	}
+	
+	/**
+	 * Génère la flore sous-marine selon un pourcentage donné en paramètre
+	 * @param pourcentage
+	 * @throws Game_exception 
+	 * @throws Location_exception 
+	 */
+	private void floreGenerator(int pourcentage) throws Location_exception, Game_exception {
+		
+		Random rand = new Random();
+		int min = 1;
+		int max = Options.DIMX_MAP-2;
+		
+		int nbparColonne = (pourcentage*max)/100;
+		
+		for(int i=1; i< Options.DIMY_MAP; i++) {
+			for(int j=1; j< nbparColonne; j++) {
+				int x = rand.nextInt((max - min) + 1) + min;
+				int flore = rand.nextInt(4);
+				
+				switch(flore) {
+				case 0:
+					m_statics.add(new Bulle(new Location(x, i), null, m_bulleUnderSprite, this));
+					break;
+				case 1:
+					m_statics.add(new YellowAlgae(new Location(x, i), null, m_yellowAlgaeUnderSprite, this));
+					break;
+				case 2:
+					m_statics.add(new Coral(new Location(x, i), null, m_coralUnderSprite, this));
+					break;
+				default:
+					m_statics.add(new RedCoral(new Location(x, i), null, m_redCoralUnderSprite, this));
+					break;
+				}
+				
+			}
 		}
 	}
 
