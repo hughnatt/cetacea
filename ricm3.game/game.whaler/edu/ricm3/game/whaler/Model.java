@@ -255,8 +255,17 @@ public class Model extends GameModel {
 	 */
 	private void floreGenerator(int pourcentage) throws Location_exception, Game_exception {
 		
+		Random rand = new Random();
+		int min = 1;
+		int max = Options.DIMX_MAP;
 		
+		int nbparColonne = (pourcentage*100)/max;
 		
+		for(int i=1; i< Options.DIMY_MAP; i++) {
+			for(int j=1; j< nbparColonne; j++) {
+				
+			}
+		}
 	}
 
 	public BufferedImage get_fire_sprite() {
