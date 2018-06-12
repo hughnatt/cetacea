@@ -6,13 +6,15 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public final class Oil extends Mobile_Entity {
 
 	boolean is_burning;
-	int m_idx;
+	long m_lastSpread;
 
+	int m_idx;
 	BufferedImage[] m_spriteFire;
 
 	/**
@@ -24,11 +26,13 @@ public final class Oil extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
+	// TODO enlever la direction du constructeur
 	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
 			throws Game_exception {
 		super(pos, false, sprite, underSprite, model, dir, life);
 
 		this.is_burning = false;
+		m_lastSpread = 0;
 
 		m_spriteFire = new BufferedImage[32];
 
@@ -44,14 +48,59 @@ public final class Oil extends Mobile_Entity {
 	}
 
 	@Override
-	public void step(long now) {
+	public void step(long now) throws Game_exception {
 		if (is_burning) {
+
 			long elapsed = now - m_lastStep;
-			if (elapsed > 100L) {
+
+			if (elapsed > Options.BURNING_OIL_SPD_SPRITE) { // change of the fire spite
 				m_idx = (m_idx + 1) % m_spriteFire.length;
 				m_lastStep = now;
 			}
 
+			elapsed = now - m_lastSpread;
+
+			if (elapsed > Options.BURNING_OIL_SPD_SPREAD) { // spreading of the fire
+
+				Location adja = new Location(this.m_pos);
+				adja.up();
+				Entity result = m_model.map().tile(adja).contain(Oil.class); // to the top
+				if (result != null) {
+					Oil will_burn = (Oil) result;
+					will_burn.is_burning = true;
+				}
+
+				adja = new Location(this.m_pos);
+				adja.down();
+				result = m_model.map().tile(adja).contain(Oil.class); // to the bottom
+				if (result != null) {
+					Oil will_burn = (Oil) result;
+					will_burn.is_burning = true;
+				}
+
+				adja = new Location(this.m_pos);
+				adja.left();
+				result = m_model.map().tile(adja).contain(Oil.class); // to the left
+				if (result != null) {
+					Oil will_burn = (Oil) result;
+					will_burn.is_burning = true;
+				}
+
+				adja = new Location(this.m_pos);
+				adja.right();
+				result = m_model.map().tile(adja).contain(Oil.class); // to the right
+				if (result != null) {
+					Oil will_burn = (Oil) result;
+					will_burn.is_burning = true;
+				}
+
+				m_lastSpread = now;
+
+			}
+
+		} else {
+			m_lastSpread = now;
+			m_lastStep = now;
 		}
 	}
 
@@ -66,7 +115,7 @@ public final class Oil extends Mobile_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+		// nothing
 	}
 
 	@Override
@@ -82,7 +131,7 @@ public final class Oil extends Mobile_Entity {
 
 	@Override
 	public void hit() {
-		// TODO
+		// TODO comment le feu va blesser les joueurs ?
 	}
 
 	@Override

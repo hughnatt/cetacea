@@ -28,10 +28,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Model.Screen;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
@@ -87,18 +89,19 @@ public class Controller extends GameController implements ActionListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 
-		if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') {
-			m_model.swap();
-		}
-/*
-		if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
-			m_model.m_whales.get(0).pop();
-		}
+		/*
+		 * if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') { m_model.swap(); }
+		 * 
+		 * if (e.getKeyChar() == 'i' || e.getKeyChar() == 'I') {
+		 * m_model.m_whales.get(0).pop(); }
+		 * 
+		 * if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
+		 * 
+		 * m_model.m_whales.get(0).m_life = 20;
+		 * 
+		 * }
+		 */
 
-		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
-
-			m_model.m_whales[0].m_life = 20;
-		}*/
 	}
 
 	/*
