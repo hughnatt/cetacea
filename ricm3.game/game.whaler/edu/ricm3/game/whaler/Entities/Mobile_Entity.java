@@ -230,8 +230,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	public abstract void pick();
 	
-	
-
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
 	// public abstract void jump();

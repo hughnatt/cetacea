@@ -2,7 +2,6 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
-import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class IAction {
@@ -135,6 +134,9 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IJump() {
+		}
+
 		public IJump(String dir) {
 			m_dir = strToDir(dir);
 		}
@@ -142,7 +144,6 @@ public abstract class IAction {
 		void step(Mobile_Entity e) throws Game_exception {
 			e.m_life--;
 			e.movesouth();
-			e.pop();
 		}
 	}
 
@@ -199,6 +200,9 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IHit() {
+		}
+
 		public IHit(String dir) {
 			m_dir = strToDir(dir);
 		}
@@ -213,12 +217,15 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IProtect() {
+
+		}
+
 		public IProtect(String dir) {
 			m_dir = strToDir(dir);
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
-			e.turndown();
 			e.m_life++;
 			e.movesouth();
 		}
@@ -229,14 +236,15 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IPick() {
+		}
+
 		public IPick(String dir) {
 			m_dir = strToDir(dir);
 		}
 
 		void step(Mobile_Entity e) {
-			if (e instanceof Player) {
-				e.pick();
-			}
+			e.pick();
 		}
 
 	}
@@ -244,6 +252,9 @@ public abstract class IAction {
 	public static class IThrow extends IAction {
 
 		Direction m_dir;
+
+		public IThrow() {
+		}
 
 		public IThrow(String dir) {
 			m_dir = strToDir(dir);
@@ -256,8 +267,13 @@ public abstract class IAction {
 	}
 
 	public static class IStore extends IAction {
+		Direction m_dir;
 
 		public IStore() {
+		}
+
+		public IStore(String dir) {
+			m_dir = strToDir(dir);
 		}
 
 		void step(Mobile_Entity e) throws Game_exception {
@@ -279,12 +295,17 @@ public abstract class IAction {
 	}
 
 	public static class IPower extends IAction {
+		Direction m_dir;
 
 		public IPower() {
 		}
+		
+		public IPower(String dir) {
+			m_dir = strToDir(dir);
+		}
 
 		void step(Mobile_Entity e) {
-			// TODO
+			
 		}
 
 	}
@@ -294,8 +315,9 @@ public abstract class IAction {
 		public IKamikaze() {
 		}
 
-		void step(Mobile_Entity e) {
+		void step(Mobile_Entity e) throws Game_exception {
 			e.m_life = 0;
+			e.destroy();
 		}
 
 	}

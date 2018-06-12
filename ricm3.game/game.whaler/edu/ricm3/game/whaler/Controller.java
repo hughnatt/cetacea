@@ -96,7 +96,7 @@ public class Controller extends GameController implements ActionListener {
 		}
 
 		if (e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
-<<<<<<< HEAD
+
 			m_model.m_whales[0].m_life = 20;
 		}*/
 	}
@@ -111,6 +111,8 @@ public class Controller extends GameController implements ActionListener {
 		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
 		// façon permanente
 		m_model.keyPressed[e.getKeyCode()] = true;
+		//System.out.println(e.getKeyCode());
+		//System.out.println(m_model.keyPressed[e.getKeyCode()]);
 	}
 
 	@Override
