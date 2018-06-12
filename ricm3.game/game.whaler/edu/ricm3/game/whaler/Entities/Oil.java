@@ -47,10 +47,10 @@ public final class Oil extends Mobile_Entity {
 
 	@Override
 	public void step(long now) throws Game_exception {
-		if(m_life<=0) { 
+		if (m_life <= 0) {
 			this.destroy();
 		}
-		
+
 		if (is_burning) {
 
 			long elapsed = now - m_lastStep;
@@ -71,7 +71,7 @@ public final class Oil extends Mobile_Entity {
 
 				Location adja = new Location(this.m_pos);
 				adja.up();
-				Entity result = m_model.map().tile(adja).contain(Oil.class); // to the top
+				Entity result = m_model.map().tile(adja).contain(EntityType.OIL); // to the top
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
@@ -79,7 +79,7 @@ public final class Oil extends Mobile_Entity {
 
 				adja = new Location(this.m_pos);
 				adja.down();
-				result = m_model.map().tile(adja).contain(Oil.class); // to the bottom
+				result = m_model.map().tile(adja).contain(EntityType.OIL); // to the bottom
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
@@ -87,7 +87,7 @@ public final class Oil extends Mobile_Entity {
 
 				adja = new Location(this.m_pos);
 				adja.left();
-				result = m_model.map().tile(adja).contain(Oil.class); // to the left
+				result = m_model.map().tile(adja).contain(EntityType.OIL); // to the left
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
@@ -95,7 +95,7 @@ public final class Oil extends Mobile_Entity {
 
 				adja = new Location(this.m_pos);
 				adja.right();
-				result = m_model.map().tile(adja).contain(Oil.class); // to the right
+				result = m_model.map().tile(adja).contain(EntityType.OIL); // to the right
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;

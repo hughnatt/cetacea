@@ -188,25 +188,25 @@ public final class Whale extends Mobile_Entity {
 	public void hit() throws Game_exception {
 		Location new_pos = this.pos_front();
 
-		Entity result = m_model.map().tile(new_pos).contain(Player.class); // Is there a player ?
+		Entity result = m_model.map().tile(new_pos).contain(EntityType.PLAYER); // Is there a player ?
 		if (result != null) {
 			Player result_player = (Player) result;
 			result_player.m_life -= m_damage; // if yes, it takes damages
 		}
 
-		result = m_model.map().tile(new_pos).contain(Whaler.class); // Is there a whaler ?
+		result = m_model.map().tile(new_pos).contain(EntityType.WHALER); // Is there a whaler ?
 		if (result != null) {
 			Whaler result_whaler = (Whaler) result;
 			result_whaler.m_life -= m_damage; // if yes, it takes damages
 		}
 
-		result = m_model.map().tile(new_pos).contain(Destroyer.class); // Is there a destroyer ?
+		result = m_model.map().tile(new_pos).contain(EntityType.DESTROYER); // Is there a destroyer ?
 		if (result != null) {
 			Destroyer result_destroyer = (Destroyer) result;
 			result_destroyer.m_life -= m_damage; // if yes, it takes damages
 		}
 
-		result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		result = m_model.map().tile(new_pos).contain(EntityType.WHALE); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
 			result_whale.m_life -= m_damage; // if yes, it takes damages

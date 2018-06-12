@@ -150,7 +150,7 @@ public class Whaler extends Mobile_Entity {
 	public void wizz() throws Game_exception {
 		Location new_pos = this.pos_front();
 
-		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		Entity result = m_model.map().tile(new_pos).contain(EntityType.WHALE); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
 			result_whale.m_life += 3; // if yes, caught gauge increases by 3
@@ -166,7 +166,7 @@ public class Whaler extends Mobile_Entity {
 	public void hit() throws Game_exception {
 		Location new_pos = this.pos_front();
 
-		Entity result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		Entity result = m_model.map().tile(new_pos).contain(EntityType.WHALE); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
 			result_whale.m_life++; // if yes, caught gauge increases
