@@ -9,7 +9,8 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends Mobile_Entity {
@@ -69,9 +70,8 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-
-		// TODO : END OF THE GAME
-
+		System.exit(0);
+		// TODO: un écran de Game Over
 	}
 
 	public void loadSprites() {
@@ -117,6 +117,9 @@ public final class Player extends Mobile_Entity {
 				m_sprite = m_playerSouth;
 				break;
 			}
+			if (m_life <= 0) {
+				destroy();
+			}
 		}
 	}
 
@@ -144,9 +147,9 @@ public final class Player extends Mobile_Entity {
 		}
 	}
 
-	public void pick() {
+	public void pick() throws Game_exception {
 		this.oil_jauge += Options.OIL_PICKED;
-		// TODO: faire disparaitre le pétrole
+		// TODO: faire disparaitre la flaque de pétrole
 	}
 
 	@Override

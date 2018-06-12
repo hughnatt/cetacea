@@ -111,8 +111,8 @@ public class Controller extends GameController implements ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
-		
+		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
+		// façon permanente
 		try {
 			m_model.keyPressed[e.getKeyCode()] = true;
 		} catch(Exception err) {
