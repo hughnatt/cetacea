@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -72,24 +74,34 @@ public class AutomataSelection {
 		// Creation des bouttons
 		CreateButton breturn = new CreateButton("RETURN", "game.whaler/sprites/arrow_return.png",
 				"game.whaler/sprites/arrow_return.png");
+		
+		CreateButton bvalider = new CreateButton("VALIDER", "game.whaler/sprites/check.png",
+				"game.whaler/sprites/check_over.png");
 
 		// Initialisation
 		breturn.setButton();
+		bvalider.setButton();
 
 		// Verification du clique sur le bouton retour
 		breturn.addActionListener(new IsClicked());
+		bvalider.addActionListener(new IsClicked());
 
 		JPanel return_button = new JPanel();
 		return_button.setOpaque(false);
 		return_button.add(breturn);
 		
+		JPanel valide_button = new JPanel();
+		valide_button.setOpaque(false);
+		valide_button.add(bvalider);
+		
 		JPanel b1 = new JPanel();
 		b1.setLayout(new BoxLayout(b1, BoxLayout.LINE_AXIS));
 		b1.add(return_button);
+		b1.add(valide_button);
 
 		
-		//Création tableau déroulant 
-		//A modifier
+		//Création tableau déroulant avec les bons automates
+		
 		JPanel b2 = new JPanel();
 		Model m_model = (Model) m_g.m_model;
 		IAutomata[] items = m_model.automata_array;
@@ -102,11 +114,32 @@ public class AutomataSelection {
 			b2.add(b[i]);
 			i++;
 		}
-		
+
 		
 		m_select.add(b1, BorderLayout.SOUTH); //bouton retour
 		m_select.add(b2, BorderLayout.CENTER );
 		m_select.setVisible(true);
+	}
+	
+	public void validate_automata() {
+		File file = new File("game.whaler/sprites/choix_automates.txt");
+		BufferedWriter out = null;
+		try {
+			out = new BufferedWriter(new FileWriter(file));
+			for (int i = 0; i < 6; i++) {
+				out.write(String.valueOf(b[i].getSelectedIndex()));
+				if (i != 5)
+					out.write('\n');
+			}
+		} catch (IOException ae) {
+			ae.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+}
 	}
 
 	public class IsClicked implements ActionListener {
@@ -115,6 +148,12 @@ public class AutomataSelection {
 		public void actionPerformed(ActionEvent e) {
 			String event = e.getActionCommand();
 			if (event.equals("RETURN")) {
+				m_g.setScreen(Screen.MENU);
+				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+				m_select.dispose();
+			}
+			if (event.equals("VALIDER")) {
+				validate_automata();
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
 				m_select.dispose();

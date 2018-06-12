@@ -65,7 +65,6 @@ public class Model extends GameModel {
 
 	private BufferedImage m_whaleSprite;
 	private BufferedImage m_playerSprite;
-	private BufferedImage m_stoneSprite;
 	private BufferedImage m_whalerSprite;
 	private BufferedImage m_waterSprite;
 	private BufferedImage m_destroyerSprite;
@@ -75,7 +74,6 @@ public class Model extends GameModel {
 	private BufferedImage m_boomSprite;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleUnderSprite;
-	private BufferedImage m_stoneUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
 	private BufferedImage m_coralUnderSprite;
 	private BufferedImage m_playerUnderSprite;
@@ -83,6 +81,8 @@ public class Model extends GameModel {
 	private BufferedImage m_redCoralUnderSprite;
 
 	private BufferedImage m_projectileSprite;
+	private BufferedImage m_rocherSprite;
+	private BufferedImage m_rocherUnderSprite;
 
 	// Automaton array
 	public IAutomata[] automata_array;
@@ -117,6 +117,9 @@ public class Model extends GameModel {
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
+	
+	//Tick Speed
+	long m_lastSwap;
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
@@ -170,13 +173,13 @@ public class Model extends GameModel {
 		// Stones
 
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
-			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, 0), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_rocherSprite, m_rocherUnderSprite, this));
 
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			m_statics.add(new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this));
-			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(0, i), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
 
 		}
 
@@ -203,9 +206,12 @@ public class Model extends GameModel {
 		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
 
 		// Whales
-		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(
+				new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(
+				new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
+		m_whales.add(
+				new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
 
 		// Projectiles
 
@@ -215,6 +221,8 @@ public class Model extends GameModel {
 				automata_array[0], Options.PLAYER_LIFE);
 
 		keyPressed = new boolean[128];
+		
+		m_lastSwap = 10000000000L;
 	}
 
 	public Map map() {
@@ -224,6 +232,7 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
+		m_lastSwap++; //Tick Number
 		
 			try {
 
@@ -335,12 +344,16 @@ public class Model extends GameModel {
 	}
 
 	public void swap() {
-		if (UNDER_WATER) {
-			m_current_background = m_ocean;
-			UNDER_WATER = false;
-		} else {
-			m_current_background = m_underwater;
-			UNDER_WATER = true;
+		
+		if (m_lastSwap > 500) { //Tick Number
+			m_lastSwap = 0;
+			if (UNDER_WATER) {
+				m_current_background = m_ocean;
+				UNDER_WATER = false;
+			} else {
+				m_current_background = m_underwater;
+				UNDER_WATER = true;
+			}
 		}
 	}
 
@@ -386,6 +399,7 @@ public class Model extends GameModel {
 
 	/**
 	 * G�n�re la mer selon un pourcentage donn� en param�tre
+	 * 
 	 * @param pourcentage
 	 * @throws Game_exception
 	 * @throws Location_exception
@@ -411,7 +425,7 @@ public class Model extends GameModel {
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
 					break;
 				default:
-					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
+					m_statics.add(new Rocher(new Location(x, i), m_rocherSprite, m_rocherUnderSprite, this));
 					break;
 				}
 
@@ -482,16 +496,7 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 
-		/*
-		 * Custom Texture
-		 */
-		imageFile = new File("game.whaler/sprites/stone.png");
-		try {
-			m_stoneSprite = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
+
 
 		/*
 		 * Custom Texture
@@ -594,17 +599,6 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.whaler/sprites/stoneUnder.png");
-		try {
-			m_stoneUnderSprite = ImageIO.read(imageFile);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}
-
-		/*
-		 * Custom Texture
-		 */
 		imageFile = new File("game.whaler/sprites/yellow_algae.png");
 		try {
 			m_yellowAlgaeUnderSprite = ImageIO.read(imageFile);
@@ -652,6 +646,27 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
+		
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/rocher.png");
+		try {
+			m_rocherSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
 
+		/*
+		 * Custom Texture
+		 */
+		imageFile = new File("game.whaler/sprites/rocherUnder.png");
+		try {
+			m_rocherUnderSprite = ImageIO.read(imageFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
 	}
 }

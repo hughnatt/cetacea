@@ -170,8 +170,8 @@ public class Destroyer extends Mobile_Entity {
 	}
 
 	@Override
-	public void pick() {
-		this.pop();
+	public void pick() throws Game_exception {
+		//
+		
 	}
-
 }
