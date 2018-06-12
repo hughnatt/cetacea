@@ -19,6 +19,14 @@ public final class Iceberg extends Static_Entity {
 	public Iceberg(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, true, sprite, underSprite, model);
 	}
+	
+	public boolean isSolid() {
+		if (m_model.UNDER_WATER) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	@Override
 	public void step(long now) {

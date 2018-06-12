@@ -35,11 +35,12 @@ public class Whaler extends Mobile_Entity {
 	 * @param life
 	 * @throws Map_exception
 	 */
-	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+		super(pos, true, sprite, underSprite, model, dir);
 		m_exploding = false;
 		m_explode_idx = 0;
+		
 		m_automata = m_model.getAutomata(this);
 
 		loadSprites();

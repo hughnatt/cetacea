@@ -31,11 +31,15 @@ public final class Whale extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
-	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+		super(pos, true, sprite, underSprite, model, dir);
+		
+		m_life = Options.WHALE_CAPTURE_INIT;
 		m_damage = Options.WHALE_DPS;
 		m_pop_triggered = false;
+		
+		m_automata = m_model.getAutomata(this);
 
 		// Default sprite index is 0 (first image)
 		m_sprite_idx = 0;

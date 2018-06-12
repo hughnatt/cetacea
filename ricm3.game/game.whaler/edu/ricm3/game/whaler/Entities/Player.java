@@ -39,11 +39,11 @@ public final class Player extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
-	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			IAutomata auto, int life) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
-
-		m_automata = auto;
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir);
+		
+		m_automata = m_model.getAutomata(this);
+		m_life = Options.PLAYER_LIFE;
 
 		loadSprites();
 		switch (dir) {
@@ -157,19 +157,19 @@ public final class Player extends Mobile_Entity {
 		switch (m_direction) {
 		case SOUTH:
 			new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.SOUTH, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.SOUTH);
 			break;
 		case NORTH:
 			new Projectile(new Location(this.getx(), this.gety() - 1), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.NORTH, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.NORTH);
 			break;
 		case EAST:
 			new Projectile(new Location(this.getx() + 1, this.gety()), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.EAST, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.EAST);
 			break;
 		case WEST:
 			new Projectile(new Location(this.getx() - 1, this.gety()), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.WEST, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.WEST);
 			break;
 		default:
 			break;

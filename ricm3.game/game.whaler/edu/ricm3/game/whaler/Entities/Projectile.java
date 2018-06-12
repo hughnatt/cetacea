@@ -32,11 +32,12 @@ public class Projectile extends Mobile_Entity {
 	 *            Damage power
 	 * @throws Game_exception
 	 */
-	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			int range, int damage) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir, range);
+	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
+		super(pos, false, sprite, underSprite, model, dir);
+		
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
+		m_life = 6; // Range
 
 		m_automata = m_model.getAutomata(this);
 		m_model.m_projectiles.add(this);

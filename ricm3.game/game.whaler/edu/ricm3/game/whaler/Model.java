@@ -121,8 +121,8 @@ public class Model extends GameModel {
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
-	
-	//Tick Speed
+
+	// Tick Speed
 	long m_lastSwap;
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
@@ -167,16 +167,31 @@ public class Model extends GameModel {
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
 		m_current_background = m_ocean;
+		
+		
+		//Which key is currently pressed ?
+		keyPressed = new boolean[128];
+
+		m_lastSwap = 10000000000L;
 
 		/*** Creating the map ***/
 
 		m_map = new Map(this);
+		
+		generateMap();
 
+		// Player
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
+	}
+
+	private void generateMap() throws Location_exception, Game_exception {
+		// Underground generation
 		undergroundFloreGenerator(8);
+
+		// Static sea blocks generator
 		seaGenerator(2);
 
-		// Stones
-
+		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			m_statics.add(new Stone(new Location(i, 0), m_rocherSprite, m_rocherUnderSprite, this));
 			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_rocherSprite, m_rocherUnderSprite, this));
@@ -185,48 +200,10 @@ public class Model extends GameModel {
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
 			m_statics.add(new Stone(new Location(0, i), m_rocherSprite, m_rocherUnderSprite, this));
 			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
-
 		}
-
-		// Entities
-
-		// Oil
-		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
-		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this, Direction.WEST, 1));
-		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this, Direction.WEST, 1));
-
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 15; j++) {
-				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this, Direction.WEST, 1));
-			}
-		}
-
-		// Destroyers
-		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST,
-				Options.DESTROYER_LIFE));
-
-		// Whalers
-
-		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, Options.WHALER_LIFE));
-
-		// Whales
-		m_whales.add(
-				new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(
-				new Whale(new Location(10, 3), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-		m_whales.add(
-				new Whale(new Location(15, 12), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
-
-		// Projectiles
-
-		// int indice_automata = st[3];
-		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
-				automata_array[0], Options.PLAYER_LIFE);
-
-		keyPressed = new boolean[128];
 		
-		m_lastSwap = 10000000000L;
+		
+		//TODO : GENERATE ENTITIES AND REPOP PROCESS
 	}
 
 	public Map map() {
@@ -236,9 +213,8 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
-		m_lastSwap++; //Tick Number
-		
-		
+		m_lastSwap++; // Tick Number
+
 		if (m_screen == Screen.GAME) {
 			try {
 
@@ -348,8 +324,8 @@ public class Model extends GameModel {
 	}
 
 	public void swap() {
-		
-		if (m_lastSwap > 500) { //Tick Number
+
+		if (m_lastSwap > 500) { // Tick Number
 			m_lastSwap = 0;
 			if (UNDER_WATER) {
 				m_current_background = m_ocean;
@@ -495,8 +471,6 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-
-
 
 		/*
 		 * Custom Texture
@@ -646,7 +620,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		/*
 		 * Custom Texture
 		 */

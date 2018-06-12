@@ -41,7 +41,7 @@ public class Destroyer extends Mobile_Entity {
 
 	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
 			int life) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+		super(pos, true, sprite, underSprite, model, dir);
 		m_speed = Options.DESTROYER_SPD_STANDARD;
 		m_exploding = false;
 		m_explode_idx = 0;
