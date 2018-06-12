@@ -175,6 +175,9 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(Mobile_Entity current, Model model) {
+			m_key = m_key.toUpperCase();
+			
+			
 			int length = m_key.length();
 			char carac = m_key.charAt(0);
 			int ascii = (int) carac;
@@ -195,6 +198,7 @@ public abstract class ICondition {
 					ascii = 37;
 				}
 			}
+			
 			return model.keyPressed[ascii];
 		}
 	}

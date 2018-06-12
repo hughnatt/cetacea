@@ -23,7 +23,7 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerSouthUnder;
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
-	
+
 	int oil_jauge;
 
 	/**
@@ -43,6 +43,7 @@ public final class Player extends Mobile_Entity {
 		super(pos, true, sprite, underSprite, model, dir, life);
 
 		m_automata = auto;
+
 		loadSprites();
 		switch (dir) {
 		case EAST:
@@ -79,10 +80,10 @@ public final class Player extends Mobile_Entity {
 		m_playerEast = m_sprite.getSubimage(0, 64, 32, 32);
 		m_playerNorth = m_sprite.getSubimage(0, 96, 32, 32);
 
-		m_playerNorthUnder = m_underSprite.getSubimage(0, 0, 32, 32);
-		m_playerSouthUnder = m_underSprite.getSubimage(0, 32, 32, 32);
+		m_playerSouthUnder = m_underSprite.getSubimage(0, 0, 32, 32);
+		m_playerWestUnder = m_underSprite.getSubimage(0, 32, 32, 32);
 		m_playerEastUnder = m_underSprite.getSubimage(0, 64, 32, 32);
-		m_playerWestUnder = m_underSprite.getSubimage(0, 96, 32, 32);
+		m_playerNorthUnder = m_underSprite.getSubimage(0, 96, 32, 32);
 	}
 
 	@Override
@@ -141,19 +142,15 @@ public final class Player extends Mobile_Entity {
 			Oil will_burn = (Oil) result;
 			will_burn.is_burning = true;
 		}
-
 	}
 
 	public void pick() {
-		this.oil_jauge+=Options.OIL_PICKED;
-		//TODO: faire disparaitre le pétrole
+		this.oil_jauge += Options.OIL_PICKED;
+		// TODO: faire disparaitre le pétrole
 	}
-	
-	
 
 	@Override
 	public void hit() throws Game_exception {
-
 		switch (m_direction) {
 		case SOUTH:
 			new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
@@ -174,7 +171,6 @@ public final class Player extends Mobile_Entity {
 		default:
 			break;
 		}
-
 	}
 
 }
