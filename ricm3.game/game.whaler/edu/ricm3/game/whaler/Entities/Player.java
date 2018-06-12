@@ -25,7 +25,6 @@ public final class Player extends Mobile_Entity {
 
 	int oil_jauge;
 
-
 	/**
 	 * @param pos
 	 * @param sprite
@@ -69,6 +68,7 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
+		System.out.println("OMG Player is DEEEADDDD !!!");
 		System.exit(0);
 		// TODO: un écran de Game Over
 	}

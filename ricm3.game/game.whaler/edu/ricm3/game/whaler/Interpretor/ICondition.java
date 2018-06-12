@@ -3,13 +3,12 @@ package edu.ricm3.game.whaler.Interpretor;
 import java.util.Iterator;
 
 import edu.ricm3.game.whaler.Direction;
-import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Entities.*;
+import edu.ricm3.game.whaler.Entities.Entity;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
+import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public abstract class ICondition {
 

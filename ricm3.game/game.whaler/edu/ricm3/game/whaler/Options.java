@@ -21,6 +21,9 @@ public class Options {
 
 	// some public static variables, final or not, initialized or not
 
+	public static final int UNDERGROUND_FLORE_POURCENTAGE = 8;
+	public static final int SEA_ELEMENTS_POURCENTAGE = 2;
+
 	public static final int DIM_BLOC = 32; // coté d'un bloc en pixel
 
 	public static final int DIMX_MAP = 500; // dim de la map en bloc

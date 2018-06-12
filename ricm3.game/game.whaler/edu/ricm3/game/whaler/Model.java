@@ -46,7 +46,6 @@ import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.RedCoral;
-import edu.ricm3.game.whaler.Entities.Rocher;
 import edu.ricm3.game.whaler.Entities.Static_Entity;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
@@ -79,8 +78,8 @@ public class Model extends GameModel {
 	private BufferedImage m_redCoralUnderSprite;
 
 	private BufferedImage m_projectileSprite;
-	private BufferedImage m_rocherSprite;
-	private BufferedImage m_rocherUnderSprite;
+	private BufferedImage m_stoneSprite;
+	private BufferedImage m_stoneUnderSprite;
 
 	// Automaton array
 	public IAutomata[] automata_array;
@@ -159,21 +158,19 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-		// TODO à mettre dans options
-
-		undergroundFloreGenerator(8);
-		seaGenerator(2);
+		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
+		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);
 
 		// Stones
 
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			m_statics.add(new Stone(new Location(i, 0), m_rocherSprite, m_rocherUnderSprite, this));
-			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			m_statics.add(new Stone(new Location(0, i), m_rocherSprite, m_rocherUnderSprite, this));
-			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
 
@@ -411,7 +408,7 @@ public class Model extends GameModel {
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
 					break;
 				default:
-					m_statics.add(new Rocher(new Location(x, i), m_rocherSprite, m_rocherUnderSprite, this));
+					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
 					break;
 				}
 
@@ -633,7 +630,7 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/rocher.png");
 		try {
-			m_rocherSprite = ImageIO.read(imageFile);
+			m_stoneSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -644,7 +641,7 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/rocherUnder.png");
 		try {
-			m_rocherUnderSprite = ImageIO.read(imageFile);
+			m_stoneUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
