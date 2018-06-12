@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -211,6 +212,14 @@ public class Model extends GameModel {
 
 		// Oil
 		m_oils.add(new Oil(new Location(3, 2), m_oilSprite, null, this, Direction.WEST, 1));
+		m_oils.add(new Oil(new Location(4, 2), m_oilSprite, null, this, Direction.WEST, 1));
+		m_oils.add(new Oil(new Location(5, 2), m_oilSprite, null, this, Direction.WEST, 1));
+
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				m_oils.add(new Oil(new Location(10 + i, 10 + j), m_oilSprite, null, this, Direction.WEST, 1));
+			}
+		}
 
 		// Destroyers
 		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, 1));
@@ -243,7 +252,22 @@ public class Model extends GameModel {
 			m_current_background.step(now);
 
 			m_player.step(now);
-			m_whales.get(0).step(now);
+
+			Iterator<Whale> iter = m_whales.iterator();
+
+			while (iter.hasNext()) {
+				Whale tmp = iter.next();
+				tmp.step(now);
+			}
+
+			Iterator<Oil> iter2 = m_oils.iterator();
+
+			while (iter2.hasNext()) {
+
+				Oil tmp = iter2.next();
+				tmp.step(now);
+			}
+
 		} catch (Game_exception | Automata_Exception e1) {
 			e1.printStackTrace();
 			System.exit(-1);

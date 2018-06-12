@@ -102,26 +102,32 @@ public class Projectile extends Mobile_Entity {
 
 			m_lastStep = now;
 
-			m_model.map().tile(this.getx(), this.gety()).remove(this);// we remove it from the map
-			if (m_life != 0) {// if the max range isn't reach
-
-				m_life--;
-
-				Location next_pos = this.pos_front();
-				Tile next_tile = m_model.map().tile(next_pos); // we get the next tile
-
-				if (!apply_projectile(next_tile)) { // if the projectile hit nothing
-					m_pos = next_pos;
-					m_model.map().tile(this.getx(), this.gety()).addForeground(this); // it goes to the new lcoation
-				}
-
+			if (m_life == 0) {// if the max range is reach
+				this.destroy();
 			}
+			m_life--;
+
+			Location next_pos = this.pos_front();
+			Tile next_tile = m_model.map().tile(next_pos); // we get the next tile
+
+			if (apply_projectile(next_tile)) { // if the projectile hit something
+				this.destroy();
+			}
+			m_pos = next_pos;
+			m_model.map().tile(this.getx(), this.gety()).remove(this);// we remove it from the map
+			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // it goes to the new lcoation
+
 		}
 	}
 
 	@Override
 	public void paint(Graphics g, Location map_ref) {
 		g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+	}
+
+	@Override
+	public void paint_under(Graphics g, Location map_ref) {
+		// nothing
 	}
 
 	public void pop() {
@@ -133,12 +139,7 @@ public class Projectile extends Mobile_Entity {
 	}
 
 	public void hit() {
-
-	}
-
-	@Override
-	public void paint_under(Graphics g, Location map_ref) {
-
+		// nothing
 	}
 
 }

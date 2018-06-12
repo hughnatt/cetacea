@@ -16,7 +16,7 @@ public class Tile {
 	protected Tile() {
 		m_level = new LinkedList<Entity>();
 	}
-	
+
 	public Iterator<Entity> iterator() {
 		return m_level.iterator();
 	}
@@ -43,6 +43,8 @@ public class Tile {
 	 * Remove the specified entity from the Tile
 	 * 
 	 * @param e
+	 * @throws Tile_exception
+	 *             if the entity to remove isn't found
 	 */
 	public void remove(Entity e) throws Tile_exception {
 		boolean result = m_level.remove(e);
@@ -51,6 +53,14 @@ public class Tile {
 		}
 	}
 
+	/**
+	 * Search the first occurence of an entity of c class, from the bottom of the
+	 * Tile.
+	 * 
+	 * @param c
+	 *            the Entity class or one of this children classes
+	 * @return Entity or null if there is no entity of this c class
+	 */
 	public Entity contain(Class<? extends Entity> c) {
 		Iterator<Entity> iter = m_level.iterator();
 		while (iter.hasNext()) {
