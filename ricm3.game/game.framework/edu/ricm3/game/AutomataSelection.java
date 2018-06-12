@@ -19,8 +19,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.ricm3.game.GameUI.Screen;
-
+import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class AutomataSelection {
 
@@ -90,7 +91,9 @@ public class AutomataSelection {
 		//Création tableau déroulant 
 		//A modifier
 		JPanel b2 = new JPanel();
-		String[] items = { "Baleine", "Baleinier", "Destroyer", "Joueur", "Pétrole", "Projectile" };
+		Model m_model = (Model) m_g.m_model;
+		IAutomata[] items = m_model.automata_array;
+		
 		b = new JComboBox[6];
 		int i = 0;
 		while (i < 6) {
