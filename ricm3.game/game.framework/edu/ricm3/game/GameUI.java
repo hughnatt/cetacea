@@ -162,24 +162,6 @@ public class GameUI {
 			m_text.setText("Starting up...");
 			m_frame.add(m_text, BorderLayout.NORTH);
 
-			// Create the menu bar.
-			/*m_menuBar = new JMenuBar();
-			JMenu pause = new JMenu("Pause");
-			JMenu exit = new JMenu("Exit");
-
-			m_menuBar.add(pause);
-			m_menuBar.add(exit);
-
-			
-			 pause.addActionListener(new ActionListener() { public void
-			 actionPerformed(ActionEvent e) { setScreen(Screen.PAUSE); } });
-			 
-			 exit.addActionListener(new ActionListener() { public void
-			 actionPerformed(ActionEvent e) { setScreen(Screen.EXIT); } });
-			 
-
-			m_frame.setJMenuBar(m_menuBar);*/
-
 			m_frame.setSize(d);
 			m_frame.doLayout();
 			m_frame.setVisible(true);
@@ -218,6 +200,12 @@ public class GameUI {
 			// createTimer();
 			r.create_frame();
 			r.create_rules();
+
+		} else if (currentScreen() == Screen.AUTOMATA) {
+			AutomataSelection a = new AutomataSelection(this);
+			// createTimer();
+			a.create_frame();
+			a.create_automata_selection();
 		}
 	}
 

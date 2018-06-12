@@ -132,7 +132,11 @@ public class MainMenu {
 			if (event.equals("RULES")) {
 				m_g.setScreen(Screen.RULES);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
-				m_g.createTimer();
+				m_menu.dispose();
+			}
+			if (event.equals("AUTOMATA")) {
+				m_g.setScreen(Screen.AUTOMATA);
+				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
 				m_menu.dispose();
 			}
 		}
