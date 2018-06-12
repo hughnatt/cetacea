@@ -27,6 +27,7 @@ public final class Player extends Mobile_Entity {
 
 	int oil_jauge;
 
+
 	/**
 	 * @param pos
 	 * @param sprite
@@ -112,6 +113,7 @@ public final class Player extends Mobile_Entity {
 				m_sprite = m_playerNorth;
 
 				break;
+
 			default: // direction by default, SOUTH
 				m_underSprite = m_playerSouthUnder;
 				m_sprite = m_playerSouth;

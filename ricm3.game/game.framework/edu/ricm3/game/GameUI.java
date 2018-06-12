@@ -19,7 +19,6 @@ package edu.ricm3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -30,7 +29,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import javax.swing.JMenuBar;
 import javax.swing.Timer;
+
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class GameUI {
 
@@ -63,6 +66,7 @@ public class GameUI {
 
 	JFrame m_frame;
 	GameView m_view;
+	JMenuBar m_menuBar;
 	Timer m_timer;
 	GameModel m_model;
 	GameController m_controller;
@@ -74,6 +78,7 @@ public class GameUI {
 	long m_lastRepaint;
 	long m_lastTick;
 	int m_nTicks;
+	private Screen m_screen;
 
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
@@ -82,13 +87,29 @@ public class GameUI {
 		m_view.m_game = this;
 		m_controller = c;
 		m_controller.m_game = this;
+		m_screen = Screen.MENU;
 
 		System.out.println(license);
 
 		// create the main window and the periodic timer
 		// to drive the overall clock of the simulation.
 		createWindow(d);
-		createTimer();
+	
+	}
+
+	// enum for the menu, to determine which screen should be displayed
+	public enum Screen {
+		MENU, PLAY, AUTOMATA, OPTIONS, RULES, PAUSE, EXIT;
+	}
+
+	// getter for Screen
+	public Screen currentScreen() {
+		return m_screen;
+	}
+
+	// setter for Screen
+	public void setScreen(Screen s) {
+		m_screen = s;
 	}
 
 	public GameModel getModel() {
@@ -119,67 +140,93 @@ public class GameUI {
 		m_frame.add(c, BorderLayout.EAST);
 	}
 
-	private void createWindow(Dimension d) {
-		m_frame = new JFrame();
-		m_frame.setTitle("Cetacea");
-		m_frame.setLayout(new BorderLayout());
-		m_frame.setResizable(false);
+	public void createWindow(Dimension d) {
 
-		File f = new File("game.whaler/sprites/cetacea.png");
-		Image icone;
-		try {
-			icone = ImageIO.read(f);
-			m_frame.setIconImage(icone);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			System.exit(-1);
+		if (currentScreen() == Screen.PLAY) {
+			m_frame = new JFrame();
+			m_frame.setTitle("Cetacea");
+			m_frame.setLayout(new BorderLayout());
+			m_frame.setResizable(false);
+
+			File f = new File("game.whaler/sprites/cetacea.png");
+			Image icone;
+			try {
+				icone = ImageIO.read(f);
+				m_frame.setIconImage(icone);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				System.exit(-1);
+			}
+
+			m_frame.add(m_view, BorderLayout.CENTER);
+
+			m_text = new JLabel();
+			m_text.setText("Starting up...");
+			m_frame.add(m_text, BorderLayout.NORTH);
+
+			m_frame.setSize(d);
+			m_frame.doLayout();
+			m_frame.setVisible(true);
+
+			// hook window events so that we exit the Java Platform
+			// when the window is closed by the end user.
+			m_frame.addWindowListener(new WindowListener(m_model));
+
+			m_frame.pack();
+			m_frame.setLocationRelativeTo(null);
+
+			GameController ctr = getController();
+
+			// let's hook the controller,
+			// so it gets mouse events and keyboard events.
+			m_view.addKeyListener(ctr);
+			m_view.addMouseListener(ctr);
+			m_view.addMouseMotionListener(ctr);
+
+			// grab the focus on this JPanel, meaning keyboard events
+			// are coming to our controller. Indeed, the focus controls
+			// which part of the overall GUI receives the keyboard events.
+			m_view.setFocusable(true);
+			m_view.requestFocusInWindow();
+
+			m_controller.notifyVisible();
+
+		} else if (currentScreen() == Screen.MENU) {
+			MainMenu m = new MainMenu(this);
+			// createTimer();
+			m.create_frame();
+			m.create_menu();
+
+		} else if (currentScreen() == Screen.RULES) {
+			Rules r = new Rules(this);
+			// createTimer();
+			r.create_frame();
+			r.create_rules();
+
+		} else if (currentScreen() == Screen.AUTOMATA) {
+			AutomataSelection a = new AutomataSelection(this);
+			// createTimer();
+			a.create_frame();
+			a.create_automata_selection();
 		}
-
-		m_frame.add(m_view, BorderLayout.CENTER);
-
-		m_text = new JLabel();
-		m_text.setText("Starting up...");
-		m_frame.add(m_text, BorderLayout.NORTH);
-
-		m_frame.setSize(d);
-		m_frame.doLayout();
-		m_frame.setVisible(true);
-
-		// hook window events so that we exit the Java Platform
-		// when the window is closed by the end user.
-		m_frame.addWindowListener(new WindowListener(m_model));
-
-		m_frame.pack();
-		m_frame.setLocationRelativeTo(null);
-
-		GameController ctr = getController();
-
-		// let's hook the controller,
-		// so it gets mouse events and keyboard events.
-		m_view.addKeyListener(ctr);
-		m_view.addMouseListener(ctr);
-		m_view.addMouseMotionListener(ctr);
-
-		// grab the focus on this JPanel, meaning keyboard events
-		// are coming to our controller. Indeed, the focus controls
-		// which part of the overall GUI receives the keyboard events.
-		m_view.setFocusable(true);
-		m_view.requestFocusInWindow();
-
-		m_controller.notifyVisible();
 	}
 
 	/*
 	 * Let's create a timer, it is the heart of the simulation, ticking periodically
 	 * so that we can simulate the passing of time.
 	 */
-	private void createTimer() {
+	public void createTimer() {
 		int tick = 1; // one millisecond
 		m_start = System.currentTimeMillis();
 		m_lastTick = m_start;
 		m_timer = new Timer(tick, new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				tick();
+				try {
+					tick();
+				} catch (Game_exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		m_timer.start();
@@ -189,7 +236,7 @@ public class GameUI {
 	 * This is the period tick callback. We compute the elapsed time since the last
 	 * tick. We inform the model of the current time.
 	 */
-	private void tick() {
+	private void tick() throws Game_exception {
 		long now = System.currentTimeMillis() - m_start;
 		long elapsed = (now - m_lastTick);
 		m_elapsed += elapsed;

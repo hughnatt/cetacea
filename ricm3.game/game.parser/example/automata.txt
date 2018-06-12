@@ -18,9 +18,10 @@ Player(Init){
   * (Turn_O): True ? Turn(O) :(Init)
   * (Turn_S): True ? Turn(S) :(Init)
   * (Turn_E): True ? Turn(E) :(Init)
-  
+
   }
 
 Projectile(Init){
 	*(Init) : True ? Move(F): (Init)
 }
+
