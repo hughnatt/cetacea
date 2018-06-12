@@ -13,6 +13,8 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class Whaler extends Mobile_Entity {
 
+	// TODO ajouter plus de fonctionnalités en jeu sur le whaler ?
+
 	private BufferedImage m_whalerSouth;
 	private BufferedImage m_whalerWest;
 	private BufferedImage m_whalerEast;

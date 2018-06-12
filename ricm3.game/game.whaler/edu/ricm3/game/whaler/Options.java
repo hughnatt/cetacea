@@ -42,7 +42,7 @@ public class Options {
 	public static final int PLAYER_LIFE = 20;
 	public static final int DESTROYER_LIFE = 20;
 	public static final int WHALER_LIFE = 20;
-	public static final int OIL_LIFE = 5;
+	public static final int OIL_LIFE = 20;
 	public static final int WHALE_LIFE = 10;
 
 	public static final int PROJECTILE_DPS = 1;
@@ -58,7 +58,7 @@ public class Options {
 
 	public static final long OIL_PICKED = 20;
 
-	public static final long BURNING_OIL_SPD_SPRITE = 100L;
+	public static final long BURNING_OIL_SPD_BURNING = 100L;
 	public static final long BURNING_OIL_SPD_SPREAD = 600L;
 
 }

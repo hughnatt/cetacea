@@ -26,9 +26,8 @@ public final class Oil extends Mobile_Entity {
 	 */
 
 	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE); // We use a default direction,
-																							// because it
-		// has no importance
+		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE);
+		// We use a default direction,because it has no importance
 
 		this.is_burning = false;
 		m_lastSpread = 0;
@@ -48,12 +47,21 @@ public final class Oil extends Mobile_Entity {
 
 	@Override
 	public void step(long now) throws Game_exception {
+		if(m_life<=0) { 
+			this.destroy();
+		}
+		
 		if (is_burning) {
 
 			long elapsed = now - m_lastStep;
 
-			if (elapsed > Options.BURNING_OIL_SPD_SPRITE) { // change of the fire spite
+			if (elapsed > Options.BURNING_OIL_SPD_BURNING) {
+				// change of the fire spite and reduces the life of the oil
+
 				m_idx = (m_idx + 1) % m_spriteFire.length;
+
+				m_life--;
+
 				m_lastStep = now;
 			}
 
@@ -93,12 +101,12 @@ public final class Oil extends Mobile_Entity {
 					will_burn.is_burning = true;
 				}
 
-				m_lastSpread = now;
+				m_lastSpread = now; // we reset the timer
 
 			}
 
-		} else {
-			m_lastSpread = now;
+		} else { // if the oil doestn't burn
+			m_lastSpread = now; // we keep the timers readied
 			m_lastStep = now;
 		}
 	}
