@@ -18,6 +18,7 @@ public final class Stone extends Static_Entity {
 	 */
 	public Stone(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, true, sprite, underSprite, model);
+
 	}
 
 	@Override

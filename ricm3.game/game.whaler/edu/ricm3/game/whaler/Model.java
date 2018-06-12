@@ -34,34 +34,32 @@ import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
+import edu.ricm3.game.whaler.Entities.Bulle;
+import edu.ricm3.game.whaler.Entities.Coral;
+import edu.ricm3.game.whaler.Entities.Destroyer;
+import edu.ricm3.game.whaler.Entities.Iceberg;
+import edu.ricm3.game.whaler.Entities.Island;
+import edu.ricm3.game.whaler.Entities.Oil;
+import edu.ricm3.game.whaler.Entities.Player;
+import edu.ricm3.game.whaler.Entities.Projectile;
+import edu.ricm3.game.whaler.Entities.RedCoral;
+import edu.ricm3.game.whaler.Entities.Static_Entity;
+import edu.ricm3.game.whaler.Entities.Stone;
+import edu.ricm3.game.whaler.Entities.Whale;
+import edu.ricm3.game.whaler.Entities.Whaler;
+import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.parser.ParseException;
 
 import edu.ricm3.game.whaler.Entities.*;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
-
-import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
-import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
 
-	// enum for the menu, to determine which screen should be displayed
-	public enum Screen {
-		AUTOMATA, HOME, GAME, PREFERENCES;
-	}
 
-	private Screen m_screen;
-
-	// getter for Screen
-	public Screen currentScreen() {
-		return m_screen;
-	}
-
-	// setter for Screen
-	public void setScreen(Screen s) {
-		m_screen = s;
-	}
 
 	// Sprite-sheets (BufferedImage) and instances of elements
 
@@ -74,7 +72,6 @@ public class Model extends GameModel {
 	private BufferedImage m_icebergSprite;
 	private BufferedImage m_oilSprite;
 	private BufferedImage m_boomSprite;
-	private BufferedImage m_scoreSprite;
 	private BufferedImage m_underSprite;
 	private BufferedImage m_bulleUnderSprite;
 	private BufferedImage m_yellowAlgaeUnderSprite;
@@ -82,6 +79,7 @@ public class Model extends GameModel {
 	private BufferedImage m_playerUnderSprite;
 	private BufferedImage m_fireSprite;
 	private BufferedImage m_redCoralUnderSprite;
+
 	private BufferedImage m_projectileSprite;
 	private BufferedImage m_rocherSprite;
 	private BufferedImage m_rocherUnderSprite;
@@ -90,9 +88,6 @@ public class Model extends GameModel {
 	public IAutomata[] automata_array;
 	// Automata Choices
 	int[] automata_choices;
-
-	// Home menu
-	Menu m_menu;
 
 	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;
@@ -118,6 +113,7 @@ public class Model extends GameModel {
 	public List<Oil> m_oils = new LinkedList<Oil>();
 	public List<Mobile_Entity> m_garbage;
 
+
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
@@ -127,13 +123,12 @@ public class Model extends GameModel {
 
 	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
-		// Set the current screen on the home menu
-		m_screen = Screen.HOME;
 
 		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
 		automata_array = ((AI_Definitions) ast).make();
+
 
 		// Loading setting file
 		// 6 Entities
@@ -160,8 +155,6 @@ public class Model extends GameModel {
 		// Loading Sprites Model
 		loadSprites();
 
-		// Makes a new Menu
-		m_menu = new Menu(this, 350, 150, (float) 2);
 
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
@@ -186,10 +179,13 @@ public class Model extends GameModel {
 
 	private void generateMap() throws Location_exception, Game_exception {
 		// Underground generation
+
 		undergroundFloreGenerator(8);
+
 
 		// Static sea blocks generator
 		seaGenerator(2);
+
 
 		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -202,7 +198,6 @@ public class Model extends GameModel {
 			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
 		}
 		
-		
 		//TODO : GENERATE ENTITIES AND REPOP PROCESS
 	}
 
@@ -213,9 +208,9 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
-		m_lastSwap++; // Tick Number
 
-		if (m_screen == Screen.GAME) {
+		m_lastSwap++; //Tick Number
+		
 			try {
 
 				m_garbage = new LinkedList<Mobile_Entity>();
@@ -297,7 +292,9 @@ public class Model extends GameModel {
 				System.exit(-1);
 			}
 
-		}
+
+
+
 	}
 
 	@Override
@@ -336,6 +333,7 @@ public class Model extends GameModel {
 			}
 		}
 	}
+
 
 	/**
 	 * G�n�re la flore sous-marine selon un pourcentage donn� en param�tre
@@ -412,9 +410,11 @@ public class Model extends GameModel {
 		}
 	}
 
+
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
 	}
+
 
 	public BufferedImage get_projectile_sprite() {
 		return m_projectileSprite;
@@ -423,6 +423,7 @@ public class Model extends GameModel {
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
 	}
+
 
 	public Direction rand_direction() {
 		switch (rand.nextInt(4)) {

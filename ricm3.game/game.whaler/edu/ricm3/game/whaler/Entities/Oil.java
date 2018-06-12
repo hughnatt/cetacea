@@ -13,7 +13,7 @@ public final class Oil extends Mobile_Entity {
 
 	boolean is_burning;
 	long m_lastSpread;
-
+	
 	int m_idx;
 	BufferedImage[] m_spriteFire;
 
@@ -42,6 +42,7 @@ public final class Oil extends Mobile_Entity {
 			m_spriteFire[i] = m_model.get_fire_sprite().getSubimage(0, 32 * i, 32, 32);
 		}
 	}
+
 
 	@Override
 	public void destroy() throws Game_exception {
@@ -103,6 +104,7 @@ public final class Oil extends Mobile_Entity {
 		} else {
 			m_lastSpread = now;
 			m_lastStep = now;
+
 		}
 	}
 

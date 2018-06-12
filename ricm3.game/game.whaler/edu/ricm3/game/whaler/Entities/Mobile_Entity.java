@@ -70,7 +70,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	//Retourne direction asbolue depuis Backward (B)
 	public Direction getBDir() {
-		
 		switch(this.m_direction) {
 		case NORTH :
 			return Direction.SOUTH;
@@ -88,7 +87,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	//Retourne direction asbolue depuis Right (R)
 	public Direction getRDir() {
-		
 		switch(this.m_direction) {
 		case NORTH:
 			return Direction.EAST;
@@ -106,7 +104,6 @@ public abstract class Mobile_Entity extends Entity {
 	
 	//Retourne direction asbolue depuis Left (L)
 	public Direction getLDir() {
-		
 		switch(this.m_direction) {
 		case NORTH:
 			return Direction.WEST;
@@ -131,6 +128,7 @@ public abstract class Mobile_Entity extends Entity {
 			this.m_pos.up(); // We update its location
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for
 		}
+
 	}
 
 	/**
@@ -142,6 +140,7 @@ public abstract class Mobile_Entity extends Entity {
 			this.m_pos.down();
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 		}
+
 	}
 
 	/**
@@ -153,6 +152,7 @@ public abstract class Mobile_Entity extends Entity {
 			this.m_pos.right();
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 		}
+
 	}
 
 	/**
@@ -164,6 +164,7 @@ public abstract class Mobile_Entity extends Entity {
 			this.m_pos.left();
 			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
 		}
+
 	}
 
 	/**
@@ -206,7 +207,7 @@ public abstract class Mobile_Entity extends Entity {
 			break;
 		}
 	}
-	
+
 	public void turndown() {
 		switch (m_direction) {
 		case SOUTH:
@@ -225,6 +226,7 @@ public abstract class Mobile_Entity extends Entity {
 			break;
 		}
 	}
+
 
 	// Specific Actions
 	public abstract void pop();

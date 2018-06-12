@@ -91,9 +91,10 @@ public class Projectile extends Mobile_Entity {
 
 		long elapsed = now - this.m_lastStep;
 
+
 		if (elapsed > m_speed) { // the projectile position is updated according to its speed
 			m_lastStep = now;
-
+			
 			if ((hasHitSomething(this.getx(), this.gety())) || (m_life <= 0)) { // if the projectile hit nothing
 				this.destroy();
 				return;

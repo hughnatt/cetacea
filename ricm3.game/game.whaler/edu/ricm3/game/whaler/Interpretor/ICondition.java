@@ -120,13 +120,14 @@ public abstract class ICondition {
 		}
 	}
 
+	
 	enum EntityDangerLevel {
-		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE
+		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE	
 	}
-
+	
 	static EntityDangerLevel strToEDL(String s) {
-
-		switch (s) {
+		
+		switch(s) {
 		case "V":
 			return EntityDangerLevel.VOID;
 		case "T":
@@ -143,6 +144,7 @@ public abstract class ICondition {
 			return EntityDangerLevel.GATE;
 		case "M":
 			return EntityDangerLevel.MISSILE;
+
 		default:
 			System.out.println("Unknown Entity, will be interpreted as VOID");
 			return EntityDangerLevel.VOID;
@@ -241,12 +243,14 @@ public abstract class ICondition {
 
 			EntityDangerLevel[][] entity_behaviour = fillMatrice();
 
+
 			int px = current.getx();
 			int py = current.gety();
 			int cx = px;
 			int cy = py;
 
 			switch (m_dir) {
+
 			case FORWARD:
 				m_dir = current.getFDir();
 			case BACKWARD:
@@ -284,11 +288,12 @@ public abstract class ICondition {
 				if (level == m_entity) {
 					return true;
 				}
-
 			}
 			return false;
 		}
 	}
+
+	
 
 	/**
 	 * La plus proche entité de type m_entity est dans la direction m_dir NB :

@@ -280,7 +280,7 @@ public abstract class IAction {
 		public IThrow(String dir) {
 			m_dir = strToDir(dir);
 		}
-
+	
 		void step(Mobile_Entity e) throws Game_exception {
 			System.out.println("Nothing to throw, interpreted as a wizz");
 			e.wizz();

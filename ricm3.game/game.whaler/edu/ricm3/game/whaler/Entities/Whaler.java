@@ -26,6 +26,7 @@ public class Whaler extends Mobile_Entity {
 	boolean m_exploding;
 	long m_lastAnim;
 
+
 	/**
 	 * @param pos
 	 * @param sprite
@@ -42,6 +43,7 @@ public class Whaler extends Mobile_Entity {
 		m_explode_idx = 0;
 		
 		m_automata = m_model.getAutomata(this);
+
 
 		loadSprites();
 		switch (dir) {
@@ -64,6 +66,7 @@ public class Whaler extends Mobile_Entity {
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
 		m_model.m_garbage.add(this);
+
 	}
 
 	/*
