@@ -216,10 +216,10 @@ public class Model extends GameModel {
 		m_destroyers.add(new Destroyer(new Location(3, 4), m_destroyerSprite, null, this, Direction.WEST, 1));
 
 		// Whalers
-		m_whalers.add(new Whaler(new Location(3, 5), m_whalerSprite, null, this, Direction.WEST, 1));
+		m_whalers.add(new Whaler(new Location(2, 8), m_whalerSprite, null, this, Direction.WEST, 1));
 
 		// Whales
-		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, 1));
+		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, Options.WHALE_CAPTURE_INIT));
 
 		// Projectiles
 		m_projectiles.add(new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0));

@@ -1,7 +1,9 @@
 package edu.ricm3.game.whaler.Entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
@@ -55,17 +57,79 @@ public final class Whale extends Mobile_Entity {
 		m_model.m_whales.remove(this);
 	}
 
-	@Override
-	public void step(long now) throws Game_exception {
-		if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
+	public void capture() throws Map_exception {
+
+		Iterator<Entity> iter_N = m_model.map().tile(m_pos.x, m_pos.y - 1).iterator();
+		Iterator<Entity> iter_S = m_model.map().tile(m_pos.x, m_pos.y + 1).iterator();
+		Iterator<Entity> iter_E = m_model.map().tile(m_pos.x + 1, m_pos.y).iterator();
+		Iterator<Entity> iter_O = m_model.map().tile(m_pos.x - 1, m_pos.y).iterator();
+
+		Entity e = null;
+
+		while (iter_N.hasNext()) {
+
+			e = iter_N.next();
+
+			if (e instanceof Whaler) {
+				m_life--;
+			} else if (e instanceof Player) {
+				m_life++;
+			}
 		}
 
+		e = null;
+		while (iter_S.hasNext()) {
+
+			e = iter_S.next();
+
+			if (e instanceof Whaler) {
+				m_life--;
+			} else if (e instanceof Player) {
+				m_life++;
+			}
+		}
+		
+		e = null;
+		while (iter_E.hasNext()) {
+
+			e = iter_E.next();
+
+			if (e instanceof Whaler) {
+				m_life--;
+			} else if (e instanceof Player) {
+				m_life++;
+			}
+		}
+		
+		e = null;
+		while (iter_O.hasNext()) {
+
+			e = iter_O.next();
+
+			if (e instanceof Whaler) {
+				m_life--;
+			} else if (e instanceof Player) {
+				m_life++;
+			}
+		}
+
+		//System.out.println(arg0);
+
+	}
+
+	@Override
+	public void step(long now) throws Game_exception {
 		long elapsed = now - this.m_lastStep;
 		if (elapsed > 200L) { // speed for the changement of sprites
 
 			m_lastStep = now;
 
+			capture();
+
+			if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
+				m_model.map().tile(this.getx(), this.gety()).remove(this);
+			}
+						
 			if (m_pop_triggered) {
 
 				if (m_sprite_idx < 5) { // the jet increases
@@ -85,6 +149,8 @@ public final class Whale extends Mobile_Entity {
 	@Override
 	public void paint(Graphics g, Location map_ref) {
 		g.drawImage(m_sprites[m_sprite_idx], (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+		g.setColor(Color.RED);
+		g.fillRect((m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, (int) (((double) m_life / (double) (Options.WHALE_CAPTURE_MAX)) * 32), 2);
 	}
 
 	@Override
