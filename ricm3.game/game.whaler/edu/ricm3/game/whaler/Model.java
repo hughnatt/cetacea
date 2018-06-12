@@ -34,22 +34,14 @@ import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
-import edu.ricm3.game.whaler.Entities.Bulle;
-import edu.ricm3.game.whaler.Entities.Coral;
-import edu.ricm3.game.whaler.Entities.Destroyer;
-import edu.ricm3.game.whaler.Entities.Iceberg;
-import edu.ricm3.game.whaler.Entities.Island;
-import edu.ricm3.game.whaler.Entities.Oil;
-import edu.ricm3.game.whaler.Entities.Player;
-import edu.ricm3.game.whaler.Entities.Projectile;
-import edu.ricm3.game.whaler.Entities.RedCoral;
-import edu.ricm3.game.whaler.Entities.Static_Entity;
-import edu.ricm3.game.whaler.Entities.Stone;
-import edu.ricm3.game.whaler.Entities.Whale;
-import edu.ricm3.game.whaler.Entities.Whaler;
-import edu.ricm3.game.whaler.Entities.YellowAlgae;
+import edu.ricm3.game.parser.ParseException;
+
+import edu.ricm3.game.whaler.Entities.*;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
+
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class Model extends GameModel {
@@ -76,7 +68,6 @@ public class Model extends GameModel {
 	private BufferedImage m_whaleSprite;
 	private BufferedImage m_playerSprite;
 	private BufferedImage m_stoneSprite;
-	private BufferedImage m_projectileSprite;
 	private BufferedImage m_whalerSprite;
 	private BufferedImage m_waterSprite;
 	private BufferedImage m_destroyerSprite;
@@ -93,9 +84,12 @@ public class Model extends GameModel {
 	private BufferedImage m_playerUnderSprite;
 	private BufferedImage m_fireSprite;
 	private BufferedImage m_redCoralUnderSprite;
+	private BufferedImage m_projectileSprite;
 
 	// Automaton array
-	IAutomata[] automata_array;
+	public IAutomata[] automata_array;
+	// Automata Choices
+	int[] automata_choices;
 
 	// Home menu
 	Menu m_menu;
@@ -122,13 +116,13 @@ public class Model extends GameModel {
 	public List<Projectile> m_projectiles = new LinkedList<Projectile>();
 	public List<Whale> m_whales = new LinkedList<Whale>();
 	public List<Oil> m_oils = new LinkedList<Oil>();
+	public List<Mobile_Entity> m_garbage;
 
 	public boolean[] keyPressed;
 	// Random generation
 	public Random rand = new Random();
 
-	public Model()
-			throws FileNotFoundException, Automata_Exception, Game_exception, edu.ricm3.game.parser.ParseException {
+	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
 
 		// Set the current screen on the home menu
 		m_screen = Screen.HOME;
@@ -137,14 +131,22 @@ public class Model extends GameModel {
 		// Loading automate file
 		Ast ast = AutomataParser.Run();
 		automata_array = ((AI_Definitions) ast).make();
-		int[] st = null;
+
+		// Loading setting file
+		// 6 Entities
+		automata_choices = new int[EntityType.values().length];
+
 		BufferedReader bis = null;
 		try {
 			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
-			st = new int[7];
-			for (int i = 0; i < 6; i++) {
-				st[i] = Integer.parseInt(bis.readLine());
-			}
+
+			automata_choices[EntityType.WHALE.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.WHALER.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.DESTROYER.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.PLAYER.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.OIL.ordinal()] = Integer.parseInt(bis.readLine());
+			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(bis.readLine());
+
 			bis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -167,27 +169,8 @@ public class Model extends GameModel {
 
 		m_map = new Map(this);
 
-		// Bulles
-
-		m_statics.add(new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this));
-		m_statics.add(new Bulle(new Location(8, 16), null, m_bulleUnderSprite, this));
-		m_statics.add(new Bulle(new Location(23, 6), null, m_bulleUnderSprite, this));
-		m_statics.add(new Bulle(new Location(2, 2), null, m_bulleUnderSprite, this));
-
-		// Algues
-		m_statics.add(new YellowAlgae(new Location(6, 10), null, m_yellowAlgaeUnderSprite, this));
-		m_statics.add(new YellowAlgae(new Location(22, 18), null, m_yellowAlgaeUnderSprite, this));
-		m_statics.add(new YellowAlgae(new Location(4, 17), null, m_yellowAlgaeUnderSprite, this));
-
-		// Corail
-		m_statics.add(new Coral(new Location(10, 6), null, m_coralUnderSprite, this));
-		m_statics.add(new Coral(new Location(20, 18), null, m_coralUnderSprite, this));
-		m_statics.add(new Coral(new Location(20, 2), null, m_coralUnderSprite, this));
-
-		// Corail Rouge
-		m_statics.add(new RedCoral(new Location(20, 7), null, m_redCoralUnderSprite, this));
-		m_statics.add(new RedCoral(new Location(15, 15), null, m_redCoralUnderSprite, this));
-		m_statics.add(new RedCoral(new Location(2, 8), null, m_redCoralUnderSprite, this));
+		undergroundFloreGenerator(8);
+		seaGenerator(2);
 
 		// Stones
 
@@ -201,12 +184,6 @@ public class Model extends GameModel {
 			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
-
-		// Islands
-		m_statics.add(new Island(new Location(3, 6), m_islandSprite, null, this));
-
-		// Icebergs
-		m_statics.add(new Iceberg(new Location(3, 7), m_icebergSprite, null, this));
 
 		// Entities
 
@@ -231,12 +208,11 @@ public class Model extends GameModel {
 		m_whales.add(new Whale(new Location(3, 8), m_whaleSprite, null, this, Direction.WEST, 1));
 
 		// Projectiles
-		m_projectiles.add(new Projectile(new Location(3, 9), m_projectileSprite, null, this, Direction.WEST, 0, 0));
 
-		int indice_automata = st[3];
+		// int indice_automata = st[3];
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
-				automata_array[indice_automata], Options.PLAYER_LIFE);
+				automata_array[0], Options.PLAYER_LIFE);
 
 		keyPressed = new boolean[128];
 	}
@@ -248,35 +224,93 @@ public class Model extends GameModel {
 	@Override
 	public void step(long now) {
 
-		try {
-			m_current_background.step(now);
+		if (m_screen == Screen.GAME) {
+			try {
 
-			m_player.step(now);
+				m_garbage = new LinkedList<Mobile_Entity>();
 
-			Iterator<Whale> iter = m_whales.iterator();
+				m_current_background.step(now);
 
-			while (iter.hasNext()) {
-				Whale tmp = iter.next();
-				tmp.step(now);
+				m_player.step(now);
+
+				Iterator<Whale> iterwhales = m_whales.iterator();
+				while (iterwhales.hasNext()) {
+					Whale e = iterwhales.next();
+					e.step(now);
+				}
+
+				Iterator<Oil> iteroil = m_oils.iterator();
+
+				while (iteroil.hasNext()) {
+
+					Oil tmp = iteroil.next();
+					tmp.step(now);
+				}
+
+				Iterator<Projectile> iterprojs = m_projectiles.iterator();
+				while (iterprojs.hasNext()) {
+					Projectile e = iterprojs.next();
+					e.step(now);
+				}
+
+				// Last Iterator
+				Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
+				while (iterdestroy.hasNext()) {
+					Mobile_Entity e = iterdestroy.next();
+					switch (e.getType()) {
+					case PLAYER:
+						break;
+					case WHALE:
+						m_whales.remove(e);
+						break;
+					case WHALER:
+						m_whalers.remove(e);
+						break;
+					case DESTROYER:
+						m_destroyers.remove(e);
+						break;
+					case OIL:
+						m_oils.remove(e);
+						break;
+					case PROJECTILE:
+						m_projectiles.remove(e);
+						break;
+					default:
+						break;
+					}
+				}
+				// Suppression des références
+				m_garbage = null;
+
+			} catch (Game_exception | Automata_Exception e1) {
+				e1.printStackTrace();
+				System.exit(-1);
 			}
 
-			Iterator<Oil> iter2 = m_oils.iterator();
-
-			while (iter2.hasNext()) {
-
-				Oil tmp = iter2.next();
-				tmp.step(now);
-			}
-
-		} catch (Game_exception | Automata_Exception e1) {
-			e1.printStackTrace();
-			System.exit(-1);
 		}
-
 	}
 
 	@Override
 	public void shutdown() {
+	}
+
+	public IAutomata getAutomata(Mobile_Entity m) throws Game_exception {
+		switch (m.getType()) {
+		case PLAYER:
+			return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];
+		case DESTROYER:
+			return automata_array[automata_choices[EntityType.DESTROYER.ordinal()]];
+		case WHALE:
+			return automata_array[automata_choices[EntityType.WHALE.ordinal()]];
+		case WHALER:
+			return automata_array[automata_choices[EntityType.WHALER.ordinal()]];
+		case PROJECTILE:
+			return automata_array[automata_choices[EntityType.PROJECTILE.ordinal()]];
+		case OIL:
+			return automata_array[automata_choices[EntityType.OIL.ordinal()]];
+		default:
+			throw new Game_exception("Unexpected Entity. Have you added a new entity ?\n");
+		}
 	}
 
 	public void swap() {
@@ -289,8 +323,87 @@ public class Model extends GameModel {
 		}
 	}
 
+	/**
+	 * G�n�re la flore sous-marine selon un pourcentage donn� en param�tre
+	 * 
+	 * @param pourcentage
+	 * @throws Game_exception
+	 * @throws Location_exception
+	 */
+	private void undergroundFloreGenerator(int pourcentage) throws Location_exception, Game_exception {
+
+		Random rand = new Random();
+		int min = 1;
+		int max = Options.DIMX_MAP - 2;
+
+		int nbparColonne = (pourcentage * max) / 100;
+
+		for (int i = 1; i < Options.DIMY_MAP; i++) {
+			for (int j = 1; j < nbparColonne; j++) {
+				int x = rand.nextInt((max - min) + 1) + min;
+				int flore = rand.nextInt(4);
+
+				switch (flore) {
+				case 0:
+					m_statics.add(new Bulle(new Location(x, i), null, m_bulleUnderSprite, this));
+					break;
+				case 1:
+					m_statics.add(new YellowAlgae(new Location(x, i), null, m_yellowAlgaeUnderSprite, this));
+					break;
+				case 2:
+					m_statics.add(new Coral(new Location(x, i), null, m_coralUnderSprite, this));
+					break;
+				default:
+					m_statics.add(new RedCoral(new Location(x, i), null, m_redCoralUnderSprite, this));
+					break;
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * G�n�re la mer selon un pourcentage donn� en param�tre
+	 * 
+	 * @param pourcentage
+	 * @throws Game_exception
+	 * @throws Location_exception
+	 */
+	private void seaGenerator(int pourcentage) throws Location_exception, Game_exception {
+
+		Random rand = new Random();
+		int min = 1;
+		int max = Options.DIMX_MAP - 2;
+
+		int nbparColonne = (pourcentage * max) / 100;
+
+		for (int i = 1; i < Options.DIMY_MAP; i++) {
+			for (int j = 1; j < nbparColonne; j++) {
+				int x = rand.nextInt((max - min) + 1) + min;
+				int flore = rand.nextInt(3);
+
+				switch (flore) {
+				case 0:
+					m_statics.add(new Island(new Location(x, i), m_islandSprite, null, this));
+					break;
+				case 1:
+					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
+					break;
+				default:
+					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
+					break;
+				}
+
+			}
+		}
+	}
+
 	public BufferedImage get_fire_sprite() {
 		return m_fireSprite;
+	}
+
+	public BufferedImage get_projectile_sprite() {
+		return m_projectileSprite;
 	}
 
 	public Direction rand_direction() {

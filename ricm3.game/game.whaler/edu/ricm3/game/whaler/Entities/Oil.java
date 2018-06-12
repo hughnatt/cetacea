@@ -44,7 +44,7 @@ public final class Oil extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		m_model.m_oils.remove(this);
+		m_model.m_garbage.add(this);
 	}
 
 	@Override
