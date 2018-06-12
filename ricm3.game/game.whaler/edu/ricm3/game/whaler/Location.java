@@ -48,23 +48,31 @@ public class Location {
 		if (this.y > 0) {
 			this.y--;
 		}
+
 	}
 
 	public void down() {
 		if (this.y < Options.DIMY_MAP) {
 			y++;
 		}
+
 	}
 
 	public void left() {
 		if (this.x > 0) {
 			this.x--;
 		}
+
 	}
 
 	public void right() {
 		if (this.x < Options.DIMX_MAP) {
 			x++;
 		}
+
+	}
+	
+	public String toString(){
+		return "( "+x+" , "+y+" )";
 	}
 }

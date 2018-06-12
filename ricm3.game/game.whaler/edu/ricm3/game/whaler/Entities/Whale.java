@@ -54,7 +54,7 @@ public final class Whale extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		m_model.m_whales.remove(this);
+		m_model.m_garbage.add(this);
 	}
 
 	public void capture() throws Map_exception {
@@ -127,7 +127,7 @@ public final class Whale extends Mobile_Entity {
 			capture();
 
 			if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
-				m_model.map().tile(this.getx(), this.gety()).remove(this);
+				this.destroy();
 			}
 						
 			if (m_pop_triggered) {
@@ -155,7 +155,7 @@ public final class Whale extends Mobile_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+		// nothing
 	}
 
 	@Override
@@ -203,6 +203,12 @@ public final class Whale extends Mobile_Entity {
 		if (result != null) {
 			Destroyer result_destroyer = (Destroyer) result;
 			result_destroyer.m_life -= m_damage; // if yes, it takes damages
+		}
+
+		result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		if (result != null) {
+			Whale result_whale = (Whale) result;
+			result_whale.m_life -= m_damage; // if yes, it takes damages
 		}
 	}
 

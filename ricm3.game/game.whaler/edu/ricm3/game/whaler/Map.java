@@ -37,10 +37,10 @@ public class Map {
 	 * @throws Map_exception
 	 */
 	public Tile tile(int x, int y) throws Map_exception {
-		if ((x < 0) || (x > Options.DIMX_MAP)) {
+		if ((x < 0) || (x >= Options.DIMX_MAP)) {
 			throw new Map_exception("Coordonnee x unfitted");
 		}
-		if ((y < 0) || (y > Options.DIMY_MAP)) {
+		if ((y < 0) || (y >= Options.DIMY_MAP)) {
 			throw new Map_exception("Coordonnee y unfitted");
 		}
 		return m_tiles[x][y];

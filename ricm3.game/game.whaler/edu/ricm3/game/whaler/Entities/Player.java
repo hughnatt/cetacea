@@ -6,10 +6,9 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
+
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends Mobile_Entity {
@@ -56,7 +55,7 @@ public final class Player extends Mobile_Entity {
 			m_sprite = m_playerNorth;
 
 			break;
-		default:
+		default: // direction by default, SOUTH
 			m_underSprite = m_playerSouthUnder;
 			m_sprite = m_playerSouth;
 			break;
@@ -66,7 +65,9 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
-		// TODO
+
+		// TODO : END OF THE GAME
+
 	}
 
 	public void loadSprites() {
@@ -107,7 +108,7 @@ public final class Player extends Mobile_Entity {
 				m_sprite = m_playerNorth;
 
 				break;
-			default:
+			default: // direction by default, SOUTH
 				m_underSprite = m_playerSouthUnder;
 				m_sprite = m_playerSouth;
 				break;
@@ -131,13 +132,39 @@ public final class Player extends Mobile_Entity {
 	}
 
 	@Override
-	public void wizz() {
-		// TODO
+	public void wizz() throws Game_exception {
+		Entity result = m_model.map().tile(this.pos_front()).contain(Oil.class);
+		if (result != null) {
+			Oil will_burn = (Oil) result;
+			will_burn.is_burning = true;
+		}
+
 	}
 
 	@Override
-	public void hit() {
-		// TODO
+	public void hit() throws Game_exception {
+
+		switch (m_direction) {
+		case SOUTH:
+			new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.SOUTH, 6, 3);
+			break;
+		case NORTH:
+			new Projectile(new Location(this.getx(), this.gety() - 1), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.NORTH, 6, 3);
+			break;
+		case EAST:
+			new Projectile(new Location(this.getx() + 1, this.gety()), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.EAST, 6, 3);
+			break;
+		case WEST:
+			new Projectile(new Location(this.getx() - 1, this.gety()), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.WEST, 6, 3);
+			break;
+		default:
+			break;
+		}
+
 	}
 
 }

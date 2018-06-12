@@ -23,13 +23,13 @@ public class Options {
 
 	public static final int DIM_BLOC = 32; // coté d'un bloc en pixel
 
-	public static final int DIMX_MAP = 1000; // dim de la map en bloc
-	public static final int DIMY_MAP = 1000;
+	public static final int DIMX_MAP = 500; // dim de la map en bloc
+	public static final int DIMY_MAP = 500;
 
 	public static final int DIMX_WINDOW = 1000; // dim de la fenêtre en pixel
 	public static final int DIMY_WINDOW = 720;
 
-	public static final int DIMX_VIEW = 31; // dim de la view en pixel
+	public static final int DIMX_VIEW = 31; // dim de la view en blocs
 	public static final int DIMY_VIEW = 21;
 
 	// TODO il faudra fixer des limites de spawn
@@ -44,8 +44,8 @@ public class Options {
 	public static final int WHALER_LIFE = 20;
 
 	public static final int PROJECTILE_DPS = 1;
-	public static final long PROJECTILE_SPD_STANDARD = 500L;
-	public static final long PROJECTILE_SPD_IMPROVED = 300L;
+	public static final long PROJECTILE_SPD_STANDARD = 250L;
+	public static final long PROJECTILE_SPD_IMPROVED = 100L;
 
 	public static final int MAX_RANGE_WHALE_ESCAPE = 10;
 	public static final int WHALE_DPS = 1;
@@ -54,5 +54,8 @@ public class Options {
 
 	public static final long DESTROYER_SPD_STANDARD = 500L;
 	public static final long DESTROYER_SPD_IMPROVED = 300L;
+
+	public static final long BURNING_OIL_SPD_SPRITE = 100L;
+	public static final long BURNING_OIL_SPD_SPREAD = 600L;
 
 }
