@@ -218,7 +218,7 @@ public class Model extends GameModel {
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST,
 				automata_array[0], Options.PLAYER_LIFE);
 
-		keyPressed = new boolean[128];
+		keyPressed = new boolean[256];
 	}
 
 	public Map map() {

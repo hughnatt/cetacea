@@ -128,15 +128,15 @@ public final class Oil extends Mobile_Entity {
 		this.is_burning = true;
 
 	}
+	
+	@Override
+	public void pick() {
+		//rien
+	}
 
 	@Override
 	public void hit() {
 		// TODO comment le feu va blesser les joueurs ?
-	}
-
-	@Override
-	public void pick() {
-		this.pop();
 	}
 
 }

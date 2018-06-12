@@ -113,14 +113,20 @@ public class Controller extends GameController implements ActionListener {
 	public void keyPressed(KeyEvent e) {
 		// Attention, getKeyCode voit toutes les touches alphabétiques en majuscule de
 		// façon permanente
-		m_model.keyPressed[e.getKeyCode()] = true;
-		//System.out.println(e.getKeyCode());
-		//System.out.println(m_model.keyPressed[e.getKeyCode()]);
+
+		if(Character.isAlphabetic(e.getKeyChar()))
+			m_model.keyPressed[e.getKeyChar()] = true;
+		else
+			m_model.keyPressed[e.getKeyCode()] = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		m_model.keyPressed[e.getKeyCode()] = false;
+		
+		if(Character.isAlphabetic(e.getKeyChar()))
+			m_model.keyPressed[e.getKeyChar()] = false;
+		else
+			m_model.keyPressed[e.getKeyCode()] = false;
 	}
 
 	@Override
