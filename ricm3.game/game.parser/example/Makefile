@@ -136,6 +136,59 @@ SuperHero(Explore){\
 
 test11 = "Test1(Init){ *(Init) : True ? Turn(N) :(Init) }"
 
+test12 = "\
+Whaler(Init){\
+  *(Init) :\
+  | Cell(F,A) / Cell(B,A) / Cell(L,A) / Cell(R,A) ? Power :(Whale_Detected)\
+  | !GotPower ? Pop :(Fuite) \
+  | True ? Power :(Chase)\
+\
+  *(Whale_Detected) :\
+  | Cell(F,A) ? Hit(F) :(Init)\
+  | Cell(L,A) ? Turn(L) :(Hit_Whale)\
+  | Cell(R,A) ? Turn(R) :(Hit_Whale)\
+  | Cell(B,A) ? Turn(B) :(Hit_Whale)\
+\
+  *(Fuite) :\
+  | Closest(D, F) ? Turn(B) :(Verif)\
+  | Closest(D, B) ? Move(F) :(Verif)\
+  | Closest(D, L) ? Turn(R) :(Verif)\
+  | Closest(D, R) ? Turn(L) :(Verif)\
+\
+  *(Chase) :\
+  | Closest(A, F) ? Pop :(Verif)\
+  | Closest(A, B) ? Turn(B) :(Verif)\
+  | Closest(A, R) ? Turn(R) :(Verif)\
+  | Closest(A, L) ? Turn(L) :(Verif)\
+  | True ? Power :(Bouge)\
+\
+  *(Verif) :\
+  | Cell(F,V) ? Move(F) :(Init)\
+  | True ? Turn(L) / Turn(R) :(Move_F)\
+\
+  *(Move_F) : True ? Move(F) :(Init)\
+\
+  *(Hit_Whale) : True ? Hit(F) :(Init)\
+\
+  *(Bouge) :\
+  | Cell(F,V) & Cell(L,V) & Cell(R,V) & Cell(B,V) ? Power / Turn(L) / Turn(R) / Turn(B) :(Move_F)\
+  | !Cell(F,V) & Cell(L,V) & Cell(R,V) & Cell(B,V) ? Turn(L) / Turn(R) / Turn(B) :(Move_F)\
+  | Cell(F,V) & !Cell(L,V) & Cell(R,V) & Cell(B,V) ? Power / Turn(R) / Turn(B) :(Move_F)\
+  | Cell(F,V) & Cell(L,V) & !Cell(R,V) & Cell(B,V) ? Power / Turn(L) / Turn(B) :(Move_F)\
+  | Cell(F,V) & Cell(L,V) & Cell(R,V) & !Cell(B,V) ? Power / Turn(R) / Turn(L) :(Move_F)\
+  | !Cell(F,V) & !Cell(L,V) & Cell(R,V) & Cell(B,V) ? Turn(R) / Turn(B) :(Move_F)\
+  | !Cell(F,V) & Cell(L,V) & !Cell(R,V) & Cell(B,V) ? Turn(L) / Turn(B) :(Move_F)\
+  | !Cell(F,V) & Cell(L,V) & Cell(R,V) & !Cell(B,V) ? Turn(R) / Turn(L) :(Move_F)\
+  | Cell(F,V) & !Cell(L,V) & !Cell(R,V) & Cell(B,V) ? Power / Turn(B) :(Move_F)\
+  | Cell(F,V) & !Cell(L,V) & Cell(R,V) & !Cell(B,V) ? Power / Turn(R) :(Move_F)\
+  | Cell(F,V) & Cell(L,V) & !Cell(R,V) & !Cell(B,V) ? Power / Turn(L) :(Move_F)\
+  | !Cell(F,V) & !Cell(L,V) & !Cell(R,V) & Cell(B,V) ? Turn(B) :(Move_F)\
+  | Cell(F,V) & !Cell(L,V) & !Cell(R,V) & !Cell(B,V) ? Power :(Move_F)\
+  | !Cell(F,V) & Cell(L,V) & !Cell(R,V) & !Cell(B,V) ? Turn(L) :(Move_F)\
+  | !Cell(F,V) & !Cell(L,V) & Cell(R,V) & !Cell(B,V) ? Turn(R) :(Move_F)\
+  | True ? Power :(Init)\
+}"
+
 test%:
 	@ clear
 	@ echo ``Parsing = \"$(test$*)\"``

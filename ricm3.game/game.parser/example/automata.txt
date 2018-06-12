@@ -1,7 +1,6 @@
 Player(Init){
   * (Init) : 
   | Key(o) ? Protect(F) :(Init)
-  | Closest(P,O) ? Move(S) :(Init)
   | Key(FU) ? Move(N) :(Turn_N)
   | Key(FL) ? Move(O) :(Turn_O)
   | Key(FD) ? Move(S) :(Turn_S)
@@ -79,8 +78,7 @@ Player(Init){
   * (Turn_E): True ? Turn(E) :(Init)
   
   }
-=======
+
 Projectile(Init){
 	*(Init) : True ? Move(F): (Init)
 }
->>>>>>> master

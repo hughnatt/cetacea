@@ -278,8 +278,6 @@ public abstract class ICondition {
 
 				EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
 
-				System.out.println(level);
-				System.out.println(level);
 				if (level == m_entity) {
 					return true;
 				}
@@ -440,8 +438,6 @@ public abstract class ICondition {
 				break;
 			}
 
-			System.out.println(py);
-			System.out.println(max_i);
 			for (int i = 1; i < max_i; i++) {
 				switch (m_dir) {
 				case FORWARD:
@@ -476,7 +472,6 @@ public abstract class ICondition {
 					EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
 
 					if (level == m_entity) {
-						System.out.println(level);
 						return true;
 					}
 				}
