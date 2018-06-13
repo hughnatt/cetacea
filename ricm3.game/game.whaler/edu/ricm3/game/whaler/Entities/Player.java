@@ -9,8 +9,6 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends Mobile_Entity {
@@ -27,7 +25,6 @@ public final class Player extends Mobile_Entity {
 
 	int oil_jauge;
 
-
 	/**
 	 * @param pos
 	 * @param sprite
@@ -41,8 +38,8 @@ public final class Player extends Mobile_Entity {
 	 */
 
 	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			IAutomata auto, int life) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+			IAutomata auto) throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
 
 		m_automata = auto;
 
@@ -71,6 +68,7 @@ public final class Player extends Mobile_Entity {
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
+		System.out.println("OMG Player is DEEEADDDD !!!");
 		System.exit(0);
 		// TODO: un écran de Game Over
 	}
@@ -142,7 +140,7 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void wizz() throws Game_exception {
-		Entity result = m_model.map().tile(this.pos_front()).contain(Oil.class);
+		Entity result = m_model.map().tile(this.pos_front()).contain(EntityType.OIL);
 		if (result != null) {
 			Oil will_burn = (Oil) result;
 			will_burn.is_burning = true;
@@ -150,8 +148,14 @@ public final class Player extends Mobile_Entity {
 	}
 
 	public void pick() throws Game_exception {
-		this.oil_jauge += Options.OIL_PICKED;
-		// TODO: faire disparaitre la flaque de pétrole
+
+		Entity result = m_model.map().tile(this.m_pos).contain(EntityType.OIL);
+
+		if (result != null) {
+			Oil to_pick = (Oil) result;
+			this.oil_jauge += Options.OIL_PICKED;
+			to_pick.destroy();
+		}
 	}
 
 	@Override

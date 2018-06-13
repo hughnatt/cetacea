@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import edu.ricm3.game.whaler.Entities.Entity;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Tile {
@@ -54,18 +55,17 @@ public class Tile {
 	}
 
 	/**
-	 * Search the first occurence of an entity of c class, from the bottom of the
-	 * Tile.
+	 * Search the first occurence of an EntityType et, from the bottom of the Tile.
 	 * 
 	 * @param c
-	 *            the Entity class or one of this children classes
-	 * @return Entity or null if there is no entity of this c class
+	 *            the EntityType
+	 * @return Entity or null if there is no entity of EntityType
 	 */
-	public Entity contain(Class<? extends Entity> c) {
+	public Entity contain(EntityType et) {
 		Iterator<Entity> iter = m_level.iterator();
 		while (iter.hasNext()) {
 			Entity E = iter.next();
-			if (E.getClass() == c) {
+			if (E.getType() == et) {
 				return E;
 			}
 		}

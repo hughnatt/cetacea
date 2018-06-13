@@ -31,9 +31,9 @@ public final class Whale extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
-	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir, int life)
+	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, life);
+		super(pos, true, sprite, underSprite, model, dir, Options.WHALE_LIFE);
 		m_damage = Options.WHALE_DPS;
 		m_pop_triggered = false;
 
@@ -88,7 +88,7 @@ public final class Whale extends Mobile_Entity {
 				m_life++;
 			}
 		}
-		
+
 		e = null;
 		while (iter_E.hasNext()) {
 
@@ -100,7 +100,7 @@ public final class Whale extends Mobile_Entity {
 				m_life++;
 			}
 		}
-		
+
 		e = null;
 		while (iter_O.hasNext()) {
 
@@ -113,7 +113,7 @@ public final class Whale extends Mobile_Entity {
 			}
 		}
 
-		//System.out.println(arg0);
+		// System.out.println(arg0);
 
 	}
 
@@ -126,10 +126,10 @@ public final class Whale extends Mobile_Entity {
 
 			capture();
 
-			if ((m_life == 0) || (m_life == Options.WHALE_CAPTURE_MAX)) { // Catching or liberation of the whale
+			if ((m_life <= 0) || (m_life >= Options.WHALE_LIFE_MAX)) { // Catching or liberation of the whale
 				this.destroy();
 			}
-						
+
 			if (m_pop_triggered) {
 
 				if (m_sprite_idx < 5) { // the jet increases
@@ -150,7 +150,8 @@ public final class Whale extends Mobile_Entity {
 	public void paint(Graphics g, Location map_ref) {
 		g.drawImage(m_sprites[m_sprite_idx], (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 		g.setColor(Color.RED);
-		g.fillRect((m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, (int) (((double) m_life / (double) (Options.WHALE_CAPTURE_MAX)) * 32), 2);
+		g.fillRect((m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32,
+				(int) (((double) m_life / (double) (Options.WHALE_LIFE_MAX)) * 32), 2);
 	}
 
 	@Override
@@ -187,31 +188,31 @@ public final class Whale extends Mobile_Entity {
 	public void hit() throws Game_exception {
 		Location new_pos = this.pos_front();
 
-		Entity result = m_model.map().tile(new_pos).contain(Player.class); // Is there a player ?
+		Entity result = m_model.map().tile(new_pos).contain(EntityType.PLAYER); // Is there a player ?
 		if (result != null) {
 			Player result_player = (Player) result;
 			result_player.m_life -= m_damage; // if yes, it takes damages
 		}
 
-		result = m_model.map().tile(new_pos).contain(Whaler.class); // Is there a whaler ?
+		result = m_model.map().tile(new_pos).contain(EntityType.WHALER); // Is there a whaler ?
 		if (result != null) {
 			Whaler result_whaler = (Whaler) result;
 			result_whaler.m_life -= m_damage; // if yes, it takes damages
 		}
 
-		result = m_model.map().tile(new_pos).contain(Destroyer.class); // Is there a destroyer ?
+		result = m_model.map().tile(new_pos).contain(EntityType.DESTROYER); // Is there a destroyer ?
 		if (result != null) {
 			Destroyer result_destroyer = (Destroyer) result;
 			result_destroyer.m_life -= m_damage; // if yes, it takes damages
 		}
 
-		result = m_model.map().tile(new_pos).contain(Whale.class); // Is there a whale ?
+		result = m_model.map().tile(new_pos).contain(EntityType.WHALE); // Is there a whale ?
 		if (result != null) {
 			Whale result_whale = (Whale) result;
 			result_whale.m_life -= m_damage; // if yes, it takes damages
 		}
 	}
-	
+
 	public void pick() {
 		this.pop();
 	}
