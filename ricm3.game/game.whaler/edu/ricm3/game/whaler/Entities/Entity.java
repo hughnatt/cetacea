@@ -39,16 +39,17 @@ public abstract class Entity {
 		this.m_underSprite = underSprite;
 
 		// Adding the Entity to the Map (for rendering and fast access to locations)
+		// TODO à descendre peut etre
 		m_model.map().tile(m_pos.x, m_pos.y).addForeground(this);
 
 	}
-	
+
 	public enum EntityType {
 		DESTROYER, OIL, PLAYER, PROJECTILE, WHALE, WHALER, ISLAND, STONE, ICEBERG, VOID
 	}
-	
+
 	public abstract EntityType getType();
-	
+
 	public int getx() {
 		return m_pos.x;
 	}

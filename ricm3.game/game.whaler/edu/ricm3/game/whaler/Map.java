@@ -71,28 +71,28 @@ public class Map {
 		Location tmp_pos = new Location(pos);
 		tmp_pos.up();
 
-		if ((tmp_pos.x != pos.x) && (tmp_pos.y != pos.y)) {
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
 			result.add(tmp_pos);
 		}
 
 		tmp_pos = new Location(pos);
 		tmp_pos.down();
 
-		if ((tmp_pos.x != pos.x) && (tmp_pos.y != pos.y)) {
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
 			result.add(tmp_pos);
 		}
 
 		tmp_pos = new Location(pos);
 		tmp_pos.left();
 
-		if ((tmp_pos.x != pos.x) && (tmp_pos.y != pos.y)) {
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
 			result.add(tmp_pos);
 		}
 
 		tmp_pos = new Location(pos);
 		tmp_pos.right();
 
-		if ((tmp_pos.x != pos.x) && (tmp_pos.y != pos.y)) {
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
 			result.add(tmp_pos);
 		}
 
