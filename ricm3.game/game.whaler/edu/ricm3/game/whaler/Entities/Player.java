@@ -3,14 +3,12 @@ package edu.ricm3.game.whaler.Entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends MobileEntity {
 
@@ -151,7 +149,7 @@ public final class Player extends MobileEntity {
 		Entity result = m_model.map().tile(this.pos_front()).contain(EntityType.OIL);
 		if (result != null) {
 			Oil will_burn = (Oil) result;
-			will_burn.is_burning = true;
+			will_burn.m_is_burning = true;
 		}
 	}
 

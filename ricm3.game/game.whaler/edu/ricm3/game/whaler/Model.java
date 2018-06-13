@@ -29,7 +29,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
+
 import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
@@ -126,13 +128,13 @@ public class Model extends GameModel {
 
 	public Model() throws Game_exception {
 
-		//Load, Parse and Make the Automata Array
+		// Load, Parse and Make the Automata Array
 		loadAutomaton();
-		
-		//Load the Automata Choice Array
+
+		// Load the Automata Choice Array
 		loadAutomataChoices();
 
-		//Load all the sprites
+		// Load all the sprites
 		loadSprites();
 
 		// Which key is currently pressed ?
@@ -147,9 +149,9 @@ public class Model extends GameModel {
 		/*** Creating the map ***/
 		generateMap();
 
-		m_score  = new Score(this, 100, 30, 1);
+		m_score = new Score(this, 100, 30, 1);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -161,14 +163,14 @@ public class Model extends GameModel {
 			e.printStackTrace();
 			System.out.println("automata.txt file can't be found !");
 			System.exit(-1);
-			
+
 		}
-		
+
 		// Loading automate file
 		Ast ast;
 		try {
 			ast = AutomataParser.Run();
-			
+
 			//
 			try {
 				automata_array = ((AI_Definitions) ast).make();
@@ -177,39 +179,38 @@ public class Model extends GameModel {
 				System.out.println("Error when creating the Interpretor. Possibly unhandled grammar");
 				System.exit(-2);
 			}
-				
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 			System.out.println("Grammar error when parsing the Automata file.");
 			System.exit(-3);
 		}
-		
-		
+
 		if (automata_array.length == 0) {
 			System.out.println("Fatal Error : No automata has been read. Check automata.txt file");
 			System.exit(-4);
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void reloadAutomataChoices() {
 		loadAutomataChoices();
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void loadAutomataChoices() {
-		
+
 		automata_choices = new int[EntityType.values().length];
 		BufferedReader file;
 		try {
-			
+
 			file = new BufferedReader(new FileReader("game.whaler/settings/choix_automates.txt"));
 
-			//Lecture dans l'ordre
+			// Lecture dans l'ordre
 			automata_choices[EntityType.WHALE.ordinal()] = Integer.parseInt(file.readLine());
 			automata_choices[EntityType.WHALER.ordinal()] = Integer.parseInt(file.readLine());
 			automata_choices[EntityType.DESTROYER.ordinal()] = Integer.parseInt(file.readLine());
@@ -218,9 +219,9 @@ public class Model extends GameModel {
 			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(file.readLine());
 
 			file.close();
-			
+
 		} catch (FileNotFoundException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Le fichier de choix d'automates est introuvable. Création du fichier par défaut.");
 			createChoiceFile();
 		} catch (IOException ea) {
@@ -228,11 +229,11 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	private void createChoiceFile(){
+	private void createChoiceFile() {
 		File f = new File("game.whaler/settings/choix_automates.txt");
 		BufferedWriter out = null;
 		try {
@@ -248,7 +249,7 @@ public class Model extends GameModel {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @throws Location_exception
@@ -266,7 +267,7 @@ public class Model extends GameModel {
 		// Underground generation
 		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);
 		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
-		
+
 		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
@@ -299,7 +300,7 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-		
+
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
@@ -321,11 +322,11 @@ public class Model extends GameModel {
 		return m_map;
 	}
 
-	
 	private boolean inStepZone(Location entity, Location player) {
-		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10) && (entity.y < player.y + 10));
+		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10)
+				&& (entity.y < player.y + 10));
 	}
-	
+
 	@Override
 	public void step(long now) {
 
@@ -342,8 +343,8 @@ public class Model extends GameModel {
 			Iterator<StaticEntity> iterstatics = m_statics.iterator();
 			while (iterstatics.hasNext()) {
 				StaticEntity e = iterstatics.next();
-				
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+
+				if (inStepZone(e.getLoc(), m_player.getLoc())) {
 					e.step(now);
 				}
 			}
@@ -351,7 +352,7 @@ public class Model extends GameModel {
 			Iterator<Whale> iterwhales = m_whales.iterator();
 			while (iterwhales.hasNext()) {
 				Whale e = iterwhales.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+				if (inStepZone(e.getLoc(), m_player.getLoc())) {
 					e.step(now);
 				}
 			}
@@ -361,7 +362,7 @@ public class Model extends GameModel {
 			while (iteroil.hasNext()) {
 
 				Oil e = iteroil.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+				if (inStepZone(e.getLoc(), m_player.getLoc())) {
 					e.step(now);
 				}
 			}
@@ -369,7 +370,7 @@ public class Model extends GameModel {
 			Iterator<Whaler> iterwhalers = m_whalers.iterator();
 			while (iterwhalers.hasNext()) {
 				Whaler e = iterwhalers.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+				if (inStepZone(e.getLoc(), m_player.getLoc())) {
 					e.step(now);
 				}
 			}
@@ -377,7 +378,7 @@ public class Model extends GameModel {
 			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
 			while (iterdestroyers.hasNext()) {
 				Destroyer e = iterdestroyers.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+				if (inStepZone(e.getLoc(), m_player.getLoc())) {
 					e.step(now);
 				}
 			}
@@ -385,7 +386,7 @@ public class Model extends GameModel {
 			Iterator<Projectile> iterprojs = m_projectiles.iterator();
 			while (iterprojs.hasNext()) {
 				Projectile e = iterprojs.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+				if (inStepZone(e.getLoc(), m_player.getLoc())) {
 					e.step(now);
 				}
 			}
@@ -482,12 +483,12 @@ public class Model extends GameModel {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(4);
-				
-				list = m_map.tile(x,i).getList();
-				
-				while(list.size() > 0 || m_map.tile(x,i).isSolid()) {
+
+				list = m_map.tile(x, i).getList();
+
+				while (list.size() > 0 || m_map.tile(x, i).isSolid()) {
 					x = rand.nextInt((max - min) + 1) + min;
-					list = m_map.tile(x,i).getList();
+					list = m_map.tile(x, i).getList();
 				}
 
 				switch (flore) {
@@ -527,9 +528,11 @@ public class Model extends GameModel {
 		for (int i = 1; i < Options.DIMY_MAP; i++) {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
+
 				int flore = rand.nextInt(6);
-				
-				while(m_map.tile(x,i).isSolid()) {
+
+				while (m_map.tile(x, i).isSolid()) {
+
 					x = rand.nextInt((max - min) + 1) + min;
 				}
 
@@ -568,6 +571,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
+	}
+
+	public BufferedImage get_oil_sprite() {
+		return m_oilSprite;
 	}
 
 	public Direction rand_direction() {
