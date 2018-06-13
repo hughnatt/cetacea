@@ -33,7 +33,7 @@ public class Projectile extends MobileEntity {
 	 * @throws Game_exception
 	 */
 	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir, 6);
+		super(pos, false, sprite, underSprite, model, dir, Options.PROJECTILE_RANGE);
 		
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;

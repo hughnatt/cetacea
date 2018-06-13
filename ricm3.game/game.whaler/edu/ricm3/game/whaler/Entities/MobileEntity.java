@@ -182,7 +182,7 @@ public abstract class MobileEntity extends Entity {
 		
 		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
 		
-		if (!nextTile.isSolidUnder()) {
+		if (!nextTile.isSolidUnder() || !this.isSolid()) {
 			currentTile.remove(this);
 			nextTile.addBackground(this);
 			m_pos = nextTile.m_loc;
@@ -193,7 +193,7 @@ public abstract class MobileEntity extends Entity {
 		
 		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
 		
-		if (!nextTile.isSolid()) {
+		if (!nextTile.isSolid() || !this.isSolid()) {
 			currentTile.remove(this);
 			nextTile.addBackground(this);
 			m_pos = nextTile.m_loc;

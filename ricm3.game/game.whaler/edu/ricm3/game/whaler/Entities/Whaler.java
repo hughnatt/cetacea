@@ -131,14 +131,12 @@ public class Whaler extends MobileEntity {
 		int cy = (m_pos.y - map_ref.y) * 32;
 
 		if (m_exploding) {
-
 			g.drawImage(m_explode[m_explode_idx], cx, cy, 32, 32, null);
 		} else {
 			g.drawImage(m_sprite, cx, cy, 32, 32, null);
 			g.setColor(Color.RED);
 			g.fillRect(cx, cy, (int) (((double) m_life / (double) (Options.WHALER_LIFE)) * 32), 2);
 		}
-
 	}
 
 	@Override
