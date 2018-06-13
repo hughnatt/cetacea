@@ -38,6 +38,7 @@ import edu.ricm3.game.parser.ParseException;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
+import edu.ricm3.game.whaler.Entities.Entity;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
@@ -263,9 +264,9 @@ public class Model extends GameModel {
 		m_current_background = m_ocean;
 
 		// Underground generation
-		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
 		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);
-
+		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
+		
 		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
@@ -475,11 +476,19 @@ public class Model extends GameModel {
 		int max = Options.DIMX_MAP - 2;
 
 		int nbparColonne = (pourcentage * max) / 100;
+		LinkedList<Entity> list;
 
 		for (int i = 1; i < Options.DIMY_MAP; i++) {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(4);
+				
+				list = m_map.tile(x,i).getList();
+				
+				while(list.size() > 0 || m_map.tile(x,i).isSolid()) {
+					x = rand.nextInt((max - min) + 1) + min;
+					list = m_map.tile(x,i).getList();
+				}
 
 				switch (flore) {
 				case 0:
