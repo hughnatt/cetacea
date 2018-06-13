@@ -169,25 +169,27 @@ public final class Player extends MobileEntity {
 
 	@Override
 	public void hit() throws Game_exception {
-		switch (m_direction) {
-		case SOUTH:
-			new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.SOUTH);
-			break;
-		case NORTH:
-			new Projectile(new Location(this.getx(), this.gety() - 1), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.NORTH);
-			break;
-		case EAST:
-			new Projectile(new Location(this.getx() + 1, this.gety()), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.EAST);
-			break;
-		case WEST:
-			new Projectile(new Location(this.getx() - 1, this.gety()), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.WEST);
-			break;
-		default:
-			break;
+		if (!m_model.UNDER_WATER) {
+			switch (m_direction) {
+			case SOUTH:
+				new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
+						m_model.get_projectile_sprite(), m_model, Direction.SOUTH);
+				break;
+			case NORTH:
+				new Projectile(new Location(this.getx(), this.gety() - 1), m_model.get_projectile_sprite(),
+						m_model.get_projectile_sprite(), m_model, Direction.NORTH);
+				break;
+			case EAST:
+				new Projectile(new Location(this.getx() + 1, this.gety()), m_model.get_projectile_sprite(),
+						m_model.get_projectile_sprite(), m_model, Direction.EAST);
+				break;
+			case WEST:
+				new Projectile(new Location(this.getx() - 1, this.gety()), m_model.get_projectile_sprite(),
+						m_model.get_projectile_sprite(), m_model, Direction.WEST);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
