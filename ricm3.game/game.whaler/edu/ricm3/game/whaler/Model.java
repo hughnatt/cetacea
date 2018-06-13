@@ -27,9 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
-
 import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
@@ -58,9 +56,6 @@ import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Interpretor.ICondition;
 
 public class Model extends GameModel {
-
-	// Sprite-sheets (BufferedImage) and instances of elements
-
 	private BufferedImage m_whaleSprite;
 	private BufferedImage m_playerSprite;
 	private BufferedImage m_whalerSprite;
@@ -98,8 +93,6 @@ public class Model extends GameModel {
 	// Map
 	private Map m_map;
 
-	// Static Entity tab
-
 	List<StaticEntity> m_statics = new LinkedList<StaticEntity>();
 
 	// Mobile Entity List
@@ -115,8 +108,9 @@ public class Model extends GameModel {
 	// Random generation
 	public Random rand = new Random();
 
-	// Tick Speed
 	long m_lastSwap;
+
+	public Score m_score;
 
 	/*
 	 * Side Panel Icon, leave PUBLIC ! ! !
@@ -137,8 +131,8 @@ public class Model extends GameModel {
 		// Loading setting file
 		// 6 Entities
 		automata_choices = new int[EntityType.values().length];
-		
-		//Setting up the Danger Level Matrice
+
+		// Setting up the Danger Level Matrice
 		ICondition.fillDangerLevelMatrice();
 
 		BufferedReader bis = null;
@@ -151,7 +145,7 @@ public class Model extends GameModel {
 			automata_choices[EntityType.PLAYER.ordinal()] = Integer.parseInt(bis.readLine());
 			automata_choices[EntityType.OIL.ordinal()] = Integer.parseInt(bis.readLine());
 			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(bis.readLine());
-			//TODO
+			// TODO
 			bis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -169,6 +163,8 @@ public class Model extends GameModel {
 
 		// Which key is currently pressed ?
 		keyPressed = new boolean[128];
+
+		m_score = new Score(this, 20, 50, 1);
 
 		m_lastSwap = Integer.MAX_VALUE;
 
@@ -202,8 +198,6 @@ public class Model extends GameModel {
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
 
-		keyPressed = new boolean[128];
-
 		m_lastSwap = 10000000000L;
 
 	}
@@ -219,13 +213,12 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-
+		
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
 				int rx = this.rand.nextInt(Options.DIMX_VIEW);
 				int ry = this.rand.nextInt(Options.DIMY_VIEW);
-
 				if (!map().tile(rx, ry).isSolid()) {
 					m_oils.add(new Oil(new Location(rx, ry), m_oilSprite, null, this));
 				}
@@ -233,6 +226,9 @@ public class Model extends GameModel {
 				found_spawnpos = true;
 			}
 		}
+
+		m_lastSwap = 10000000000L;
+
 	}
 
 	public Map map() {
@@ -420,6 +416,10 @@ public class Model extends GameModel {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(3);
+				
+				while(m_map.tile(x,i).isSolid()) {
+					x = rand.nextInt((max - min) + 1) + min;
+				}
 
 				switch (flore) {
 				case 0:
