@@ -61,6 +61,8 @@ public class Options {
 
 	public static final long OIL_PICKED = 20;
 
+	public static final int OIL_POURCENTAGE_POP = 50;
+
 	public static final long BURNING_OIL_SPD_BURNING = 200L;
 	public static final long BURNING_OIL_SPD_SPREAD = 300L;
 	public static final int BURNING_OIL_DPS = 3;

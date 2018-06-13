@@ -43,7 +43,7 @@ public abstract class MobileEntity extends Entity {
 	 * // Calculation of the front location
 	 * 
 	 * @return Location
-	 * @throws Location_exception 
+	 * @throws Location_exception
 	 */
 	protected Location pos_front() throws Location_exception {
 		Location front = new Location(this.m_pos);
@@ -65,18 +65,18 @@ public abstract class MobileEntity extends Entity {
 		}
 		return front;
 	}
-	
-	//Retourne direction asbolue depuis Forward (F)
+
+	// Retourne direction asbolue depuis Forward (F)
 	public Direction getFDir() {
 		return this.m_direction;
 	}
-	
-	//Retourne direction asbolue depuis Backward (B)
+
+	// Retourne direction asbolue depuis Backward (B)
 	public Direction getBDir() {
-		switch(this.m_direction) {
-		case NORTH :
+		switch (this.m_direction) {
+		case NORTH:
 			return Direction.SOUTH;
-		case SOUTH :
+		case SOUTH:
 			return Direction.NORTH;
 		case EAST:
 			return Direction.WEST;
@@ -87,10 +87,10 @@ public abstract class MobileEntity extends Entity {
 			return Direction.NORTH;
 		}
 	}
-	
-	//Retourne direction asbolue depuis Right (R)
+
+	// Retourne direction asbolue depuis Right (R)
 	public Direction getRDir() {
-		switch(this.m_direction) {
+		switch (this.m_direction) {
 		case NORTH:
 			return Direction.EAST;
 		case SOUTH:
@@ -102,12 +102,12 @@ public abstract class MobileEntity extends Entity {
 		default:
 			System.out.println("Unknown Direction, will be interpreted as NORTH");
 			return Direction.NORTH;
-		}	
+		}
 	}
-	
-	//Retourne direction asbolue depuis Left (L)
+
+	// Retourne direction asbolue depuis Left (L)
 	public Direction getLDir() {
-		switch(this.m_direction) {
+		switch (this.m_direction) {
 		case NORTH:
 			return Direction.WEST;
 		case SOUTH:
@@ -119,7 +119,7 @@ public abstract class MobileEntity extends Entity {
 		default:
 			System.out.println("Unknown Direction, will be interpreted as NORTH");
 			return Direction.NORTH;
-		}	
+		}
 	}
 
 	/**
@@ -230,16 +230,15 @@ public abstract class MobileEntity extends Entity {
 		}
 	}
 
-
 	// Specific Actions
-	public abstract void pop();
+	public abstract void pop() throws Game_exception;
 
 	public abstract void wizz() throws Game_exception;
 
 	public abstract void hit() throws Game_exception;
-	
+
 	public abstract void pick() throws Game_exception;
-	
+
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
 	// public abstract void jump();
