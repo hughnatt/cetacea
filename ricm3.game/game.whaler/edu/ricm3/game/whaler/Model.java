@@ -420,6 +420,10 @@ public class Model extends GameModel {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(3);
+				
+				while(m_map.tile(x,i).isSolid()) {
+					x = rand.nextInt((max - min) + 1) + min;
+				}
 
 				switch (flore) {
 				case 0:
