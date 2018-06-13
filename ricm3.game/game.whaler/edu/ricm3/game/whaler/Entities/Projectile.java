@@ -33,16 +33,15 @@ public class Projectile extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir);
+		super(pos, false, sprite, underSprite, model, dir, 6);
 		
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
-		m_life = 6; // Range
 
 		m_automata = m_model.getAutomata(this);
 		m_model.m_projectiles.add(this);
 
-		m_lastStep = -1;
+		m_lastStep = 0;
 	}
 
 	/**
@@ -54,8 +53,9 @@ public class Projectile extends Mobile_Entity {
 	 *         true if the projectile hits something, else false
 	 * @throws Map_exception
 	 */
-	private boolean hasHitSomething(int x, int y) throws Map_exception {
-		Tile tile = m_model.map().tile(x, y);
+	private boolean hasHitSomething() throws Map_exception {
+		Tile tile = m_model.map().tile(this.m_pos);
+
 		Iterator<Entity> iter = tile.iterator();
 		while (iter.hasNext()) {
 			Entity e = iter.next();
@@ -91,11 +91,11 @@ public class Projectile extends Mobile_Entity {
 
 		long elapsed = now - this.m_lastStep;
 
-
 		if (elapsed > m_speed) { // the projectile position is updated according to its speed
 			m_lastStep = now;
-			
-			if ((hasHitSomething(this.getx(), this.gety())) || (m_life <= 0)) { // if the projectile hit nothing
+
+			if ((hasHitSomething()) || (m_life <= 0)) { // if the projectile hit nothing
+
 				this.destroy();
 				return;
 			}
@@ -134,7 +134,7 @@ public class Projectile extends Mobile_Entity {
 
 	public void hit() {
 	}
-	
+
 	public void pick() {
 		this.pop();
 	}

@@ -180,3 +180,25 @@
   - Fin des conditions et actions
   
 ##
+
+## Mardi 12 Juin
+  
+###### Tâches effectuées :
+  - Continuation de la création du nouveau menu
+  - Automate du baleinier
+  - Correction de bugs
+  - Génération aléatoire de la map sous-marine et début de la génération de la mer
+  - Nouveaux rochers
+  - Ajout d'un mode anti-spam
+  - Ajout des effets d'explosion
+  - Enflammement de la nappe de pétrole sur commande
+  - Modification projectiles
+  - Gestion des entités en mode sous-marin
+ 
+###### Travail à faire lors de la prochaine séance :
+  - Mettre une première version du jeu opérationnelle !
+  - Change les images au niveau du menu
+  - Fin génération de la mer
+  - Fin des automates
+  
+##

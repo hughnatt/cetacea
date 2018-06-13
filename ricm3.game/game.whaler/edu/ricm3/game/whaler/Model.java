@@ -34,11 +34,14 @@ import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
 import edu.ricm3.game.parser.AutomataParser;
+import edu.ricm3.game.parser.ParseException;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
+import edu.ricm3.game.whaler.Entities.Mobile_Entity;
 import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
@@ -50,10 +53,6 @@ import edu.ricm3.game.whaler.Entities.Whaler;
 import edu.ricm3.game.whaler.Entities.YellowAlgae;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.parser.ParseException;
-
-import edu.ricm3.game.whaler.Entities.*;
-import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
@@ -79,8 +78,8 @@ public class Model extends GameModel {
 	private BufferedImage m_redCoralUnderSprite;
 
 	private BufferedImage m_projectileSprite;
-	private BufferedImage m_rocherSprite;
-	private BufferedImage m_rocherUnderSprite;
+	private BufferedImage m_stoneSprite;
+	private BufferedImage m_stoneUnderSprite;
 
 	// Automaton array
 	public IAutomata[] automata_array;
@@ -167,7 +166,7 @@ public class Model extends GameModel {
 		// Which key is currently pressed ?
 		keyPressed = new boolean[128];
 
-		m_lastSwap = 10000000000L;
+		m_lastSwap = Integer.MAX_VALUE;
 
 		/*** Creating the map ***/
 
@@ -175,31 +174,33 @@ public class Model extends GameModel {
 
 		generateMap();
 
-		// Player
-		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
 	}
 
 	private void generateMap() throws Location_exception, Game_exception {
 		// Underground generation
-
-		undergroundFloreGenerator(8);
-
-		// Static sea blocks generator
-		seaGenerator(2);
+		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
+		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);
 
 		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
-			m_statics.add(new Stone(new Location(i, 0), m_rocherSprite, m_rocherUnderSprite, this));
-			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, 0), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(i, Options.DIMY_MAP - 1), m_stoneSprite, m_stoneUnderSprite, this));
 
 		}
 		for (int i = 0; i < Options.DIMY_MAP; i++) {
-			m_statics.add(new Stone(new Location(0, i), m_rocherSprite, m_rocherUnderSprite, this));
-			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_rocherSprite, m_rocherUnderSprite, this));
+			m_statics.add(new Stone(new Location(0, i), m_stoneSprite, m_stoneUnderSprite, this));
+			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
 		}
 
 		// TODO : GENERATE ENTITIES AND REPOP PROCESS
 		entitiesGenerator();
+
+		// Player
+		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
+
+		keyPressed = new boolean[128];
+
+		m_lastSwap = 10000000000L;
 
 	}
 
@@ -214,10 +215,9 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-		boolean found_spawnpos = false;
 
 		for (int i = 0; i < Options.MAX_OIL; i++) {
-			found_spawnpos = false;
+			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
 				int rx = this.rand.nextInt(Options.DIMX_VIEW);
 				int ry = this.rand.nextInt(Options.DIMY_VIEW);
@@ -292,8 +292,6 @@ public class Model extends GameModel {
 			while (iterdestroy.hasNext()) {
 				Mobile_Entity e = iterdestroy.next();
 				switch (e.getType()) {
-				case PLAYER:
-					break;
 				case WHALE:
 					m_whales.remove(e);
 					break;
@@ -421,13 +419,13 @@ public class Model extends GameModel {
 
 				switch (flore) {
 				case 0:
-					m_statics.add(new Island(new Location(x, i), m_islandSprite, m_rocherUnderSprite, this));
+					m_statics.add(new Island(new Location(x, i), m_islandSprite, m_stoneUnderSprite, this));
 					break;
 				case 1:
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
 					break;
 				default:
-					m_statics.add(new Rocher(new Location(x, i), m_rocherSprite, m_rocherUnderSprite, this));
+					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
 					break;
 				}
 
@@ -649,7 +647,7 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/rocher.png");
 		try {
-			m_rocherSprite = ImageIO.read(imageFile);
+			m_stoneSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -660,7 +658,7 @@ public class Model extends GameModel {
 		 */
 		imageFile = new File("game.whaler/sprites/rocherUnder.png");
 		try {
-			m_rocherUnderSprite = ImageIO.read(imageFile);
+			m_stoneUnderSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -673,7 +671,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		imageFile = new File("game.whaler/sprites/bar_down.png");
 		try {
 			m_bardownSprite = ImageIO.read(imageFile);
@@ -689,7 +687,7 @@ public class Model extends GameModel {
 			ex.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 		imageFile = new File("game.whaler/sprites/oilbar_full.png");
 		try {
 			m_oilfullSprite = ImageIO.read(imageFile);

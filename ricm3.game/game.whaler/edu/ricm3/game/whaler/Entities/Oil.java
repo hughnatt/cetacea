@@ -2,18 +2,21 @@ package edu.ricm3.game.whaler.Entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public final class Oil extends Mobile_Entity {
 
 	boolean is_burning;
 	long m_lastSpread;
-	
+	int m_damage;
+
 	int m_idx;
 	BufferedImage[] m_spriteFire;
 
@@ -22,17 +25,16 @@ public final class Oil extends Mobile_Entity {
 	 * @param sprite
 	 * @param underSprite
 	 * @param model
-	 * @param dir
 	 * @throws Game_exception
 	 */
-	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model)
-			throws Game_exception {
-		super(pos, false, sprite, underSprite, model, Direction.WEST);
-		
-		m_automata = m_model.getAutomata(this);
+	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
+		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE);
+		// We use a default direction,because it has no importance
 
+		m_automata = m_model.getAutomata(this);
 		this.is_burning = false;
 		m_lastSpread = 0;
+		m_damage = Options.BURNING_OIL_DPS;
 
 		m_spriteFire = new BufferedImage[32];
 
@@ -40,7 +42,6 @@ public final class Oil extends Mobile_Entity {
 			m_spriteFire[i] = m_model.get_fire_sprite().getSubimage(0, 32 * i, 32, 32);
 		}
 	}
-
 
 	@Override
 	public void destroy() throws Game_exception {
@@ -50,22 +51,49 @@ public final class Oil extends Mobile_Entity {
 
 	@Override
 	public void step(long now) throws Game_exception {
+		if (m_life <= 0) {
+			this.destroy();
+		}
+
 		if (is_burning) {
 
 			long elapsed = now - m_lastStep;
 
-			if (elapsed > Options.BURNING_OIL_SPD_SPRITE) { // change of the fire spite
+			if (elapsed > Options.BURNING_OIL_SPD_BURNING) {
+				// change of the fire spite
+
 				m_idx = (m_idx + 1) % m_spriteFire.length;
+
 				m_lastStep = now;
 			}
 
 			elapsed = now - m_lastSpread;
 
-			if (elapsed > Options.BURNING_OIL_SPD_SPREAD) { // spreading of the fire
+			if (elapsed > Options.BURNING_OIL_SPD_SPREAD) {
+				// spreading of the fire, combustion of the oil and damage to the entities
+
+				Tile tile = m_model.map().tile(this.m_pos);
+
+				Iterator<Entity> iter = tile.iterator();
+				while (iter.hasNext()) {
+					Entity e = iter.next();
+
+					switch (e.getType()) {
+					case PLAYER:
+					case DESTROYER:
+					case WHALER:
+					case WHALE:
+						Mobile_Entity me = (Mobile_Entity) e;
+						me.m_life -= m_damage;
+					default:
+						break;
+					}
+
+				}
 
 				Location adja = new Location(this.m_pos);
 				adja.up();
-				Entity result = m_model.map().tile(adja).contain(Oil.class); // to the top
+				Entity result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the top
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
@@ -73,7 +101,7 @@ public final class Oil extends Mobile_Entity {
 
 				adja = new Location(this.m_pos);
 				adja.down();
-				result = m_model.map().tile(adja).contain(Oil.class); // to the bottom
+				result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the bottom
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
@@ -81,7 +109,7 @@ public final class Oil extends Mobile_Entity {
 
 				adja = new Location(this.m_pos);
 				adja.left();
-				result = m_model.map().tile(adja).contain(Oil.class); // to the left
+				result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the left
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
@@ -89,18 +117,20 @@ public final class Oil extends Mobile_Entity {
 
 				adja = new Location(this.m_pos);
 				adja.right();
-				result = m_model.map().tile(adja).contain(Oil.class); // to the right
+				result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the right
 				if (result != null) {
 					Oil will_burn = (Oil) result;
 					will_burn.is_burning = true;
 				}
 
-				m_lastSpread = now;
+				m_life--; // reduces the life of the oil
+
+				m_lastSpread = now; // we reset the timer
 
 			}
 
-		} else {
-			m_lastSpread = now;
+		} else { // if the oil doestn't burn
+			m_lastSpread = now; // we keep the timers readied
 			m_lastStep = now;
 
 		}
@@ -130,15 +160,15 @@ public final class Oil extends Mobile_Entity {
 		this.is_burning = true;
 
 	}
-	
-	@Override
-	public void pick() {
-		//rien
-	}
 
 	@Override
 	public void hit() {
-		// TODO comment le feu va blesser les joueurs ?
+		// nothing
+	}
+
+	public void pick() {
+		// nothing
+
 	}
 
 

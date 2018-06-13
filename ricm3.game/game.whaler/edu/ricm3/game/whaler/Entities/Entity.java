@@ -3,7 +3,6 @@ package edu.ricm3.game.whaler.Entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
@@ -49,17 +48,6 @@ public abstract class Entity {
 	}
 	
 	public abstract EntityType getType();
-
-		else if(this instanceof Stone) {
-			return EntityType.STONE;
-		}
-		else if(this instanceof Iceberg) {
-			return EntityType.ICEBERG;
-		}
-		else {
-			return EntityType.VOID;
-		}
-	}
 	
 	public int getx() {
 		return m_pos.x;

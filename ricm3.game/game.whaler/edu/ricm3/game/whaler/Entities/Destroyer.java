@@ -34,6 +34,7 @@ public class Destroyer extends Mobile_Entity {
 	 *            Initial Position of the Destroyer
 	 * @param sprite
 	 *            Destroyer Sprite
+	 * @param underSprite
 	 * @param model
 	 *            Internal Model
 	 * @param dir
@@ -41,9 +42,9 @@ public class Destroyer extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
-	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			int life) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir);
+	public Destroyer(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+			throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, Options.DESTROYER_LIFE);
 		m_speed = Options.DESTROYER_SPD_STANDARD;
 
 		m_exploding = false;
@@ -103,7 +104,7 @@ public class Destroyer extends Mobile_Entity {
 
 		long elapsed = now - m_lastStep;
 
-		if (!m_exploding && elapsed > 1000L) {
+		if (!m_exploding && elapsed > m_speed) {
 			m_lastStep = now;
 
 			try {

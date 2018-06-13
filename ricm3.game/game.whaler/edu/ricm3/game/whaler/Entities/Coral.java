@@ -33,4 +33,9 @@ public class Coral extends Static_Entity {
 
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.VOID;
+	}
+
 }

@@ -62,4 +62,9 @@ public class Bulle extends Static_Entity {
 		BufferedImage img = m_sprites[m_sprite_idx];
 		g.drawImage(img, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
 	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.VOID;
+	}
 }

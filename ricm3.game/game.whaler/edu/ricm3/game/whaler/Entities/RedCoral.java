@@ -28,4 +28,9 @@ public class RedCoral extends Static_Entity {
 		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.VOID;
+	}
+
 }

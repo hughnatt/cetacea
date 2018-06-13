@@ -56,14 +56,10 @@ public class View extends GameView {
 	protected void _paint(Graphics g) throws Game_exception {
 		computeFPS();
 
-		
-		
 		// paints a blue canvas then the map's viewport
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		m_model.m_current_background.paint(g);
-
-		
 		// Viewport paint of the map
 		try {
 			if (m_model.UNDER_WATER) {
@@ -72,8 +68,7 @@ public class View extends GameView {
 				m_model.map().paint(g);
 			}
 		} catch (Game_exception e) {
-			// TODO Catching des erreurs
+			// TODO Catching des erreurs de paint
 		}
-
 	}
 }

@@ -42,4 +42,9 @@ public final class Iceberg extends Static_Entity {
 
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.ICEBERG;
+	}
+
 }

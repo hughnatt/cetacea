@@ -9,8 +9,6 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public final class Island extends Static_Entity {
 
-	// TODO gérer le shop ou au moins le rechargement de vie
-
 	/**
 	 * @param pos
 	 * @param sprite
