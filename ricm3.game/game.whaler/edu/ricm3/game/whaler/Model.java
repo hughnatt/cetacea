@@ -302,8 +302,8 @@ public class Model extends GameModel {
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
-				int rx = this.rand.nextInt(Options.DIMX_VIEW);
-				int ry = this.rand.nextInt(Options.DIMY_VIEW);
+				int rx = this.rand.nextInt(Options.DIMX_MAP);
+				int ry = this.rand.nextInt(Options.DIMY_MAP);
 				if (!map().tile(rx, ry).isSolid()) {
 					m_oils.add(new Oil(new Location(rx, ry), m_oilSprite, null, this));
 				}
