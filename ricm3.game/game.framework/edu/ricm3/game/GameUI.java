@@ -193,6 +193,7 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
+			
 
 		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);

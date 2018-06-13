@@ -90,6 +90,7 @@ public class Rules {
 			e.printStackTrace();
 		}
 	   
+		m_rules.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate the process of clicking on the red cross
 		m_rules.add(m_ctr, BorderLayout.CENTER);
 		m_rules.add(b1, BorderLayout.SOUTH);
 		m_rules.setVisible(true);
@@ -103,7 +104,7 @@ public class Rules {
 			if (event.equals("RETURN")) {
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
-				
+				//m_rules.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				m_rules.dispose();
 			}
 		}

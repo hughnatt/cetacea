@@ -157,6 +157,8 @@ public class AutomataSelection {
 
 		m_select.add(b1, BorderLayout.SOUTH); // button return + validate
 		m_select.add(b2, BorderLayout.CENTER); //Display entities and combobox
+		
+		m_select.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate the process of clicking on the red cross
 		m_select.setVisible(true);
 	}
 
