@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -157,10 +158,6 @@ public class GameUI {
 			m_text.setText("Starting up...");
 			addNorth(m_text);
 			
-			
-			JPanel onTheBottom = new JPanel(new GridLayout(1,31));
-			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));
-			addSouth(onTheBottom);
 
 			m_life = new JPanel();
 			refreshLife();
@@ -196,6 +193,7 @@ public class GameUI {
 			m_controller.notifyVisible();
 			refreshLife();
 			refreshOil();
+			refreshScore();
 
 		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
@@ -267,20 +265,15 @@ public class GameUI {
 
 public void refreshScore() {
 		
-		/*Model m = (Model) m_model;
-		int currentLife = m.m_player.m_sc;
-		JProgressBar lifeBar = new JProgressBar(JProgressBar.VERTICAL);
-		lifeBar.setStringPainted(true);
-		lifeBar.setForeground(Color.PINK);
-		lifeBar.setString("10%");
-		lifeBar.setMinimum(0);
-		lifeBar.setMaximum(100);
-		lifeBar.setValue(currentLife*5);
-		lifeBar.setString("• LIFE •");
-		lifeBar.setStringPainted(true);
+		Model m = (Model) m_model;
+		int score = m.m_score.nombre ;
 		
-	    Container contentPane = m_frame.getContentPane()*;
-	    contentPane.add(lifeBar, BorderLayout.SOUTH);*/
+		JLabel score_display = new JLabel("", JLabel.CENTER);
+		score_display.setText("SCORE " + Integer.toString(score));
+		score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
+		
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(score_display, BorderLayout.SOUTH);
 	    
 		
 	}
