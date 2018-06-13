@@ -22,7 +22,7 @@ public final class Player extends MobileEntity {
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
 
-	public int m_oil_jauge;
+	public float m_oil_jauge;
 
 	/**
 	 * @param pos
@@ -36,11 +36,12 @@ public final class Player extends MobileEntity {
 	 * @throws Game_exception
 	 */
 
-	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
-	super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
-		
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+			throws Game_exception {
+		super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
+
 		m_automata = m_model.getAutomata(this);
-		m_oil_jauge = 20;
+		m_oil_jauge = Options.MAX_OIL;
 
 		loadSprites();
 		switch (dir) {
@@ -67,9 +68,9 @@ public final class Player extends MobileEntity {
 	@Override
 	public void destroy() throws Game_exception {
 
-		//On va se calmer là non ?
-		//m_model.map().tile(m_pos).remove(this);
-		//System.exit(0);
+		// On va se calmer là non ?
+		// m_model.map().tile(m_pos).remove(this);
+		// System.exit(0);
 
 		// TODO: un écran de Game Over
 	}
@@ -119,9 +120,10 @@ public final class Player extends MobileEntity {
 				break;
 			}
 			if (m_life <= 0) {
-				
+
 				destroy();
 			}
+			m_oil_jauge -= 0.01;
 		}
 	}
 
@@ -154,7 +156,11 @@ public final class Player extends MobileEntity {
 
 		if (result != null) {
 			Oil to_pick = (Oil) result;
-			this.m_oil_jauge += Options.OIL_PICKED;
+			if (this.m_oil_jauge + Options.OIL_PICKED > Options.MAX_OIL) {
+				this.m_oil_jauge = Options.MAX_OIL;
+			} else {
+				this.m_oil_jauge += Options.OIL_PICKED;
+			}
 			to_pick.destroy();
 		}
 	}

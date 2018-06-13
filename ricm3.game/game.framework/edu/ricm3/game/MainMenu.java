@@ -111,6 +111,7 @@ public class MainMenu {
 		b4.add(b1);
 		b4.add(b2);
 
+		m_menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate the process of clicking on the red cross
 		m_menu.getContentPane().add(b4);
 		m_menu.setVisible(true);
 	}
