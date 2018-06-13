@@ -156,7 +156,7 @@ public final class Player extends MobileEntity {
 	public void pick() throws Game_exception {
 		Entity result = m_model.map().tile(this.m_pos).contain(EntityType.OIL);
 
-		if (result != null) {
+		if ((result != null) && !(m_model.UNDER_WATER)) {
 			Oil to_pick = (Oil) result;
 			if (this.m_oil_jauge + Options.OIL_PICKED > Options.MAX_OIL) {
 				this.m_oil_jauge = Options.MAX_OIL;
