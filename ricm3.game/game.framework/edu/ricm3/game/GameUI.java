@@ -72,6 +72,8 @@ public class GameUI {
 	private JProgressBar m_lifeBar;
 	private JProgressBar m_oilBar;
 
+	private JLabel m_score_display;
+
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
 		m_model.m_game = this;
@@ -158,10 +160,6 @@ public class GameUI {
 			m_text.setText("Starting up...");
 			addNorth(m_text);
 
-			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
-			refreshLife();
-			m_oilBar = new JProgressBar(JProgressBar.VERTICAL);
-			refreshOil();
 
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -189,9 +187,14 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
+			
+			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshLife();
+			m_oilBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshOil();
+			m_score_display = new JLabel("", JLabel.CENTER);
 			refreshScore();
+			
 
 		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
@@ -268,12 +271,12 @@ public class GameUI {
 		Model m = (Model) m_model;
 		int score = m.m_score.nombre;
 
-		JLabel score_display = new JLabel("", JLabel.CENTER);
-		score_display.setText("SCORE " + Integer.toString(score));
-		score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
+		m_score_display.removeAll();
+		m_score_display.setText("SCORE " + Integer.toString(score));
+		m_score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
 
 		Container contentPane = m_frame.getContentPane();
-		contentPane.add(score_display, BorderLayout.SOUTH);
+		contentPane.add(m_score_display, BorderLayout.SOUTH);
 
 	}
 
@@ -328,7 +331,6 @@ public class GameUI {
 				txt += m_msg;
 			// System.out.println(txt);
 			m_text.setText(txt);
-			//m_text.repaint();
 
 			refreshLife();
 			refreshOil();
