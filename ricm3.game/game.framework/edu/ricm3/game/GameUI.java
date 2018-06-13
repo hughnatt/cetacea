@@ -157,7 +157,9 @@ public class GameUI {
 			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));
 			addSouth(onTheBottom);
 			
+			m_life = new JPanel();
 			refreshLife();
+			m_oil = new JPanel();
 			refreshOil();
 			
 			m_frame.setSize(d);
@@ -211,7 +213,7 @@ public class GameUI {
 	public void refreshOil() {
 		Model m = (Model) m_model;
 		
-		m_oil = new JPanel();
+		m_oil.removeAll();
 		m_oil.setLayout(new BoxLayout(m_oil,BoxLayout.Y_AXIS));
 		
 		m_oil.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
@@ -238,7 +240,7 @@ public class GameUI {
 		Model m = (Model) m_model;
 		
 		//Left Panel
-		m_life = new JPanel();
+		m_life.removeAll();
 		m_life.setLayout(new BoxLayout(m_life,BoxLayout.Y_AXIS));
 		
 		m_life.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
