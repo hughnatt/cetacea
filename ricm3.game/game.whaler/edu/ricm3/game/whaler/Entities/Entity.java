@@ -39,9 +39,26 @@ public abstract class Entity {
 		this.m_underSprite = underSprite;
 
 		// Adding the Entity to the Map (for rendering and fast access to locations)
-		// TODO à descendre peut etre
 		m_model.map().tile(m_pos.x, m_pos.y).addForeground(this);
 
+	}
+
+	protected Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
+			boolean add_back) throws Game_exception {
+
+		this.m_pos = pos;
+		this.m_solid = solid;
+		this.m_sprite = sprite;
+		this.m_model = model;
+
+		this.m_underSprite = underSprite;
+
+		// Adding the Entity to the Map (for rendering and fast access to locations)
+		if (add_back) {
+			m_model.map().tile(m_pos.x, m_pos.y).addBackground(this);
+		} else {
+			m_model.map().tile(m_pos.x, m_pos.y).addForeground(this);
+		}
 	}
 
 	public enum EntityType {

@@ -36,6 +36,14 @@ public abstract class MobileEntity extends Entity {
 		m_lastStep = 0;
 		m_direction = dir;
 	}
+	
+	protected MobileEntity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
+			Direction dir, int life, boolean add_back) throws Game_exception {
+		super(pos, solid, sprite, underSprite, model,add_back);
+		m_life = life;
+		m_lastStep = 0;
+		m_direction = dir;
+	}
 
 	public abstract void destroy() throws Game_exception;
 

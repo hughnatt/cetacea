@@ -30,7 +30,7 @@ public final class Oil extends MobileEntity {
 	 * @throws Game_exception
 	 */
 	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE);
+		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE, true);
 		// We use a default direction,because it has no importance
 
 		m_automata = m_model.getAutomata(this);
@@ -46,6 +46,8 @@ public final class Oil extends MobileEntity {
 			m_spriteFire[i] = m_model.get_fire_sprite().getSubimage(0, 32 * i, 32, 32);
 		}
 	}
+	
+
 
 	@Override
 	public void destroy() throws Game_exception {
