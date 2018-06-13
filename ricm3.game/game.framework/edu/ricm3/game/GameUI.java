@@ -18,8 +18,11 @@
 package edu.ricm3.game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -33,7 +36,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Options;
@@ -47,7 +53,6 @@ public class GameUI {
 
 	static GameUI game;
 
-
 	JFrame m_frame;
 	GameView m_view;
 	JMenuBar m_menuBar;
@@ -55,8 +60,6 @@ public class GameUI {
 	GameModel m_model;
 	GameController m_controller;
 	JLabel m_text;
-	JPanel m_oil;
-	JPanel m_life;
 	int m_fps;
 	String m_msg;
 	long m_start;
@@ -65,6 +68,11 @@ public class GameUI {
 	long m_lastTick;
 	int m_nTicks;
 	private Screen m_screen;
+
+	private JProgressBar m_lifeBar;
+	private JProgressBar m_oilBar;
+
+	private JLabel m_score_display;
 
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
@@ -80,7 +88,7 @@ public class GameUI {
 		// create the main window and the periodic timer
 		// to drive the overall clock of the simulation.
 		createWindow(d);
-	
+
 	}
 
 	// enum for the menu, to determine which screen should be displayed
@@ -132,7 +140,7 @@ public class GameUI {
 			m_frame = new JFrame();
 			m_frame.setTitle("Cetacea");
 			m_frame.setLayout(new BorderLayout());
-			//m_frame.setResizable(false);
+			// m_frame.setResizable(false);
 
 			File f = new File("game.whaler/sprites/cetacea.png");
 			Image icone;
@@ -143,22 +151,16 @@ public class GameUI {
 				ex.printStackTrace();
 				System.exit(-1);
 			}
-			
-			//Primary Display on the center
+
+			// Primary Display on the center
 			m_frame.add(m_view, BorderLayout.CENTER);
 
-			//Info Bar (FPS, TICK,...)
+			// Info Bar (FPS, TICK,...)
 			m_text = new JLabel();
 			m_text.setText("Starting up...");
 			addNorth(m_text);
-			
-			
-			JPanel onTheBottom = new JPanel(new GridLayout(1,31));
-			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));
-			addSouth(onTheBottom);
-			
 
-			
+
 			m_frame.setSize(d);
 			m_frame.doLayout();
 			m_frame.setVisible(true);
@@ -185,9 +187,14 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
-			refreshOil();
-			refreshLife();
+
 			
+			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
+			refreshLife();
+			m_oilBar = new JProgressBar(JProgressBar.VERTICAL);
+			refreshOil();
+			m_score_display = new JLabel("", JLabel.CENTER);
+			refreshScore();
 			
 
 		}  else if (currentScreen() == Screen.MENU) {
@@ -204,73 +211,76 @@ public class GameUI {
 			AutomataSelection a = new AutomataSelection(this);
 			a.create_frame();
 			a.create_automata_selection();
-			
-		} else if ( currentScreen()==Screen.END) {
+
+
+		} else if (currentScreen() == Screen.END) {
+
 			EndGame e = new EndGame(this);
 			e.create_frame();
 			e.create_endgame();
-			
+
 		}
-		
-	}
-	
-	public void refreshOil() {
-		Model m = (Model) m_model;
-		
-		m_oil = new JPanel();
-		m_oil.setLayout(new BoxLayout(m_oil,BoxLayout.Y_AXIS));
-		
-		m_oil.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
-		
-		float currentOil = m.m_player.m_oil_jauge;
-		
-		//To Avoid display problems
-		if (currentOil <= 0) {
-			currentOil = 0;
-			this.setScreen(Screen.END);
-		}
-		
-		for (float i=Options.MAX_OIL; i > currentOil; i-=0.5) {
-			m_oil.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
-		}
-		
-		for (float i = currentOil; i >= 1 ; i-=0.5) {
-			m_oil.add(new JLabel(new ImageIcon(m.m_oilfullSprite)));
-		}
-		
-		addEast(m_oil);
-	}
-	
-	public void refreshLife() {
-		Model m = (Model) m_model;
-		
-		//Left Panel
-		m_life = new JPanel();
-		m_life.setLayout(new BoxLayout(m_life,BoxLayout.Y_AXIS));
-		
-		m_life.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
-		
-		int currentLife = m.m_player.m_life;
-		if (currentLife <= 0 ) {
-			currentLife = 0;
-			this.setScreen(Screen.END);
-			
-			
-		}
-		
-		for (int i=Options.PLAYER_LIFE ; i > currentLife; i--) {
-			m_life.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
-		}
-		
-		for (int i = currentLife; i >= 1 ; i--) {
-			m_life.add(new JLabel(new ImageIcon(m.m_lifefullSprite)));
-		}
-		addWest(m_life);
+
 	}
 
-	
-	
-	
+	public void refreshOil() {
+
+		Model m = (Model) m_model;
+		float currentOil = m.m_player.m_oil_jauge;
+
+		m_oilBar.removeAll();
+
+		m_oilBar.setValue((int) currentOil * 5);
+		m_oilBar.setStringPainted(true);
+		UIManager.put("ProgressBar.background", Color.OPAQUE);
+		UIManager.put("ProgressBar.selectionForeground", Color.WHITE);
+
+		m_oilBar.setForeground(Color.GRAY);
+		m_oilBar.setString("10%");
+		m_oilBar.setMinimum(0);
+		m_oilBar.setMaximum(100);
+		m_oilBar.setString("• OIL •");
+		m_oilBar.setStringPainted(true);
+
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(m_oilBar, BorderLayout.EAST);
+
+	}
+
+	public void refreshLife() {
+
+		Model m = (Model) m_model;
+		int currentLife = m.m_player.m_life;
+		m_lifeBar.removeAll();
+
+		m_lifeBar.setStringPainted(true);
+		m_lifeBar.setForeground(Color.RED);
+		m_lifeBar.setString("10%");
+		m_lifeBar.setMinimum(0);
+		m_lifeBar.setMaximum(100);
+		m_lifeBar.setValue(currentLife * 5);
+		m_lifeBar.setString("• LIFE •");
+		m_lifeBar.setStringPainted(true);
+
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(m_lifeBar, BorderLayout.WEST);
+
+	}
+
+	public void refreshScore() {
+
+		Model m = (Model) m_model;
+		int score = m.m_score.nombre;
+
+		m_score_display.removeAll();
+		m_score_display.setText("SCORE " + Integer.toString(score));
+		m_score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
+
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(m_score_display, BorderLayout.SOUTH);
+
+	}
+
 	/*
 	 * Let's create a timer, it is the heart of the simulation, ticking periodically
 	 * so that we can simulate the passing of time.
@@ -322,13 +332,11 @@ public class GameUI {
 				txt += m_msg;
 			// System.out.println(txt);
 			m_text.setText(txt);
-			m_text.repaint();
-			
+
 			refreshLife();
 			refreshOil();
-			m_life.repaint();
-			m_oil.repaint();
-			
+			refreshScore();
+
 			m_view.paint();
 			m_lastRepaint = now;
 		}
