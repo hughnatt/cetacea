@@ -92,7 +92,7 @@ public class GameUI {
 
 	// enum for the menu, to determine which screen should be displayed
 	public enum Screen {
-		MENU, PLAY, AUTOMATA, OPTIONS, RULES, PAUSE, EXIT;
+		MENU, PLAY, AUTOMATA, OPTIONS, RULES, PAUSE, EXIT, END;
 	}
 
 	// getter for Screen
@@ -196,21 +196,23 @@ public class GameUI {
 
 		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
-			// createTimer();
 			m.create_frame();
 			m.create_menu();
 
 		} else if (currentScreen() == Screen.RULES) {
 			Rules r = new Rules(this);
-			// createTimer();
 			r.create_frame();
 			r.create_rules();
 
 		} else if (currentScreen() == Screen.AUTOMATA) {
 			AutomataSelection a = new AutomataSelection(this);
-			// createTimer();
 			a.create_frame();
 			a.create_automata_selection();
+		}else if ( currentScreen()==Screen.END) {
+			EndGame e = new EndGame(this);
+			e.create_frame();
+			e.create_endgame();
+			
 		}
 	}
 	
