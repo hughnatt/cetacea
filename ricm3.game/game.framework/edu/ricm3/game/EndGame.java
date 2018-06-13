@@ -79,7 +79,7 @@ public class EndGame {
 		
 		JPanel exit_button = new JPanel();
 		exit_button.setOpaque(false);
-		exit_button.add(replay);
+		exit_button.add(exit);
 
 		// Ajout du bouton play au 1er étage
 		JPanel b1 = new JPanel();

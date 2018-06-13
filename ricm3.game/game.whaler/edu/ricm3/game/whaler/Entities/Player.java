@@ -77,7 +77,6 @@ public final class Player extends MobileEntity {
 		// System.exit(0);
 
 		// TODO: un écran de Game Over
-		//m_g.setScreen(Screen.END);
 	}
 
 	public void loadSprites() {

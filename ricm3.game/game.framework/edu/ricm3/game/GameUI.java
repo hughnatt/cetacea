@@ -157,8 +157,7 @@ public class GameUI {
 			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));
 			addSouth(onTheBottom);
 			
-			refreshLife();
-			refreshOil();
+
 			
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -186,7 +185,8 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
-			
+			refreshLife();
+			refreshOil();
 
 		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
@@ -202,12 +202,15 @@ public class GameUI {
 			AutomataSelection a = new AutomataSelection(this);
 			a.create_frame();
 			a.create_automata_selection();
+			
 		}else if ( currentScreen()==Screen.END) {
+			
 			EndGame e = new EndGame(this);
 			e.create_frame();
 			e.create_endgame();
 			
 		}
+		
 	}
 	
 	public void refreshOil() {
@@ -248,6 +251,9 @@ public class GameUI {
 		int currentLife = m.m_player.m_life;
 		if (currentLife <= 0) {
 			currentLife = 0;
+			this.setScreen(Screen.END);
+			
+			
 		}
 		
 		for (int i=Options.PLAYER_LIFE ; i > currentLife; i--) {
@@ -260,6 +266,9 @@ public class GameUI {
 		addWest(m_life);
 	}
 
+	
+	
+	
 	/*
 	 * Let's create a timer, it is the heart of the simulation, ticking periodically
 	 * so that we can simulate the passing of time.
