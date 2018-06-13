@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Bulle extends Static_Entity {
+public class Bulle extends StaticEntity {
 
 	/* BufferedImage Array to store the sprite */
 	int m_sprite_idx;
@@ -61,5 +61,10 @@ public class Bulle extends Static_Entity {
 	public void paint_under(Graphics g, Location map_ref) {
 		BufferedImage img = m_sprites[m_sprite_idx];
 		g.drawImage(img, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.VOID;
 	}
 }

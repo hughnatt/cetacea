@@ -7,18 +7,18 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Entities.Entity;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
-import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Entities.MobileEntity;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public abstract class ICondition {
 
-	EntityDangerLevel[][] fillMatrice() {
+	
+	public static EntityDangerLevel[][] entity_behaviour = new EntityDangerLevel[10][10];
+	
+	public static void fillDangerLevelMatrice() {
 		/*
 		 * DESTROYER = 0 OIL = 1 PLAYER = 2 PROJECTILE = 3 WHALE = 4 WHALER = 5
 		 */
-
-		EntityDangerLevel[][] entity_behaviour = new EntityDangerLevel[10][10];
-
 		// Column 1
 		entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.TEAM;
 		entity_behaviour[EntityType.OIL.ordinal()][EntityType.DESTROYER.ordinal()] = EntityDangerLevel.VOID;
@@ -85,11 +85,9 @@ public abstract class ICondition {
 		entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
 		entity_behaviour[EntityType.STONE.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
 		entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
-
-		return entity_behaviour;
 	}
 
-	public abstract boolean eval(Mobile_Entity current, Model model) throws Map_exception; // Il y aura besoin de
+	public abstract boolean eval(MobileEntity current, Model model) throws Map_exception; // Il y aura besoin de
 																							// rajouter (au moins) la
 																							// map (voir model complet)
 																							// et
@@ -159,7 +157,7 @@ public abstract class ICondition {
 
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) {
+		public boolean eval(MobileEntity current, Model model) {
 			return true;
 		}
 	}
@@ -175,7 +173,7 @@ public abstract class ICondition {
 			m_key = key;
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) {
+		public boolean eval(MobileEntity current, Model model) {
 			m_key = m_key.toUpperCase();
 
 			int length = m_key.length();
@@ -216,7 +214,7 @@ public abstract class ICondition {
 			m_dir = strToDir(string);
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) {
+		public boolean eval(MobileEntity current, Model model) {
 			return current.m_direction == m_dir;
 
 		}
@@ -238,9 +236,7 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
-
-			EntityDangerLevel[][] entity_behaviour = fillMatrice();
+		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 
 
 			int px = current.getx();
@@ -294,12 +290,6 @@ public abstract class ICondition {
 
 	
 
-	/**
-	 * La plus proche entité de type m_entity est dans la direction m_dir NB :
-	 * (@Tanguy) : Celle là elle a pas l'air facile à faire, il faudra passer la map
-	 * complète en argument galère, galère, ... m_entity peut valoir : Void Team
-	 * Adversaire Danger Pick
-	 */
 	public static class IClosest extends ICondition {
 		EntityDangerLevel m_entity;
 		Direction m_dir;
@@ -309,8 +299,7 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
-			EntityDangerLevel[][] entity_behaviour = fillMatrice();
+		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 
 			int px = current.getx();
 			int py = current.gety();
@@ -448,7 +437,7 @@ public abstract class ICondition {
 		public IGotPower() {
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) {
+		public boolean eval(MobileEntity current, Model model) {
 			return current.m_life > 5;
 		}
 
@@ -463,7 +452,7 @@ public abstract class ICondition {
 		public IGotStuff() {
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) {
+		public boolean eval(MobileEntity current, Model model) {
 			return false; // TODO
 		}
 	}
@@ -482,7 +471,7 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
+		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 			return (m_a.eval(current, model) && m_b.eval(current, model));
 		}
 	}
@@ -501,7 +490,7 @@ public abstract class ICondition {
 			m_b = b;
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
+		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 			return (m_a.eval(current, model) || m_b.eval(current, model));
 		}
 	}
@@ -518,7 +507,7 @@ public abstract class ICondition {
 			m_a = a;
 		}
 
-		public boolean eval(Mobile_Entity current, Model model) throws Map_exception {
+		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 			return !(m_a.eval(current, model));
 		}
 	}

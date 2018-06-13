@@ -12,7 +12,7 @@ import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
-public class Projectile extends Mobile_Entity {
+public class Projectile extends MobileEntity {
 
 	int m_remaining; // before destruction, 0 = destruction at the next move
 	int m_damage; // The damage that will be done by the projectile
@@ -32,9 +32,9 @@ public class Projectile extends Mobile_Entity {
 	 *            Damage power
 	 * @throws Game_exception
 	 */
-	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			int range, int damage) throws Game_exception {
-		super(pos, false, sprite, underSprite, model, dir, range);
+	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
+		super(pos, false, sprite, underSprite, model, dir, 6);
+		
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
 
@@ -65,7 +65,7 @@ public class Projectile extends Mobile_Entity {
 				case DESTROYER:
 				case WHALER:
 				case WHALE:
-					Mobile_Entity me = (Mobile_Entity) e;
+					MobileEntity me = (MobileEntity) e;
 					me.m_life -= m_damage;
 				default:
 					return true;
@@ -137,6 +137,11 @@ public class Projectile extends Mobile_Entity {
 
 	public void pick() {
 		this.pop();
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.PROJECTILE;
 	}
 
 }

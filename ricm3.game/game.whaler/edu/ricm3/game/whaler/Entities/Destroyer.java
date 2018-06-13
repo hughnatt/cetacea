@@ -8,10 +8,11 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Destroyer extends Mobile_Entity {
+public class Destroyer extends MobileEntity {
 
 	BufferedImage m_destroyerNorth;
 	BufferedImage m_destroyerSouth;
@@ -71,6 +72,8 @@ public class Destroyer extends Mobile_Entity {
 
 	}
 
+	
+	
 	@Override
 	public void destroy() throws Game_exception {
 		m_model.map().tile(m_pos).remove(this);
@@ -175,5 +178,12 @@ public class Destroyer extends Mobile_Entity {
 	public void pick() throws Game_exception {
 		//
 		
+	}
+
+
+
+	@Override
+	public EntityType getType() {
+		return EntityType.DESTROYER;
 	}
 }

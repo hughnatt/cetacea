@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public final class Iceberg extends Static_Entity {
+public final class Iceberg extends StaticEntity {
 
 	/**
 	 * @param pos
@@ -18,6 +18,14 @@ public final class Iceberg extends Static_Entity {
 	 */
 	public Iceberg(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, true, sprite, underSprite, model);
+	}
+	
+	public boolean isSolid() {
+		if (m_model.UNDER_WATER) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
@@ -32,6 +40,11 @@ public final class Iceberg extends Static_Entity {
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
 
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.ICEBERG;
 	}
 
 }

@@ -11,7 +11,7 @@ import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
-public final class Player extends Mobile_Entity {
+public final class Player extends MobileEntity {
 
 	BufferedImage m_playerNorth;
 	BufferedImage m_playerSouth;
@@ -23,7 +23,7 @@ public final class Player extends Mobile_Entity {
 	BufferedImage m_playerEastUnder;
 	BufferedImage m_playerWestUnder;
 
-	int oil_jauge;
+	public int m_oil_jauge;
 
 	/**
 	 * @param pos
@@ -37,11 +37,11 @@ public final class Player extends Mobile_Entity {
 	 * @throws Game_exception
 	 */
 
-	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir,
-			IAutomata auto) throws Game_exception {
-		super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
-
-		m_automata = auto;
+	public Player(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
+	super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
+		
+		m_automata = m_model.getAutomata(this);
+		m_oil_jauge = 20;
 
 		loadSprites();
 		switch (dir) {
@@ -67,9 +67,11 @@ public final class Player extends Mobile_Entity {
 
 	@Override
 	public void destroy() throws Game_exception {
-		m_model.map().tile(m_pos).remove(this);
-		System.out.println("OMG Player is DEEEADDDD !!!");
-		System.exit(0);
+
+		//On va se calmer là non ?
+		//m_model.map().tile(m_pos).remove(this);
+		//System.exit(0);
+
 		// TODO: un écran de Game Over
 	}
 
@@ -118,6 +120,7 @@ public final class Player extends Mobile_Entity {
 				break;
 			}
 			if (m_life <= 0) {
+				
 				destroy();
 			}
 		}
@@ -148,12 +151,11 @@ public final class Player extends Mobile_Entity {
 	}
 
 	public void pick() throws Game_exception {
-
 		Entity result = m_model.map().tile(this.m_pos).contain(EntityType.OIL);
 
 		if (result != null) {
 			Oil to_pick = (Oil) result;
-			this.oil_jauge += Options.OIL_PICKED;
+			this.m_oil_jauge += Options.OIL_PICKED;
 			to_pick.destroy();
 		}
 	}
@@ -163,23 +165,28 @@ public final class Player extends Mobile_Entity {
 		switch (m_direction) {
 		case SOUTH:
 			new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.SOUTH, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.SOUTH);
 			break;
 		case NORTH:
 			new Projectile(new Location(this.getx(), this.gety() - 1), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.NORTH, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.NORTH);
 			break;
 		case EAST:
 			new Projectile(new Location(this.getx() + 1, this.gety()), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.EAST, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.EAST);
 			break;
 		case WEST:
 			new Projectile(new Location(this.getx() - 1, this.gety()), m_model.get_projectile_sprite(),
-					m_model.get_projectile_sprite(), m_model, Direction.WEST, 6, 3);
+					m_model.get_projectile_sprite(), m_model, Direction.WEST);
 			break;
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.PLAYER;
 	}
 
 }

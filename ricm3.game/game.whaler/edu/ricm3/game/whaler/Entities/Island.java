@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public final class Island extends Static_Entity {
+public final class Island extends StaticEntity {
 
 	/**
 	 * @param pos
@@ -31,7 +31,12 @@ public final class Island extends Static_Entity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
+		g.drawImage(m_underSprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.ISLAND;
 	}
 
 }

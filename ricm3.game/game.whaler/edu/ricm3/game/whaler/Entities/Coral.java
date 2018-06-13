@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Coral extends Static_Entity {
+public class Coral extends StaticEntity {
 	/**
 	 * @param pos
 	 * @param sprite
@@ -31,6 +31,11 @@ public class Coral extends Static_Entity {
 	public void paint_under(Graphics g, Location map_ref) {
 		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
 
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.VOID;
 	}
 
 }

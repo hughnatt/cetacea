@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Entities.MobileEntity;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class IBehaviour {
@@ -21,7 +21,7 @@ public class IBehaviour {
 		m_source = source;
 	}
 
-	public void step(Mobile_Entity e, Model model) throws Game_exception {
+	public void step(MobileEntity e, Model model) throws Game_exception {
 
 		Iterator<ITransition> iter = m_transitions.iterator();
 		while (iter.hasNext()) {

@@ -44,6 +44,14 @@ public class Map {
 			throw new Map_exception("Coordonnee y unfitted");
 		}
 		return m_tiles[x][y];
+		
+		/*
+		try {
+			return m_tiles[x][y];
+		} catch (IndexOutOfBoundsException e) {
+			throw new Map_exception(e.toString());
+		}*/
+		
 	}
 
 	public Tile tile(Location l) throws Map_exception {

@@ -9,7 +9,7 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
-public class RedCoral extends Static_Entity {
+public class RedCoral extends StaticEntity {
 
 	public RedCoral(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, false, sprite, underSprite, model);
@@ -26,6 +26,11 @@ public class RedCoral extends Static_Entity {
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
 		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.VOID;
 	}
 
 }

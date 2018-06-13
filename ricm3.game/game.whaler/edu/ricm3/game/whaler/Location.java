@@ -39,9 +39,8 @@ public class Location {
 		this.y = y;
 	}
 
-	public Location(Location l) {
-		this.x = l.x;
-		this.y = l.y;
+	public Location(Location l) throws Location_exception {
+		this(l.x,l.y);
 	}
 
 	public void up() {
