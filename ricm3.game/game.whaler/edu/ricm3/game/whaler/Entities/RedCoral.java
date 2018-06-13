@@ -9,7 +9,7 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
-public class RedCoral extends Static_Entity {
+public class RedCoral extends StaticEntity {
 
 	public RedCoral(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, false, sprite, underSprite, model);

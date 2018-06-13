@@ -41,12 +41,12 @@ import edu.ricm3.game.whaler.Entities.Destroyer;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
-import edu.ricm3.game.whaler.Entities.Mobile_Entity;
+import edu.ricm3.game.whaler.Entities.MobileEntity;
 import edu.ricm3.game.whaler.Entities.Oil;
 import edu.ricm3.game.whaler.Entities.Player;
 import edu.ricm3.game.whaler.Entities.Projectile;
 import edu.ricm3.game.whaler.Entities.RedCoral;
-import edu.ricm3.game.whaler.Entities.Static_Entity;
+import edu.ricm3.game.whaler.Entities.StaticEntity;
 import edu.ricm3.game.whaler.Entities.Stone;
 import edu.ricm3.game.whaler.Entities.Whale;
 import edu.ricm3.game.whaler.Entities.Whaler;
@@ -55,6 +55,7 @@ import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
+import edu.ricm3.game.whaler.Interpretor.ICondition;
 
 public class Model extends GameModel {
 
@@ -99,7 +100,7 @@ public class Model extends GameModel {
 
 	// Static Entity tab
 
-	List<Static_Entity> m_statics = new LinkedList<Static_Entity>();
+	List<StaticEntity> m_statics = new LinkedList<StaticEntity>();
 
 	// Mobile Entity List
 	public Player m_player;
@@ -108,7 +109,7 @@ public class Model extends GameModel {
 	public List<Projectile> m_projectiles = new LinkedList<Projectile>();
 	public List<Whale> m_whales = new LinkedList<Whale>();
 	public List<Oil> m_oils = new LinkedList<Oil>();
-	public List<Mobile_Entity> m_garbage;
+	public List<MobileEntity> m_garbage;
 
 	public boolean[] keyPressed;
 	// Random generation
@@ -136,6 +137,9 @@ public class Model extends GameModel {
 		// Loading setting file
 		// 6 Entities
 		automata_choices = new int[EntityType.values().length];
+		
+		//Setting up the Danger Level Matrice
+		ICondition.fillDangerLevelMatrice();
 
 		BufferedReader bis = null;
 		try {
@@ -147,7 +151,7 @@ public class Model extends GameModel {
 			automata_choices[EntityType.PLAYER.ordinal()] = Integer.parseInt(bis.readLine());
 			automata_choices[EntityType.OIL.ordinal()] = Integer.parseInt(bis.readLine());
 			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(bis.readLine());
-
+			//TODO
 			bis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -242,15 +246,15 @@ public class Model extends GameModel {
 
 		try {
 
-			m_garbage = new LinkedList<Mobile_Entity>();
+			m_garbage = new LinkedList<MobileEntity>();
 
 			m_current_background.step(now);
 
 			m_player.step(now);
 
-			Iterator<Static_Entity> iterstatics = m_statics.iterator();
+			Iterator<StaticEntity> iterstatics = m_statics.iterator();
 			while (iterstatics.hasNext()) {
-				Static_Entity e = iterstatics.next();
+				StaticEntity e = iterstatics.next();
 				e.step(now);
 			}
 
@@ -288,9 +292,9 @@ public class Model extends GameModel {
 
 			// Garbage Iterator
 
-			Iterator<Mobile_Entity> iterdestroy = m_garbage.iterator();
+			Iterator<MobileEntity> iterdestroy = m_garbage.iterator();
 			while (iterdestroy.hasNext()) {
-				Mobile_Entity e = iterdestroy.next();
+				MobileEntity e = iterdestroy.next();
 				switch (e.getType()) {
 				case WHALE:
 					m_whales.remove(e);
@@ -325,7 +329,7 @@ public class Model extends GameModel {
 	public void shutdown() {
 	}
 
-	public IAutomata getAutomata(Mobile_Entity m) throws Game_exception {
+	public IAutomata getAutomata(MobileEntity m) throws Game_exception {
 		switch (m.getType()) {
 		case PLAYER:
 			return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];

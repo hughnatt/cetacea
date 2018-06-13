@@ -12,7 +12,7 @@ import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Destroyer extends Mobile_Entity {
+public class Destroyer extends MobileEntity {
 
 	BufferedImage m_destroyerNorth;
 	BufferedImage m_destroyerSouth;

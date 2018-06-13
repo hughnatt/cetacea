@@ -61,14 +61,10 @@ public class View extends GameView {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		m_model.m_current_background.paint(g);
 		// Viewport paint of the map
-		try {
-			if (m_model.UNDER_WATER) {
-				m_model.map().paint_under(g);
-			} else {
-				m_model.map().paint(g);
-			}
-		} catch (Game_exception e) {
-			// TODO Catching des erreurs de paint
+		if (m_model.UNDER_WATER) {
+			m_model.map().paint_under(g);
+		} else {
+			m_model.map().paint(g);
 		}
 	}
 }

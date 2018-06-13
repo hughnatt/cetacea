@@ -12,7 +12,7 @@ import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
-public final class Whale extends Mobile_Entity {
+public final class Whale extends MobileEntity {
 
 	// public int m_capture; // Catch gauge
 	int m_damage; // DPS to the hit

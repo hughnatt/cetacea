@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Bulle extends Static_Entity {
+public class Bulle extends StaticEntity {
 
 	/* BufferedImage Array to store the sprite */
 	int m_sprite_idx;

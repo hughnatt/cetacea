@@ -12,7 +12,7 @@ import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
-public class Projectile extends Mobile_Entity {
+public class Projectile extends MobileEntity {
 
 	int m_remaining; // before destruction, 0 = destruction at the next move
 	int m_damage; // The damage that will be done by the projectile
@@ -65,7 +65,7 @@ public class Projectile extends Mobile_Entity {
 				case DESTROYER:
 				case WHALER:
 				case WHALE:
-					Mobile_Entity me = (Mobile_Entity) e;
+					MobileEntity me = (MobileEntity) e;
 					me.m_life -= m_damage;
 				default:
 					return true;

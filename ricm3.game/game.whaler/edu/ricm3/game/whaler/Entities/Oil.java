@@ -11,7 +11,7 @@ import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public final class Oil extends Mobile_Entity {
+public final class Oil extends MobileEntity {
 
 	boolean is_burning;
 	long m_lastSpread;
@@ -83,7 +83,7 @@ public final class Oil extends Mobile_Entity {
 					case DESTROYER:
 					case WHALER:
 					case WHALE:
-						Mobile_Entity me = (Mobile_Entity) e;
+						MobileEntity me = (MobileEntity) e;
 						me.m_life -= m_damage;
 					default:
 						break;

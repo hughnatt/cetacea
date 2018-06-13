@@ -7,7 +7,7 @@ import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Stone extends Static_Entity {
+public class Stone extends StaticEntity {
 
 	/**
 	 * @param pos

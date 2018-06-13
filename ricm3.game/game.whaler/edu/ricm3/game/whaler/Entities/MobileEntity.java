@@ -6,10 +6,11 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Interpretor.IState;
 
-public abstract class Mobile_Entity extends Entity {
+public abstract class MobileEntity extends Entity {
 
 	long m_lastStep;
 	public Direction m_direction;
@@ -28,7 +29,7 @@ public abstract class Mobile_Entity extends Entity {
 	 * @param dir
 	 * 
 	 */
-	protected Mobile_Entity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
+	protected MobileEntity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
 			Direction dir, int life) throws Game_exception {
 		super(pos, solid, sprite, underSprite, model);
 		m_life = life;
@@ -42,8 +43,9 @@ public abstract class Mobile_Entity extends Entity {
 	 * // Calculation of the front location
 	 * 
 	 * @return Location
+	 * @throws Location_exception 
 	 */
-	protected Location pos_front() {
+	protected Location pos_front() throws Location_exception {
 		Location front = new Location(this.m_pos);
 		switch (m_direction) {
 		case NORTH:

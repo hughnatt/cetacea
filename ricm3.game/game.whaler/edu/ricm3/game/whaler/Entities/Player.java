@@ -11,7 +11,7 @@ import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
-public final class Player extends Mobile_Entity {
+public final class Player extends MobileEntity {
 
 	BufferedImage m_playerNorth;
 	BufferedImage m_playerSouth;
