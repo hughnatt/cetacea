@@ -119,7 +119,7 @@ public abstract class ICondition {
 
 	
 	enum EntityDangerLevel {
-		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE	
+		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE;
 	}
 	
 	static EntityDangerLevel strToEDL(String s) {
@@ -308,8 +308,6 @@ public abstract class ICondition {
 			int max_i = 0;
 			Direction d;
 
-			System.out.println("m_dir: " + m_dir);
-			System.out.println("current direction: " + current.m_direction);
 			switch (m_dir) {
 			case NORTH:
 				max_i = current.gety() - 1;
@@ -412,8 +410,6 @@ public abstract class ICondition {
 					break;
 				}
 
-				System.out.println(cy);
-				System.out.println(Options.DIMY_MAP);
 				Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
 				while (iter.hasNext()) {
 					Entity e = iter.next();

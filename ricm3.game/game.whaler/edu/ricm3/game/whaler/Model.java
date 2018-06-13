@@ -19,9 +19,11 @@ package edu.ricm3.game.whaler;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -123,62 +125,145 @@ public class Model extends GameModel {
 	public BufferedImage m_bardownSprite;
 	public BufferedImage m_oilfullSprite;
 
-	public Model() throws FileNotFoundException, Automata_Exception, Game_exception, ParseException {
+	public Model() throws Game_exception {
 
-		new AutomataParser(new BufferedReader(new FileReader("game.parser/example/automata.txt")));
-		// Loading automate file
-		Ast ast = AutomataParser.Run();
-		automata_array = ((AI_Definitions) ast).make();
+		//Load, Parse and Make the Automata Array
+		loadAutomaton();
+		
+		//Load the Automata Choice Array
+		loadAutomataChoices();
 
-		// Loading setting file
-		// 6 Entities
-		automata_choices = new int[EntityType.values().length];
+		//Load all the sprites
+		loadSprites();
+
+		// Which key is currently pressed ?
+		keyPressed = new boolean[128];
+
+		// LastSwap Under/Over Water (never occured at first)
+		m_lastSwap = Integer.MAX_VALUE;
 
 		// Setting up the Danger Level Matrice
 		ICondition.fillDangerLevelMatrice();
 
-		BufferedReader bis = null;
-		try {
-			bis = new BufferedReader(new FileReader(new File("game.whaler/sprites/choix_automates.txt")));
+		/*** Creating the map ***/
+		generateMap();
 
-			automata_choices[EntityType.WHALE.ordinal()] = Integer.parseInt(bis.readLine());
-			automata_choices[EntityType.WHALER.ordinal()] = Integer.parseInt(bis.readLine());
-			automata_choices[EntityType.DESTROYER.ordinal()] = Integer.parseInt(bis.readLine());
-			automata_choices[EntityType.PLAYER.ordinal()] = Integer.parseInt(bis.readLine());
-			automata_choices[EntityType.OIL.ordinal()] = Integer.parseInt(bis.readLine());
-			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(bis.readLine());
-			// TODO
-			bis.close();
+		m_score  = new Score(this, 100, 30, 1);
+	}
+	
+	/**
+	 * 
+	 */
+	private void loadAutomaton() {
+		try {
+			new AutomataParser(new BufferedReader(new FileReader("game.whaler/settings/automata.txt")));
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("automata.txt file can't be found !");
+			System.exit(-1);
+			
 		}
+		
+		// Loading automate file
+		Ast ast;
+		try {
+			ast = AutomataParser.Run();
+			
+			//
+			try {
+				automata_array = ((AI_Definitions) ast).make();
+			} catch (Automata_Exception e) {
+				e.printStackTrace();
+				System.out.println("Error when creating the Interpretor. Possibly unhandled grammar");
+				System.exit(-2);
+			}
+				
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println("Grammar error when parsing the Automata file.");
+			System.exit(-3);
+		}
+		
+		
+		if (automata_array.length == 0) {
+			System.out.println("Fatal Error : No automata has been read. Check automata.txt file");
+			System.exit(-4);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void reloadAutomataChoices() {
+		loadAutomataChoices();
+	}
+	
+	/**
+	 * 
+	 */
+	private void loadAutomataChoices() {
+		
+		automata_choices = new int[EntityType.values().length];
+		BufferedReader file;
+		try {
+			
+			file = new BufferedReader(new FileReader("game.whaler/settings/choix_automates.txt"));
 
-		// Loading Sprites Model
-		loadSprites();
+			//Lecture dans l'ordre
+			automata_choices[EntityType.WHALE.ordinal()] = Integer.parseInt(file.readLine());
+			automata_choices[EntityType.WHALER.ordinal()] = Integer.parseInt(file.readLine());
+			automata_choices[EntityType.DESTROYER.ordinal()] = Integer.parseInt(file.readLine());
+			automata_choices[EntityType.PLAYER.ordinal()] = Integer.parseInt(file.readLine());
+			automata_choices[EntityType.OIL.ordinal()] = Integer.parseInt(file.readLine());
+			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(file.readLine());
+
+			file.close();
+			
+		} catch (FileNotFoundException e) {
+			//e.printStackTrace();
+			System.out.println("Le fichier de choix d'automates est introuvable. Création du fichier par défaut.");
+			createChoiceFile();
+		} catch (IOException ea) {
+			ea.printStackTrace();
+			System.exit(-1);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void createChoiceFile(){
+		File f = new File("game.whaler/settings/choix_automates.txt");
+		BufferedWriter out = null;
+		try {
+			out = new BufferedWriter(new FileWriter(f));
+			out.write("0\n0\n0\n0\n0\n0\n");
+		} catch (IOException ae) {
+			ae.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws Location_exception
+	 * @throws Game_exception
+	 */
+	private void generateMap() throws Location_exception, Game_exception {
+
+		m_map = new Map(this);
 
 		// Animated Ocean Background
 		m_ocean = new Water(m_waterSprite, this);
 		m_underwater = new Underwater(m_underSprite, this);
 		m_current_background = m_ocean;
 
-		// Which key is currently pressed ?
-		keyPressed = new boolean[128];
-
-		m_score = new Score(this, 20, 50, 1);
-
-		m_lastSwap = Integer.MAX_VALUE;
-
-		/*** Creating the map ***/
-
-		m_map = new Map(this);
-
-		generateMap();
-
-	}
-
-	private void generateMap() throws Location_exception, Game_exception {
 		// Underground generation
 		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
 		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);

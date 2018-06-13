@@ -18,8 +18,11 @@
 package edu.ricm3.game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -33,7 +36,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Options;
@@ -85,7 +91,7 @@ public class GameUI {
 
 	// enum for the menu, to determine which screen should be displayed
 	public enum Screen {
-		MENU, PLAY, AUTOMATA, OPTIONS, RULES, PAUSE, EXIT;
+		MENU, PLAY, AUTOMATA, OPTIONS, RULES, PAUSE, EXIT, END;
 	}
 
 	// getter for Screen
@@ -152,13 +158,12 @@ public class GameUI {
 			m_text.setText("Starting up...");
 			addNorth(m_text);
 			
-			
-			JPanel onTheBottom = new JPanel(new GridLayout(1,31));
-			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));
-			addSouth(onTheBottom);
-			
+
+			m_life = new JPanel();
 			refreshLife();
+			m_oil = new JPanel();
 			refreshOil();
+
 			
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -186,78 +191,95 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
-			
+			refreshLife();
+			refreshOil();
+			refreshScore();
 
 		} else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
-			// createTimer();
 			m.create_frame();
 			m.create_menu();
 
 		} else if (currentScreen() == Screen.RULES) {
 			Rules r = new Rules(this);
-			// createTimer();
 			r.create_frame();
 			r.create_rules();
 
 		} else if (currentScreen() == Screen.AUTOMATA) {
 			AutomataSelection a = new AutomataSelection(this);
-			// createTimer();
 			a.create_frame();
 			a.create_automata_selection();
+			
+		}else if ( currentScreen()==Screen.END) {
+			
+			EndGame e = new EndGame(this);
+			e.create_frame();
+			e.create_endgame();
+			
 		}
+		
 	}
 	
 	public void refreshOil() {
+		
 		Model m = (Model) m_model;
-		
-		m_oil = new JPanel();
-		m_oil.setLayout(new BoxLayout(m_oil,BoxLayout.Y_AXIS));
-		
-		m_oil.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
-		
 		float currentOil = m.m_player.m_oil_jauge;
+		JProgressBar oilBar = new JProgressBar(JProgressBar.VERTICAL);
+		oilBar.setValue((int) currentOil * 5);
+		oilBar.setStringPainted(true);
+		UIManager.put("ProgressBar.background", Color.OPAQUE);
+		UIManager.put("ProgressBar.selectionForeground", Color.WHITE);
+
+		oilBar.setForeground(Color.GRAY);
+		oilBar.setString("10%");
+		oilBar.setMinimum(0);
+		oilBar.setMaximum(100);
+		oilBar.setString("• OIL •");
+		oilBar.setStringPainted(true);
 		
-		//To Avoid display problems
-		if (currentOil <= 0) {
-			currentOil = 0;
-		}
 		
-		for (float i=Options.MAX_OIL; i > currentOil; i-=0.5) {
-			m_oil.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
-		}
+	    Container contentPane = m_frame.getContentPane();
+	    contentPane.add(oilBar, BorderLayout.EAST);
 		
-		for (float i = currentOil; i >= 1 ; i-=0.5) {
-			m_oil.add(new JLabel(new ImageIcon(m.m_oilfullSprite)));
-		}
-		
-		addEast(m_oil);
 	}
 	
 	public void refreshLife() {
+		
 		Model m = (Model) m_model;
-		
-		//Left Panel
-		m_life = new JPanel();
-		m_life.setLayout(new BoxLayout(m_life,BoxLayout.Y_AXIS));
-		
-		m_life.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
-		
 		int currentLife = m.m_player.m_life;
-		if (currentLife <= 0) {
-			currentLife = 0;
-		}
+		JProgressBar lifeBar = new JProgressBar(JProgressBar.VERTICAL);
+		lifeBar.setStringPainted(true);
+		lifeBar.setForeground(Color.RED);
+		lifeBar.setString("10%");
+		lifeBar.setMinimum(0);
+		lifeBar.setMaximum(100);
+		lifeBar.setValue(currentLife*5);
+		lifeBar.setString("• LIFE •");
+		lifeBar.setStringPainted(true);
 		
-		for (int i=Options.PLAYER_LIFE ; i > currentLife; i--) {
-			m_life.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
-		}
+	    Container contentPane = m_frame.getContentPane();
+	    contentPane.add(lifeBar, BorderLayout.WEST);
+	    
 		
-		for (int i = currentLife; i >= 1 ; i--) {
-			m_life.add(new JLabel(new ImageIcon(m.m_lifefullSprite)));
-		}
-		addWest(m_life);
 	}
 
+public void refreshScore() {
+		
+		Model m = (Model) m_model;
+		int score = m.m_score.nombre ;
+		
+		JLabel score_display = new JLabel("", JLabel.CENTER);
+		score_display.setText("SCORE " + Integer.toString(score));
+		score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
+		
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(score_display, BorderLayout.SOUTH);
+	    
+		
+	}
+	
+	
+	
 	/*
 	 * Let's create a timer, it is the heart of the simulation, ticking periodically
 	 * so that we can simulate the passing of time.

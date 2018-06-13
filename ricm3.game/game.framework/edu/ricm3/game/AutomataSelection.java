@@ -150,6 +150,7 @@ public class AutomataSelection {
 			
 			
 			//b[i].setSelectedItem(items[i]); //Permet de mettre par défaut 
+			
 			b2.add(b[i]);
 			
 			i++;
@@ -163,7 +164,7 @@ public class AutomataSelection {
 	}
 
 	public void validate_automata() {
-		File file = new File("game.whaler/sprites/choix_automates.txt");
+		File file = new File("game.whaler/settings/choix_automates.txt");
 		BufferedWriter out = null;
 		try {
 			out = new BufferedWriter(new FileWriter(file));
@@ -174,6 +175,7 @@ public class AutomataSelection {
 			}
 		} catch (IOException ae) {
 			ae.printStackTrace();
+			System.exit(-1);
 		} finally {
 			try {
 				out.close();
@@ -181,6 +183,9 @@ public class AutomataSelection {
 				e1.printStackTrace();
 			}
 		}
+		
+		//Reload the Automata Choice Array
+		m_model.reloadAutomataChoices();
 	}
 
 	public class IsClicked implements ActionListener {

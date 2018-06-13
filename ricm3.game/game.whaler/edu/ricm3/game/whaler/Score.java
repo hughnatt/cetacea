@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 public class Score {
-	int nombre;
+	public int nombre;
 	int m_x, m_y;
 	float m_scale;
 	Model m_model;
@@ -27,16 +27,4 @@ public class Score {
 	}
 	
 
-	/**
-	 * paints this square on the screen.
-	 * 
-	 * @param g
-	 */
-	void paint(Graphics g) {
-		Font f = new Font("Verdana", Font.BOLD, 32);
-		g.setFont(f);
-		g.setColor(Color.WHITE);
-		String s = "Score: " + Integer.toString(nombre);
-		g.drawString(s, 400, 24);
-	}
 }
