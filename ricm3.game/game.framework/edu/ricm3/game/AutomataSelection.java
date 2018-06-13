@@ -29,10 +29,11 @@ import edu.ricm3.game.whaler.Interpretor.IAutomata;
 public class AutomataSelection {
 
 	JFrame m_select;
-	JFrame frame;
+	JFrame m_frame;
 	JLabel m_title;
 	JPanel m_ctr;
 	GameUI m_g;
+	Model m_model;
 	JComboBox<?> b[];
 
 	public AutomataSelection(GameUI g) {
@@ -46,8 +47,8 @@ public class AutomataSelection {
 		m_select.setLocationRelativeTo(null);
 
 		m_title = new JLabel("", JLabel.CENTER);
-		m_title.setText("Choose your automata");
-		m_title.setFont(new Font("Serif", Font.PLAIN, 68));
+		m_title.setText("Choose your automatas and click 'Validate'");
+		m_title.setFont(new Font("Serif", Font.PLAIN, 40));
 		m_select.add(m_title, BorderLayout.NORTH);
 
 		// Lecture & affichage de l'icone du jeu
@@ -76,7 +77,7 @@ public class AutomataSelection {
 		CreateButton breturn = new CreateButton("RETURN", "game.whaler/sprites/arrow_return.png",
 				"game.whaler/sprites/arrow_return.png");
 
-		CreateButton bvalider = new CreateButton("VALIDER", "game.whaler/sprites/check.png",
+		CreateButton bvalider = new CreateButton("VALIDATE", "game.whaler/sprites/check.png",
 				"game.whaler/sprites/check_over.png");
 
 		// Initialisation
@@ -101,46 +102,61 @@ public class AutomataSelection {
 		b1.add(valide_button);
 
 		// Création tableau déroulant avec les bons automates
-		frame = new JFrame();
-		GridLayout grid = new GridLayout(6, 2);
-		frame.setLayout(grid);
-		grid.setHgap(20);
+		m_frame = new JFrame();
+		GridLayout grid = new GridLayout(6, 3);
+		m_frame.setLayout(grid);
+		grid.setHgap(10);
 		grid.setVgap(20);
 
 		JPanel b2 = new JPanel();
 		b2.setLayout(grid);
 
-		Model m_model = (Model) m_g.m_model;
+		m_model = (Model) m_g.m_model;
 		IAutomata[] items = m_model.automata_array;
+		String[] names ={"Whale", "Whaler", "Destroyer", "Player", "Oil", "Projectile"};
 
+		//We read all the images and put them in a tab
 		BufferedImage[] image = new BufferedImage[6];
 		try {
-			image[0] = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
-			image[1] = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
-			image[2] = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
-			image[3] = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
-			image[4] = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
-			image[5] = ImageIO.read(new File("game.whaler/sprites/cetacea.png"));
+			image[0] = ImageIO.read(new File("game.whaler/sprites/baleine_70x70.png"));
+			image[1] = ImageIO.read(new File("game.whaler/sprites/baleinier_70x70.png"));
+			image[2] = ImageIO.read(new File("game.whaler/sprites/destroyer_70x70.png"));
+			image[3] = ImageIO.read(new File("game.whaler/sprites/player_70x70.png"));
+			image[4] = ImageIO.read(new File("game.whaler/sprites/oil_70x70.png"));
+			image[5] = ImageIO.read(new File("game.whaler/sprites/projectile_70x70.png"));
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
+		
 		b = new JComboBox[6];
 		int i = 0;
 		while (i < 6) {
-			JLabel label = new JLabel(new ImageIcon(image[i]));
-			b2.add(label);
+			//We add the pictures
+			JLabel pictures = new JLabel(new ImageIcon(image[i]), JLabel.RIGHT);
+			b2.add(pictures); 
+			
+			//We add the label
+			JLabel entities_name = new JLabel("", JLabel.LEFT);
+			entities_name.setText(names[i]);
+			entities_name.setFont(new Font("Serif", Font.BOLD, 12));
+			b2.add(entities_name);
+			
 			// We create 6 ComboBox, one for each entity, and add it to the panel
 			b[i] = new JComboBox<Object>(items);
 			b2.setSize(new Dimension(50, 50));
+			
+			
+			//b[i].setSelectedItem(items[i]); //Permet de mettre par défaut 
 			b2.add(b[i]);
+			
 			i++;
 		}
 
-		m_select.add(b1, BorderLayout.SOUTH); // bouton retour
-		m_select.add(b2, BorderLayout.CENTER);
+		m_select.add(b1, BorderLayout.SOUTH); // button return + validate
+		m_select.add(b2, BorderLayout.CENTER); //Display entities and combobox
 		m_select.setVisible(true);
 	}
 
@@ -175,7 +191,7 @@ public class AutomataSelection {
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
 				m_select.dispose();
 			}
-			if (event.equals("VALIDER")) {
+			if (event.equals("VALIDATE")) {
 				validate_automata();
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
