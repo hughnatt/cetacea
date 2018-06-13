@@ -3,14 +3,6 @@ package edu.ricm3.game.whaler;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
 
 public class Score {
 	int nombre;
@@ -23,17 +15,18 @@ public class Score {
 		m_scale = scale;
 		m_x = x;
 		m_y = y;
-		nombre=0;
+		nombre = 0;
 	}
 	
-	public void step(long now){
-		if(now>0)
-			nombre+=100;
-		else
-			nombre-=100;
+	public void add() {
+		nombre+=100;
 	}
 	
+	public void sub() {
+		nombre-=100;
+	}
 	
+
 	/**
 	 * paints this square on the screen.
 	 * 
@@ -43,7 +36,7 @@ public class Score {
 		Font f = new Font("Verdana", Font.BOLD, 32);
 		g.setFont(f);
 		g.setColor(Color.WHITE);
-		String s= "Score: " + Integer.toString(nombre);
+		String s = "Score: " + Integer.toString(nombre);
 		g.drawString(s, 400, 24);
-		}
+	}
 }

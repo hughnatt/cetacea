@@ -131,12 +131,12 @@ public final class Whale extends MobileEntity {
 
 			if (m_life <= 0) { // Catching or liberation of the whale
 				this.destroy();
-				m_model.m_score.step(-1);
+				m_model.m_score.sub();
 			}
 			
 			if(m_life >= Options.WHALE_LIFE_MAX) {
 				this.destroy();
-				m_model.m_score.step(1);
+				m_model.m_score.add();
 			}
 
 			if (m_pop_triggered) {

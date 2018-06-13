@@ -164,6 +164,8 @@ public class Model extends GameModel {
 		// Which key is currently pressed ?
 		keyPressed = new boolean[128];
 
+		m_score = new Score(this, 20, 50, 1);
+
 		m_lastSwap = Integer.MAX_VALUE;
 
 		/*** Creating the map ***/
@@ -196,8 +198,6 @@ public class Model extends GameModel {
 		// Player
 		m_player = new Player(new Location(3, 3), m_playerSprite, m_playerUnderSprite, this, Direction.WEST);
 
-		keyPressed = new boolean[128];
-
 		m_lastSwap = 10000000000L;
 
 	}
@@ -213,7 +213,7 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-
+		
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
@@ -227,8 +227,6 @@ public class Model extends GameModel {
 			}
 		}
 
-		m_score = new Score(this, 20, 50, 1);
-		keyPressed = new boolean[128];
 		m_lastSwap = 10000000000L;
 
 	}
