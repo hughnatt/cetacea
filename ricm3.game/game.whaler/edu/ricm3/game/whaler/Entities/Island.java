@@ -5,19 +5,18 @@ import java.awt.image.BufferedImage;
 
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public final class Island extends Static_Entity {
 
-	// TODO gérer le shop ou au moins le rechargement de vie
-
 	/**
-	 * @param m_pos
-	 * @param m_solid
-	 * @param m_sprite
-	 * @param m_model
+	 * @param pos
+	 * @param sprite
+	 * @param underSprite
+	 * @param model
+	 * @throws Game_exception
 	 */
-	public Island(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Map_exception {
+	public Island(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, true, sprite, underSprite, model);
 	}
 

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import edu.ricm3.game.whaler.Entities.Entity;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Tile {
@@ -15,6 +16,10 @@ public class Tile {
 	 */
 	protected Tile() {
 		m_level = new LinkedList<Entity>();
+	}
+	
+	public Iterator<Entity> iterator() {
+		return m_level.iterator();
 	}
 
 	/**
@@ -39,6 +44,8 @@ public class Tile {
 	 * Remove the specified entity from the Tile
 	 * 
 	 * @param e
+	 * @throws Tile_exception
+	 *             if the entity to remove isn't found
 	 */
 	public void remove(Entity e) throws Tile_exception {
 		boolean result = m_level.remove(e);
@@ -47,11 +54,18 @@ public class Tile {
 		}
 	}
 
-	public Entity contain(Class<? extends Entity> c) {
+	/**
+	 * Search the first occurence of an EntityType et, from the bottom of the Tile.
+	 * 
+	 * @param c
+	 *            the EntityType
+	 * @return Entity or null if there is no entity of EntityType
+	 */
+	public Entity contain(EntityType et) {
 		Iterator<Entity> iter = m_level.iterator();
 		while (iter.hasNext()) {
 			Entity E = iter.next();
-			if (E.getClass() == c) {
+			if (E.getType() == et) {
 				return E;
 			}
 		}

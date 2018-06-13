@@ -26,8 +26,11 @@ public class Score {
 		nombre=0;
 	}
 	
-	void step(long now){
-		nombre+=100;
+	public void step(long now){
+		if(now>0)
+			nombre+=100;
+		else
+			nombre-=100;
 	}
 	
 	
@@ -39,7 +42,7 @@ public class Score {
 	void paint(Graphics g) {
 		Font f = new Font("Verdana", Font.BOLD, 32);
 		g.setFont(f);
-		g.setColor(Color.MAGENTA);
+		g.setColor(Color.WHITE);
 		String s= "Score: " + Integer.toString(nombre);
 		g.drawString(s, 400, 24);
 		}

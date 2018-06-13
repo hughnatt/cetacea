@@ -2,13 +2,12 @@ package edu.ricm3.game.whaler.Interpretor;
 
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Entities.Mobile_Entity;
-import edu.ricm3.game.whaler.Game_exception.Location_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
-import edu.ricm3.game.whaler.Game_exception.Tile_exception;
+import edu.ricm3.game.whaler.Entities.Player;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public abstract class IAction {
 
-	abstract void step(Mobile_Entity e) throws Exception;
+	abstract void step(Mobile_Entity e) throws Game_exception;
 
 	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
 													// incluse à la place de fonctions statiques
@@ -42,7 +41,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			switch (m_dir) {
 			case NORTH:
 				e.movenorth();
@@ -136,12 +135,17 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IJump() {
+		}
+
 		public IJump(String dir) {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
-			//TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			System.out.println("Impossible to jump, the entity hurt itself and moved back");
+			e.m_life--;
+			e.movesouth();
 		}
 	}
 
@@ -153,7 +157,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			e.wizz();
 		}
 
@@ -167,7 +171,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Map_exception, Tile_exception {
+		void step(Mobile_Entity e) {
 			e.pop();
 		}
 	}
@@ -184,11 +188,25 @@ public abstract class IAction {
 			switch (m_dir) {
 			case RIGHT:
 				e.turnright();
+				break;
 			case BACKWARD:
-				e.turnright();
-				e.turnright();
+				e.turndown();
+				break;
 			case LEFT:
 				e.turnleft();
+				break;
+			case SOUTH:
+				e.m_direction = Direction.SOUTH;
+				break;
+			case NORTH:
+				e.m_direction = Direction.NORTH;
+				break;
+			case EAST:
+				e.m_direction = Direction.EAST;
+				break;
+			case WEST:
+				e.m_direction = Direction.WEST;
+				break;
 			default:
 				break;
 			}
@@ -199,11 +217,14 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IHit() {
+		}
+
 		public IHit(String dir) {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			e.hit();
 		}
 
@@ -213,12 +234,17 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IProtect() {
+
+		}
+
 		public IProtect(String dir) {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			System.out.println("Impossible for the entity to protect itself, interpreted as hit");
+			e.hit();
 		}
 
 	}
@@ -227,37 +253,54 @@ public abstract class IAction {
 
 		Direction m_dir;
 
+		public IPick() {
+		}
+
 		public IPick(String dir) {
 			m_dir = strToDir(dir);
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			if (!(e instanceof Player)) {
+				System.out.println("Only the player can pick up oil, interpreted as a pop");
+				e.pop();
+			} else {
+				e.pick();
+			}
 		}
-
 	}
 
 	public static class IThrow extends IAction {
 
 		Direction m_dir;
 
+		public IThrow() {
+		}
+
 		public IThrow(String dir) {
 			m_dir = strToDir(dir);
 		}
-
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+	
+		void step(Mobile_Entity e) throws Game_exception {
+			System.out.println("Nothing to throw, interpreted as a wizz");
+			e.wizz();
 		}
 
 	}
 
 	public static class IStore extends IAction {
+		Direction m_dir;
 
 		public IStore() {
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		public IStore(String dir) {
+			m_dir = strToDir(dir);
+		}
+
+		void step(Mobile_Entity e) throws Game_exception {
+			System.out.println("Nothing to store, the entity will move instead");
+			e.movesouth();
 		}
 
 	}
@@ -267,19 +310,24 @@ public abstract class IAction {
 		public IGet() {
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) {
+			// TODO
 		}
 
 	}
 
 	public static class IPower extends IAction {
+		Direction m_dir;
 
 		public IPower() {
 		}
 
-		void step(Mobile_Entity e) throws Exception{
-			//TODO
+		public IPower(String dir) {
+			m_dir = strToDir(dir);
+		}
+
+		void step(Mobile_Entity e) {
+
 		}
 
 	}
@@ -289,8 +337,9 @@ public abstract class IAction {
 		public IKamikaze() {
 		}
 
-		void step(Mobile_Entity e) throws Exception {
-			//TODO
+		void step(Mobile_Entity e) throws Game_exception {
+			e.m_life = 0;
+			e.destroy();
 		}
 
 	}
@@ -304,8 +353,7 @@ public abstract class IAction {
 			m_b = b;
 		}
 
-
-		void step(Mobile_Entity e) throws Exception {
+		void step(Mobile_Entity e) throws Game_exception {
 			int r = e.m_model.rand.nextInt(2);
 			if (r == 0) {
 				m_a.step(e);
