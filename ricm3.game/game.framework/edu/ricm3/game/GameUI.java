@@ -18,32 +18,25 @@
 package edu.ricm3.game;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Options;
 
 public class GameUI {
 
@@ -222,19 +215,18 @@ public class GameUI {
 		
 		m_oil.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
 		
-		
-		int currentOil = m.m_player.m_oil_jauge;
+		float currentOil = m.m_player.m_oil_jauge;
 		
 		//To Avoid display problems
 		if (currentOil <= 0) {
 			currentOil = 0;
 		}
 		
-		for (int i=20; i > currentOil; i--) {
+		for (float i=Options.MAX_OIL; i > currentOil; i-=0.5) {
 			m_oil.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
 		}
 		
-		for (int i = currentOil; i >= 1 ; i--) {
+		for (float i = currentOil; i >= 1 ; i-=0.5) {
 			m_oil.add(new JLabel(new ImageIcon(m.m_oilfullSprite)));
 		}
 		
@@ -255,7 +247,7 @@ public class GameUI {
 			currentLife = 0;
 		}
 		
-		for (int i=edu.ricm3.game.whaler.Options.PLAYER_LIFE ; i > currentLife; i--) {
+		for (int i=Options.PLAYER_LIFE ; i > currentLife; i--) {
 			m_life.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
 		}
 		
