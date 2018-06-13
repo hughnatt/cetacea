@@ -3,6 +3,7 @@ package edu.ricm3.game.whaler.Entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
@@ -65,6 +66,8 @@ public final class Player extends MobileEntity {
 			break;
 		}
 	}
+	
+	
 
 	@Override
 	public void destroy() throws Game_exception {

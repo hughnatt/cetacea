@@ -66,6 +66,5 @@ public class View extends GameView {
 			m_model.map().paint(g);
 		}
 
-		m_model.m_score.paint(g);
 	}
 }
