@@ -3,6 +3,7 @@ package edu.ricm3.game;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +17,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.ricm3.game.GameUI.Screen;
+import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 
 public class EndGame {
 	JFrame m_gameover;
 	JLabel m_title;
+	JLabel m_gameover_score;
+	JLabel m_dead;
 	JPanel m_ctr;
 	GameUI m_g;
+	
 
 	public EndGame(GameUI g) {
 		m_g = g;
@@ -38,8 +43,33 @@ public class EndGame {
 		m_title = new JLabel("", JLabel.CENTER);
 		m_title.setText("GameOver");
 		m_title.setFont(new Font("Serif", Font.PLAIN, 68));
-		m_gameover.add(m_title, BorderLayout.CENTER); // Affichage du titre
-
+		m_gameover.add(m_title, BorderLayout.NORTH); // Affichage du titre
+		
+		
+		Model m = (Model) m_g.m_model;
+		GridLayout grid = new GridLayout (2,1);
+		
+		
+		m_ctr= new JPanel();
+		m_ctr.setLayout(grid);
+		
+		m_gameover_score = new JLabel("", JLabel.CENTER  );
+		m_gameover_score.setText("Your score : "+Integer.toString(m.m_score.nombre));
+		m_gameover_score.setFont(new Font("Serif", Font.PLAIN, 60));
+		
+		m_ctr.add(m_gameover_score);
+		m_dead = new JLabel("", JLabel.CENTER  );
+		
+		if(m.m_player.m_life <=0) {
+			m_dead.setText("You are dead !");
+		}else {
+			m_dead.setText("Your fuel gauge is empty!");
+		}
+		
+		m_dead.setFont(new Font("Serif", Font.PLAIN, 30));
+		m_ctr.add(m_dead);
+		
+		m_gameover.add(m_ctr);
 		// Lecture & affichage de l'icone du jeu
 		File f = new File("game.whaler/sprites/cetacea.png");
 		Image icone;

@@ -21,10 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-
 import edu.ricm3.game.GameController;
-import edu.ricm3.game.whaler.Entities.Oil;
-import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 /**
  * This class is to illustrate the most simple game controller. It does not

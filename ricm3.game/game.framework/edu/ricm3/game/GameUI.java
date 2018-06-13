@@ -32,7 +32,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -65,12 +67,13 @@ public class GameUI {
 	long m_lastTick;
 	int m_nTicks;
 	private Screen m_screen;
-
 	private JProgressBar m_lifeBar;
 	private JProgressBar m_oilBar;
-
 	private JLabel m_score_display;
-
+	private JMenu m_statut;
+	private JMenuItem stop;
+	private JMenuItem start;
+	
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
 		m_model.m_game = this;
@@ -157,18 +160,16 @@ public class GameUI {
 			m_text.setText("Starting up...");
 			addNorth(m_text);
 
-
 			m_frame.setSize(d);
 			m_frame.doLayout();
 			m_frame.setVisible(true);
 
 			// hook window events so that we exit the Java Platform
-			// when the window is closed by the end user.
+			// when the window is closed by the end user. 
 			m_frame.addWindowListener(new WindowListener(m_model));
 
 			m_frame.pack();
 			m_frame.setLocationRelativeTo(null);
-
 			GameController ctr = getController();
 
 			// let's hook the controller,
@@ -185,14 +186,18 @@ public class GameUI {
 
 			m_controller.notifyVisible();
 
-			
 			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshLife();
 			m_oilBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshOil();
 			m_score_display = new JLabel("", JLabel.CENTER);
 			refreshScore();
+			m_menuBar = new JMenuBar();
 			
+			m_statut = new JMenu("Jeu");
+			stop = new JMenuItem("Pause");
+			start = new JMenuItem("Play");
+			refreshPause();
 
 		}  else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
@@ -272,10 +277,29 @@ public class GameUI {
 		m_score_display.removeAll();
 		m_score_display.setText("SCORE " + Integer.toString(score));
 		m_score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
-
 		Container contentPane = m_frame.getContentPane();
 		contentPane.add(m_score_display, BorderLayout.SOUTH);
 
+	}
+
+	public void refreshPause() {
+		Model m = (Model) m_model;
+		m_statut.setFont(new Font("Laksaman", Font.BOLD, 15));
+		stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				m.m_pause = true;
+			}
+		});
+		start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				m.m_pause = false;
+			}
+		});
+		m_statut.add(stop);
+		m_statut.add(start);
+		m_menuBar.add(m_statut);
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(m_menuBar, BorderLayout.NORTH);
 	}
 
 	/*
@@ -333,7 +357,7 @@ public class GameUI {
 			refreshLife();
 			refreshOil();
 			refreshScore();
-
+			refreshPause();
 			m_view.paint();
 			m_lastRepaint = now;
 		}
