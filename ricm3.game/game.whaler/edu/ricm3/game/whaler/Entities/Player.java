@@ -90,7 +90,7 @@ public final class Player extends MobileEntity {
 	@Override
 	public void step(long now) throws Game_exception, Automata_Exception {
 		long elapsed = now - m_lastStep;
-		if (elapsed > 50L) {
+		if (elapsed > 80L) {
 			m_lastStep = now;
 
 			try {

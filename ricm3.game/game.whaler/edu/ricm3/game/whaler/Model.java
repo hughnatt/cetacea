@@ -323,8 +323,8 @@ public class Model extends GameModel {
 	}
 
 	private boolean inStepZone(Location entity, Location player) {
-		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10)
-				&& (entity.y < player.y + 10));
+		return ((entity.x > player.x - 20) && (entity.x < player.x + 20) && (entity.y > player.y - 15)
+				&& (entity.y < player.y + 15));
 	}
 
 	@Override

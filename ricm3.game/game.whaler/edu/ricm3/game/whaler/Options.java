@@ -32,7 +32,7 @@ public class Options {
 	public static final int DIMY_MAP = 500;
 
 	public static final int DIMX_WINDOW = 1040;// dim de la fenêtre en pixel
-	public static final int DIMY_WINDOW = 720;
+	public static final int DIMY_WINDOW = 752;
 
 	public static final int DIMX_VIEW = 31; // dim de la view en blocs
 	public static final int DIMY_VIEW = 21;
@@ -51,8 +51,8 @@ public class Options {
 	public static final int WHALE_LIFE = 10;
 
 	public static final int PROJECTILE_DPS = 1;
-	public static final long PROJECTILE_SPD_STANDARD = 250L;
-	public static final long PROJECTILE_SPD_IMPROVED = 100L;
+	public static final long PROJECTILE_SPD_STANDARD = 100L;
+	public static final long PROJECTILE_SPD_IMPROVED = 50L;
 
 	public static final int MAX_RANGE_WHALE_ESCAPE = 10;
 	public static final int WHALE_DPS = 1;
