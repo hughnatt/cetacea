@@ -213,7 +213,7 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-		
+
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
@@ -416,8 +416,8 @@ public class Model extends GameModel {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(3);
-				
-				while(m_map.tile(x,i).isSolid()) {
+
+				while (m_map.tile(x, i).isSolid()) {
 					x = rand.nextInt((max - min) + 1) + min;
 				}
 
@@ -447,6 +447,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
+	}
+
+	public BufferedImage get_oil_sprite() {
+		return m_oilSprite;
 	}
 
 	public Direction rand_direction() {

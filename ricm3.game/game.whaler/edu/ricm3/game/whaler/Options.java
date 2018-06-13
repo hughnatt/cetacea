@@ -22,7 +22,7 @@ public class Options {
 	// some public static variables, final or not, initialized or not
 
 	public static final boolean USE_DOUBLE_BUFFERING = true;
-	
+
 	public static final int UNDERGROUND_FLORE_POURCENTAGE = 8;
 	public static final int SEA_ELEMENTS_POURCENTAGE = 2;
 
@@ -68,6 +68,7 @@ public class Options {
 	public static final long BURNING_OIL_SPD_BURNING = 200L;
 	public static final long BURNING_OIL_SPD_SPREAD = 300L;
 	public static final int BURNING_OIL_DPS = 3;
+
 	public static final double FPS = 30.0;
 	public static final int REPAINT_DELAY = (int) (1000.0 / FPS);
 

@@ -165,7 +165,10 @@ public final class Oil extends MobileEntity {
 				if ((tile.contain(EntityType.ICEBERG) == null) && (tile.contain(EntityType.ISLAND) == null)
 						&& (tile.contain(EntityType.OIL) == null) && (tile.contain(EntityType.STONE) == null)) {
 					// check if there is no iceberg,island,oil or stone
-					//tile.addBackground(new Oil(pos,m_model.m_oi));
+					if (m_model.rand.nextInt(100) <= Options.OIL_POURCENTAGE_POP) {
+						// new oil with a percentage of spawn
+						tile.addBackground(new Oil(pos, m_model.get_oil_sprite(), null, m_model));
+					}
 				}
 			}
 		}
