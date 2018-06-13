@@ -566,7 +566,7 @@ public class Model extends GameModel {
 		/*
 		 * Custom Texture
 		 */
-		imageFile = new File("game.whaler/sprites/oil.png");
+		imageFile = new File("game.whaler/sprites/oil_test.png");
 		try {
 			m_oilSprite = ImageIO.read(imageFile);
 		} catch (IOException ex) {
