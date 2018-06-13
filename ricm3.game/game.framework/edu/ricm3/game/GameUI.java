@@ -156,7 +156,7 @@ public class GameUI {
 			// Info Bar (FPS, TICK,...)
 			m_text = new JLabel();
 			m_text.setText("Starting up...");
-			//addNorth(m_text);
+			addNorth(m_text);
 
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -168,7 +168,6 @@ public class GameUI {
 
 			m_frame.pack();
 			m_frame.setLocationRelativeTo(null);
-
 			GameController ctr = getController();
 
 			// let's hook the controller,
@@ -192,6 +191,7 @@ public class GameUI {
 			m_score_display = new JLabel("", JLabel.CENTER);
 			refreshScore();
 			m_menuBar = new JMenuBar();
+			
 			m_statut = new JMenu("Jeu");
 			stop = new JMenuItem("Pause");
 			start = new JMenuItem("Play");
@@ -275,14 +275,12 @@ public class GameUI {
 		m_score_display.removeAll();
 		m_score_display.setText("SCORE " + Integer.toString(score));
 		m_score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
-
 		Container contentPane = m_frame.getContentPane();
 		contentPane.add(m_score_display, BorderLayout.SOUTH);
 
 	}
 
 	public void refreshPause() {
-		
 		Model m = (Model) m_model;
 		m_statut.setFont(new Font("Laksaman", Font.BOLD, 15));
 		stop.addActionListener(new ActionListener() {
