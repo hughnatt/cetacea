@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Map {
@@ -17,14 +18,15 @@ public class Map {
 	 * 
 	 * @param model
 	 *            Internal Model
+	 * @throws Location_exception
 	 */
-	public Map(Model model) {
+	public Map(Model model) throws Location_exception {
 
 		// Initializing the Tiles
 		m_tiles = new Tile[Options.DIMX_MAP][Options.DIMY_MAP];
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			for (int j = 0; j < Options.DIMY_MAP; j++) {
-				m_tiles[i][j] = new Tile();
+				m_tiles[i][j] = new Tile(new Location(i, j));
 			}
 		}
 
@@ -39,19 +41,11 @@ public class Map {
 	 * @throws Map_exception
 	 */
 	public Tile tile(int x, int y) throws Map_exception {
-		if ((x < 0) || (x >= Options.DIMX_MAP)) {
-			throw new Map_exception("Coordonnee x unfitted");
+		try {
+			return m_tiles[x][y];
+		} catch (IndexOutOfBoundsException e) {
+			throw new Map_exception(e.toString());
 		}
-		if ((y < 0) || (y >= Options.DIMY_MAP)) {
-			throw new Map_exception("Coordonnee y unfitted");
-		}
-		return m_tiles[x][y];
-
-		/*
-		 * try { return m_tiles[x][y]; } catch (IndexOutOfBoundsException e) { throw new
-		 * Map_exception(e.toString()); }
-		 */
-
 	}
 
 	public Tile tile(Location l) throws Map_exception {

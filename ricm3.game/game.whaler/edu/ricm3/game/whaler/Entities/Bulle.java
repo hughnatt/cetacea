@@ -56,6 +56,10 @@ public class Bulle extends StaticEntity {
 	public void paint(Graphics g, Location map_ref) {
 
 	}
+	
+	public boolean isSolidUnder() {
+		return false;
+	}
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {

@@ -71,6 +71,21 @@ public class Location {
 
 	}
 	
+	public Location getEast() throws Location_exception {
+		return new Location(this.x + 1, this.y);
+	}
+	public Location getWest() throws Location_exception {
+		return new Location(this.x - 1, this.y);
+	}
+	public Location getNorth() throws Location_exception {	
+		return new Location(this.x, this.y - 1);
+	}
+	public Location getSouth() throws Location_exception {	
+		return new Location(this.x, this.y + 1);
+	}
+	
+	
+	
 	public String toString(){
 		return "( "+x+" , "+y+" )";
 	}

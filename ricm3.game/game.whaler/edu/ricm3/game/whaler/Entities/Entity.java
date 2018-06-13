@@ -86,6 +86,8 @@ public abstract class Entity {
 	public boolean isSolid() {
 		return m_solid;
 	}
+	
+	public abstract boolean isSolidUnder();
 
 	/**
 	 * @param now

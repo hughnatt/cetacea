@@ -36,6 +36,10 @@ public class YellowAlgae extends StaticEntity {
 		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
 	}
 
+	public boolean isSolidUnder() {
+		return false;
+	}
+	
 	@Override
 	public EntityType getType() {
 		return EntityType.VOID;

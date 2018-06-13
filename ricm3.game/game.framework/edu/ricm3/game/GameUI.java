@@ -135,8 +135,9 @@ public class GameUI {
 	}
 
 	public void createWindow(Dimension d) {
-
+		
 		if (currentScreen() == Screen.PLAY) {
+			m_lastRepaint = 0;
 			m_frame = new JFrame();
 			m_frame.setTitle("Cetacea");
 			m_frame.setLayout(new BorderLayout());
@@ -369,7 +370,6 @@ public class GameUI {
 			this.setScreen(Screen.END);
 			m_frame.dispose();
 			createWindow(new Dimension(Options.DIMX_WINDOW,Options.DIMY_WINDOW));
-			
 		}
 		
 		
