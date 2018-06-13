@@ -141,4 +141,10 @@ public final class Oil extends Mobile_Entity {
 		// TODO comment le feu va blesser les joueurs ?
 	}
 
+
+	@Override
+	public EntityType getType() {
+		return EntityType.OIL;
+	}
+
 }

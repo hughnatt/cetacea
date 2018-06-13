@@ -48,29 +48,8 @@ public abstract class Entity {
 		DESTROYER, OIL, PLAYER, PROJECTILE, WHALE, WHALER, ISLAND, STONE, ICEBERG, VOID
 	}
 	
-	public EntityType getType() {
-		
-		if(this instanceof Destroyer) {
-			return EntityType.DESTROYER;
-		}
-		else if(this instanceof Oil) {
-			return EntityType.OIL;
-		}
-		else if(this instanceof Player) {
-			return EntityType.PLAYER;
-		}
-		else if(this instanceof Projectile) {
-			return EntityType.PROJECTILE;
-		}
-		else if(this instanceof Whale) {
-			return EntityType.WHALE;
-		}
-		else if(this instanceof Whaler) {
-			return EntityType.WHALER;
-		}
-		else if(this instanceof Island) {
-			return EntityType.ISLAND;
-		}
+	public abstract EntityType getType();
+
 		else if(this instanceof Stone) {
 			return EntityType.STONE;
 		}
@@ -78,7 +57,7 @@ public abstract class Entity {
 			return EntityType.ICEBERG;
 		}
 		else {
-			return EntityType.VOID; //TODO
+			return EntityType.VOID;
 		}
 	}
 	

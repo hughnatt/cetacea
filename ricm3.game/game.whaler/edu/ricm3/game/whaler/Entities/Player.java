@@ -179,4 +179,9 @@ public final class Player extends Mobile_Entity {
 		}
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.PLAYER;
+	}
+
 }

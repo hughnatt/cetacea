@@ -139,4 +139,9 @@ public class Projectile extends Mobile_Entity {
 		this.pop();
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.PROJECTILE;
+	}
+
 }

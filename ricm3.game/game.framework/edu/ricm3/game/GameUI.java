@@ -54,25 +54,6 @@ public class GameUI {
 
 	static GameUI game;
 
-	// public static void main(String[] args) {
-	//
-	// game = new Game();
-	//
-	// // notice that the main thread will exit here,
-	// // but not your program... hence the hooking
-	// // of the window events to System.exit(0) when
-	// // the window is closed. See class WindowListener.
-	//
-	// /*
-	// * *** WARNING *** WARNING *** WARNING *** WARNING ***
-	// * If you do something here, on this "main" thread,
-	// * you will have parallelism and thus race conditions.
-	// *
-	// * ONLY FOR ADVANCED DEVELOPERS
-	// *
-	// * *** WARNING *** WARNING *** WARNING *** WARNING ***
-	// */
-	// }
 
 	JFrame m_frame;
 	GameView m_view;
@@ -178,12 +159,6 @@ public class GameUI {
 			m_text.setText("Starting up...");
 			addNorth(m_text);
 			
-
-			//USE THAT INSTEAD
-			//onTheLeft.add(new JLabel(new ImageIcon(((Model) m_model).get_projectile_sprite())));
-			
-			
-			//
 			
 			JPanel onTheBottom = new JPanel(new GridLayout(1,31));
 			onTheBottom.add(new JLabel(new ImageIcon(((Model) m_model).m_bardownSprite)));

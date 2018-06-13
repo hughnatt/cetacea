@@ -8,6 +8,7 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
@@ -176,6 +177,11 @@ public class Whaler extends Mobile_Entity {
 			result_whale.m_life++; // if yes, caught gauge increases
 		}
 
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.WHALER;
 	}
 
 }

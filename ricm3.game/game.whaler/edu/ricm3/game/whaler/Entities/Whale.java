@@ -220,4 +220,9 @@ public final class Whale extends Mobile_Entity {
 		this.pop();
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.WHALE;
+	}
+
 }

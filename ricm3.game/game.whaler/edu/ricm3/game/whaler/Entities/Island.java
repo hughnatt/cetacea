@@ -36,4 +36,9 @@ public final class Island extends Static_Entity {
 		g.drawImage(m_underSprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.ISLAND;
+	}
+
 }
