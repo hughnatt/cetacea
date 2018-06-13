@@ -84,6 +84,9 @@ public final class Oil extends MobileEntity {
 
 					switch (e.getType()) {
 					case PLAYER:
+						if (m_model.UNDER_WATER) {
+							break;
+						}
 					case DESTROYER:
 					case WHALER:
 					case WHALE:
