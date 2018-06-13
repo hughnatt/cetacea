@@ -12,6 +12,10 @@ public class Tile {
 	LinkedList<Entity> m_level;
 	public Location m_loc;
 
+	public LinkedList<Entity> getList() {
+		return m_level;
+	}
+
 	/*
 	 * List Representation of multiple entities superposed
 	 */
@@ -19,7 +23,7 @@ public class Tile {
 		m_level = new LinkedList<Entity>();
 		m_loc = loc;
 	}
-	
+
 	public Iterator<Entity> iterator() {
 		return m_level.iterator();
 	}

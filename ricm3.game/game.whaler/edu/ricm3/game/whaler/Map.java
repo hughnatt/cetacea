@@ -1,6 +1,8 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Graphics;
+import java.util.LinkedList;
+import java.util.List;
 
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
@@ -46,18 +48,57 @@ public class Map {
 			throw new Map_exception("Coordonnee y unfitted");
 		}
 		return m_tiles[x][y];
-		
+
 		/*
-		try {
-			return m_tiles[x][y];
-		} catch (IndexOutOfBoundsException e) {
-			throw new Map_exception(e.toString());
-		}*/
-		
+		 * try { return m_tiles[x][y]; } catch (IndexOutOfBoundsException e) { throw new
+		 * Map_exception(e.toString()); }
+		 */
+
 	}
 
 	public Tile tile(Location l) throws Map_exception {
 		return tile(l.x, l.y);
+	}
+
+	/**
+	 * Return a list of the adjacent tiles from a position on the map
+	 * 
+	 * @param pos
+	 * @return List of Tile with a length of 2,3 or 4
+	 * @throws Game_exception
+	 */
+	public List<Location> posAdjacent(Location pos) throws Game_exception {
+		List<Location> result = new LinkedList<Location>();
+
+		Location tmp_pos = new Location(pos);
+		tmp_pos.up();
+
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
+			result.add(tmp_pos);
+		}
+
+		tmp_pos = new Location(pos);
+		tmp_pos.down();
+
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
+			result.add(tmp_pos);
+		}
+
+		tmp_pos = new Location(pos);
+		tmp_pos.left();
+
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
+			result.add(tmp_pos);
+		}
+
+		tmp_pos = new Location(pos);
+		tmp_pos.right();
+
+		if ((tmp_pos.x != pos.x) || (tmp_pos.y != pos.y)) {
+			result.add(tmp_pos);
+		}
+
+		return result;
 	}
 
 	/**
