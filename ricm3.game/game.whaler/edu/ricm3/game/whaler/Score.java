@@ -1,9 +1,5 @@
 package edu.ricm3.game.whaler;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-
 public class Score {
 	public int nombre;
 	int m_x, m_y;
