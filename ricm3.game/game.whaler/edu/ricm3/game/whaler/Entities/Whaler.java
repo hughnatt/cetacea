@@ -8,10 +8,11 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class Whaler extends Mobile_Entity {
+public class Whaler extends MobileEntity {
 
 	// TODO ajouter plus de fonctionnalités en jeu sur le whaler ?
 
@@ -27,7 +28,6 @@ public class Whaler extends Mobile_Entity {
 	boolean m_exploding;
 	long m_lastAnim;
 
-
 	/**
 	 * @param pos
 	 * @param sprite
@@ -39,10 +39,11 @@ public class Whaler extends Mobile_Entity {
 	public Whaler(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Game_exception {
 		super(pos, true, sprite, underSprite, model, dir, Options.WHALER_LIFE);
+
 		m_exploding = false;
 		m_explode_idx = 0;
-		m_automata = m_model.getAutomata(this);
 
+		m_automata = m_model.getAutomata(this);
 
 		loadSprites();
 		switch (dir) {
@@ -127,14 +128,16 @@ public class Whaler extends Mobile_Entity {
 	@Override
 	public void paint(Graphics g, Location map_ref) {
 
+		int cx = (m_pos.x - map_ref.x) * 32;
+		int cy = (m_pos.y - map_ref.y) * 32;
+
 		if (m_exploding) {
 
-			g.drawImage(m_explode[m_explode_idx], (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+			g.drawImage(m_explode[m_explode_idx], cx, cy, 32, 32, null);
 		} else {
-			g.drawImage(m_sprite, (m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32, 32, 32, null);
+			g.drawImage(m_sprite, cx, cy, 32, 32, null);
 			g.setColor(Color.RED);
-			g.fillRect((m_pos.x - map_ref.x) * 32, (m_pos.y - map_ref.y) * 32,
-					(int) (((double) m_life / (double) (Options.WHALER_LIFE)) * 32), 2);
+			g.fillRect(cx, cy, (int) (((double) m_life / (double) (Options.WHALER_LIFE)) * 32), 2);
 		}
 
 	}
@@ -175,6 +178,11 @@ public class Whaler extends Mobile_Entity {
 			result_whale.m_life++; // if yes, caught gauge increases
 		}
 
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.WHALER;
 	}
 
 }

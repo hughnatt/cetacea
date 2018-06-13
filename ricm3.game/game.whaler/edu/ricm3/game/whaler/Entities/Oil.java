@@ -11,7 +11,7 @@ import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public final class Oil extends Mobile_Entity {
+public final class Oil extends MobileEntity {
 
 	boolean is_burning;
 	long m_lastSpread;
@@ -27,11 +27,11 @@ public final class Oil extends Mobile_Entity {
 	 * @param model
 	 * @throws Game_exception
 	 */
-
 	public Oil(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model) throws Game_exception {
 		super(pos, false, sprite, underSprite, model, Direction.SOUTH, Options.OIL_LIFE);
 		// We use a default direction,because it has no importance
 
+		m_automata = m_model.getAutomata(this);
 		this.is_burning = false;
 		m_lastSpread = 0;
 		m_damage = Options.BURNING_OIL_DPS;
@@ -83,7 +83,7 @@ public final class Oil extends Mobile_Entity {
 					case DESTROYER:
 					case WHALER:
 					case WHALE:
-						Mobile_Entity me = (Mobile_Entity) e;
+						MobileEntity me = (MobileEntity) e;
 						me.m_life -= m_damage;
 					default:
 						break;
@@ -169,6 +169,12 @@ public final class Oil extends Mobile_Entity {
 	public void pick() {
 		// nothing
 
+	}
+
+
+	@Override
+	public EntityType getType() {
+		return EntityType.OIL;
 	}
 
 }

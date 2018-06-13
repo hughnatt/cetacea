@@ -12,7 +12,7 @@ import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
-public final class Whale extends Mobile_Entity {
+public final class Whale extends MobileEntity {
 
 	// public int m_capture; // Catch gauge
 	int m_damage; // DPS to the hit
@@ -33,9 +33,12 @@ public final class Whale extends Mobile_Entity {
 
 	public Whale(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
 			throws Game_exception {
+
 		super(pos, true, sprite, underSprite, model, dir, Options.WHALE_LIFE);
 		m_damage = Options.WHALE_DPS;
 		m_pop_triggered = false;
+		
+		m_automata = m_model.getAutomata(this);
 
 		// Default sprite index is 0 (first image)
 		m_sprite_idx = 0;
@@ -215,6 +218,11 @@ public final class Whale extends Mobile_Entity {
 
 	public void pick() {
 		this.pop();
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.WHALE;
 	}
 
 }

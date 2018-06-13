@@ -119,7 +119,6 @@ public abstract class GameView extends Canvas {
 
   public final void paint() throws Game_exception {
     Graphics g = m_drawBuffer.getGraphics();
-    g.draw3DRect(10, 10, 100, 100, true);
     _paint(g);
     m_swap = true;
     repaint();
