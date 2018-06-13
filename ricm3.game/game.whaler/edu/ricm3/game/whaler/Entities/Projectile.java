@@ -59,7 +59,7 @@ public class Projectile extends MobileEntity {
 		Iterator<Entity> iter = tile.iterator();
 		while (iter.hasNext()) {
 			Entity e = iter.next();
-			if (e.isSolid()) {
+			if (e.isSolid()&&!(m_model.UNDER_WATER)) {
 				switch (e.getType()) {
 				case PLAYER:
 				case DESTROYER:
