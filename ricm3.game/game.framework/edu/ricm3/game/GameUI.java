@@ -163,7 +163,7 @@ public class GameUI {
 			m_frame.setVisible(true);
 
 			// hook window events so that we exit the Java Platform
-			// when the window is closed by the end user.
+			// when the window is closed by the end user. 
 			m_frame.addWindowListener(new WindowListener(m_model));
 
 			m_frame.pack();
