@@ -35,8 +35,9 @@ public class GameMain {
 
 		try {
 			model = new Model();
-		} catch (FileNotFoundException | Automata_Exception | Game_exception | ParseException e) {
+		} catch (Game_exception e) {
 			e.printStackTrace();
+			System.out.println("Le jeu a rencontré une erreur.");
 			return;
 		}
 
