@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,9 +38,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+
 import edu.ricm3.game.whaler.Model;
-import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class GameUI {
 
