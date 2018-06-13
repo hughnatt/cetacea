@@ -23,23 +23,20 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
+import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Options;
@@ -68,12 +65,13 @@ public class GameUI {
 	long m_lastTick;
 	int m_nTicks;
 	private Screen m_screen;
-
 	private JProgressBar m_lifeBar;
 	private JProgressBar m_oilBar;
-
 	private JLabel m_score_display;
-
+	private JMenu m_statut;
+	private JMenuItem stop;
+	private JMenuItem start;
+	
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
 		m_model.m_game = this;
@@ -158,8 +156,7 @@ public class GameUI {
 			// Info Bar (FPS, TICK,...)
 			m_text = new JLabel();
 			m_text.setText("Starting up...");
-			addNorth(m_text);
-
+			//addNorth(m_text);
 
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -188,14 +185,17 @@ public class GameUI {
 
 			m_controller.notifyVisible();
 
-			
 			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshLife();
 			m_oilBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshOil();
 			m_score_display = new JLabel("", JLabel.CENTER);
 			refreshScore();
-			
+			m_menuBar = new JMenuBar();
+			m_statut = new JMenu("Jeu");
+			stop = new JMenuItem("Pause");
+			start = new JMenuItem("Play");
+			refreshPause();
 
 		}  else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
@@ -281,6 +281,27 @@ public class GameUI {
 
 	}
 
+	public void refreshPause() {
+		
+		Model m = (Model) m_model;
+		m_statut.setFont(new Font("Laksaman", Font.BOLD, 15));
+		stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				m.m_pause = true;
+			}
+		});
+		start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				m.m_pause = false;
+			}
+		});
+		m_statut.add(stop);
+		m_statut.add(start);
+		m_menuBar.add(m_statut);
+		Container contentPane = m_frame.getContentPane();
+		contentPane.add(m_menuBar, BorderLayout.NORTH);
+	}
+
 	/*
 	 * Let's create a timer, it is the heart of the simulation, ticking periodically
 	 * so that we can simulate the passing of time.
@@ -336,7 +357,7 @@ public class GameUI {
 			refreshLife();
 			refreshOil();
 			refreshScore();
-
+			refreshPause();
 			m_view.paint();
 			m_lastRepaint = now;
 		}
