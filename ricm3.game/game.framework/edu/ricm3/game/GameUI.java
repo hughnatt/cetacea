@@ -225,11 +225,11 @@ public class GameUI {
 			currentOil = 0;
 		}
 		
-		for (float i=Options.MAX_OIL; i > currentOil; i-=0.5) {
+		for (int i = Options.MAX_OIL; i > (int) currentOil; i--) {
 			m_oil.add(new JLabel(new ImageIcon(m.m_baremptySprite)));
 		}
 		
-		for (float i = currentOil; i >= 1 ; i-=0.5) {
+		for (int i = (int) currentOil; i >= 1 ; i--) {
 			m_oil.add(new JLabel(new ImageIcon(m.m_oilfullSprite)));
 		}
 		

@@ -320,6 +320,11 @@ public class Model extends GameModel {
 		return m_map;
 	}
 
+	
+	private boolean inStepZone(Location entity, Location player) {
+		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10) && (entity.y < player.y + 10));
+	}
+	
 	@Override
 	public void step(long now) {
 
@@ -336,39 +341,52 @@ public class Model extends GameModel {
 			Iterator<StaticEntity> iterstatics = m_statics.iterator();
 			while (iterstatics.hasNext()) {
 				StaticEntity e = iterstatics.next();
-				e.step(now);
+				
+				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+					e.step(now);
+				}
 			}
 
 			Iterator<Whale> iterwhales = m_whales.iterator();
 			while (iterwhales.hasNext()) {
 				Whale e = iterwhales.next();
-				e.step(now);
+				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+					e.step(now);
+				}
 			}
 
 			Iterator<Oil> iteroil = m_oils.iterator();
 
 			while (iteroil.hasNext()) {
 
-				Oil tmp = iteroil.next();
-				tmp.step(now);
+				Oil e = iteroil.next();
+				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+					e.step(now);
+				}
 			}
 
 			Iterator<Whaler> iterwhalers = m_whalers.iterator();
 			while (iterwhalers.hasNext()) {
 				Whaler e = iterwhalers.next();
-				e.step(now);
+				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+					e.step(now);
+				}
 			}
 
 			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
 			while (iterdestroyers.hasNext()) {
 				Destroyer e = iterdestroyers.next();
-				e.step(now);
+				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+					e.step(now);
+				}
 			}
 
 			Iterator<Projectile> iterprojs = m_projectiles.iterator();
 			while (iterprojs.hasNext()) {
 				Projectile e = iterprojs.next();
-				e.step(now);
+				if (inStepZone(e.getLoc(),m_player.getLoc())) {
+					e.step(now);
+				}
 			}
 
 			// Garbage Iterator

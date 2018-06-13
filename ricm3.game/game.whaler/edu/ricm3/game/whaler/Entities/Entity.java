@@ -57,6 +57,10 @@ public abstract class Entity {
 		return m_pos.y;
 	}
 
+	public Location getLoc() {
+		return m_pos;
+	}
+	
 	/**
 	 * Indicate whether the Entity is solid (Boats, Stone, ...) or not (Oil,
 	 * Projectile, ...)
