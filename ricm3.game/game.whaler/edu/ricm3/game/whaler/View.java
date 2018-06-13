@@ -27,7 +27,6 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 public class View extends GameView {
 
 	private static final long serialVersionUID = 1L;
-
 	Color m_background = Color.blue;
 	long m_last;
 	int m_npaints;
@@ -55,16 +54,18 @@ public class View extends GameView {
 	@Override
 	protected void _paint(Graphics g) throws Game_exception {
 		computeFPS();
-
 		// paints a blue canvas then the map's viewport
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		m_model.m_current_background.paint(g);
+
 		// Viewport paint of the map
 		if (m_model.UNDER_WATER) {
 			m_model.map().paint_under(g);
 		} else {
 			m_model.map().paint(g);
 		}
+
+		m_model.m_score.paint(g);
 	}
 }
