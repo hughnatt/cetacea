@@ -41,7 +41,7 @@ public class Projectile extends MobileEntity {
 		m_automata = m_model.getAutomata(this);
 		m_model.m_projectiles.add(this);
 
-		m_lastStep = 0;
+		m_lastStep = -1; //In Order to skip the first step
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Projectile extends MobileEntity {
 	@Override
 	public void step(long now) throws Game_exception {
 
-		if (this.m_lastStep == -1) {
+		if (this.m_lastStep == -1) { //Skip the first step
 			m_lastStep = now;
 		}
 
