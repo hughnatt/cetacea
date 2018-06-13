@@ -38,8 +38,6 @@ public final class Oil extends MobileEntity {
 		m_lastSpread = 0;
 		m_damage = Options.BURNING_OIL_DPS;
 
-		m_model.m_oils.add(0, this);
-
 		m_spriteFire = new BufferedImage[32];
 
 		for (int i = 0; i < 32; i++) {
@@ -57,6 +55,7 @@ public final class Oil extends MobileEntity {
 	public void step(long now) throws Game_exception {
 		if (m_life <= 0) {
 			this.destroy();
+			return;
 		}
 
 		if (m_is_burning) {
@@ -172,7 +171,7 @@ public final class Oil extends MobileEntity {
 					// check if there is no iceberg,island,oil or stone
 					if (m_model.rand.nextInt(100) <= Options.OIL_POURCENTAGE_POP) {
 						// new oil with a percentage of spawn
-						new Oil(pos, m_model.get_oil_sprite(), null, m_model);
+						m_model.m_oils.add(new Oil(pos, m_model.get_oil_sprite(), null, m_model));
 					}
 				}
 			}

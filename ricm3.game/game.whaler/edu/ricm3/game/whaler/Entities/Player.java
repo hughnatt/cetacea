@@ -174,7 +174,7 @@ public final class Player extends MobileEntity {
 	public void pick() throws Game_exception {
 		Entity result = m_model.map().tile(this.m_pos).contain(EntityType.OIL);
 
-		if (result != null) {
+		if ((result != null) && !(m_model.UNDER_WATER)) {
 			Oil to_pick = (Oil) result;
 			if (this.m_oil_jauge + Options.OIL_PICKED > Options.MAX_OIL) {
 				this.m_oil_jauge = Options.MAX_OIL;
@@ -188,7 +188,7 @@ public final class Player extends MobileEntity {
 	@Override
 	public void hit() throws Game_exception {
 
-		if (m_lastHit > 50L) {
+		if (m_lastHit > 50L && !m_model.UNDER_WATER) {
 			switch (m_direction) {
 			case SOUTH:
 				new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
