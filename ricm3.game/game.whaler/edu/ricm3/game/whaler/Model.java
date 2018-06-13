@@ -457,6 +457,7 @@ public class Model extends GameModel {
 	}
 
 	public IAutomata getAutomata(MobileEntity m) throws Game_exception {
+		
 		switch (m.getType()) {
 		case PLAYER:
 			return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];

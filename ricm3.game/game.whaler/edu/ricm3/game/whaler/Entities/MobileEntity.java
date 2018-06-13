@@ -182,9 +182,9 @@ public abstract class MobileEntity extends Entity {
 		
 		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
 		
-		if (!nextTile.isSolidUnder() || !this.isSolid()) {
+		if (!nextTile.isSolidUnder()) {
 			currentTile.remove(this);
-			nextTile.addBackground(this);
+			nextTile.addForeground(this);
 			m_pos = nextTile.m_loc;
 		}
 	}
@@ -193,9 +193,9 @@ public abstract class MobileEntity extends Entity {
 		
 		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
 		
-		if (!nextTile.isSolid() || !this.isSolid()) {
+		if (!nextTile.isSolid() || this.getType() == EntityType.PROJECTILE) {
 			currentTile.remove(this);
-			nextTile.addBackground(this);
+			nextTile.addForeground(this);
 			m_pos = nextTile.m_loc;
 		}
 	}

@@ -97,10 +97,10 @@ public class Whaler extends MobileEntity {
 			try {
 				m_automata.step(m_model, this);
 			} catch (Automata_Exception e) {
-				e.printStackTrace();
-			} catch (Game_exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -180,7 +180,7 @@ public class Whaler extends MobileEntity {
 	public boolean isSolidUnder() {
 		return false;
 	}
-	
+
 	@Override
 	public EntityType getType() {
 		return EntityType.WHALER;

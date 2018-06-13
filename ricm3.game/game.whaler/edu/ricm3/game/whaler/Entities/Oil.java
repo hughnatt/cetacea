@@ -11,6 +11,7 @@ import edu.ricm3.game.whaler.Map;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Tile;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public final class Oil extends MobileEntity {
@@ -34,6 +35,7 @@ public final class Oil extends MobileEntity {
 		// We use a default direction,because it has no importance
 
 		m_automata = m_model.getAutomata(this);
+		
 		this.m_is_burning = false;
 		m_lastSpread = 0;
 		m_damage = Options.BURNING_OIL_DPS;
@@ -58,10 +60,11 @@ public final class Oil extends MobileEntity {
 			return;
 		}
 
+		long elapsed = now - m_lastStep;
+		
 		if (m_is_burning) {
 
-			long elapsed = now - m_lastStep;
-
+			
 			if (elapsed > Options.BURNING_OIL_SPD_BURNING) {
 				// change of the fire spite
 
@@ -135,7 +138,18 @@ public final class Oil extends MobileEntity {
 
 			}
 
-		} else { // if the oil doestn't burn
+		} else if (elapsed > 5000L) { // if the oil doestn't burn
+			
+			try {
+				m_automata.step(m_model, this);
+			} catch (Automata_Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			m_lastSpread = now; // we keep the timers readied
 			m_lastStep = now;
 
