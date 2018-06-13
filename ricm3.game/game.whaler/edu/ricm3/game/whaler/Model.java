@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.ricm3.game.whaler;
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -125,6 +124,7 @@ public class Model extends GameModel {
 	public BufferedImage m_lifefullSprite;
 	public BufferedImage m_bardownSprite;
 	public BufferedImage m_oilfullSprite;
+	public boolean m_pause = false;
 
 	public Model() throws Game_exception {
 
@@ -329,101 +329,94 @@ public class Model extends GameModel {
 
 	@Override
 	public void step(long now) {
+		if (!(m_pause)) {
+			m_lastSwap++; // Tick Number
 
-		m_lastSwap++; // Tick Number
+			try {
+				m_garbage = new LinkedList<MobileEntity>();
+				m_current_background.step(now);
+				m_player.step(now);
 
-		try {
-
-			m_garbage = new LinkedList<MobileEntity>();
-
-			m_current_background.step(now);
-
-			m_player.step(now);
-
-			Iterator<StaticEntity> iterstatics = m_statics.iterator();
-			while (iterstatics.hasNext()) {
-				StaticEntity e = iterstatics.next();
-
-				if (inStepZone(e.getLoc(), m_player.getLoc())) {
-					e.step(now);
+				Iterator<StaticEntity> iterstatics = m_statics.iterator();
+				while (iterstatics.hasNext()) {
+					StaticEntity e = iterstatics.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Whale> iterwhales = m_whales.iterator();
-			while (iterwhales.hasNext()) {
-				Whale e = iterwhales.next();
-				if (inStepZone(e.getLoc(), m_player.getLoc())) {
-					e.step(now);
+				Iterator<Whale> iterwhales = m_whales.iterator();
+				while (iterwhales.hasNext()) {
+					Whale e = iterwhales.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Oil> iteroil = m_oils.iterator();
-
-			while (iteroil.hasNext()) {
-
-				Oil e = iteroil.next();
-				if (inStepZone(e.getLoc(), m_player.getLoc())) {
-					e.step(now);
+				Iterator<Oil> iteroil = m_oils.iterator();
+				while (iteroil.hasNext()) {
+					Oil e = iteroil.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Whaler> iterwhalers = m_whalers.iterator();
-			while (iterwhalers.hasNext()) {
-				Whaler e = iterwhalers.next();
-				if (inStepZone(e.getLoc(), m_player.getLoc())) {
-					e.step(now);
+				Iterator<Whaler> iterwhalers = m_whalers.iterator();
+				while (iterwhalers.hasNext()) {
+					Whaler e = iterwhalers.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
-			while (iterdestroyers.hasNext()) {
-				Destroyer e = iterdestroyers.next();
-				if (inStepZone(e.getLoc(), m_player.getLoc())) {
-					e.step(now);
+				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+				while (iterdestroyers.hasNext()) {
+					Destroyer e = iterdestroyers.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Projectile> iterprojs = m_projectiles.iterator();
-			while (iterprojs.hasNext()) {
-				Projectile e = iterprojs.next();
-				if (inStepZone(e.getLoc(), m_player.getLoc())) {
-					e.step(now);
+				Iterator<Projectile> iterprojs = m_projectiles.iterator();
+				while (iterprojs.hasNext()) {
+					Projectile e = iterprojs.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
+				// Garbage Iterator
 
-			// Garbage Iterator
-
-			Iterator<MobileEntity> iterdestroy = m_garbage.iterator();
-			while (iterdestroy.hasNext()) {
-				MobileEntity e = iterdestroy.next();
-				switch (e.getType()) {
-				case WHALE:
-					m_whales.remove(e);
-					break;
-				case WHALER:
-					m_whalers.remove(e);
-					break;
-				case DESTROYER:
-					m_destroyers.remove(e);
-					break;
-				case OIL:
-					m_oils.remove(e);
-					break;
-				case PROJECTILE:
-					m_projectiles.remove(e);
-					break;
-				default:
-					break;
+				Iterator<MobileEntity> iterdestroy = m_garbage.iterator();
+				while (iterdestroy.hasNext()) {
+					MobileEntity e = iterdestroy.next();
+					switch (e.getType()) {
+					case WHALE:
+						m_whales.remove(e);
+						break;
+					case WHALER:
+						m_whalers.remove(e);
+						break;
+					case DESTROYER:
+						m_destroyers.remove(e);
+						break;
+					case OIL:
+						m_oils.remove(e);
+						break;
+					case PROJECTILE:
+						m_projectiles.remove(e);
+						break;
+					default:
+						break;
+					}
 				}
-			}
-			// Suppression des références
-			m_garbage = null;
+				// Suppression des références
+				m_garbage = null;
 
-		} catch (Game_exception | Automata_Exception e1) {
-			e1.printStackTrace();
-			System.exit(-1);
+			} catch (Game_exception | Automata_Exception e1) {
+				e1.printStackTrace();
+				System.exit(-1);
+			}
 		}
-
 	}
 
 	@Override
@@ -532,7 +525,6 @@ public class Model extends GameModel {
 				int flore = rand.nextInt(6);
 
 				while (m_map.tile(x, i).isSolid()) {
-
 					x = rand.nextInt((max - min) + 1) + min;
 				}
 
