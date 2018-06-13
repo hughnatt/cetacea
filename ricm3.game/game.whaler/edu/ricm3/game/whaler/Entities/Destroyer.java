@@ -8,9 +8,9 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
-import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 
 public class Destroyer extends MobileEntity {
 
@@ -169,9 +169,28 @@ public class Destroyer extends MobileEntity {
 	}
 
 	@Override
-	public void hit() {
+	public void hit() throws Location_exception, Game_exception {
 
-
+		switch (m_direction) {
+		case SOUTH:
+			new Projectile(new Location(this.getx(), this.gety() + 1), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.SOUTH);
+			break;
+		case NORTH:
+			new Projectile(new Location(this.getx(), this.gety() - 1), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.NORTH);
+			break;
+		case EAST:
+			new Projectile(new Location(this.getx() + 1, this.gety()), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.EAST);
+			break;
+		case WEST:
+			new Projectile(new Location(this.getx() - 1, this.gety()), m_model.get_projectile_sprite(),
+					m_model.get_projectile_sprite(), m_model, Direction.WEST);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

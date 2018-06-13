@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.ricm3.game.whaler;
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,7 +28,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
+
 import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
@@ -38,6 +39,7 @@ import edu.ricm3.game.parser.ParseException;
 import edu.ricm3.game.whaler.Entities.Bulle;
 import edu.ricm3.game.whaler.Entities.Coral;
 import edu.ricm3.game.whaler.Entities.Destroyer;
+import edu.ricm3.game.whaler.Entities.Entity;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Entities.Iceberg;
 import edu.ricm3.game.whaler.Entities.Island;
@@ -122,16 +124,17 @@ public class Model extends GameModel {
 	public BufferedImage m_lifefullSprite;
 	public BufferedImage m_bardownSprite;
 	public BufferedImage m_oilfullSprite;
+	public boolean m_pause = false;
 
 	public Model() throws Game_exception {
 
-		//Load, Parse and Make the Automata Array
+		// Load, Parse and Make the Automata Array
 		loadAutomaton();
-		
-		//Load the Automata Choice Array
+
+		// Load the Automata Choice Array
 		loadAutomataChoices();
 
-		//Load all the sprites
+		// Load all the sprites
 		loadSprites();
 
 		// Which key is currently pressed ?
@@ -146,9 +149,9 @@ public class Model extends GameModel {
 		/*** Creating the map ***/
 		generateMap();
 
-		m_score  = new Score(this, 100, 30, 1);
+		m_score = new Score(this, 100, 30, 1);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -160,14 +163,14 @@ public class Model extends GameModel {
 			e.printStackTrace();
 			System.out.println("automata.txt file can't be found !");
 			System.exit(-1);
-			
+
 		}
-		
+
 		// Loading automate file
 		Ast ast;
 		try {
 			ast = AutomataParser.Run();
-			
+
 			//
 			try {
 				automata_array = ((AI_Definitions) ast).make();
@@ -176,39 +179,38 @@ public class Model extends GameModel {
 				System.out.println("Error when creating the Interpretor. Possibly unhandled grammar");
 				System.exit(-2);
 			}
-				
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 			System.out.println("Grammar error when parsing the Automata file.");
 			System.exit(-3);
 		}
-		
-		
+
 		if (automata_array.length == 0) {
 			System.out.println("Fatal Error : No automata has been read. Check automata.txt file");
 			System.exit(-4);
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void reloadAutomataChoices() {
 		loadAutomataChoices();
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void loadAutomataChoices() {
-		
+
 		automata_choices = new int[EntityType.values().length];
 		BufferedReader file;
 		try {
-			
+
 			file = new BufferedReader(new FileReader("game.whaler/settings/choix_automates.txt"));
 
-			//Lecture dans l'ordre
+			// Lecture dans l'ordre
 			automata_choices[EntityType.WHALE.ordinal()] = Integer.parseInt(file.readLine());
 			automata_choices[EntityType.WHALER.ordinal()] = Integer.parseInt(file.readLine());
 			automata_choices[EntityType.DESTROYER.ordinal()] = Integer.parseInt(file.readLine());
@@ -217,9 +219,9 @@ public class Model extends GameModel {
 			automata_choices[EntityType.PROJECTILE.ordinal()] = Integer.parseInt(file.readLine());
 
 			file.close();
-			
+
 		} catch (FileNotFoundException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("Le fichier de choix d'automates est introuvable. Création du fichier par défaut.");
 			createChoiceFile();
 		} catch (IOException ea) {
@@ -227,11 +229,11 @@ public class Model extends GameModel {
 			System.exit(-1);
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	private void createChoiceFile(){
+	private void createChoiceFile() {
 		File f = new File("game.whaler/settings/choix_automates.txt");
 		BufferedWriter out = null;
 		try {
@@ -247,7 +249,7 @@ public class Model extends GameModel {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @throws Location_exception
@@ -263,8 +265,8 @@ public class Model extends GameModel {
 		m_current_background = m_ocean;
 
 		// Underground generation
-		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
 		seaGenerator(Options.SEA_ELEMENTS_POURCENTAGE);
+		undergroundFloreGenerator(Options.UNDERGROUND_FLORE_POURCENTAGE);
 
 		// Stones Border
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
@@ -298,7 +300,7 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-		
+
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
@@ -320,108 +322,101 @@ public class Model extends GameModel {
 		return m_map;
 	}
 
-	
 	private boolean inStepZone(Location entity, Location player) {
-		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10) && (entity.y < player.y + 10));
+		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10)
+				&& (entity.y < player.y + 10));
 	}
-	
+
 	@Override
 	public void step(long now) {
+		if (!(m_pause)) {
+			m_lastSwap++; // Tick Number
 
-		m_lastSwap++; // Tick Number
+			try {
+				m_garbage = new LinkedList<MobileEntity>();
+				m_current_background.step(now);
+				m_player.step(now);
 
-		try {
-
-			m_garbage = new LinkedList<MobileEntity>();
-
-			m_current_background.step(now);
-
-			m_player.step(now);
-
-			Iterator<StaticEntity> iterstatics = m_statics.iterator();
-			while (iterstatics.hasNext()) {
-				StaticEntity e = iterstatics.next();
-				
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
-					e.step(now);
+				Iterator<StaticEntity> iterstatics = m_statics.iterator();
+				while (iterstatics.hasNext()) {
+					StaticEntity e = iterstatics.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Whale> iterwhales = m_whales.iterator();
-			while (iterwhales.hasNext()) {
-				Whale e = iterwhales.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
-					e.step(now);
+				Iterator<Whale> iterwhales = m_whales.iterator();
+				while (iterwhales.hasNext()) {
+					Whale e = iterwhales.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Oil> iteroil = m_oils.iterator();
-
-			while (iteroil.hasNext()) {
-
-				Oil e = iteroil.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
-					e.step(now);
+				Iterator<Oil> iteroil = m_oils.iterator();
+				while (iteroil.hasNext()) {
+					Oil e = iteroil.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Whaler> iterwhalers = m_whalers.iterator();
-			while (iterwhalers.hasNext()) {
-				Whaler e = iterwhalers.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
-					e.step(now);
+				Iterator<Whaler> iterwhalers = m_whalers.iterator();
+				while (iterwhalers.hasNext()) {
+					Whaler e = iterwhalers.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
-			while (iterdestroyers.hasNext()) {
-				Destroyer e = iterdestroyers.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
-					e.step(now);
+				Iterator<Destroyer> iterdestroyers = m_destroyers.iterator();
+				while (iterdestroyers.hasNext()) {
+					Destroyer e = iterdestroyers.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
 
-			Iterator<Projectile> iterprojs = m_projectiles.iterator();
-			while (iterprojs.hasNext()) {
-				Projectile e = iterprojs.next();
-				if (inStepZone(e.getLoc(),m_player.getLoc())) {
-					e.step(now);
+				Iterator<Projectile> iterprojs = m_projectiles.iterator();
+				while (iterprojs.hasNext()) {
+					Projectile e = iterprojs.next();
+					if (inStepZone(e.getLoc(), m_player.getLoc())) {
+						e.step(now);
+					}
 				}
-			}
+				// Garbage Iterator
 
-			// Garbage Iterator
-
-			Iterator<MobileEntity> iterdestroy = m_garbage.iterator();
-			while (iterdestroy.hasNext()) {
-				MobileEntity e = iterdestroy.next();
-				switch (e.getType()) {
-				case WHALE:
-					m_whales.remove(e);
-					break;
-				case WHALER:
-					m_whalers.remove(e);
-					break;
-				case DESTROYER:
-					m_destroyers.remove(e);
-					break;
-				case OIL:
-					m_oils.remove(e);
-					break;
-				case PROJECTILE:
-					m_projectiles.remove(e);
-					break;
-				default:
-					break;
+				Iterator<MobileEntity> iterdestroy = m_garbage.iterator();
+				while (iterdestroy.hasNext()) {
+					MobileEntity e = iterdestroy.next();
+					switch (e.getType()) {
+					case WHALE:
+						m_whales.remove(e);
+						break;
+					case WHALER:
+						m_whalers.remove(e);
+						break;
+					case DESTROYER:
+						m_destroyers.remove(e);
+						break;
+					case OIL:
+						m_oils.remove(e);
+						break;
+					case PROJECTILE:
+						m_projectiles.remove(e);
+						break;
+					default:
+						break;
+					}
 				}
-			}
-			// Suppression des références
-			m_garbage = null;
+				// Suppression des références
+				m_garbage = null;
 
-		} catch (Game_exception | Automata_Exception e1) {
-			e1.printStackTrace();
-			System.exit(-1);
+			} catch (Game_exception | Automata_Exception e1) {
+				e1.printStackTrace();
+				System.exit(-1);
+			}
 		}
-
 	}
 
 	@Override
@@ -475,11 +470,19 @@ public class Model extends GameModel {
 		int max = Options.DIMX_MAP - 2;
 
 		int nbparColonne = (pourcentage * max) / 100;
+		LinkedList<Entity> list;
 
 		for (int i = 1; i < Options.DIMY_MAP; i++) {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
 				int flore = rand.nextInt(4);
+
+				list = m_map.tile(x, i).getList();
+
+				while (list.size() > 0 || m_map.tile(x, i).isSolid()) {
+					x = rand.nextInt((max - min) + 1) + min;
+					list = m_map.tile(x, i).getList();
+				}
 
 				switch (flore) {
 				case 0:
@@ -518,9 +521,10 @@ public class Model extends GameModel {
 		for (int i = 1; i < Options.DIMY_MAP; i++) {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
-				int flore = rand.nextInt(3);
-				
-				while(m_map.tile(x,i).isSolid()) {
+
+				int flore = rand.nextInt(6);
+
+				while (m_map.tile(x, i).isSolid()) {
 					x = rand.nextInt((max - min) + 1) + min;
 				}
 
@@ -530,6 +534,15 @@ public class Model extends GameModel {
 					break;
 				case 1:
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
+					break;
+				case 2:
+					m_destroyers.add(new Destroyer(new Location(x, i), m_destroyerSprite, null, this, Direction.LEFT));
+					break;
+				case 3:
+					m_whalers.add(new Whaler(new Location(x, i), m_whalerSprite, null, this, Direction.LEFT));
+					break;
+				case 4:
+					m_whales.add(new Whale(new Location(x, i), m_whaleSprite, null, this, Direction.LEFT));
 					break;
 				default:
 					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
@@ -550,6 +563,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
+	}
+
+	public BufferedImage get_oil_sprite() {
+		return m_oilSprite;
 	}
 
 	public Direction rand_direction() {

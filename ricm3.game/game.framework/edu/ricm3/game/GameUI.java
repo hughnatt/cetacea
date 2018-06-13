@@ -23,28 +23,27 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
+import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
+import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Options;
 
-public class GameUI {
+public class GameUI implements ActionListener {
 
 	static String license = "Copyright (C) 2017  Pr. Olivier Gruber "
 			+ "This program comes with ABSOLUTELY NO WARRANTY. "
@@ -68,11 +67,12 @@ public class GameUI {
 	long m_lastTick;
 	int m_nTicks;
 	private Screen m_screen;
-
 	private JProgressBar m_lifeBar;
 	private JProgressBar m_oilBar;
-
 	private JLabel m_score_display;
+	private JMenu m_statut;
+	private JMenuItem pause;
+	private JMenuItem exit;
 
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
@@ -137,6 +137,7 @@ public class GameUI {
 	public void createWindow(Dimension d) {
 
 		if (currentScreen() == Screen.PLAY) {
+
 			m_frame = new JFrame();
 			m_frame.setTitle("Cetacea");
 			m_frame.setLayout(new BorderLayout());
@@ -152,6 +153,7 @@ public class GameUI {
 				System.exit(-1);
 			}
 
+			
 			// Primary Display on the center
 			m_frame.add(m_view, BorderLayout.CENTER);
 
@@ -159,7 +161,6 @@ public class GameUI {
 			m_text = new JLabel();
 			m_text.setText("Starting up...");
 			addNorth(m_text);
-
 
 			m_frame.setSize(d);
 			m_frame.doLayout();
@@ -171,7 +172,6 @@ public class GameUI {
 
 			m_frame.pack();
 			m_frame.setLocationRelativeTo(null);
-
 			GameController ctr = getController();
 
 			// let's hook the controller,
@@ -187,16 +187,33 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
-			
+
 			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshLife();
 			m_oilBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshOil();
 			m_score_display = new JLabel("", JLabel.CENTER);
 			refreshScore();
-			
+
+			m_menuBar = new JMenuBar();
+			m_statut = new JMenu("Jeu");
+			pause = new JMenuItem("Pause");
+			exit = new JMenuItem("Exit");
+			m_statut.add(exit);
+			m_statut.add(pause);
+			m_statut.addSeparator();
+
+			m_menuBar.add(m_statut);
+			m_frame.setJMenuBar(m_menuBar);
+
+			pause.addActionListener(this);
+			exit.addActionListener(this);
+
+			pause.setActionCommand("PAUSE");
+			exit.setActionCommand("EXIT");
 
 		} else if (currentScreen() == Screen.MENU) {
+			
 			MainMenu m = new MainMenu(this);
 			m.create_frame();
 			m.create_menu();
@@ -216,6 +233,11 @@ public class GameUI {
 			EndGame e = new EndGame(this);
 			e.create_frame();
 			e.create_endgame();
+
+		} else if (currentScreen() == Screen.PAUSE) {
+			Pause p = new Pause(this);
+			p.create_frame();
+			p.create_pause();
 
 		}
 
@@ -249,7 +271,6 @@ public class GameUI {
 
 		Model m = (Model) m_model;
 		int currentLife = m.m_player.m_life;
-
 		m_lifeBar.removeAll();
 
 		m_lifeBar.setStringPainted(true);
@@ -274,10 +295,27 @@ public class GameUI {
 		m_score_display.removeAll();
 		m_score_display.setText("SCORE " + Integer.toString(score));
 		m_score_display.setFont(new Font("Laksaman", Font.BOLD, 15));
-
 		Container contentPane = m_frame.getContentPane();
 		contentPane.add(m_score_display, BorderLayout.SOUTH);
 
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Model m = (Model) m_model;
+		String event = e.getActionCommand();
+		if (event.equals("EXIT")) {
+			m_timer.stop();
+			setScreen(Screen.END);
+			this.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+			m_frame.dispose();
+		}
+		if (event.equals("PAUSE")) {
+		
+			m.m_pause = true;
+			setScreen(Screen.PAUSE);
+			this.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+			// m_frame.dispose();
+		}
 	}
 
 	/*
@@ -313,6 +351,9 @@ public class GameUI {
 		m_nTicks++;
 		m_model.step(now);
 		m_controller.step(now);
+		Model m = (Model) m_model;
+
+	
 
 		elapsed = now - m_lastRepaint;
 		if (elapsed > Options.REPAINT_DELAY) {
@@ -335,10 +376,20 @@ public class GameUI {
 			refreshLife();
 			refreshOil();
 			refreshScore();
-
 			m_view.paint();
 			m_lastRepaint = now;
 		}
+
+		int currentLife = m.m_player.m_life;
+		if (currentLife <= 0 || m.m_player.m_oil_jauge <= 0) {
+			currentLife = 0;
+			m_timer.stop();
+			this.setScreen(Screen.END);
+			m_frame.dispose();
+			createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+
+		}
+
 	}
 
 	public void setFPS(int fps, String msg) {

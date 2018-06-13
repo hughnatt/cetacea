@@ -11,13 +11,17 @@ import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 public class Tile {
 	LinkedList<Entity> m_level;
 
+	public LinkedList<Entity> getList() {
+		return m_level;
+	}
+
 	/*
 	 * List Representation of multiple entities superposed
 	 */
 	protected Tile() {
 		m_level = new LinkedList<Entity>();
 	}
-	
+
 	public Iterator<Entity> iterator() {
 		return m_level.iterator();
 	}
