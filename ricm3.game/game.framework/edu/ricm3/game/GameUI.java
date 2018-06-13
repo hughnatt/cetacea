@@ -187,6 +187,7 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
+
 			
 			m_lifeBar = new JProgressBar(JProgressBar.VERTICAL);
 			refreshLife();
@@ -196,20 +197,21 @@ public class GameUI {
 			refreshScore();
 			
 
-		} else if (currentScreen() == Screen.MENU) {
+		}  else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
 			m.create_frame();
 			m.create_menu();
 
-		} else if (currentScreen() == Screen.RULES) {
+		}  else if (currentScreen() == Screen.RULES) {
 			Rules r = new Rules(this);
 			r.create_frame();
 			r.create_rules();
 
-		} else if (currentScreen() == Screen.AUTOMATA) {
+		}  else if (currentScreen() == Screen.AUTOMATA) {
 			AutomataSelection a = new AutomataSelection(this);
 			a.create_frame();
 			a.create_automata_selection();
+
 
 		} else if (currentScreen() == Screen.END) {
 
@@ -249,7 +251,6 @@ public class GameUI {
 
 		Model m = (Model) m_model;
 		int currentLife = m.m_player.m_life;
-
 		m_lifeBar.removeAll();
 
 		m_lifeBar.setStringPainted(true);
@@ -339,6 +340,18 @@ public class GameUI {
 			m_view.paint();
 			m_lastRepaint = now;
 		}
+		Model m = (Model) m_model;
+		int currentLife = m.m_player.m_life;
+		if (currentLife <= 0 || m.m_player.m_oil_jauge <= 0) {
+			currentLife = 0;
+			m_timer.stop();
+			this.setScreen(Screen.END);
+			m_frame.dispose();
+			createWindow(new Dimension(Options.DIMX_WINDOW,Options.DIMY_WINDOW));
+			
+		}
+		
+		
 	}
 
 	public void setFPS(int fps, String msg) {
