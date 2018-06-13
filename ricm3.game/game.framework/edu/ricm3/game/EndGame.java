@@ -16,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.ricm3.game.GameUI.Screen;
-import edu.ricm3.game.MainMenu.IsClicked;
 import edu.ricm3.game.whaler.Options;
 
 public class EndGame {

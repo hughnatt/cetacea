@@ -17,18 +17,14 @@
  */
 package edu.ricm3.game.whaler;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-
 import edu.ricm3.game.GameController;
-import edu.ricm3.game.whaler.Model;
-
-
-
+import edu.ricm3.game.whaler.Entities.Oil;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 /**
  * This class is to illustrate the most simple game controller. It does not
@@ -46,7 +42,6 @@ public class Controller extends GameController implements ActionListener {
 	// menus, the cont one is only displayed on the automaton menu
 
 	Model m_model;
-
 
 	public Controller(Model m) {
 		m_model = m;
@@ -86,11 +81,11 @@ public class Controller extends GameController implements ActionListener {
 	 */
 
 	@Override
-	public void keyPressed(KeyEvent e) {	
-		
+	public void keyPressed(KeyEvent e) {
+
 		try {
 			m_model.keyPressed[e.getKeyCode()] = true;
-		} catch(Exception err) {
+		} catch (Exception err) {
 		}
 
 	}
@@ -99,7 +94,7 @@ public class Controller extends GameController implements ActionListener {
 	public void keyReleased(KeyEvent e) {
 		try {
 			m_model.keyPressed[e.getKeyCode()] = false;
-		} catch(Exception err) {
+		} catch (Exception err) {
 		}
 	}
 
@@ -111,6 +106,7 @@ public class Controller extends GameController implements ActionListener {
 	public void mousePressed(MouseEvent e) {
 
 	}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
@@ -138,14 +134,10 @@ public class Controller extends GameController implements ActionListener {
 
 	public void notifyVisible() {
 
-
-		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-
 
 	}
 }

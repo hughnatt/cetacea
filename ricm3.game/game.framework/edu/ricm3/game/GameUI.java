@@ -193,8 +193,8 @@ public class GameUI {
 			refreshScore();
 			m_menuBar = new JMenuBar();
 			m_statut = new JMenu("Jeu");
-			stop = new JMenuItem("Stop");
-			start = new JMenuItem("Start");
+			stop = new JMenuItem("Pause");
+			start = new JMenuItem("Play");
 			refreshPause();
 
 		}  else if (currentScreen() == Screen.MENU) {

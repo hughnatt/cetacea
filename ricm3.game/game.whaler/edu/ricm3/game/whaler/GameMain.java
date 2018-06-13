@@ -18,11 +18,8 @@
 package edu.ricm3.game.whaler;
 
 import java.awt.Dimension;
-import java.io.FileNotFoundException;
 
 import edu.ricm3.game.GameUI;
-import edu.ricm3.game.parser.ParseException;
-import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 

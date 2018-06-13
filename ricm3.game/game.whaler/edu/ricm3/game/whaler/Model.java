@@ -30,7 +30,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
+
 import edu.ricm3.game.GameModel;
 import edu.ricm3.game.parser.Ast;
 import edu.ricm3.game.parser.Ast.AI_Definitions;
@@ -333,17 +335,13 @@ public class Model extends GameModel {
 			m_lastSwap++; // Tick Number
 
 			try {
-
 				m_garbage = new LinkedList<MobileEntity>();
-
 				m_current_background.step(now);
-
 				m_player.step(now);
 
 				Iterator<StaticEntity> iterstatics = m_statics.iterator();
 				while (iterstatics.hasNext()) {
 					StaticEntity e = iterstatics.next();
-
 					if (inStepZone(e.getLoc(), m_player.getLoc())) {
 						e.step(now);
 					}
@@ -358,9 +356,7 @@ public class Model extends GameModel {
 				}
 
 				Iterator<Oil> iteroil = m_oils.iterator();
-
 				while (iteroil.hasNext()) {
-
 					Oil e = iteroil.next();
 					if (inStepZone(e.getLoc(), m_player.getLoc())) {
 						e.step(now);
@@ -390,7 +386,6 @@ public class Model extends GameModel {
 						e.step(now);
 					}
 				}
-
 				// Garbage Iterator
 
 				Iterator<MobileEntity> iterdestroy = m_garbage.iterator();
@@ -528,7 +523,8 @@ public class Model extends GameModel {
 		for (int i = 1; i < Options.DIMY_MAP; i++) {
 			for (int j = 1; j < nbparColonne; j++) {
 				int x = rand.nextInt((max - min) + 1) + min;
-				int flore = rand.nextInt(3);
+
+				int flore = rand.nextInt(6);
 
 				while (m_map.tile(x, i).isSolid()) {
 					x = rand.nextInt((max - min) + 1) + min;
@@ -540,6 +536,15 @@ public class Model extends GameModel {
 					break;
 				case 1:
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
+					break;
+				case 2:
+					m_destroyers.add(new Destroyer(new Location(x, i), m_destroyerSprite, null, this, Direction.LEFT));
+					break;
+				case 3:
+					m_whalers.add(new Whaler(new Location(x, i), m_whalerSprite, null, this, Direction.LEFT));
+					break;
+				case 4:
+					m_whales.add(new Whale(new Location(x, i), m_whaleSprite, null, this, Direction.LEFT));
 					break;
 				default:
 					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
@@ -560,6 +565,10 @@ public class Model extends GameModel {
 
 	public BufferedImage get_boom_sprite() {
 		return m_boomSprite;
+	}
+
+	public BufferedImage get_oil_sprite() {
+		return m_oilSprite;
 	}
 
 	public Direction rand_direction() {
