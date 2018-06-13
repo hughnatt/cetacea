@@ -185,26 +185,27 @@ public class GameUI {
 			m_view.requestFocusInWindow();
 
 			m_controller.notifyVisible();
-			refreshLife();
 			refreshOil();
+			refreshLife();
+			
+			
 
-		} else if (currentScreen() == Screen.MENU) {
+		}  else if (currentScreen() == Screen.MENU) {
 			MainMenu m = new MainMenu(this);
 			m.create_frame();
 			m.create_menu();
 
-		} else if (currentScreen() == Screen.RULES) {
+		}  else if (currentScreen() == Screen.RULES) {
 			Rules r = new Rules(this);
 			r.create_frame();
 			r.create_rules();
 
-		} else if (currentScreen() == Screen.AUTOMATA) {
+		}  else if (currentScreen() == Screen.AUTOMATA) {
 			AutomataSelection a = new AutomataSelection(this);
 			a.create_frame();
 			a.create_automata_selection();
 			
-		}else if ( currentScreen()==Screen.END) {
-			
+		} else if ( currentScreen()==Screen.END) {
 			EndGame e = new EndGame(this);
 			e.create_frame();
 			e.create_endgame();
@@ -226,6 +227,7 @@ public class GameUI {
 		//To Avoid display problems
 		if (currentOil <= 0) {
 			currentOil = 0;
+			this.setScreen(Screen.END);
 		}
 		
 		for (float i=Options.MAX_OIL; i > currentOil; i-=0.5) {
@@ -249,7 +251,7 @@ public class GameUI {
 		m_life.add(new JLabel(new ImageIcon(m.m_bartopSprite)));
 		
 		int currentLife = m.m_player.m_life;
-		if (currentLife <= 0) {
+		if (currentLife <= 0 ) {
 			currentLife = 0;
 			this.setScreen(Screen.END);
 			
@@ -330,6 +332,18 @@ public class GameUI {
 			m_view.paint();
 			m_lastRepaint = now;
 		}
+		Model m = (Model) m_model;
+		int currentLife = m.m_player.m_life;
+		if (currentLife <= 0 || m.m_player.m_oil_jauge <= 0) {
+			currentLife = 0;
+			m_timer.stop();
+			this.setScreen(Screen.END);
+			m_frame.dispose();
+			createWindow(new Dimension(Options.DIMX_WINDOW,Options.DIMY_WINDOW));
+			
+		}
+		
+		
 	}
 
 	public void setFPS(int fps, String msg) {
