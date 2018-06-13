@@ -41,13 +41,13 @@ public class Options {
 	public static final int MAX_WHALERS = 10; // nb max d'entités
 	public static final int MAX_DESTROYERS = 10;
 	public static final int MAX_PROJECTILES = 10;
-	public static final int MAX_OIL = 200;
+	public static final int MAX_OIL = 20000;
 	public static final int MAX_WHALES = 10;
 
 	public static final int PLAYER_LIFE = 20;
 	public static final int DESTROYER_LIFE = 20;
 	public static final int WHALER_LIFE = 20;
-	public static final int OIL_LIFE = 20;
+	public static final int OIL_LIFE = 10;
 	public static final int WHALE_LIFE = 10;
 
 	public static final int PROJECTILE_DPS = 1;
