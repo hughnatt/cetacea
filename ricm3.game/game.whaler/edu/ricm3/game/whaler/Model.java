@@ -146,6 +146,7 @@ public class Model extends GameModel {
 		/*** Creating the map ***/
 		generateMap();
 
+		m_score  = new Score(this, 100, 30, 1);
 	}
 	
 	/**
