@@ -180,6 +180,10 @@ public class Whaler extends MobileEntity {
 
 	}
 
+	public boolean isSolidUnder() {
+		return false;
+	}
+	
 	@Override
 	public EntityType getType() {
 		return EntityType.WHALER;

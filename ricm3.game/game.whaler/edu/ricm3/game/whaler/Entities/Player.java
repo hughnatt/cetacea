@@ -10,6 +10,7 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public final class Player extends MobileEntity {
@@ -66,8 +67,6 @@ public final class Player extends MobileEntity {
 			break;
 		}
 	}
-	
-	
 
 	@Override
 	public void destroy() throws Game_exception {
@@ -142,8 +141,22 @@ public final class Player extends MobileEntity {
 	}
 
 	@Override
-	public void pop() {
-		m_model.swap();
+	public void pop() throws Game_exception {
+
+		if (m_model.UNDER_WATER) {
+			
+			if (!(m_model.map().tile(this.m_pos).isSolid())) {
+				
+				m_model.swap();
+			
+			}
+			
+		} else {
+			
+			m_model.swap();
+		
+		}
+
 	}
 
 	@Override
@@ -191,6 +204,14 @@ public final class Player extends MobileEntity {
 		default:
 			break;
 		}
+	}
+	
+	public boolean isSolid() {
+		return !m_model.UNDER_WATER;
+	}
+
+	public boolean isSolidUnder() {
+		return m_model.UNDER_WATER;
 	}
 
 	@Override

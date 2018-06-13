@@ -171,7 +171,11 @@ public final class Oil extends MobileEntity {
 
 	}
 
+	public boolean isSolidUnder() {
+		return false;
+	}
 
+	
 	@Override
 	public EntityType getType() {
 		return EntityType.OIL;

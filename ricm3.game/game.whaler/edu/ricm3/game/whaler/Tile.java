@@ -10,12 +10,14 @@ import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 
 public class Tile {
 	LinkedList<Entity> m_level;
+	public Location m_loc;
 
 	/*
 	 * List Representation of multiple entities superposed
 	 */
-	protected Tile() {
+	protected Tile(Location loc) {
 		m_level = new LinkedList<Entity>();
+		m_loc = loc;
 	}
 	
 	public Iterator<Entity> iterator() {
@@ -81,6 +83,21 @@ public class Tile {
 		while (iter.hasNext()) {
 			Entity E = iter.next();
 			if (E.isSolid()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/*
+	 * Return whether the Tile is solid or not A Tile is solid if it has a solid
+	 * entity
+	 */
+	public boolean isSolidUnder() {
+		Iterator<Entity> iter = m_level.iterator();
+		while (iter.hasNext()) {
+			Entity E = iter.next();
+			if (E.isSolidUnder()) {
 				return true;
 			}
 		}

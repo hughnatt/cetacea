@@ -226,6 +226,10 @@ public final class Whale extends MobileEntity {
 		this.pop();
 	}
 
+	public boolean isSolidUnder() {
+		return false;
+	}
+	
 	@Override
 	public EntityType getType() {
 		return EntityType.WHALE;

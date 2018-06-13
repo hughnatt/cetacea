@@ -152,6 +152,10 @@ public class Destroyer extends MobileEntity {
 		}
 
 	}
+	
+	public boolean isSolidUnder() {
+		return false;
+	}
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {

@@ -20,13 +20,7 @@ public final class Iceberg extends StaticEntity {
 		super(pos, true, sprite, underSprite, model);
 	}
 	
-	public boolean isSolid() {
-		if (m_model.UNDER_WATER) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+	
 
 	@Override
 	public void step(long now) {
@@ -39,7 +33,14 @@ public final class Iceberg extends StaticEntity {
 
 	@Override
 	public void paint_under(Graphics g, Location map_ref) {
-
+	}
+	
+	public boolean isSolid() {
+		return true;
+	}
+	
+	public boolean isSolidUnder() {
+		return false;
 	}
 
 	@Override

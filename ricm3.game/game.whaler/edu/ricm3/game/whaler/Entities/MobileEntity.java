@@ -5,8 +5,11 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
+import edu.ricm3.game.whaler.Game_exception.Map_exception;
+import edu.ricm3.game.whaler.Game_exception.Tile_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 import edu.ricm3.game.whaler.Interpretor.IState;
 
@@ -43,7 +46,7 @@ public abstract class MobileEntity extends Entity {
 	 * // Calculation of the front location
 	 * 
 	 * @return Location
-	 * @throws Location_exception 
+	 * @throws Location_exception
 	 */
 	protected Location pos_front() throws Location_exception {
 		Location front = new Location(this.m_pos);
@@ -65,18 +68,18 @@ public abstract class MobileEntity extends Entity {
 		}
 		return front;
 	}
-	
-	//Retourne direction asbolue depuis Forward (F)
+
+	// Retourne direction asbolue depuis Forward (F)
 	public Direction getFDir() {
 		return this.m_direction;
 	}
-	
-	//Retourne direction asbolue depuis Backward (B)
+
+	// Retourne direction asbolue depuis Backward (B)
 	public Direction getBDir() {
-		switch(this.m_direction) {
-		case NORTH :
+		switch (this.m_direction) {
+		case NORTH:
 			return Direction.SOUTH;
-		case SOUTH :
+		case SOUTH:
 			return Direction.NORTH;
 		case EAST:
 			return Direction.WEST;
@@ -87,10 +90,10 @@ public abstract class MobileEntity extends Entity {
 			return Direction.NORTH;
 		}
 	}
-	
-	//Retourne direction asbolue depuis Right (R)
+
+	// Retourne direction asbolue depuis Right (R)
 	public Direction getRDir() {
-		switch(this.m_direction) {
+		switch (this.m_direction) {
 		case NORTH:
 			return Direction.EAST;
 		case SOUTH:
@@ -102,12 +105,12 @@ public abstract class MobileEntity extends Entity {
 		default:
 			System.out.println("Unknown Direction, will be interpreted as NORTH");
 			return Direction.NORTH;
-		}	
+		}
 	}
-	
-	//Retourne direction asbolue depuis Left (L)
+
+	// Retourne direction asbolue depuis Left (L)
 	public Direction getLDir() {
-		switch(this.m_direction) {
+		switch (this.m_direction) {
 		case NORTH:
 			return Direction.WEST;
 		case SOUTH:
@@ -119,56 +122,77 @@ public abstract class MobileEntity extends Entity {
 		default:
 			System.out.println("Unknown Direction, will be interpreted as NORTH");
 			return Direction.NORTH;
-		}	
+		}
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movenorth() throws Game_exception {
-		if (!m_model.map().tile(this.getx(), this.gety() - 1).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map
-			this.m_pos.up(); // We update its location
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for
-		}
-
+		Tile nextTile = m_model.map().tile(this.m_pos.getNorth());
+		
+		move(nextTile);
 	}
-
+	
 	/**
 	 * @throws Game_exception
 	 */
 	public void movesouth() throws Game_exception {
-		if (!m_model.map().tile(this.getx(), this.gety() + 1).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			this.m_pos.down();
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
-		}
-
+		Tile nextTile = m_model.map().tile(this.m_pos.getSouth());
+		move(nextTile);
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void moveeast() throws Game_exception {
-		if (!m_model.map().tile(this.getx() + 1, this.gety()).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			this.m_pos.right();
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
-		}
 
+		Tile nextTile = m_model.map().tile(this.m_pos.getEast());
+		move(nextTile);
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movewest() throws Game_exception {
-		if (!m_model.map().tile(this.getx() - 1, this.gety()).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			this.m_pos.left();
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
-		}
-
+		Tile nextTile = m_model.map().tile(this.m_pos.getWest());
+		move(nextTile);
 	}
+	
+
+	public void move(Tile nextTile) throws Game_exception {
+		
+		if (m_model.UNDER_WATER) {
+			moveUnder(nextTile);
+		} else {
+			moveOver(nextTile);
+		}
+		
+	}
+
+	public void moveUnder(Tile nextTile) throws Game_exception {
+		
+		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
+		
+		if (!nextTile.isSolidUnder()) {
+			currentTile.remove(this);
+			nextTile.addBackground(this);
+			m_pos = nextTile.m_loc;
+		}
+	}
+
+	public void moveOver(Tile nextTile) throws Game_exception {
+		
+		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
+		
+		if (!nextTile.isSolid()) {
+			currentTile.remove(this);
+			nextTile.addBackground(this);
+			m_pos = nextTile.m_loc;
+		}
+	}
+
+
 
 	/**
 	 * 
@@ -230,16 +254,15 @@ public abstract class MobileEntity extends Entity {
 		}
 	}
 
-
 	// Specific Actions
-	public abstract void pop();
+	public abstract void pop() throws Game_exception;
 
 	public abstract void wizz() throws Game_exception;
 
 	public abstract void hit() throws Game_exception;
-	
+
 	public abstract void pick() throws Game_exception;
-	
+
 	// TODO
 	// Placebo actions (decide if Specific or Generic)
 	// public abstract void jump();

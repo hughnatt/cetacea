@@ -171,7 +171,7 @@ public abstract class IAction {
 			m_dir = strToDir(dir);
 		}
 
-		void step(MobileEntity e) {
+		void step(MobileEntity e) throws Game_exception {
 			e.pop();
 		}
 	}

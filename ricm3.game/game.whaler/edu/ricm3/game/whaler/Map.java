@@ -3,6 +3,7 @@ package edu.ricm3.game.whaler;
 import java.awt.Graphics;
 
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
+import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public class Map {
@@ -15,14 +16,15 @@ public class Map {
 	 * 
 	 * @param model
 	 *            Internal Model
+	 * @throws Location_exception 
 	 */
-	public Map(Model model) {
+	public Map(Model model) throws Location_exception {
 
 		// Initializing the Tiles
 		m_tiles = new Tile[Options.DIMX_MAP][Options.DIMY_MAP];
 		for (int i = 0; i < Options.DIMX_MAP; i++) {
 			for (int j = 0; j < Options.DIMY_MAP; j++) {
-				m_tiles[i][j] = new Tile();
+				m_tiles[i][j] = new Tile(new Location(i,j));
 			}
 		}
 

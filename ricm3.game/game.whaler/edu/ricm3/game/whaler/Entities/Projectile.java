@@ -139,6 +139,10 @@ public class Projectile extends MobileEntity {
 		this.pop();
 	}
 
+	public boolean isSolidUnder() {
+		return false;
+	}
+	
 	@Override
 	public EntityType getType() {
 		return EntityType.PROJECTILE;

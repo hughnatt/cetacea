@@ -27,6 +27,10 @@ public class RedCoral extends StaticEntity {
 	public void paint_under(Graphics g, Location map_ref) {
 		g.drawImage(m_underSprite, (this.getx() - map_ref.x) * 32, (this.gety() - map_ref.y) * 32, 32, 32, null);
 	}
+	
+	public boolean isSolidUnder() {
+		return false;
+	}
 
 	@Override
 	public EntityType getType() {
