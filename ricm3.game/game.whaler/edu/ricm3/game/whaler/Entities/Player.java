@@ -2,7 +2,6 @@ package edu.ricm3.game.whaler.Entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
@@ -64,8 +63,6 @@ public final class Player extends MobileEntity {
 			break;
 		}
 	}
-	
-	
 
 	@Override
 	public void destroy() throws Game_exception {
@@ -146,10 +143,13 @@ public final class Player extends MobileEntity {
 
 	@Override
 	public void wizz() throws Game_exception {
-		Entity result = m_model.map().tile(this.pos_front()).contain(EntityType.OIL);
-		if (result != null) {
-			Oil will_burn = (Oil) result;
-			will_burn.m_is_burning = true;
+		if (!m_model.UNDER_WATER) {
+
+			Entity result = m_model.map().tile(this.pos_front()).contain(EntityType.OIL);
+			if (result != null) {
+				Oil will_burn = (Oil) result;
+				will_burn.m_is_burning = true;
+			}
 		}
 	}
 
