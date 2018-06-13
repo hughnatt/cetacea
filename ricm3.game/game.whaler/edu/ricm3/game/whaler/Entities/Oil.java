@@ -38,7 +38,7 @@ public final class Oil extends MobileEntity {
 		m_lastSpread = 0;
 		m_damage = Options.BURNING_OIL_DPS;
 
-		m_model.m_oils.add(this);
+		m_model.m_oils.add(0, this);
 
 		m_spriteFire = new BufferedImage[32];
 
@@ -46,8 +46,6 @@ public final class Oil extends MobileEntity {
 			m_spriteFire[i] = m_model.get_fire_sprite().getSubimage(0, 32 * i, 32, 32);
 		}
 	}
-	
-
 
 	@Override
 	public void destroy() throws Game_exception {

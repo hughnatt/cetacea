@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 
 import edu.ricm3.game.GameController;
 import edu.ricm3.game.whaler.Entities.Oil;
@@ -73,19 +72,6 @@ public class Controller extends GameController implements ActionListener {
 		 * 
 		 * }
 		 */
-
-		if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') {
-			Iterator<Oil> iter = m_model.m_oils.iterator();
-			while (iter.hasNext()) {
-				Oil tmp = iter.next();
-				try {
-					tmp.pop();
-				} catch (Game_exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}
 
 	}
 
