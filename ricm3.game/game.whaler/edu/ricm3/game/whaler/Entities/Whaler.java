@@ -97,10 +97,10 @@ public class Whaler extends MobileEntity {
 			try {
 				m_automata.step(m_model, this);
 			} catch (Automata_Exception e) {
-				e.printStackTrace();
-			} catch (Game_exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -131,14 +131,12 @@ public class Whaler extends MobileEntity {
 		int cy = (m_pos.y - map_ref.y) * 32;
 
 		if (m_exploding) {
-
 			g.drawImage(m_explode[m_explode_idx], cx, cy, 32, 32, null);
 		} else {
 			g.drawImage(m_sprite, cx, cy, 32, 32, null);
 			g.setColor(Color.RED);
 			g.fillRect(cx, cy, (int) (((double) m_life / (double) (Options.WHALER_LIFE)) * 32), 2);
 		}
-
 	}
 
 	@Override
@@ -177,6 +175,10 @@ public class Whaler extends MobileEntity {
 			result_whale.m_life++; // if yes, caught gauge increases
 		}
 
+	}
+
+	public boolean isSolidUnder() {
+		return false;
 	}
 
 	@Override

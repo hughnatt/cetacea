@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
+import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Location_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
@@ -134,49 +135,70 @@ public abstract class MobileEntity extends Entity {
 	 * @throws Game_exception
 	 */
 	public void movenorth() throws Game_exception {
-		if (!m_model.map().tile(this.getx(), this.gety() - 1).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this); // We remove the entity from the map
-			this.m_pos.up(); // We update its location
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this); // We add it at the top of the Tile for
-		}
-
+		Tile nextTile = m_model.map().tile(this.m_pos.getNorth());
+		
+		move(nextTile);
 	}
-
+	
 	/**
 	 * @throws Game_exception
 	 */
 	public void movesouth() throws Game_exception {
-		if (!m_model.map().tile(this.getx(), this.gety() + 1).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			this.m_pos.down();
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
-		}
-
+		Tile nextTile = m_model.map().tile(this.m_pos.getSouth());
+		move(nextTile);
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void moveeast() throws Game_exception {
-		if (!m_model.map().tile(this.getx() + 1, this.gety()).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			this.m_pos.right();
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
-		}
 
+		Tile nextTile = m_model.map().tile(this.m_pos.getEast());
+		move(nextTile);
 	}
 
 	/**
 	 * @throws Game_exception
 	 */
 	public void movewest() throws Game_exception {
-		if (!m_model.map().tile(this.getx() - 1, this.gety()).isSolid() || !this.isSolid()) {
-			m_model.map().tile(this.getx(), this.gety()).remove(this);
-			this.m_pos.left();
-			m_model.map().tile(this.getx(), this.gety()).addForeground(this);
-		}
-
+		Tile nextTile = m_model.map().tile(this.m_pos.getWest());
+		move(nextTile);
 	}
+	
+
+	public void move(Tile nextTile) throws Game_exception {
+		
+		if (m_model.UNDER_WATER) {
+			moveUnder(nextTile);
+		} else {
+			moveOver(nextTile);
+		}
+		
+	}
+
+	public void moveUnder(Tile nextTile) throws Game_exception {
+		
+		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
+		
+		if (!nextTile.isSolidUnder()) {
+			currentTile.remove(this);
+			nextTile.addForeground(this);
+			m_pos = nextTile.m_loc;
+		}
+	}
+
+	public void moveOver(Tile nextTile) throws Game_exception {
+		
+		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
+		
+		if (!nextTile.isSolid() || this.getType() == EntityType.PROJECTILE) {
+			currentTile.remove(this);
+			nextTile.addForeground(this);
+			m_pos = nextTile.m_loc;
+		}
+	}
+
+
 
 	/**
 	 * 

@@ -134,9 +134,9 @@ public class GameUI implements ActionListener {
 	}
 
 	public void createWindow(Dimension d) {
-
+		
 		if (currentScreen() == Screen.PLAY) {
-
+			m_lastRepaint = 0;
 			m_frame = new JFrame();
 			m_frame.setTitle("Cetacea");
 			m_frame.setLayout(new BorderLayout());
@@ -198,8 +198,9 @@ public class GameUI implements ActionListener {
 			m_statut = new JMenu("Jeu");
 			pause = new JMenuItem("Pause");
 			exit = new JMenuItem("Exit");
-			m_statut.add(exit);
 			m_statut.add(pause);
+			m_statut.add(exit);
+
 			m_statut.addSeparator();
 
 			m_menuBar.add(m_statut);

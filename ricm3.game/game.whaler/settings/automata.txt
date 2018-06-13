@@ -122,7 +122,5 @@ Projectile(Init){
 }
 
 Oil(Init){
-
   *(Init) : True ? Move(F) :(Init)
-
 }

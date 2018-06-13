@@ -31,8 +31,8 @@ public class Options {
 	public static final int DIMX_MAP = 500; // dim de la map en bloc
 	public static final int DIMY_MAP = 500;
 
-	public static final int DIMX_WINDOW = 1064; // dim de la fenêtre en pixel
-	public static final int DIMY_WINDOW = 720;
+	public static final int DIMX_WINDOW = 1040;// dim de la fenêtre en pixel
+	public static final int DIMY_WINDOW = 752;
 
 	public static final int DIMX_VIEW = 31; // dim de la view en blocs
 	public static final int DIMY_VIEW = 21;
@@ -41,7 +41,7 @@ public class Options {
 	public static final int MAX_WHALERS = 10; // nb max d'entités
 	public static final int MAX_DESTROYERS = 10;
 	public static final int MAX_PROJECTILES = 10;
-	public static final int MAX_OIL = 20000;
+	public static final int MAX_OIL = 10;
 	public static final int MAX_WHALES = 10;
 
 	public static final int PLAYER_LIFE = 20;
@@ -51,8 +51,9 @@ public class Options {
 	public static final int WHALE_LIFE = 10;
 
 	public static final int PROJECTILE_DPS = 1;
-	public static final long PROJECTILE_SPD_STANDARD = 250L;
+	public static final long PROJECTILE_SPD_STANDARD = 150L;
 	public static final long PROJECTILE_SPD_IMPROVED = 100L;
+	public static final int PROJECTILE_RANGE = 6;
 
 	public static final int MAX_RANGE_WHALE_ESCAPE = 10;
 	public static final int WHALE_DPS = 1;
@@ -61,7 +62,7 @@ public class Options {
 	public static final long DESTROYER_SPD_STANDARD = 500L;
 	public static final long DESTROYER_SPD_IMPROVED = 1000L;
 
-	public static final long OIL_PICKED = MAX_OIL / 2;
+	public static final long OIL_PICKED = 20;
 
 	public static final int OIL_POURCENTAGE_POP = 100;
 

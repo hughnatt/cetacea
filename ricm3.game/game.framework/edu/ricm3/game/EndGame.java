@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class EndGame {
 	JFrame m_gameover;
@@ -128,9 +129,19 @@ public class EndGame {
 		public void actionPerformed(ActionEvent e) {
 			String event = e.getActionCommand();
 			if (event.equals("REPLAY")) {
+				Model m = (Model) m_g.m_model;
+				
+				try {
+					m.restartModel();
+				} catch (Game_exception e1) {
+					e1.printStackTrace();
+					System.exit(-6);
+				}
+				
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
 				m_gameover.dispose();
+			
 			} else if ( event.equals("EXIT")) {
 				m_gameover.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				m_gameover.dispose();

@@ -9,6 +9,7 @@ import edu.ricm3.game.whaler.Direction;
 import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
@@ -126,7 +127,16 @@ public final class Whale extends MobileEntity {
 		if (elapsed > 200L) { // speed for the changement of sprites
 
 			m_lastStep = now;
-
+			try {
+				m_automata.step(m_model, this);
+			} catch (Automata_Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			capture();
 
 			if (m_life <= 0) { // Catching or liberation of the whale
@@ -226,6 +236,10 @@ public final class Whale extends MobileEntity {
 		this.pop();
 	}
 
+	public boolean isSolidUnder() {
+		return false;
+	}
+	
 	@Override
 	public EntityType getType() {
 		return EntityType.WHALE;

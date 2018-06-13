@@ -57,7 +57,7 @@ public class Pause {
         
         JLabel score = new JLabel("", JLabel.CENTER  );
         score.setText(Integer.toString(m.m_score.nombre));
-       score.setFont(new Font("Serif", Font.BOLD, 25));
+        score.setFont(new Font("Serif", Font.BOLD, 25));
         
         m_ctr.add(info);
         m_ctr.add(score);

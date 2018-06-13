@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.ricm3.game.whaler;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -76,7 +77,6 @@ public class Model extends GameModel {
 	private BufferedImage m_playerUnderSprite;
 	private BufferedImage m_fireSprite;
 	private BufferedImage m_redCoralUnderSprite;
-
 	private BufferedImage m_projectileSprite;
 	private BufferedImage m_stoneSprite;
 	private BufferedImage m_stoneUnderSprite;
@@ -97,15 +97,15 @@ public class Model extends GameModel {
 	// Map
 	private Map m_map;
 
-	List<StaticEntity> m_statics = new LinkedList<StaticEntity>();
+	List<StaticEntity> m_statics;
 
 	// Mobile Entity List
 	public Player m_player;
-	public List<Destroyer> m_destroyers = new LinkedList<Destroyer>();
-	public List<Whaler> m_whalers = new LinkedList<Whaler>();
-	public List<Projectile> m_projectiles = new LinkedList<Projectile>();
-	public List<Whale> m_whales = new LinkedList<Whale>();
-	public List<Oil> m_oils = new LinkedList<Oil>();
+	public List<Destroyer> m_destroyers;
+	public List<Whaler> m_whalers;
+	public List<Projectile> m_projectiles;
+	public List<Whale> m_whales;
+	public List<Oil> m_oils;
 	public List<MobileEntity> m_garbage;
 
 	public boolean[] keyPressed;
@@ -128,6 +128,12 @@ public class Model extends GameModel {
 
 	public Model() throws Game_exception {
 
+		// Setting up the Danger Level Matrice
+		ICondition.fillDangerLevelMatrice();
+
+		// Which key is currently pressed ?
+		keyPressed = new boolean[128];
+		
 		// Load, Parse and Make the Automata Array
 		loadAutomaton();
 
@@ -136,20 +142,47 @@ public class Model extends GameModel {
 
 		// Load all the sprites
 		loadSprites();
+		
+		restartModel();
 
-		// Which key is currently pressed ?
-		keyPressed = new boolean[128];
+	}
 
+	/**
+	 *
+	 */
+	public void restartModel() throws Game_exception {
+		
+		m_current_background = null;
+		m_ocean = null;
+		m_underwater = null;
+		m_statics = null;
+		m_destroyers = null;
+		m_whalers = null;
+		m_projectiles = null;
+		m_whales = null;
+		m_oils = null;
+		m_score = null;
+		m_map = null;
+		
+		
+		
 		// LastSwap Under/Over Water (never occured at first)
 		m_lastSwap = Integer.MAX_VALUE;
-
-		// Setting up the Danger Level Matrice
-		ICondition.fillDangerLevelMatrice();
-
+		
 		/*** Creating the map ***/
-		generateMap();
-
+		
 		m_score = new Score(this, 100, 30, 1);
+		m_statics = new LinkedList<StaticEntity>();
+		m_destroyers = new LinkedList<Destroyer>();
+		m_whalers = new LinkedList<Whaler>();
+		m_projectiles = new LinkedList<Projectile>();
+		m_whales = new LinkedList<Whale>();
+		m_oils = new LinkedList<Oil>();
+		
+		generateMap();
+		
+		
+
 	}
 
 	/**
@@ -323,8 +356,8 @@ public class Model extends GameModel {
 	}
 
 	private boolean inStepZone(Location entity, Location player) {
-		return ((entity.x > player.x - 15) && (entity.x < player.x + 15) && (entity.y > player.y - 10)
-				&& (entity.y < player.y + 10));
+		return ((entity.x > player.x - 20) && (entity.x < player.x + 20) && (entity.y > player.y - 15)
+				&& (entity.y < player.y + 15));
 	}
 
 	@Override
@@ -424,6 +457,7 @@ public class Model extends GameModel {
 	}
 
 	public IAutomata getAutomata(MobileEntity m) throws Game_exception {
+		
 		switch (m.getType()) {
 		case PLAYER:
 			return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];
