@@ -63,8 +63,10 @@ public class EndGame {
 		
 		if(m.m_player.m_life <=0) {
 			m_dead.setText("You are dead !");
-		}else {
+		}else if (m.m_player.m_oil_jauge <=0){
 			m_dead.setText("Your fuel gauge is empty!");
+		}else {
+			m_dead.setText("Do you want to replay ?");
 		}
 		
 		m_dead.setFont(new Font("Serif", Font.PLAIN, 30));

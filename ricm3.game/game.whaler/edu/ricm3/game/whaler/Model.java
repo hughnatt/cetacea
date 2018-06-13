@@ -84,7 +84,7 @@ public class Model extends GameModel {
 	// Automaton array
 	public IAutomata[] automata_array;
 	// Automata Choices
-	int[] automata_choices;
+	public int[] automata_choices;
 
 	// Boolean true if the player is under the surface
 	public boolean UNDER_WATER;

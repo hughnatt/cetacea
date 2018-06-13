@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class AutomataSelection {
@@ -113,9 +114,11 @@ public class AutomataSelection {
 
 		m_model = (Model) m_g.m_model;
 		IAutomata[] items = m_model.automata_array;
-		String[] names ={"Whale", "Whaler", "Destroyer", "Player", "Oil", "Projectile"};
+		int[] automata_choices = m_model.automata_choices;
 
-		//We read all the images and put them in a tab
+		String[] names = { "Whale", "Whaler", "Destroyer", "Player", "Oil", "Projectile" };
+
+		// We read all the images and put them in a tab
 		BufferedImage[] image = new BufferedImage[6];
 		try {
 			image[0] = ImageIO.read(new File("game.whaler/sprites/baleine_70x70.png"));
@@ -130,36 +133,35 @@ public class AutomataSelection {
 			e1.printStackTrace();
 		}
 
-		
-		b = new JComboBox[6];
+		b = new JComboBox[items.length];
 		int i = 0;
-		while (i < 6) {
-			//We add the pictures
+		while (i < names.length) {
+
+			// We add the pictures
 			JLabel pictures = new JLabel(new ImageIcon(image[i]), JLabel.RIGHT);
-			b2.add(pictures); 
-			
-			//We add the label
+			b2.add(pictures);
+
+			// We add the label
 			JLabel entities_name = new JLabel("", JLabel.LEFT);
-			entities_name.setText(names[i]);
+			entities_name.setText("Default : " + names[i]);
 			entities_name.setFont(new Font("Serif", Font.BOLD, 12));
 			b2.add(entities_name);
-			
+
 			// We create 6 ComboBox, one for each entity, and add it to the panel
 			b[i] = new JComboBox<Object>(items);
 			b2.setSize(new Dimension(50, 50));
-			
-			
-			//b[i].setSelectedItem(items[i]); //Permet de mettre par défaut 
-			
+
+			//b[i].setSelectedItem(items[i]); // Permet de mettre par défaut
+
 			b2.add(b[i]);
-			
+
 			i++;
 		}
 
 		m_select.add(b1, BorderLayout.SOUTH); // button return + validate
-		m_select.add(b2, BorderLayout.CENTER); //Display entities and combobox
-		
-		m_select.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Terminate the process of clicking on the red cross
+		m_select.add(b2, BorderLayout.CENTER); // Display entities and combobox
+
+		m_select.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Terminate the process of clicking on the red cross
 		m_select.setVisible(true);
 	}
 
@@ -183,8 +185,8 @@ public class AutomataSelection {
 				e1.printStackTrace();
 			}
 		}
-		
-		//Reload the Automata Choice Array
+
+		// Reload the Automata Choice Array
 		m_model.reloadAutomataChoices();
 	}
 

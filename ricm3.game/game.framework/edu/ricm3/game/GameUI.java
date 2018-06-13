@@ -38,12 +38,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
-public class GameUI {
+public class GameUI implements ActionListener {
 
 	static String license = "Copyright (C) 2017  Pr. Olivier Gruber "
 			+ "This program comes with ABSOLUTELY NO WARRANTY. "
@@ -71,9 +70,9 @@ public class GameUI {
 	private JProgressBar m_oilBar;
 	private JLabel m_score_display;
 	private JMenu m_statut;
-	private JMenuItem stop;
-	private JMenuItem start;
-	
+	private JMenuItem pause;
+	private JMenuItem exit;
+
 	public GameUI(GameModel m, GameView v, GameController c, Dimension d) {
 		m_model = m;
 		m_model.m_game = this;
@@ -153,6 +152,7 @@ public class GameUI {
 				System.exit(-1);
 			}
 
+			
 			// Primary Display on the center
 			m_frame.add(m_view, BorderLayout.CENTER);
 
@@ -193,34 +193,51 @@ public class GameUI {
 			refreshOil();
 			m_score_display = new JLabel("", JLabel.CENTER);
 			refreshScore();
-			m_menuBar = new JMenuBar();
-			
-			m_statut = new JMenu("Jeu");
-			stop = new JMenuItem("Pause");
-			start = new JMenuItem("Play");
-			refreshPause();
 
-		}  else if (currentScreen() == Screen.MENU) {
+			m_menuBar = new JMenuBar();
+			m_statut = new JMenu("Jeu");
+			pause = new JMenuItem("Pause");
+			exit = new JMenuItem("Exit");
+			m_statut.add(pause);
+			m_statut.add(exit);
+
+			m_statut.addSeparator();
+
+			m_menuBar.add(m_statut);
+			m_frame.setJMenuBar(m_menuBar);
+
+			pause.addActionListener(this);
+			exit.addActionListener(this);
+
+			pause.setActionCommand("PAUSE");
+			exit.setActionCommand("EXIT");
+
+		} else if (currentScreen() == Screen.MENU) {
+			
 			MainMenu m = new MainMenu(this);
 			m.create_frame();
 			m.create_menu();
 
-		}  else if (currentScreen() == Screen.RULES) {
+		} else if (currentScreen() == Screen.RULES) {
 			Rules r = new Rules(this);
 			r.create_frame();
 			r.create_rules();
 
-		}  else if (currentScreen() == Screen.AUTOMATA) {
+		} else if (currentScreen() == Screen.AUTOMATA) {
 			AutomataSelection a = new AutomataSelection(this);
 			a.create_frame();
 			a.create_automata_selection();
-
 
 		} else if (currentScreen() == Screen.END) {
 
 			EndGame e = new EndGame(this);
 			e.create_frame();
 			e.create_endgame();
+
+		} else if (currentScreen() == Screen.PAUSE) {
+			Pause p = new Pause(this);
+			p.create_frame();
+			p.create_pause();
 
 		}
 
@@ -283,24 +300,22 @@ public class GameUI {
 
 	}
 
-	public void refreshPause() {
+	public void actionPerformed(ActionEvent e) {
 		Model m = (Model) m_model;
-		m_statut.setFont(new Font("Laksaman", Font.BOLD, 15));
-		stop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				m.m_pause = true;
-			}
-		});
-		start.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				m.m_pause = false;
-			}
-		});
-		m_statut.add(stop);
-		m_statut.add(start);
-		m_menuBar.add(m_statut);
-		Container contentPane = m_frame.getContentPane();
-		contentPane.add(m_menuBar, BorderLayout.NORTH);
+		String event = e.getActionCommand();
+		if (event.equals("EXIT")) {
+			m_timer.stop();
+			setScreen(Screen.END);
+			this.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+			m_frame.dispose();
+		}
+		if (event.equals("PAUSE")) {
+		
+			m.m_pause = true;
+			setScreen(Screen.PAUSE);
+			this.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+			// m_frame.dispose();
+		}
 	}
 
 	/*
@@ -336,6 +351,9 @@ public class GameUI {
 		m_nTicks++;
 		m_model.step(now);
 		m_controller.step(now);
+		Model m = (Model) m_model;
+
+	
 
 		elapsed = now - m_lastRepaint;
 		if (elapsed > Options.REPAINT_DELAY) {
@@ -358,21 +376,20 @@ public class GameUI {
 			refreshLife();
 			refreshOil();
 			refreshScore();
-			refreshPause();
 			m_view.paint();
 			m_lastRepaint = now;
 		}
-		Model m = (Model) m_model;
+
 		int currentLife = m.m_player.m_life;
 		if (currentLife <= 0 || m.m_player.m_oil_jauge <= 0) {
 			currentLife = 0;
 			m_timer.stop();
 			this.setScreen(Screen.END);
 			m_frame.dispose();
-			createWindow(new Dimension(Options.DIMX_WINDOW,Options.DIMY_WINDOW));
+			createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
+
 		}
-		
-		
+
 	}
 
 	public void setFPS(int fps, String msg) {
