@@ -58,10 +58,10 @@ public class EndGame {
 	public void create_endgame() {
 
 		// Creation des bouttons
-		CreateButton replay = new CreateButton("REPLAY", "game.whaler/sprites/Play.png",
-				"game.whaler/sprites/Play_over.png");
-		CreateButton exit = new CreateButton("EXIT", "game.whaler/sprites/Play.png",
-				"game.whaler/sprites/Play_over.png");
+		CreateButton replay = new CreateButton("REPLAY", "game.whaler/sprites/replay_button_over.png",
+				"game.whaler/sprites/replay_button.png");
+		CreateButton exit = new CreateButton("EXIT", "game.whaler/sprites/exit.png",
+				"game.whaler/sprites/exit.png");
 
 		// Initialisation
 		replay.setButton();
@@ -84,12 +84,8 @@ public class EndGame {
 		JPanel b1 = new JPanel();
 		b1.setLayout(new BoxLayout(b1, BoxLayout.LINE_AXIS));
 		b1.add(replay_button);
-		
-		JPanel b2 = new JPanel();
 		b1.add(exit_button);
-
-		m_gameover.getContentPane().add(b1);
-		m_gameover.getContentPane().add(b2);
+		m_gameover.add(b1,BorderLayout.SOUTH);
 		m_gameover.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_gameover.setVisible(true);
 	}
@@ -102,7 +98,6 @@ public class EndGame {
 			if (event.equals("REPLAY")) {
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
-				m_g.createTimer();
 				m_gameover.dispose();
 			} else if ( event.equals("EXIT")) {
 				m_gameover.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
