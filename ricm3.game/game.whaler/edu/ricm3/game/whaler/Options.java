@@ -41,6 +41,7 @@ public class Options {
 	public static final int MAX_WHALERS = 10; // nb max d'entités
 	public static final int MAX_DESTROYERS = 10;
 	public static final int MAX_PROJECTILES = 10;
+
 	public static final int MAX_OIL = 1000;
 	public static final int MAX_WHALES = 10;
 
@@ -62,14 +63,15 @@ public class Options {
 	public static final long DESTROYER_SPD_STANDARD = 500L;
 	public static final long DESTROYER_SPD_IMPROVED = 1000L;
 
-	public static final long OIL_PICKED = 5;
+	public static final long OIL_PICKED = 20;
 
 	public static final int OIL_POURCENTAGE_POP = 100;
+	public static final long OIL_SPD_STEP = 1000L;
 
 	public static final long BURNING_OIL_SPD_BURNING = 200L;
 	public static final long BURNING_OIL_SPD_SPREAD = 300L;
 	public static final int BURNING_OIL_DPS = 3;
-	
+
 	public static final int PLAYER_OIL_GAUGE = 21;
 
 	public static final double FPS = 30.0;
