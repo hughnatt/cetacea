@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Model;
@@ -108,10 +109,12 @@ public class EndGame {
 		JPanel replay_button = new JPanel();
 		replay_button.setOpaque(false);
 		replay_button.add(replay);
+		replay_button.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
 		
 		JPanel exit_button = new JPanel();
 		exit_button.setOpaque(false);
 		exit_button.add(exit);
+		exit_button.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
 
 		// Ajout du bouton play au 1er étage
 		JPanel b1 = new JPanel();
