@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
 import edu.ricm3.game.GameController;
 
 /**
@@ -68,6 +69,13 @@ public class Controller extends GameController implements ActionListener {
 		 * m_model.m_whales.get(0).m_life = 20;
 		 * 
 		 * }
+		 */
+
+		/*
+		 * if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') { Iterator<Oil> iteroil =
+		 * m_model.m_oils.iterator(); while (iteroil.hasNext()) { Oil oil =
+		 * iteroil.next(); try { oil.pop(); } catch (Game_exception e1) { // TODO
+		 * Auto-generated catch block e1.printStackTrace(); } } }
 		 */
 
 	}

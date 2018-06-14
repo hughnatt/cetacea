@@ -18,6 +18,10 @@ public final class Oil extends MobileEntity {
 
 	boolean m_is_burning;
 	long m_lastSpread;
+
+	long m_lastPop;
+	boolean m_pop_cooldown;
+
 	int m_damage;
 
 	int m_idx;
@@ -35,10 +39,13 @@ public final class Oil extends MobileEntity {
 		// We use a default direction,because it has no importance
 
 		m_automata = m_model.getAutomata(this);
-		
+
 		this.m_is_burning = false;
 		m_lastSpread = 0;
 		m_damage = Options.BURNING_OIL_DPS;
+
+		m_lastPop = 0;
+		m_pop_cooldown = false;
 
 		m_spriteFire = new BufferedImage[32];
 
@@ -61,10 +68,9 @@ public final class Oil extends MobileEntity {
 		}
 
 		long elapsed = now - m_lastStep;
-		
+
 		if (m_is_burning) {
 
-			
 			if (elapsed > Options.BURNING_OIL_SPD_BURNING) {
 				// change of the fire spite
 
@@ -76,7 +82,7 @@ public final class Oil extends MobileEntity {
 			elapsed = now - m_lastSpread;
 
 			if (elapsed > Options.BURNING_OIL_SPD_SPREAD) {
-				// spreading of the fire, combustion of the oil and damage to the entities
+				// spreading of the fire, combustion of the oil,damage to the entities
 
 				Tile tile = m_model.map().tile(this.m_pos);
 
@@ -138,21 +144,31 @@ public final class Oil extends MobileEntity {
 
 			}
 
-		} else if (elapsed > 5000L) { // if the oil doestn't burn
-			
-			try {
-				m_automata.step(m_model, this);
-			} catch (Automata_Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			m_lastSpread = now; // we keep the timers readied
-			m_lastStep = now;
+		} else {
+			if (elapsed > Options.OIL_SPD_STEP) { // if the oil doestn't burn
 
+				try {
+					m_automata.step(m_model, this);
+				} catch (Automata_Exception e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				m_lastSpread = now; // we keep the timers readied
+				m_lastStep = now;
+
+			}
+
+			if (m_pop_cooldown) { // Managing of the pop timer
+
+				elapsed = now - m_lastPop;
+				if (elapsed > Options.OIL_SPD_POP) {
+					m_pop_cooldown = false;
+				}
+			} else {
+				m_lastPop = now; // keep m_lastPop readied
+			}
 		}
 	}
 
@@ -172,22 +188,25 @@ public final class Oil extends MobileEntity {
 
 	@Override
 	public void pop() throws Game_exception {
-		if (!m_is_burning) {
-			List<Location> adja = m_model.map().posAdjacent(this.m_pos);
-			Map map = m_model.map();
+		if (!m_pop_cooldown) {
+			if (!m_is_burning) {
+				List<Location> adja = m_model.map().posAdjacent(this.m_pos);
+				Map map = m_model.map();
 
-			Iterator<Location> iter = adja.iterator();
-			while (iter.hasNext()) {
-				Location pos = iter.next();
-				Tile tile = map.tile(pos);
-				if ((tile.contain(EntityType.ICEBERG) == null) && (tile.contain(EntityType.ISLAND) == null)
-						&& (tile.contain(EntityType.OIL) == null) && (tile.contain(EntityType.STONE) == null)) {
-					// check if there is no iceberg,island,oil or stone
-					if (m_model.rand.nextInt(100) <= Options.OIL_POURCENTAGE_POP) {
-						// new oil with a percentage of spawn
-						m_model.m_oils.add(new Oil(pos, m_model.get_oil_sprite(), null, m_model));
+				Iterator<Location> iter = adja.iterator();
+				while (iter.hasNext()) {
+					Location pos = iter.next();
+					Tile tile = map.tile(pos);
+					if ((tile.contain(EntityType.ICEBERG) == null) && (tile.contain(EntityType.ISLAND) == null)
+							&& (tile.contain(EntityType.OIL) == null) && (tile.contain(EntityType.STONE) == null)) {
+						// check if there is no iceberg,island,oil or stone
+						if (m_model.rand.nextInt(100) <= Options.OIL_POURCENTAGE_POP) {
+							// new oil with a percentage of spawn
+							m_model.m_oils_pop.add(new Oil(pos, m_model.get_oil_sprite(), null, m_model));
+						}
 					}
 				}
+				m_pop_cooldown = true;
 			}
 		}
 	}
@@ -212,7 +231,6 @@ public final class Oil extends MobileEntity {
 		return false;
 	}
 
-	
 	@Override
 	public EntityType getType() {
 		return EntityType.OIL;

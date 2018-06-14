@@ -57,5 +57,5 @@ Projectile(Init){
 }
 
 Oil(Init){
-  *(Init) : True ? Move(F) :(Init)
+  *(Init) : True ? Pop :(Init)
 }
