@@ -82,53 +82,17 @@ public abstract class MobileEntity extends Entity {
 
 	// Retourne direction absolue depuis Backward (B)
 	public Direction getBDir() {
-		switch (this.m_direction) {
-		case NORTH:
-			return Direction.SOUTH;
-		case SOUTH:
-			return Direction.NORTH;
-		case EAST:
-			return Direction.WEST;
-		case WEST:
-			return Direction.EAST;
-		default:
-			System.out.println("Unknown Direction, will be interpreted as NORTH");
-			return Direction.NORTH;
-		}
+		return (this.m_direction.RotationToRight()).RotationToRight();
 	}
 
 	// Retourne direction asbolue depuis Right (R)
 	public Direction getRDir() {
-		switch (this.m_direction) {
-		case NORTH:
-			return Direction.EAST;
-		case SOUTH:
-			return Direction.WEST;
-		case EAST:
-			return Direction.SOUTH;
-		case WEST:
-			return Direction.NORTH;
-		default:
-			System.out.println("Unknown Direction, will be interpreted as NORTH");
-			return Direction.NORTH;
-		}
+		return this.m_direction.RotationToRight();
 	}
 
 	// Retourne direction asbolue depuis Left (L)
 	public Direction getLDir() {
-		switch (this.m_direction) {
-		case NORTH:
-			return Direction.WEST;
-		case SOUTH:
-			return Direction.EAST;
-		case EAST:
-			return Direction.NORTH;
-		case WEST:
-			return Direction.SOUTH;
-		default:
-			System.out.println("Unknown Direction, will be interpreted as NORTH");
-			return Direction.NORTH;
-		}
+		return this.m_direction.RotationToLeft();
 	}
 
 	/**
@@ -206,60 +170,15 @@ public abstract class MobileEntity extends Entity {
 	 * 
 	 */
 	public void turnright() {
-		switch (m_direction) {
-		case SOUTH:
-			m_direction = Direction.WEST;
-			break;
-		case NORTH:
-			m_direction = Direction.EAST;
-			break;
-		case WEST:
-			m_direction = Direction.NORTH;
-			break;
-		case EAST:
-			m_direction = Direction.SOUTH;
-			break;
-		default:
-			break;
-		}
+		m_direction = m_direction.RotationToRight();
 	}
 
 	public void turnleft() {
-		switch (m_direction) {
-		case SOUTH:
-			m_direction = Direction.EAST;
-			break;
-		case NORTH:
-			m_direction = Direction.WEST;
-			break;
-		case WEST:
-			m_direction = Direction.SOUTH;
-			break;
-		case EAST:
-			m_direction = Direction.NORTH;
-			break;
-		default:
-			break;
-		}
+		m_direction = m_direction.RotationToLeft();
 	}
 
 	public void turndown() {
-		switch (m_direction) {
-		case SOUTH:
-			m_direction = Direction.NORTH;
-			break;
-		case NORTH:
-			m_direction = Direction.SOUTH;
-			break;
-		case WEST:
-			m_direction = Direction.EAST;
-			break;
-		case EAST:
-			m_direction = Direction.WEST;
-			break;
-		default:
-			break;
-		}
+		m_direction = (m_direction.RotationToRight()).RotationToRight();
 	}
 
 	// Specific Actions
