@@ -1,10 +1,14 @@
 package edu.ricm3.game.whaler.Interpretor;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import edu.ricm3.game.whaler.Direction;
+import edu.ricm3.game.whaler.Location;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
+import edu.ricm3.game.whaler.Tile;
 import edu.ricm3.game.whaler.Entities.Entity;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
 import edu.ricm3.game.whaler.Entities.MobileEntity;
@@ -84,6 +88,16 @@ public abstract class ICondition {
 		entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
 		entity_behaviour[EntityType.STONE.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
 		entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.WHALER.ordinal()] = EntityDangerLevel.DANGER;
+
+		entity_behaviour[EntityType.DESTROYER.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.OIL.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.PLAYER.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.PROJECTILE.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.WHALE.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.WHALER.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.ISLAND.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.STONE.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
+		entity_behaviour[EntityType.ICEBERG.ordinal()][EntityType.VOID.ordinal()] = EntityDangerLevel.VOID;
 	}
 
 	public abstract boolean eval(MobileEntity current, Model model) throws Map_exception; // Il y aura besoin de
@@ -92,7 +106,7 @@ public abstract class ICondition {
 																							// et
 	// l'entité courante
 
-	public static Direction strToDir(String str) { 
+	public static Direction strToDir(String str) {
 		if (str.equals("N")) {
 			return Direction.NORTH;
 		} else if (str.equals("S")) {
@@ -271,6 +285,11 @@ public abstract class ICondition {
 			if (!model.UNDER_WATER) {
 				Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
 
+				if (!iter.hasNext() && (m_entity == EntityDangerLevel.VOID)) { // Cas Particulier si la case est vide et
+																				// qu'on cherche du void
+					return true;
+				}
+
 				while (iter.hasNext()) {
 
 					Entity e = iter.next();
@@ -295,130 +314,73 @@ public abstract class ICondition {
 			m_dir = strToDir(dir);
 		}
 
+		public static double distance(Location a, Location b) {
+			return Math.sqrt(Math.pow((a.x - b.x), 2D) + Math.pow((a.y - b.y), 2D));
+		}
+
 		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 
-			int px = current.getx();
-			int py = current.gety();
-			int cx = px;
-			int cy = py;
-			int max_i = 0;
-			Direction d;
-
-			switch (m_dir) {
-			case NORTH:
-				max_i = current.gety() - 1;
-				if (current.gety() > 11)
-					max_i = 11;
-				break;
-			case SOUTH:
-				max_i = 11;
-				if (current.gety() >= Options.DIMY_MAP - 11)
-					max_i = Options.DIMY_MAP - current.gety() + 1;
-				break;
-			case EAST:
-				max_i = 11;
-				if (current.getx() >= Options.DIMX_MAP - 11)
-					max_i = Options.DIMX_MAP - current.getx() + 1;
-				break;
-			case WEST:
-				max_i = current.getx() - 1;
-				if (current.getx() > 11)
-					max_i = 11;
-				break;
-			case BACKWARD:
-				d = current.getBDir();
-				switch (d) {
-				case NORTH:
-					max_i = 11;
-					if (current.gety() >= Options.DIMY_MAP - 11)
-						max_i = Options.DIMY_MAP - current.gety() + 1;
-					break;
-				case SOUTH:
-					max_i = current.gety() - 1;
-					if (current.gety() > 11)
-						max_i = 11;
-					break;
-				case EAST:
-					max_i = current.getx() - 1;
-					if (current.getx() > 11)
-						max_i = 11;
-					break;
-				case WEST:
-					max_i = 11;
-					if (current.getx() >= Options.DIMX_MAP - 11)
-						max_i = Options.DIMX_MAP - current.getx() + 1;
-					break;
-				}
-				break;
-			case FORWARD:
-				d = current.getFDir();
-				switch (d) {
-				case NORTH:
-					max_i = current.gety() - 1;
-					if (current.gety() > 11)
-						max_i = 11;
-					break;
-				case SOUTH:
-					max_i = 11;
-					if (current.gety() >= Options.DIMY_MAP - 11)
-						max_i = Options.DIMY_MAP - current.gety() + 1;
-					break;
-				case EAST:
-					max_i = 11;
-					if (current.getx() >= Options.DIMX_MAP - 11)
-						max_i = Options.DIMX_MAP - current.getx() + 1;
-					break;
-				case WEST:
-					max_i = current.getx() - 1;
-					if (current.getx() > 11)
-						max_i = 11;
-					break;
-				}
-				break;
-			case LEFT:
-				d = current.getLDir();
-				break;
-			case RIGHT:
-				d = current.getRDir();
-				break;
-			default:
-				break;
-
+			if (m_entity == EntityDangerLevel.VOID) {
+				return true;
 			}
 
-			if (!model.UNDER_WATER) {
-				for (int i = 1; i < max_i; i++) {
-					switch (m_dir) {
-					case NORTH:
-						cx = px;
-						cy = py - i;
-						break;
-					case SOUTH:
-						cx = px;
-						cy = py + i;
-						break;
-					case EAST:
-						cx = px + i;
-						cy = py;
-						break;
-					case WEST:
-						cx = px - i;
-						cy = py;
-						break;
-					}
+			List<Entity> entitiesToSearch = new LinkedList<Entity>();
 
-					Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
-					while (iter.hasNext()) {
-						Entity e = iter.next();
-						EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
+			int currentType = current.getType().ordinal();
 
-						if (level == m_entity) {
-							return true;
+			Location l = current.getLoc();
+			
+
+			for (int i = l.x - 10; i < l.x + 10; i++) {
+				for (int j = l.y - 10; j < l.y + 10; j++)
+					try {
+						Tile t = model.map().tile(i, j);
+						Iterator<Entity> iter = t.iterator();
+						while (iter.hasNext()) {
+							Entity e = iter.next();
+							if (entity_behaviour[e.getType().ordinal()][currentType] == m_entity) {
+								entitiesToSearch.add(e);
+							}
 						}
+					} catch (Map_exception e) {
+						// Catch si en dehors de la map
 					}
+			}
+			
+			if (entitiesToSearch.isEmpty()){
+				return false;
+			}
+
+			double distTab[] = new double[entitiesToSearch.size()];
+
+			int min = 0;
+
+			for (int i = 0; i < distTab.length; i++) {
+				distTab[i] = distance(current.getLoc(), entitiesToSearch.get(i).getLoc());
+				if (distTab[i] <= distTab[min]) {
+					min = i;
 				}
 			}
-			return false;
+
+			Entity closestEntity = entitiesToSearch.get(min);
+
+			double angle = Math.atan(((double) (closestEntity.gety() - current.gety())) / ((double) (closestEntity.getx() - current.getx()) ));
+
+			if (closestEntity.getx() - current.getx() < 0) {
+				angle += Math.PI;
+			}
+			
+			angle = Math.toDegrees(angle);
+			
+			if (angle >= -45 && angle <= 45) {
+				return Direction.EAST == m_dir;
+			} else if (angle >= 45 && angle <= 135) {
+				return Direction.SOUTH == m_dir;
+			} else if (angle >= 135 && angle <= 225) {
+				return Direction.WEST == m_dir;
+			} else {
+				return Direction.NORTH == m_dir;
+			}
 		}
 	}
 
