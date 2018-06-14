@@ -8,6 +8,7 @@ public class Location {
 
 	/**
 	 * @param new_x
+	 *
 	 * @throws Location_exception
 	 * 
 	 *             function to check the validity of the x value
