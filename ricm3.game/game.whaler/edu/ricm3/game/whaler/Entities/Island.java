@@ -35,7 +35,7 @@ public final class Island extends StaticEntity {
 	}
 	
 	public boolean isSolidUnder() {
-		return false;
+		return true;
 	}
 
 	@Override
