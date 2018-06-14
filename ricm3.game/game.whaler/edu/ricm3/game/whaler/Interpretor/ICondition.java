@@ -12,9 +12,8 @@ import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public abstract class ICondition {
 
-	
 	public static EntityDangerLevel[][] entity_behaviour = new EntityDangerLevel[10][10];
-	
+
 	public static void fillDangerLevelMatrice() {
 		/*
 		 * DESTROYER = 0 OIL = 1 PLAYER = 2 PROJECTILE = 3 WHALE = 4 WHALER = 5
@@ -117,14 +116,13 @@ public abstract class ICondition {
 		}
 	}
 
-	
 	enum EntityDangerLevel {
 		VOID, TEAM, ADVERSAIRE, DANGER, PRENABLE, JUMPABLE, GATE, MISSILE;
 	}
-	
+
 	static EntityDangerLevel strToEDL(String s) {
-		
-		switch(s) {
+
+		switch (s) {
 		case "V":
 			return EntityDangerLevel.VOID;
 		case "T":
@@ -238,7 +236,6 @@ public abstract class ICondition {
 
 		public boolean eval(MobileEntity current, Model model) throws Map_exception {
 
-
 			int px = current.getx();
 			int py = current.gety();
 			int cx = px;
@@ -272,23 +269,23 @@ public abstract class ICondition {
 				break;
 			}
 
-			Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
+			if (!model.UNDER_WATER) {
+				Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
 
-			while (iter.hasNext()) {
+				while (iter.hasNext()) {
 
-				Entity e = iter.next();
+					Entity e = iter.next();
 
-				EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
+					EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
 
-				if (level == m_entity) {
-					return true;
+					if (level == m_entity) {
+						return true;
+					}
 				}
 			}
 			return false;
 		}
 	}
-
-	
 
 	public static class IClosest extends ICondition {
 		EntityDangerLevel m_entity;
@@ -390,33 +387,35 @@ public abstract class ICondition {
 
 			}
 
-			for (int i = 1; i < max_i; i++) {
-				switch (m_dir) {
-				case NORTH:
-					cx = px;
-					cy = py - i;
-					break;
-				case SOUTH:
-					cx = px;
-					cy = py + i;
-					break;
-				case EAST:
-					cx = px + i;
-					cy = py;
-					break;
-				case WEST:
-					cx = px - i;
-					cy = py;
-					break;
-				}
+			if (!model.UNDER_WATER) {
+				for (int i = 1; i < max_i; i++) {
+					switch (m_dir) {
+					case NORTH:
+						cx = px;
+						cy = py - i;
+						break;
+					case SOUTH:
+						cx = px;
+						cy = py + i;
+						break;
+					case EAST:
+						cx = px + i;
+						cy = py;
+						break;
+					case WEST:
+						cx = px - i;
+						cy = py;
+						break;
+					}
 
-				Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
-				while (iter.hasNext()) {
-					Entity e = iter.next();
-					EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
+					Iterator<Entity> iter = model.map().tile(cx, cy).iterator();
+					while (iter.hasNext()) {
+						Entity e = iter.next();
+						EntityDangerLevel level = entity_behaviour[e.getType().ordinal()][current.getType().ordinal()];
 
-					if (level == m_entity) {
-						return true;
+						if (level == m_entity) {
+							return true;
+						}
 					}
 				}
 			}

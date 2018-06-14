@@ -121,6 +121,21 @@ public class Destroyer extends MobileEntity {
 			if (m_life <= 0) {
 				m_exploding = true;
 			}
+			
+			switch (m_direction) {
+			case EAST:
+				m_sprite = m_destroyerEast;
+				break;
+			case WEST:
+				m_sprite = m_destroyerWest;
+				break;
+			case NORTH:
+				m_sprite = m_destroyerNorth;
+				break;
+			default: // direction by default, SOUTH
+				m_sprite = m_destroyerSouth;
+				break;
+			}
 		}
 	}
 
