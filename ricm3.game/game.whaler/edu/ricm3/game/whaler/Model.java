@@ -106,6 +106,7 @@ public class Model extends GameModel {
 	public List<Projectile> m_projectiles;
 	public List<Whale> m_whales;
 	public List<Oil> m_oils;
+	public List<Oil> m_oils_pop;
 	public List<MobileEntity> m_garbage;
 
 	public boolean[] keyPressed;
@@ -158,6 +159,7 @@ public class Model extends GameModel {
 		m_projectiles = null;
 		m_whales = null;
 		m_oils = null;
+		m_oils_pop = null;
 		m_score = null;
 		m_map = null;
 
@@ -176,6 +178,7 @@ public class Model extends GameModel {
 		m_projectiles = new LinkedList<Projectile>();
 		m_whales = new LinkedList<Whale>();
 		m_oils = new LinkedList<Oil>();
+		m_oils_pop = new LinkedList<Oil>();
 
 		generateMap();
 
@@ -389,6 +392,14 @@ public class Model extends GameModel {
 						e.step(now);
 					}
 				}
+
+				Iterator<Oil> iteroil_pop = m_oils_pop.iterator();
+				while (iteroil_pop.hasNext()) {
+					Oil e = iteroil_pop.next();
+					m_oils.add(e);
+				}
+
+				m_oils_pop.clear();
 
 				Iterator<Whaler> iterwhalers = m_whalers.iterator();
 				while (iterwhalers.hasNext()) {
