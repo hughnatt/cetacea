@@ -62,7 +62,7 @@ public abstract class Entity {
 	}
 
 	public enum EntityType {
-		DESTROYER, OIL, PLAYER, PROJECTILE, WHALE, WHALER, ISLAND, STONE, ICEBERG, VOID
+		WHALE, WHALER, DESTROYER, PLAYER, OIL, PROJECTILE, ISLAND, STONE, ICEBERG, VOID
 	}
 
 	public abstract EntityType getType();

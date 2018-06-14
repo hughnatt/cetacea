@@ -137,9 +137,6 @@ public class Model extends GameModel {
 		// Load, Parse and Make the Automata Array
 		loadAutomaton();
 
-		// Load the Automata Choice Array
-		loadAutomataChoices();
-
 		// Load all the sprites
 		loadSprites();
 		
@@ -165,6 +162,8 @@ public class Model extends GameModel {
 		m_map = null;
 		
 		
+		// Load the Automata Choice Array
+		loadAutomataChoices();
 		
 		// LastSwap Under/Over Water (never occured at first)
 		m_lastSwap = Integer.MAX_VALUE;
@@ -570,13 +569,13 @@ public class Model extends GameModel {
 					m_statics.add(new Iceberg(new Location(x, i), m_icebergSprite, null, this));
 					break;
 				case 2:
-					m_destroyers.add(new Destroyer(new Location(x, i), m_destroyerSprite, null, this, Direction.LEFT));
+					m_destroyers.add(new Destroyer(new Location(x, i), m_destroyerSprite, null, this, Direction.WEST));
 					break;
 				case 3:
-					m_whalers.add(new Whaler(new Location(x, i), m_whalerSprite, null, this, Direction.LEFT));
+					m_whalers.add(new Whaler(new Location(x, i), m_whalerSprite, null, this, Direction.WEST));
 					break;
 				case 4:
-					m_whales.add(new Whale(new Location(x, i), m_whaleSprite, null, this, Direction.LEFT));
+					m_whales.add(new Whale(new Location(x, i), m_whaleSprite, null, this, Direction.WEST));
 					break;
 				default:
 					m_statics.add(new Stone(new Location(x, i), m_stoneSprite, m_stoneUnderSprite, this));
