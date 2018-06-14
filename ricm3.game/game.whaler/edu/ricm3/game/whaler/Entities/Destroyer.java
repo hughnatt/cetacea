@@ -178,8 +178,9 @@ public class Destroyer extends MobileEntity {
 	}
 
 	@Override
-	public void pop() {
-		// TODO
+	public void pop() throws Location_exception, Game_exception {
+		hit();
+		hit();
 	}
 
 	@Override

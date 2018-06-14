@@ -13,7 +13,6 @@ import edu.ricm3.game.whaler.Game_exception.Game_exception;
 
 public class Whaler extends MobileEntity {
 
-	// TODO ajouter plus de fonctionnalités en jeu sur le whaler ?
 
 	private BufferedImage m_whalerSouth;
 	private BufferedImage m_whalerWest;
@@ -96,12 +95,9 @@ public class Whaler extends MobileEntity {
 
 			try {
 				m_automata.step(m_model, this);
+			//En cas d'exception, le jeu continue
 			} catch (Automata_Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 
 			if (m_life <= 0) {
@@ -161,7 +157,7 @@ public class Whaler extends MobileEntity {
 
 	@Override
 	public void pop() {
-		this.m_life++;
+		m_life = Options.WHALE_LIFE_MAX;
 	}
 
 	@Override

@@ -92,8 +92,7 @@ public abstract class ICondition {
 																							// et
 	// l'entité courante
 
-	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
-													// incluse à la place de fonctions statiques
+	public static Direction strToDir(String str) { 
 		if (str.equals("N")) {
 			return Direction.NORTH;
 		} else if (str.equals("S")) {
@@ -448,7 +447,7 @@ public abstract class ICondition {
 		}
 
 		public boolean eval(MobileEntity current, Model model) {
-			return false; // TODO
+			return false;
 		}
 	}
 
