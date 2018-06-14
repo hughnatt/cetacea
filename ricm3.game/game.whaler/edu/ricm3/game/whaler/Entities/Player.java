@@ -41,7 +41,7 @@ public final class Player extends MobileEntity {
 		super(pos, true, sprite, underSprite, model, dir, Options.PLAYER_LIFE);
 
 		m_automata = m_model.getAutomata(this);
-		m_oil_jauge = Options.MAX_OIL;
+		m_oil_jauge = Options.PLAYER_OIL_GAUGE;
 
 		loadSprites();
 		switch (dir) {
@@ -126,7 +126,7 @@ public final class Player extends MobileEntity {
 
 				destroy();
 			}
-			m_oil_jauge -= 0.01;
+			m_oil_jauge -= 0.02;
 		}
 	}
 
@@ -176,8 +176,8 @@ public final class Player extends MobileEntity {
 
 		if ((result != null) && !(m_model.UNDER_WATER)) {
 			Oil to_pick = (Oil) result;
-			if (this.m_oil_jauge + Options.OIL_PICKED > Options.MAX_OIL) {
-				this.m_oil_jauge = Options.MAX_OIL;
+			if (this.m_oil_jauge + Options.OIL_PICKED > Options.PLAYER_OIL_GAUGE) {
+				this.m_oil_jauge = Options.PLAYER_OIL_GAUGE;
 			} else {
 				this.m_oil_jauge += Options.OIL_PICKED;
 			}
