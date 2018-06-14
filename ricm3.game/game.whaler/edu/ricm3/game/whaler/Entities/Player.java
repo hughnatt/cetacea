@@ -71,12 +71,6 @@ public final class Player extends MobileEntity {
 
 	@Override
 	public void destroy() throws Game_exception {
-
-		// On va se calmer là non ?
-		// m_model.map().tile(m_pos).remove(this);
-		// System.exit(0);
-
-		// TODO: un écran de Game Over
 	}
 
 	public void loadSprites() {

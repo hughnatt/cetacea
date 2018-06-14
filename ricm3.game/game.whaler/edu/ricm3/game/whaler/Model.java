@@ -308,7 +308,6 @@ public class Model extends GameModel {
 			m_statics.add(new Stone(new Location(Options.DIMX_MAP - 1, i), m_stoneSprite, m_stoneUnderSprite, this));
 		}
 
-		// TODO : GENERATE ENTITIES AND REPOP PROCESS
 		entitiesGenerator();
 
 		// Player

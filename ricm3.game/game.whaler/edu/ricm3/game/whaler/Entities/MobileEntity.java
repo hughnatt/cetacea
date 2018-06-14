@@ -271,15 +271,4 @@ public abstract class MobileEntity extends Entity {
 
 	public abstract void pick() throws Game_exception;
 
-	// TODO
-	// Placebo actions (decide if Specific or Generic)
-	// public abstract void jump();
-	// public abstract void protect();
-	// public abstract void pick();
-	// public abstract void throw();
-	// public abstract void store();
-	// public abstract void get();
-	// public abstract void power();
-	// public abstract void kamikaze();
-
 }
