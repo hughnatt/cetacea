@@ -25,6 +25,7 @@ public class Options {
 
 	public static final int UNDERGROUND_FLORE_POURCENTAGE = 12;
 	public static final int SEA_ELEMENTS_POURCENTAGE = 4;
+	
 
 	public static final int DIM_BLOC = 32; // coté d'un bloc en pixel
 
