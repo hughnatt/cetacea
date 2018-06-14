@@ -331,8 +331,8 @@ public class GameUI implements ActionListener {
 				try {
 					tick();
 				} catch (Game_exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.exit(-1);
 				}
 			}
 		});

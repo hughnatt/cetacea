@@ -22,6 +22,8 @@ public final class Whale extends MobileEntity {
 	/* BufferedImage Array to store the sprite */
 	int m_sprite_idx;
 	BufferedImage[] m_sprites;
+	
+	int captureTick;
 
 	/**
 	 * @param pos
@@ -63,6 +65,11 @@ public final class Whale extends MobileEntity {
 
 	public void capture() throws Map_exception {
 
+		if (captureTick < 50) {
+			return;
+		}
+		captureTick = 0;
+		
 		Iterator<Entity> iter_N = m_model.map().tile(m_pos.x, m_pos.y - 1).iterator();
 		Iterator<Entity> iter_S = m_model.map().tile(m_pos.x, m_pos.y + 1).iterator();
 		Iterator<Entity> iter_E = m_model.map().tile(m_pos.x + 1, m_pos.y).iterator();
@@ -124,20 +131,17 @@ public final class Whale extends MobileEntity {
 	@Override
 	public void step(long now) throws Game_exception {
 		long elapsed = now - this.m_lastStep;
-		if (elapsed > 200L) { // speed for the changement of sprites
+		if (elapsed > 2000L) { // speed for the changement of sprites
 
 			m_lastStep = now;
 			try {
 				m_automata.step(m_model, this);
+			//En cas de problème, on capture l'exception et ke jeu continue
 			} catch (Automata_Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			
-			capture();
+			
 
 			if (m_life <= 0) { // Catching or liberation of the whale
 				this.destroy();
@@ -163,6 +167,9 @@ public final class Whale extends MobileEntity {
 				}
 			}
 		}
+		
+		capture();
+		captureTick++;
 	}
 
 	@Override

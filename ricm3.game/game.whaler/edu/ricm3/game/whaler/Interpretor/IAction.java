@@ -9,8 +9,7 @@ public abstract class IAction {
 
 	abstract void step(MobileEntity e) throws Game_exception;
 
-	public static Direction strToDir(String str) { // TODO, création d'une méthode IString avec méthodes de conversion
-													// incluse à la place de fonctions statiques
+	public static Direction strToDir(String str) { 
 		if (str.equals("N")) {
 			return Direction.NORTH;
 		} else if (str.equals("S")) {
@@ -311,7 +310,6 @@ public abstract class IAction {
 		}
 
 		void step(MobileEntity e) {
-			// TODO
 		}
 
 	}
