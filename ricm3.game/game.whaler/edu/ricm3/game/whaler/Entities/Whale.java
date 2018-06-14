@@ -11,7 +11,6 @@ import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Game_exception.Automata_Exception;
 import edu.ricm3.game.whaler.Game_exception.Game_exception;
-import edu.ricm3.game.whaler.Game_exception.Map_exception;
 
 public final class Whale extends MobileEntity {
 
@@ -22,7 +21,7 @@ public final class Whale extends MobileEntity {
 	/* BufferedImage Array to store the sprite */
 	int m_sprite_idx;
 	BufferedImage[] m_sprites;
-	
+
 	int captureTick;
 
 	/**
@@ -40,7 +39,7 @@ public final class Whale extends MobileEntity {
 		super(pos, true, sprite, underSprite, model, dir, Options.WHALE_LIFE);
 		m_damage = Options.WHALE_DPS;
 		m_pop_triggered = false;
-		
+
 		m_automata = m_model.getAutomata(this);
 
 		// Default sprite index is 0 (first image)
@@ -69,7 +68,7 @@ public final class Whale extends MobileEntity {
 			return;
 		}
 		captureTick = 0;
-		
+
 		Iterator<Entity> iter_N = m_model.map().tile(m_pos.x, m_pos.y - 1).iterator();
 		Iterator<Entity> iter_S = m_model.map().tile(m_pos.x, m_pos.y + 1).iterator();
 		Iterator<Entity> iter_E = m_model.map().tile(m_pos.x + 1, m_pos.y).iterator();
@@ -128,8 +127,8 @@ public final class Whale extends MobileEntity {
 			this.destroy();
 			m_model.m_score.sub();
 		}
-		
-		if(m_life >= Options.WHALE_LIFE_MAX) {
+
+		if (m_life >= Options.WHALE_LIFE_MAX) {
 			this.destroy();
 			m_model.m_score.add();
 		}
@@ -144,7 +143,7 @@ public final class Whale extends MobileEntity {
 			m_lastStep = now;
 			try {
 				m_automata.step(m_model, this);
-			//En cas de problème, on capture l'exception et ke jeu continue
+				// En cas de problème, on capture l'exception et ke jeu continue
 			} catch (Automata_Exception e) {
 			} catch (Exception e) {
 			}
@@ -163,7 +162,7 @@ public final class Whale extends MobileEntity {
 				}
 			}
 		}
-		
+
 		capture();
 		captureTick++;
 	}
@@ -201,6 +200,7 @@ public final class Whale extends MobileEntity {
 		}
 
 		m_model.map().tile(this.getx(), this.gety()).remove(this);
+		this.m_pos = null;
 		this.m_pos = new Location(this.getx() + transl_x, this.gety() + transl_y);
 
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
@@ -242,7 +242,7 @@ public final class Whale extends MobileEntity {
 	public boolean isSolidUnder() {
 		return false;
 	}
-	
+
 	@Override
 	public EntityType getType() {
 		return EntityType.WHALE;
