@@ -134,7 +134,9 @@ public class AutomataSelection {
 			System.exit(-3);
 		}
 
-		b = new JComboBox[items.length];
+		String suggested[] = {"Whale","Whaler","Destroyer","Player","Oil","Projectile"};
+		
+		b = new JComboBox[6]; 
 		int i = 0;
 		while (i < 6) {
 
@@ -143,14 +145,8 @@ public class AutomataSelection {
 			b2.add(pictures);
 
 			// We add the label
-			JLabel entities_name = new JLabel("", JLabel.LEFT);
-			
-			try {
-				entities_name.setText("Current : " + items[automata_choices[i]]);
-			} catch (ArrayIndexOutOfBoundsException e) {
-				entities_name.setText("Current : None");
-			}
-			
+			JLabel entities_name = new JLabel("", JLabel.LEFT);		
+			entities_name.setText("Suggested : " + suggested[i]);	
 			entities_name.setFont(new Font("Serif", Font.BOLD, 12));
 			b2.add(entities_name);
 
@@ -158,7 +154,12 @@ public class AutomataSelection {
 			b[i] = new JComboBox<Object>(items);
 			b2.setSize(new Dimension(50, 50));
 
-			//b[i].setSelectedItem(items[i]); // Permet de mettre par défaut
+			try {
+				b[i].setSelectedItem(items[automata_choices[i]]); // Permet de mettre par défaut
+			} catch (ArrayIndexOutOfBoundsException e) {
+				b[i].setSelectedItem(items[0]);
+			}
+			
 
 			b2.add(b[i]);
 

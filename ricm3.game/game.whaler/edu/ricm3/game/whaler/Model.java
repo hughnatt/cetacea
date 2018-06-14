@@ -133,13 +133,13 @@ public class Model extends GameModel {
 
 		// Which key is currently pressed ?
 		keyPressed = new boolean[128];
-		
+
 		// Load, Parse and Make the Automata Array
 		loadAutomaton();
 
 		// Load all the sprites
 		loadSprites();
-		
+
 		restartModel();
 
 	}
@@ -148,7 +148,7 @@ public class Model extends GameModel {
 	 *
 	 */
 	public void restartModel() throws Game_exception {
-		
+
 		m_current_background = null;
 		m_ocean = null;
 		m_underwater = null;
@@ -160,16 +160,15 @@ public class Model extends GameModel {
 		m_oils = null;
 		m_score = null;
 		m_map = null;
-		
-		
+
 		// Load the Automata Choice Array
 		loadAutomataChoices();
-		
+
 		// LastSwap Under/Over Water (never occured at first)
 		m_lastSwap = Integer.MAX_VALUE;
-		
+
 		/*** Creating the map ***/
-		
+
 		m_score = new Score(this, 100, 30, 1);
 		m_statics = new LinkedList<StaticEntity>();
 		m_destroyers = new LinkedList<Destroyer>();
@@ -177,10 +176,8 @@ public class Model extends GameModel {
 		m_projectiles = new LinkedList<Projectile>();
 		m_whales = new LinkedList<Whale>();
 		m_oils = new LinkedList<Oil>();
-		
+
 		generateMap();
-		
-		
 
 	}
 
@@ -456,22 +453,27 @@ public class Model extends GameModel {
 	}
 
 	public IAutomata getAutomata(MobileEntity m) throws Game_exception {
-		
-		switch (m.getType()) {
-		case PLAYER:
-			return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];
-		case DESTROYER:
-			return automata_array[automata_choices[EntityType.DESTROYER.ordinal()]];
-		case WHALE:
-			return automata_array[automata_choices[EntityType.WHALE.ordinal()]];
-		case WHALER:
-			return automata_array[automata_choices[EntityType.WHALER.ordinal()]];
-		case PROJECTILE:
-			return automata_array[automata_choices[EntityType.PROJECTILE.ordinal()]];
-		case OIL:
-			return automata_array[automata_choices[EntityType.OIL.ordinal()]];
-		default:
-			throw new Game_exception("Unexpected Entity. Have you added a new entity ?\n");
+		try {
+
+			switch (m.getType()) {
+			case PLAYER:
+				return automata_array[automata_choices[EntityType.PLAYER.ordinal()]];
+			case DESTROYER:
+				return automata_array[automata_choices[EntityType.DESTROYER.ordinal()]];
+			case WHALE:
+				return automata_array[automata_choices[EntityType.WHALE.ordinal()]];
+			case WHALER:
+				return automata_array[automata_choices[EntityType.WHALER.ordinal()]];
+			case PROJECTILE:
+				return automata_array[automata_choices[EntityType.PROJECTILE.ordinal()]];
+			case OIL:
+				return automata_array[automata_choices[EntityType.OIL.ordinal()]];
+			default:
+				throw new Game_exception("Unexpected Entity. Have you added a new entity ?\n");
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Choix d'automates incorrect. Automate 0 sélectionné");
+			return automata_array[0];
 		}
 	}
 
