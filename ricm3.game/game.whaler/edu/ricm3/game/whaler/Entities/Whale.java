@@ -76,7 +76,7 @@ public final class Whale extends MobileEntity {
 
 			if (e instanceof Whaler) {
 				m_life--;
-			} else if (e instanceof Player) {
+			} else if (e instanceof Player && !(m_model.UNDER_WATER)) {
 				m_life++;
 			}
 		}
@@ -88,7 +88,7 @@ public final class Whale extends MobileEntity {
 
 			if (e instanceof Whaler) {
 				m_life--;
-			} else if (e instanceof Player) {
+			} else if (e instanceof Player && !(m_model.UNDER_WATER)) {
 				m_life++;
 			}
 		}
@@ -100,7 +100,7 @@ public final class Whale extends MobileEntity {
 
 			if (e instanceof Whaler) {
 				m_life--;
-			} else if (e instanceof Player) {
+			} else if (e instanceof Player && !(m_model.UNDER_WATER)) {
 				m_life++;
 			}
 		}
@@ -112,7 +112,7 @@ public final class Whale extends MobileEntity {
 
 			if (e instanceof Whaler) {
 				m_life--;
-			} else if (e instanceof Player) {
+			} else if (e instanceof Player && !(m_model.UNDER_WATER)) {
 				m_life++;
 			}
 		}

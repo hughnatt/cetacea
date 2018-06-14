@@ -95,7 +95,7 @@ public final class Player extends MobileEntity {
 	public void step(long now) throws Game_exception, Automata_Exception {
 		m_lastHit++;
 		m_lastPop++;
-		if(m_lastPop>800L && m_model.UNDER_WATER && !(m_model.map().tile(this.m_pos).isSolid())) {
+		if(m_lastPop>1200L && m_model.UNDER_WATER && !(m_model.map().tile(this.m_pos).isSolid())) {
 			m_model.swap();
 		}
 		long elapsed = now - m_lastStep;
