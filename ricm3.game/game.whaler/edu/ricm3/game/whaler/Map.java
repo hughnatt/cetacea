@@ -69,6 +69,7 @@ public class Map {
 			result.add(tmp_pos);
 		}
 
+		tmp_pos = null;
 		tmp_pos = new Location(pos);
 		tmp_pos.down();
 
@@ -76,6 +77,7 @@ public class Map {
 			result.add(tmp_pos);
 		}
 
+		tmp_pos = null;
 		tmp_pos = new Location(pos);
 		tmp_pos.left();
 
@@ -83,6 +85,7 @@ public class Map {
 			result.add(tmp_pos);
 		}
 
+		tmp_pos = null;
 		tmp_pos = new Location(pos);
 		tmp_pos.right();
 

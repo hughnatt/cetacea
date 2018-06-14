@@ -92,10 +92,12 @@ public class Tile {
 		}
 		return false;
 	}
-	
-	/*
+
+	/**
 	 * Return whether the Tile is solid or not A Tile is solid if it has a solid
 	 * entity
+	 * 
+	 * @return
 	 */
 	public boolean isSolidUnder() {
 		Iterator<Entity> iter = m_level.iterator();
@@ -116,6 +118,8 @@ public class Tile {
 	}
 
 	/**
+	 * Paint the content of the tile at the surface
+	 * 
 	 * @param g
 	 */
 	public void paint(Graphics g, Location map_ref) {
@@ -128,6 +132,8 @@ public class Tile {
 	}
 
 	/**
+	 * paint the content of the tile underwater
+	 * 
 	 * @param g
 	 */
 	public void paint_under(Graphics g, Location map_ref) {
