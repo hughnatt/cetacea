@@ -71,13 +71,6 @@ public class Controller extends GameController implements ActionListener {
 		 * }
 		 */
 
-		/*
-		 * if (e.getKeyChar() == 'u' || e.getKeyChar() == 'U') { Iterator<Oil> iteroil =
-		 * m_model.m_oils.iterator(); while (iteroil.hasNext()) { Oil oil =
-		 * iteroil.next(); try { oil.pop(); } catch (Game_exception e1) { // TODO
-		 * Auto-generated catch block e1.printStackTrace(); } } }
-		 */
-
 	}
 
 	/*
