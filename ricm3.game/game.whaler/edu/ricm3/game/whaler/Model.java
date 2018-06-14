@@ -331,7 +331,8 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-
+		
+		
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
