@@ -161,7 +161,7 @@ public class Whaler extends MobileEntity {
 
 	@Override
 	public void pop() {
-		this.m_life++;
+		m_life = Options.WHALE_LIFE_MAX;
 	}
 
 	@Override

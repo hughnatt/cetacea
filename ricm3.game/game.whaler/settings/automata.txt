@@ -28,28 +28,34 @@ Whale(Init){
 
 Whaler(Search){
   *(Search) :
-  | Closest(A, N) ? Turn(N) : (Move_F)
-  | Closest(A, S) ? Turn(S) : (Move_F)
-  | Closest(A, E) ? Turn(E) : (Move_F)
-  | Closest(A, O) ? Turn(O) : (Move_F)
-  | True ? Move(F) : (Search)
-  *(Move_F) :
-  | True ? Move(F) : (Hit_F) 
-  *(Hit_F) :
-  | True ? Hit(F) : (Search)
+  | Closest(A, N) ? Turn(N) : (MoveFront)
+  | Closest(A, S) ? Turn(S) : (MoveFront)
+  | Closest(A, E) ? Turn(E) : (MoveFront)
+  | Closest(A, O) ? Turn(O) : (MoveFront)
+  | Cell(N, A) ? Turn(N) : (Hit_F)
+  | Cell(S, A) ? Turn(S) : (Hit_F)
+  | Cell(E, A) ? Turn(E) : (Hit_F)
+  | Cell(O, A) ? Turn(O) : (Hit_F)
+  | True ? Power / Turn(L) / Turn(R) / Pop / Wizz :(MoveFront)
+  
+  *(MoveFront): True ? Move(F) :(Search)
+  
+  *(Hit_F): True ? Hit(F) :(Search)
 }
 
 Destroyer(Search){
   *(Search) :
-  | Closest(A, N) ? Turn(N) : (Move_F)
-  | Closest(A, S) ? Turn(S) : (Move_F)
-  | Closest(A, E) ? Turn(E) : (Move_F)
-  | Closest(A, O) ? Turn(O) : (Move_F)
-  | True ? Move(F) : (Search)
-  *(Move_F) :
-  | True ? Move(F) : (Hit_F) 
-  *(Hit_F) :
-  | True ? Hit(F) : (Search)
+  | Closest(A, N) ? Turn(N) : (MoveAndHit)
+  | Closest(A, S) ? Turn(S) : (MoveAndHit)
+  | Closest(A, E) ? Turn(E) : (MoveAndHit)
+  | Closest(A, O) ? Turn(O) : (MoveAndHit)
+  | True ? Turn(N) / Turn(S) / Turn(E) / Pop / Wizz :(MoveFront)
+  
+  *(MoveFront): True ? Move(F) :(Search)
+  
+  *(MoveAndHit): True ? Move(F) :(Hit_F)
+  
+  *(Hit_F): True ? Hit(F) :(Search)
 }
 
 Projectile(Init){
@@ -57,5 +63,5 @@ Projectile(Init){
 }
 
 Oil(Init){
-  *(Init) : True ? Move(F) :(Init)
+  *(Init) : True ? Move(N) / Move(S) / Move(E) / Move(O) :(Init)
 }
