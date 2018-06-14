@@ -489,16 +489,15 @@ public class Model extends GameModel {
 	}
 
 	public void swap() {
-
-		if (m_lastSwap > 500) { // Tick Number
-			m_lastSwap = 0;
-			if (UNDER_WATER) {
-				m_current_background = m_ocean;
-				UNDER_WATER = false;
-			} else {
+		if ((m_lastSwap > 500) && (!UNDER_WATER)) { // Tick Number
 				m_current_background = m_underwater;
 				UNDER_WATER = true;
-			}
+				m_lastSwap = 0;
+		}
+		else if ((m_lastSwap > 100) && (UNDER_WATER)) { // Tick Number
+				m_current_background = m_ocean;
+				UNDER_WATER = false;
+				m_lastSwap = 0;
 		}
 	}
 
