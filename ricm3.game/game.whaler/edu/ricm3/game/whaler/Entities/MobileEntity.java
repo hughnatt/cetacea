@@ -37,10 +37,10 @@ public abstract class MobileEntity extends Entity {
 		m_lastStep = 0;
 		m_direction = dir;
 	}
-	
+
 	protected MobileEntity(Location pos, boolean solid, BufferedImage sprite, BufferedImage underSprite, Model model,
 			Direction dir, int life, boolean add_back) throws Game_exception {
-		super(pos, solid, sprite, underSprite, model,add_back);
+		super(pos, solid, sprite, underSprite, model, add_back);
 		m_life = life;
 		m_lastStep = 0;
 		m_direction = dir;
@@ -80,7 +80,7 @@ public abstract class MobileEntity extends Entity {
 		return this.m_direction;
 	}
 
-	// Retourne direction asbolue depuis Backward (B)
+	// Retourne direction absolue depuis Backward (B)
 	public Direction getBDir() {
 		switch (this.m_direction) {
 		case NORTH:
@@ -136,10 +136,10 @@ public abstract class MobileEntity extends Entity {
 	 */
 	public void movenorth() throws Game_exception {
 		Tile nextTile = m_model.map().tile(this.m_pos.getNorth());
-		
+
 		move(nextTile);
 	}
-	
+
 	/**
 	 * @throws Game_exception
 	 */
@@ -164,22 +164,21 @@ public abstract class MobileEntity extends Entity {
 		Tile nextTile = m_model.map().tile(this.m_pos.getWest());
 		move(nextTile);
 	}
-	
 
 	public void move(Tile nextTile) throws Game_exception {
-		
+
 		if (m_model.UNDER_WATER) {
 			moveUnder(nextTile);
 		} else {
 			moveOver(nextTile);
 		}
-		
+
 	}
 
 	public void moveUnder(Tile nextTile) throws Game_exception {
-		
+
 		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
-		
+
 		if (!nextTile.isSolidUnder()) {
 			currentTile.remove(this);
 			nextTile.addForeground(this);
@@ -188,17 +187,20 @@ public abstract class MobileEntity extends Entity {
 	}
 
 	public void moveOver(Tile nextTile) throws Game_exception {
-		
+
 		Tile currentTile = m_model.map().tile(this.getx(), this.gety());
-		
-		if (!nextTile.isSolid() || this.getType() == EntityType.PROJECTILE) {
+
+		if ((!nextTile.isSolid() || this.getType() == EntityType.PROJECTILE)
+				&& ((this.getType() != EntityType.OIL) || (nextTile.contain(EntityType.OIL) == null))) {
+			/*
+			 * It can move if : the next tile is not solid or it is a projectile or it isn't
+			 * oil which go on a tile with oil
+			 */
 			currentTile.remove(this);
 			nextTile.addForeground(this);
 			m_pos = nextTile.m_loc;
 		}
 	}
-
-
 
 	/**
 	 * 

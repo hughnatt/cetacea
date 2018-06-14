@@ -35,7 +35,7 @@ public final class Oil extends MobileEntity {
 		// We use a default direction,because it has no importance
 
 		m_automata = m_model.getAutomata(this);
-		
+
 		this.m_is_burning = false;
 		m_lastSpread = 0;
 		m_damage = Options.BURNING_OIL_DPS;
@@ -61,10 +61,9 @@ public final class Oil extends MobileEntity {
 		}
 
 		long elapsed = now - m_lastStep;
-		
+
 		if (m_is_burning) {
 
-			
 			if (elapsed > Options.BURNING_OIL_SPD_BURNING) {
 				// change of the fire spite
 
@@ -138,18 +137,16 @@ public final class Oil extends MobileEntity {
 
 			}
 
-		} else if (elapsed > 5000L) { // if the oil doestn't burn
-			
+		} else if (elapsed > Options.OIL_SPD_STEP) { // if the oil doestn't burn
+
 			try {
 				m_automata.step(m_model, this);
 			} catch (Automata_Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			m_lastSpread = now; // we keep the timers readied
 			m_lastStep = now;
 
@@ -212,7 +209,6 @@ public final class Oil extends MobileEntity {
 		return false;
 	}
 
-	
 	@Override
 	public EntityType getType() {
 		return EntityType.OIL;
