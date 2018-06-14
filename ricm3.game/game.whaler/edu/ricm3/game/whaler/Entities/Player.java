@@ -23,6 +23,7 @@ public final class Player extends MobileEntity {
 
 	public float m_oil_jauge;
 	private long m_lastHit;
+	private long m_lastPop;
 
 	/**
 	 * @param pos
@@ -65,6 +66,7 @@ public final class Player extends MobileEntity {
 		}
 		
 		m_lastHit = 1000000000L;
+		m_lastPop = 1000000000L;
 	}
 
 	@Override
@@ -92,6 +94,10 @@ public final class Player extends MobileEntity {
 	@Override
 	public void step(long now) throws Game_exception, Automata_Exception {
 		m_lastHit++;
+		m_lastPop++;
+		if(m_lastPop>800L && m_model.UNDER_WATER && !(m_model.map().tile(this.m_pos).isSolid())) {
+			m_model.swap();
+		}
 		long elapsed = now - m_lastStep;
 		if (elapsed > 80L) {
 			m_lastStep = now;
@@ -142,21 +148,15 @@ public final class Player extends MobileEntity {
 
 	@Override
 	public void pop() throws Game_exception {
-
 		if (m_model.UNDER_WATER) {
-
 			if (!(m_model.map().tile(this.m_pos).isSolid())) {
-
 				m_model.swap();
-
 			}
 
 		} else {
-
 			m_model.swap();
-
 		}
-
+		m_lastPop=0;
 	}
 
 	@Override
@@ -173,8 +173,8 @@ public final class Player extends MobileEntity {
 
 	public void pick() throws Game_exception {
 		Entity result = m_model.map().tile(this.m_pos).contain(EntityType.OIL);
-
-		if ((result != null) && !(m_model.UNDER_WATER)) {
+		Oil will_burn = (Oil) result;
+		if ((result != null) && !(m_model.UNDER_WATER) && !(will_burn.m_is_burning)) {
 			Oil to_pick = (Oil) result;
 			if (this.m_oil_jauge + Options.OIL_PICKED > Options.PLAYER_OIL_GAUGE) {
 				this.m_oil_jauge = Options.PLAYER_OIL_GAUGE;
