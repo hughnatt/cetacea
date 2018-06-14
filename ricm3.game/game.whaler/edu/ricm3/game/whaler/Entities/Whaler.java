@@ -91,7 +91,7 @@ public class Whaler extends MobileEntity {
 
 		long elapsed = now - m_lastStep;
 
-		if (!m_exploding && elapsed > 1000L) {
+		if (!m_exploding && elapsed > 600L) {
 			m_lastStep = now;
 
 			try {

@@ -25,6 +25,7 @@ import edu.ricm3.game.GameUI.Screen;
 import edu.ricm3.game.whaler.Model;
 import edu.ricm3.game.whaler.Options;
 import edu.ricm3.game.whaler.Entities.Entity.EntityType;
+import edu.ricm3.game.whaler.Game_exception.Game_exception;
 import edu.ricm3.game.whaler.Interpretor.IAutomata;
 
 public class AutomataSelection {
@@ -113,10 +114,10 @@ public class AutomataSelection {
 		b2.setLayout(grid);
 
 		m_model = (Model) m_g.m_model;
+		
 		IAutomata[] items = m_model.automata_array;
 		int[] automata_choices = m_model.automata_choices;
 
-		String[] names = { "Whale", "Whaler", "Destroyer", "Player", "Oil", "Projectile" };
 
 		// We read all the images and put them in a tab
 		BufferedImage[] image = new BufferedImage[6];
@@ -129,13 +130,13 @@ public class AutomataSelection {
 			image[5] = ImageIO.read(new File("game.whaler/sprites/projectile_70x70.png"));
 
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			System.exit(-3);
 		}
 
 		b = new JComboBox[items.length];
 		int i = 0;
-		while (i < names.length) {
+		while (i < 6) {
 
 			// We add the pictures
 			JLabel pictures = new JLabel(new ImageIcon(image[i]), JLabel.RIGHT);
@@ -143,7 +144,13 @@ public class AutomataSelection {
 
 			// We add the label
 			JLabel entities_name = new JLabel("", JLabel.LEFT);
-			entities_name.setText("Default : " + names[i]);
+			
+			try {
+				entities_name.setText("Current : " + items[automata_choices[i]]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				entities_name.setText("Current : None");
+			}
+			
 			entities_name.setFont(new Font("Serif", Font.BOLD, 12));
 			b2.add(entities_name);
 
@@ -202,6 +209,12 @@ public class AutomataSelection {
 			}
 			if (event.equals("VALIDATE")) {
 				validate_automata();
+				try {
+					m_model.restartModel();
+				} catch (Game_exception e1) {
+					e1.printStackTrace();
+					System.exit(-1);
+				}
 				m_g.setScreen(Screen.MENU);
 				m_g.createWindow(new Dimension(Options.DIMX_WINDOW, Options.DIMY_WINDOW));
 				m_select.dispose();
