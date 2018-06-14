@@ -63,7 +63,7 @@ public final class Whale extends MobileEntity {
 		m_model.m_garbage.add(this);
 	}
 
-	public void capture() throws Map_exception {
+	public void capture() throws Game_exception {
 
 		if (captureTick < 50) {
 			return;
@@ -124,7 +124,15 @@ public final class Whale extends MobileEntity {
 			}
 		}
 
-		// System.out.println(arg0);
+		if (m_life <= 0) { // Catching or liberation of the whale
+			this.destroy();
+			m_model.m_score.sub();
+		}
+		
+		if(m_life >= Options.WHALE_LIFE_MAX) {
+			this.destroy();
+			m_model.m_score.add();
+		}
 
 	}
 
@@ -139,18 +147,6 @@ public final class Whale extends MobileEntity {
 			//En cas de problème, on capture l'exception et ke jeu continue
 			} catch (Automata_Exception e) {
 			} catch (Exception e) {
-			}
-			
-			
-
-			if (m_life <= 0) { // Catching or liberation of the whale
-				this.destroy();
-				m_model.m_score.sub();
-			}
-			
-			if(m_life >= Options.WHALE_LIFE_MAX) {
-				this.destroy();
-				m_model.m_score.add();
 			}
 
 			if (m_pop_triggered) {
