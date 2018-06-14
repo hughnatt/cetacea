@@ -32,16 +32,17 @@ public class Projectile extends MobileEntity {
 	 *            Damage power
 	 * @throws Game_exception
 	 */
-	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir) throws Game_exception {
+	public Projectile(Location pos, BufferedImage sprite, BufferedImage underSprite, Model model, Direction dir)
+			throws Game_exception {
 		super(pos, false, sprite, underSprite, model, dir, Options.PROJECTILE_RANGE);
-		
+
 		m_damage = Options.PROJECTILE_DPS;
 		m_speed = Options.PROJECTILE_SPD_STANDARD;
 
 		m_automata = m_model.getAutomata(this);
 		m_model.m_projectiles.add(this);
 
-		m_lastStep = -1; //In Order to skip the first step
+		m_lastStep = -1; // In Order to skip the first step
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class Projectile extends MobileEntity {
 		Iterator<Entity> iter = tile.iterator();
 		while (iter.hasNext()) {
 			Entity e = iter.next();
-			if (e.isSolid()&&!(m_model.UNDER_WATER)) {
+			if (e.isSolid() && !(m_model.UNDER_WATER)) {
 				switch (e.getType()) {
 				case PLAYER:
 				case DESTROYER:
@@ -85,7 +86,7 @@ public class Projectile extends MobileEntity {
 	@Override
 	public void step(long now) throws Game_exception {
 
-		if (this.m_lastStep == -1) { //Skip the first step
+		if (this.m_lastStep == -1) { // Skip the first step
 			m_lastStep = now;
 		}
 
@@ -129,7 +130,19 @@ public class Projectile extends MobileEntity {
 	}
 
 	public void wizz() {
-		m_direction = m_model.rand_direction();
+
+		switch (m_model.rand.nextInt(4)) {
+		case 0:
+			m_direction = Direction.NORTH;
+
+		case 1:
+			m_direction = Direction.EAST;
+
+		case 2:
+			m_direction = Direction.SOUTH;
+		default:
+			m_direction = Direction.WEST;
+		}
 	}
 
 	public void hit() {
@@ -142,7 +155,7 @@ public class Projectile extends MobileEntity {
 	public boolean isSolidUnder() {
 		return false;
 	}
-	
+
 	@Override
 	public EntityType getType() {
 		return EntityType.PROJECTILE;

@@ -331,8 +331,7 @@ public class Model extends GameModel {
 		 * entre 10 et 20 des baleines 3) Générer les Destroyers 4) Générer le pétrole
 		 * (Full Random)
 		 */
-		
-		
+
 		for (int i = 0; i < Options.MAX_OIL; i++) {
 			boolean found_spawnpos = false;
 			while (!found_spawnpos) {
@@ -490,14 +489,13 @@ public class Model extends GameModel {
 
 	public void swap() {
 		if ((m_lastSwap > 500) && (!UNDER_WATER)) { // Tick Number
-				m_current_background = m_underwater;
-				UNDER_WATER = true;
-				m_lastSwap = 0;
-		}
-		else if ((m_lastSwap > 100) && (UNDER_WATER)) { // Tick Number
-				m_current_background = m_ocean;
-				UNDER_WATER = false;
-				m_lastSwap = 0;
+			m_current_background = m_underwater;
+			UNDER_WATER = true;
+			m_lastSwap = 0;
+		} else if ((m_lastSwap > 100) && (UNDER_WATER)) { // Tick Number
+			m_current_background = m_ocean;
+			UNDER_WATER = false;
+			m_lastSwap = 0;
 		}
 	}
 
@@ -612,21 +610,6 @@ public class Model extends GameModel {
 
 	public BufferedImage get_oil_sprite() {
 		return m_oilSprite;
-	}
-
-	public Direction rand_direction() {
-		switch (rand.nextInt(4)) {
-		case 0:
-			return Direction.NORTH;
-
-		case 1:
-			return Direction.EAST;
-
-		case 2:
-			return Direction.SOUTH;
-		default:
-			return Direction.WEST;
-		}
 	}
 
 	private void loadSprites() {
