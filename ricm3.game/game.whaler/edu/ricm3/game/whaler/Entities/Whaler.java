@@ -107,6 +107,21 @@ public class Whaler extends MobileEntity {
 			if (m_life <= 0) {
 				m_exploding = true;
 			}
+			
+			switch (m_direction) {
+			case EAST:
+				m_sprite = m_whalerEast;
+				break;
+			case WEST:
+				m_sprite = m_whalerWest;
+				break;
+			case NORTH:
+				m_sprite = m_whalerNorth;
+				break;
+			default:
+				m_sprite = m_whalerSouth;
+				break;
+			}
 		}
 	}
 
