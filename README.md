@@ -1,7 +1,15 @@
 # Cetacea
 Mini-jeu développé en Java (framework custom Swing+AWT) réalisé dans le cadre du cours de projet logiciel niveau application (Polytech Grenoble Informatique 4ème année)
 
-## Groupe 4 : 
+## Technologies et logiciels utilisés
+- <a href="java.org"><img alt="Logo de Java" src="https://upload.wikimedia.org/wikipedia/fr/thumb/2/2e/Java_Logo.svg/800px-Java_Logo.svg.png" height="100"></a>
+
+- <a href="https://www.eclipse.org/"><img alt="Logo d'Eclipse" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Eclipse-Luna-Logo.svg/1920px-Eclipse-Luna-Logo.svg.png" height="40"></a>
+
+- **Java Swing**
+- **Java AWT**
+
+## Groupe : 
 - DUMAX-VORZET Mathieu
 - JALMIN Hoël
 - LANDI Estelle
