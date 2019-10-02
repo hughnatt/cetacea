@@ -1,5 +1,5 @@
-# projet-pla
-Projet Logiciel Niveau Application
+# Cetacea
+Mini-jeu développé en Java (framework custom Swing+AWT) réalisé dans le cadre du cours de projet logiciel niveau application (Polytech Grenoble Informatique 4ème année)
 
 ## Groupe 4 : 
 - DUMAX-VORZET Mathieu
