@@ -187,23 +187,40 @@ public final class Whale extends MobileEntity {
 
 	@Override
 	public void wizz() throws Game_exception {
-		int transl_x = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of the
-																				// whale in x
-		if (m_model.rand.nextInt(2) == 1) {
-			transl_x *= -1;
-		}
+		boolean valid = false;
 
-		int transl_y = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of the
-																				// whale in y
-		if (m_model.rand.nextInt(2) == 1) {
-			transl_y *= -1;
+		Location new_pos = null;
+		while (!valid) {
+			int transl_x = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of
+																					// the
+																					// whale in x
+			if (m_model.rand.nextInt(2) == 1) {
+				transl_x *= -1;
+			}
+
+			int transl_y = m_model.rand.nextInt(Options.MAX_RANGE_WHALE_ESCAPE); // calculation of the translation of
+																					// the
+																					// whale in y
+			if (m_model.rand.nextInt(2) == 1) {
+				transl_y *= -1;
+			}
+
+			new_pos = new Location(this.getx() + transl_x, this.gety() + transl_y);
+
+			if (m_model.map().tile(new_pos).isSolid()) {
+				new_pos = null;
+			} else {
+				valid = true;
+			}
+
 		}
 
 		m_model.map().tile(this.getx(), this.gety()).remove(this);
 		this.m_pos = null;
-		this.m_pos = new Location(this.getx() + transl_x, this.gety() + transl_y);
+		this.m_pos = new_pos;
 
 		m_model.map().tile(this.getx(), this.gety()).addForeground(this);
+
 	}
 
 	@Override

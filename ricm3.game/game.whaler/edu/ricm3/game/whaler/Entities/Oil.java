@@ -106,37 +106,38 @@ public final class Oil extends MobileEntity {
 
 				}
 
-				Location adja = new Location(this.m_pos);
-				adja.up();
-				Entity result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the top
-				if (result != null) {
-					Oil will_burn = (Oil) result;
-					will_burn.m_is_burning = true;
+				List<Location> adja = m_model.map().posAdjacent(this.m_pos);
+				Iterator<Location> iter_adja = adja.iterator();
+				while (iter_adja.hasNext()) {
+					Location pos = iter_adja.next();
+					Entity result = m_model.map().tile(pos).contain(EntityType.OIL); // burn the oil to the top
+					if (result != null) {
+						Oil will_burn = (Oil) result;
+						will_burn.m_is_burning = true;
+					}
 				}
 
-				adja = new Location(this.m_pos);
-				adja.down();
-				result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the bottom
-				if (result != null) {
-					Oil will_burn = (Oil) result;
-					will_burn.m_is_burning = true;
-				}
-
-				adja = new Location(this.m_pos);
-				adja.left();
-				result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the left
-				if (result != null) {
-					Oil will_burn = (Oil) result;
-					will_burn.m_is_burning = true;
-				}
-
-				adja = new Location(this.m_pos);
-				adja.right();
-				result = m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the right
-				if (result != null) {
-					Oil will_burn = (Oil) result;
-					will_burn.m_is_burning = true;
-				}
+				/*
+				 * Location adja = new Location(this.m_pos); adja.up(); Entity result =
+				 * m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the top
+				 * if (result != null) { Oil will_burn = (Oil) result; will_burn.m_is_burning =
+				 * true; }
+				 * 
+				 * adja = new Location(this.m_pos); adja.down(); result =
+				 * m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the
+				 * bottom if (result != null) { Oil will_burn = (Oil) result;
+				 * will_burn.m_is_burning = true; }
+				 * 
+				 * adja = new Location(this.m_pos); adja.left(); result =
+				 * m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the left
+				 * if (result != null) { Oil will_burn = (Oil) result; will_burn.m_is_burning =
+				 * true; }
+				 * 
+				 * adja = new Location(this.m_pos); adja.right(); result =
+				 * m_model.map().tile(adja).contain(EntityType.OIL); // burn the oil to the
+				 * right if (result != null) { Oil will_burn = (Oil) result;
+				 * will_burn.m_is_burning = true; }
+				 */
 
 				m_life--; // reduces the life of the oil
 
